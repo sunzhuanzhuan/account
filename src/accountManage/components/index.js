@@ -6,5 +6,4 @@
 
 export { default as WrapPanel } from './WrapPanel'
 export { default as WrapPanelForm } from './WrapPanelForm'
-export { FansCountItem } from './Fans'
 export { FansCount } from './FansCount'

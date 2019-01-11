@@ -1,6 +1,6 @@
 import React from 'react';
-import  WBYUploadFile  from '@/accountManage/base/NewUpload'
-import { Form, Select, Input, Checkbox, Popover, Radio} from 'antd'
+import WBYUploadFile from '@/accountManage/base/NewUpload'
+import { Form, Select, Input, Checkbox, Popover, Radio } from 'antd'
 import SimpleTag from "../base/SimpleTag";
 import moment from 'moment'
 import { platformToDesc } from '../constants/placeholder'
@@ -41,7 +41,7 @@ export const QCCodeUpload = (props) => {
 				}] : [],
 				rules: [{ required: true, message: '二维码不能为空' }]
 			})(
-				<WBYUploadFile tok={actions.getNewToken} accept={'.bmp, .gif, image/jpeg'} uploadUrl='/api/file/v1/uploadPubBucket'  uploadText={'点击上传'} size={5} showUploadList={{
+				<WBYUploadFile tok={actions.getNewToken} accept={'.bmp, .gif, image/jpeg'} uploadUrl='/api/file/v1/uploadPubBucket' uploadText={'点击上传'} size={5} showUploadList={{
 					showPreviewIcon: true,
 					showRemoveIcon: !(isQrCodeUrlEditable == 2)
 				}} disabled={isQrCodeUrlEditable == 2} />
@@ -66,7 +66,7 @@ export const AccountType = (props) => {
 	} = accountInfo
 	return <FormItem {...formItemLayout} wrapperCol={halfWrapCol} label='账号类型'>
 		{getFieldDecorator('base.mediaType', {
-			initialValue: mediaType || 3,
+			initialValue: mediaType || 3
 			// rules: [{ required: true, message: '账号类型必须选择' }]
 		})(
 			<Select style={{ width: '100%' }}>
@@ -131,7 +131,7 @@ export const AccountDesc = (props) => {
 export const ContentCategory = (props) => {
 	const { formItemLayout = {}, data: { accountInfo } } = props
 	let {
-		category = []
+		classificationList: category = []
 	} = accountInfo
 	return <FormItem {...formItemLayout} label='内容分类'>
 		{category.length ? <div>{category.map(({ name }) =>
@@ -156,22 +156,22 @@ export const ReferencePrice = (props) => {
 			<div className='sina-reference-table'>
 				<table>
 					<tbody>
-						<tr>
-							<th>微任务原发价</th>
-							<td>{price_micro_task_tweet || '--'}</td>
-						</tr>
-						<tr>
-							<th>微任务转发价</th>
-							<td>{price_micro_task_retweet || '--'}</td>
-						</tr>
-						<tr>
-							<th>WEIQ原发价</th>
-							<td>{price_weiq_tweet || '--'}</td>
-						</tr>
-						<tr>
-							<th>WEIQ转发价</th>
-							<td>{price_weiq_retweet || '--'}</td>
-						</tr>
+					<tr>
+						<th>微任务原发价</th>
+						<td>{price_micro_task_tweet || '--'}</td>
+					</tr>
+					<tr>
+						<th>微任务转发价</th>
+						<td>{price_micro_task_retweet || '--'}</td>
+					</tr>
+					<tr>
+						<th>WEIQ原发价</th>
+						<td>{price_weiq_tweet || '--'}</td>
+					</tr>
+					<tr>
+						<th>WEIQ转发价</th>
+						<td>{price_weiq_retweet || '--'}</td>
+					</tr>
 					</tbody>
 				</table>
 			</div>
@@ -244,7 +244,7 @@ export const AccountIsNameless = (props) => {
 		microFlashPost = 0,
 		isFamous
 	} = accountInfo
-	const style = isFamous == 1 ? {display: 'none'}: {}
+	const style = isFamous == 1 ? { display: 'none' } : {}
 	return <FormItem style={style} {...formItemLayout} label='是否微闪投账号'>
 		{getFieldDecorator('extend.microFlashPost', {
 			initialValue: isFamous == 1 ? 2 : (microFlashPost || 2)
@@ -296,18 +296,18 @@ export const Orderable = (props) => {
  * 接单策略
  * */
 export const OrderStrategy = (props) => {
-	const { getFieldDecorator,getFieldValue, formItemLayout = {}, halfWrapCol, data: { priceInfo } } = props
+	const { getFieldDecorator, getFieldValue, formItemLayout = {}, halfWrapCol, data: { priceInfo } } = props
 	const {
 		isAcceptHardAd,
 		isAcceptHardAdDescription
 	} = priceInfo
 	let style = {}
 	let show = false
-	if(getFieldValue('isAcceptHardAd') === undefined){
-		style = (isAcceptHardAd == 1) ? {display: 'block'}: {display: 'none'}
+	if (getFieldValue('isAcceptHardAd') === undefined) {
+		style = (isAcceptHardAd == 1) ? { display: 'block' } : { display: 'none' }
 		show = isAcceptHardAd == 1
-	}else {
-		style = (getFieldValue('isAcceptHardAd')) ? {display: 'block'}: {display: 'none'}
+	} else {
+		style = (getFieldValue('isAcceptHardAd')) ? { display: 'block' } : { display: 'none' }
 		show = getFieldValue('isAcceptHardAd')
 	}
 	return <div>
