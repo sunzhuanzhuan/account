@@ -23,12 +23,12 @@ class AccountState extends React.Component {
 	}
 
 	getStatus() {
-		if (MaxFetchCount <= 0) return
+		if (MaxFetchCount <= 0) return this.setState({})
 		let { action, id } = this.props
 		timer = setTimeout(() => {
 			window.clearTimeout(timer)
 			MaxFetchCount--
-			action({ accountId: id }).then(({ data }) => {
+			action({ accountId: id }).finally(({ data } = {}) => {
 				let { aOnShelfStatus, bOnShelfStatus } = data || {}
 				if (aOnShelfStatus || bOnShelfStatus) return
 				this.getStatus()
