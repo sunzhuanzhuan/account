@@ -75,7 +75,7 @@ const FollowerBeIdentified = (props) => {
 			initialValue: status || 1,
 			rules: [{ required: false, message: '粉丝数目认证必填' }]
 		})(
-			<RadioGroup disabled={disabled} options={plainOptions} onChange={this.onChange1} />
+			<RadioGroup disabled={disabled} options={plainOptions} />
 		)}
 	</FormItem>
 }
