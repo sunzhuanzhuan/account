@@ -42,7 +42,7 @@ export default class UploadFile extends Component {
 		multiple: false,
 		accept: "",
 		listType: 'picture-card',
-		uploadUrl: '/api/file/v1/uploadPubBucket',
+		uploadUrl: '/api/common-file/file/v1/uploadPubBucket',
 		btnProps: {},
 		disabled: false,
 		uploadText: '上传',

@@ -108,6 +108,7 @@ export const {
 	saveAccountInfo
 } = createHttpAction('saveAccountInfo', Interface.saveAccountInfo, {
 	method: 'post',
+	ignoreToast: true,
 });
 // 维护页面提交
 /*export const {

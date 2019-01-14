@@ -2,8 +2,8 @@ export default {
 	common: {
 		getCompanyList: '/export/account/getCompanyList',
 		getAllPlatform: '/platform/getAll',
-		getChineseCities: '/common/v1/chineseCities',
-		getToken: '/toolbox/file/v1/getToken',
+		getChineseCities: '/operator-gateway/common/v1/chineseCities',
+		getToken: '/toolbox-gateway/file/v1/getToken',
 	},
 	sourceRulesUrl: {
 		add: '/sourceRule/add',

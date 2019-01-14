@@ -69,7 +69,9 @@ export class FetchInfo extends React.Component {
 			let forms = Object.values((window.updateForms || {})) // 维护页分段提交form
 			let singleForm = form // 入库页单个提交form
 			if (singleForm) {
-				Object.keys(data.data).forEach(key => singleForm.resetFields(key))
+				Object.keys(data.data).forEach(key => {
+					singleForm.resetFields('base.' + key)
+				})
 			}
 			if (forms.length) {
 				Object.keys(data.data).forEach(key => {

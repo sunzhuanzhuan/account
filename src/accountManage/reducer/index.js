@@ -84,6 +84,7 @@ export const accountInfo = handleActions({
 		let { isNewFetch, value } = data
 		if (isNewFetch) {
 			return {
+				...state,
 				...initAccountData(),
 				hasAddSubmit: true,
 				...value

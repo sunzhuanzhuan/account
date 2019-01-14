@@ -39,7 +39,6 @@ class AccountState extends React.Component {
 	render() {
 		let { status: [online, a, b] } = this.props
 		let show = MaxFetchCount <= 0 || a.code || b.code
-		console.log(MaxFetchCount, '=====');
 		return <div className='account-status-tabs'>
 			<StatusComponent status={online.code == 1} desc={["账号可售卖", "账号不可售卖"]} reason={online.reason} />
 			{show ?

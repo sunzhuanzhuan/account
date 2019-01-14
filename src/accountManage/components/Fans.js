@@ -57,7 +57,7 @@ const FollowersScreenShot = (props) => {
 				}] : [],
 				rules: [{ required: true, message: '请上传粉丝截图' }]
 			})(
-				<WBYUploadFile tok={actions.getNewToken}  uploadUrl='/api/file/v1/uploadPubBucket' disabled={disabled}  accept={'.bmp, .gif, image/jpeg'} uploadText={'点击上传'} size={5} showUploadList={{showPreviewIcon: true, showRemoveIcon: !disabled}}/>
+				<WBYUploadFile tok={actions.getNewToken}  uploadUrl='/api/common-file/file/v1/uploadPubBucket' disabled={disabled}  accept={'.bmp, .gif, image/jpeg'} uploadText={'点击上传'} size={5} showUploadList={{showPreviewIcon: true, showRemoveIcon: !disabled}}/>
 			)}
 		</div>
 		<p className='input-desc-bottom'>请上传bmp, jpeg, jpg, gif;5M以内的图片</p>

@@ -108,7 +108,7 @@ export class BaseInfo extends Component {
 						}] : [],
 						rules: [{ required: true, message: '头像不能为空' }]
 					})(
-						<WBYUploadFile tok={actions.getNewToken} uploadUrl='/api/file/v1/uploadPubBucket' accept={'.bmp, .gif, image/jpeg'} showUploadList={{
+						<WBYUploadFile tok={actions.getNewToken} uploadUrl='/api/common-file/file/v1/uploadPubBucket' accept={'.bmp, .gif, image/jpeg'} showUploadList={{
 							showPreviewIcon: true,
 							showRemoveIcon: !(isAvatarUrlEditable == 2)
 						}} uploadText={'点击上传'} size={5} disabled={isAvatarUrlEditable == 2} />

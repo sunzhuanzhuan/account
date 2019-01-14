@@ -41,7 +41,7 @@ export const QCCodeUpload = (props) => {
 				}] : [],
 				rules: [{ required: true, message: '二维码不能为空' }]
 			})(
-				<WBYUploadFile tok={actions.getNewToken} accept={'.bmp, .gif, image/jpeg'} uploadUrl='/api/file/v1/uploadPubBucket' uploadText={'点击上传'} size={5} showUploadList={{
+				<WBYUploadFile tok={actions.getNewToken} accept={'.bmp, .gif, image/jpeg'} uploadUrl='/api/common-file/file/v1/uploadPubBucket' uploadText={'点击上传'} size={5} showUploadList={{
 					showPreviewIcon: true,
 					showRemoveIcon: !(isQrCodeUrlEditable == 2)
 				}} disabled={isQrCodeUrlEditable == 2} />

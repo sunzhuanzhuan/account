@@ -8,7 +8,7 @@ function action() {
 export default class Test extends Component {
 	render() {
 		return <div>
-			<NewUpload tok={action} uploadUrl={'/api/file/v1/uploadPubBucket'}/>
+			<NewUpload tok={action} uploadUrl={'/api/common-file/file/v1/uploadPubBucket'}/>
 		</div>
 	}
 }

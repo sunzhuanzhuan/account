@@ -55,7 +55,7 @@ export default class AudiencePortrait extends Component {
 							filepath: audienceCityDistributionSceenshotUrl
 						}] : []
 					})(
-						<WBYUploadFile tok={actions.getNewToken} accept={'.bmp, .gif, image/jpeg'} uploadText={'点击上传'} size={5} uploadUrl='/api/file/v1/uploadPubBucket'/>
+						<WBYUploadFile tok={actions.getNewToken} accept={'.bmp, .gif, image/jpeg'} uploadText={'点击上传'} size={5} uploadUrl='/api/common-file/file/v1/uploadPubBucket'/>
 					)}
 				</div>
 				<p className='input-desc-bottom'>请上传bmp, jpeg, jpg, gif;5M以内的图片</p>

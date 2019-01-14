@@ -96,10 +96,11 @@ class AddPage extends Component {
 							visible: true,
 							addQuoteData: {
 								platformId: this.pid,
-								accountId: data.msg || 0
+								accountId: data.errorMsg || 0
 							}
 						});
 					} else {
+						message.error(data.errorMsg)
 						this.setState({
 							submitLoading: false
 						})
