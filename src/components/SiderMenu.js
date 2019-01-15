@@ -13,7 +13,7 @@ function createMenu(data) {
 		let { subs: child, name, url } = item
 		let reg = /^\//i;
 		let title = reg.test(url) ? <span>{name}</span> : <span>
-			<Icon type={url} />
+			<Icon type={url || "ellipsis"} />
 			<span>{name}</span>
 		</span>
 		return child ? <SubMenu key={name} title={title}>{createMenu(child)}

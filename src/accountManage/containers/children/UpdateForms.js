@@ -229,7 +229,7 @@ export class AccountPriceForm extends Component {
 			content: (isFamous == 1) ? '提交成功后，下个价格有效期和报价将无法修改' : '',
 			onOk() {
 				return saveSku(values).then(() => {
-					message.success('提交成功', 1.3, () => {
+					message.success('更新报价信息成功', 1.3, () => {
 						getSkuActions()
 					})
 
@@ -514,7 +514,7 @@ export class AudiencePortraitForm extends Component {
 				this.setState({ isLoading: true })
 				updateAccountAudiencePortrait({ ...data }).then(() => {
 					this.setState({ isLoading: false })
-					message.success('提交成功')
+					message.success('更新账号成功')
 				}).catch(() => {
 					this.setState({ isLoading: false })
 				})

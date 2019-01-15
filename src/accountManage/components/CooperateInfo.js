@@ -236,7 +236,7 @@ export class CooperateInfo extends React.Component {
 								)}
 								<span style={{
 									position: 'absolute',
-									top: '0px',
+									top: '-9px',
 									right: '20px'
 								}}>{item.brandLen}/20</span>
 							</FormItem>
@@ -267,7 +267,7 @@ export class CooperateInfo extends React.Component {
 								)}
 								<span style={{
 									position: 'absolute',
-									top: '0px',
+									top: '-9px',
 									right: '20px'
 								}}>{item.resultLen}/1000</span>
 							</FormItem>
@@ -305,7 +305,7 @@ export class CooperateInfo extends React.Component {
 				)}
 				<span style={{
 					position: 'absolute',
-					top: '0px',
+					top: '-9px',
 					right: '20px'
 				}}><span style={{ color: (textCount > 1000) ? 'red' : 'black' }}>{textCount}</span>/1000</span>
 			</FormItem>

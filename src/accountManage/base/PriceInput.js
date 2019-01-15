@@ -42,7 +42,7 @@ export default class PriceInput extends Component {
 	}
 
 	render() {
-		const { value = '', isEdit = false } = this.props;
+		const { value = '', isEdit = false, ...others } = this.props;
 		const [_title, _content] = formatNumber(value)
 		const title = value ? (
 			<span className="price-bold-unit">
@@ -61,13 +61,13 @@ export default class PriceInput extends Component {
 					overlayClassName="price-bold-input"
 					getPopupContainer={() => document.querySelector('.price_scroll_container') || document.querySelector('#account-manage-container')}
 				>
-					{/*{...this.props}*/}
 					<Input
-						{...this.props}
+            value={value}
+            {...others}
 						onChange={this.onChange}
 						onBlur={this.onBlur}
 						placeholder="请输入价格"
-						maxLength="9"
+						maxLength={9}
 					/>
 				</Popover> : <p style={{textAlign:'center', margin:"0",fontWeight: '500', color: '#333'}}>{value || '-'}</p>
 		);

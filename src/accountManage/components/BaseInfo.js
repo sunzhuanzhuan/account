@@ -115,26 +115,26 @@ export class BaseInfo extends Component {
 					)}
 				</div>
 				<p className='input-desc-bottom'>请上传bmp, jpeg, jpg, gif;5M以内的图片</p>
-				{/* 隐藏域提交 */}
-				{getFieldDecorator('base.isSnsNameEditable', { initialValue: isSnsNameEditable })(
-					<input type="hidden" />)}
-				{getFieldDecorator('base.snsNameMaintainedTime', { initialValue: snsNameMaintainedTime })(
-					<input type="hidden" />)}
-				{getFieldDecorator('base.isSnsIdEditable', { initialValue: isSnsIdEditable })(
-					<input type="hidden" />)}
-				{getFieldDecorator('base.snsIdMaintainedTime', { initialValue: snsIdMaintainedTime })(
-					<input type="hidden" />)}
-				{getFieldDecorator('base.isUrlEditable', { initialValue: isUrlEditable })(
-					<input type="hidden" />)}
-				{getFieldDecorator('base.urlMaintainedTime', { initialValue: urlMaintainedTime })(
-					<input type="hidden" />)}
-				{getFieldDecorator('base.isAvatarUrlEditable', { initialValue: isAvatarUrlEditable })(
-					<input type="hidden" />)}
-				{getFieldDecorator('base.avatarUrlMaintainedTime', { initialValue: avatarUrlMaintainedTime })(
-					<input type="hidden" />)}
-				{/*{getFieldDecorator('catched_at', { initialValue: catched_at })(
-					<input type="hidden" />)}*/}
 			</FormItem>
+      {/* 隐藏域提交 */}
+      {getFieldDecorator('base.isSnsNameEditable', { initialValue: isSnsNameEditable })(
+        <input type="hidden" />)}
+      {getFieldDecorator('base.snsNameMaintainedTime', { initialValue: snsNameMaintainedTime })(
+        <input type="hidden" />)}
+      {getFieldDecorator('base.isSnsIdEditable', { initialValue: isSnsIdEditable })(
+        <input type="hidden" />)}
+      {getFieldDecorator('base.snsIdMaintainedTime', { initialValue: snsIdMaintainedTime })(
+        <input type="hidden" />)}
+      {getFieldDecorator('base.isUrlEditable', { initialValue: isUrlEditable })(
+        <input type="hidden" />)}
+      {getFieldDecorator('base.urlMaintainedTime', { initialValue: urlMaintainedTime })(
+        <input type="hidden" />)}
+      {getFieldDecorator('base.isAvatarUrlEditable', { initialValue: isAvatarUrlEditable })(
+        <input type="hidden" />)}
+      {getFieldDecorator('base.avatarUrlMaintainedTime', { initialValue: avatarUrlMaintainedTime })(
+        <input type="hidden" />)}
+      {/*{getFieldDecorator('catched_at', { initialValue: catched_at })(
+					<input type="hidden" />)}*/}
 			{React.Children.map(children, child => React.cloneElement(child, { ...form }))}
 		</div>
 	}

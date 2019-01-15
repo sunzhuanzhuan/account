@@ -64,8 +64,8 @@ class DetailTable extends Component {
 	handleChildren = (dataSource, subList) => {
 		let children = [];
 		subList.forEach((one, index) => {
-			children.push(<Th one={one} index={index} />);
-			children.push(<Td one={one} index={index} dataSource={dataSource} />)
+			children.push(<Th one={one} index={index} key={index}/>);
+			children.push(<Td one={one} index={index} key={index + Math.random()} dataSource={dataSource} />)
 		});
 		return children;
 	};

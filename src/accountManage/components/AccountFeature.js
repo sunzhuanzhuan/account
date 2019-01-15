@@ -246,7 +246,7 @@ export class AccountFeature extends React.Component {
 					)}
 					<span style={{
 						position: 'absolute',
-						top: '0px',
+						top: '-9px',
 						right: '20px'
 					}}><span style={{ color: (textCount > 1000) ? 'red' : 'black' }}>{textCount}</span>/1000</span>
 				</FormItem>

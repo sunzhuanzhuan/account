@@ -88,7 +88,7 @@ export default class UpdateChild extends Component {
 		]
 		//FansCount 要展示的列；
 		const columnsKeys = fansColumnsKeys[platformView[pid] || ''] || []
-		const { fetch, base = {} } = platformDiff
+		const { fetch, base = {}, price } = platformDiff
 		return (Object.keys(priceInfo).length) ?
 			<Tabs defaultActiveKey={addQuote ? '2' : '1'} animated={false} tabBarExtraContent={
 				// 是否下架 是否可接单 是否预约账号
@@ -118,7 +118,7 @@ export default class UpdateChild extends Component {
 					<span>报价信息{((isFamous == 1) && hasRedDot(priceValidTo)) ?
 						<Badge dot><b style={{ visibility: 'hidden' }}>_</b></Badge> : null}</span>}>
 					{!this.state.isLoading ?
-						<AccountPriceForm params={params} getSkuActions={this.getSkuActions} /> :
+						<AccountPriceForm params={params} diff={price} getSkuActions={this.getSkuActions} /> :
 						<Skeleton active />}
 				</TabPane>
 				<TabPane tab="受众画像" key="3">
