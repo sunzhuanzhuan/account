@@ -199,7 +199,7 @@ module.exports = {
         },
         libs: {
           chunks: 'initial',
-          test: /(react|react-dom|react-router-dom|babel-polyfill|redux|axios|react-redux)/,
+          test: /(react|react-dom|react-router-dom|redux|axios|react-redux)/,
           priority: 40,
           name: 'libs'
         }
