@@ -190,13 +190,9 @@ export class NamelessPrice extends Component {
 			getFieldDecorator, formItemLayout, children, isUpdate, priceKeys, data: { accountInfo, priceInfo }
 		} = this.props
 		const {
-			partnerType: type,
-			taxInprice: tax
-		} = accountInfo
-		const {
 			skuList,
-			partnerType = type,
-			taxInprice = tax
+			partnerType,
+			taxInPrice
 		} = priceInfo
 		let val = {};
 		skuList && skuList.forEach(({ skuTypeId, costPriceRaw }) => {
@@ -211,7 +207,7 @@ export class NamelessPrice extends Component {
 						message: '最少需填写一个报价项'
 					}, { validator: checkPrice(true) }]
 				})(
-					<PriceTable desc={handlePriceTitle(taxInprice == 1, partnerType)} isEdit={true} priceKeys={priceKeys} />)}
+					<PriceTable desc={handlePriceTitle(taxInPrice == 1, partnerType)} isEdit={true} priceKeys={priceKeys} />)}
 				<AccountPriceHelp />
 			</FormItem>
 			{isUpdate ? <NamelessStatus {...{
@@ -307,10 +303,12 @@ export class FamousPrice extends Component {
 			nextPriceValidTo,
 			reviewStatus,
 			reviewFailReason,
-			taxInprice, // 在主帐号中有
+			taxInPrice, // 在主帐号中有
 			partnerType,
 			skuList
 		} = priceInfo
+    console.log(taxInPrice, // 在主帐号中有
+      partnerType, '+++++++++');
 		/*const orderStatus = {
 			isCheck: is_flowunit_off_shelf == 1, // 是否流单过多下架
 			accept_order: isAllowOrderStatus == 1, // 是否接单
@@ -392,7 +390,7 @@ export class FamousPrice extends Component {
 					}]
 
 				})(
-					<PriceTable desc={handlePriceTitle(taxInprice == 1, partnerType)} isEdit={canEditPrice} priceKeys={priceKeys} />)}
+					<PriceTable desc={handlePriceTitle(taxInPrice == 1, partnerType)} isEdit={canEditPrice} priceKeys={priceKeys} />)}
 				<AccountPriceHelp />
 			</FormItem>
 			{hasPass ? <FormItem {...formItemLayout} label='审核状态'>

@@ -115,13 +115,6 @@ export const accountInfo = handleActions({
 			...action.payload.data
 		}
 	},
-	[combineActions(getUserInvoiceInfo_success)]: (state, action) => {
-		let [item = {}] = action.payload.data || []
-		return {
-			...state,
-			...item
-		}
-	},
 	[combineActions(getUploadToken_success)]: (state, action) => {
 		return {
 			...state,
@@ -136,7 +129,14 @@ export const priceInfo = handleActions({
 			...state,
 			...action.payload.data
 		}
-	}
+	},
+  [combineActions(getUserInvoiceInfo_success)]: (state, action) => {
+    let [item = {}] = action.payload.data || []
+    return {
+      ...state,
+      ...item
+    }
+  },
 }, {})
 
 export const priceTypeList = handleActions({
