@@ -36,7 +36,7 @@ class WrapPanelForm extends React.Component {
 				this.setState({ isLoading: true })
 				let id = parseUrlQuery()['account_id']
 				action({...onSave(values), id}).then(() => {
-					message.success( '提交成功')
+					message.success( '更新账号成功')
 					this.setState({ isLoading: false })
 				}).catch(() => {
 					this.setState({ isLoading: false })

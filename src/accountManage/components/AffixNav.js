@@ -49,7 +49,7 @@ export default class AffixNav extends Component {
 				this.setState({
 					submitLoading: false
 				})
-				message.success(data.message || '保存成功')
+				message.success(data.message || '更新账号成功')
 			}).catch(({ errorMsg }) => {
 				this.setState({
 					submitLoading: false

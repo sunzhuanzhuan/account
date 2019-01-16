@@ -119,7 +119,7 @@ export class BaseInfoForm extends Component {
 					this.setState({
 						submitLoading: false
 					})
-					message.success('保存成功')
+					message.success('更新账号成功')
 				}).catch(() => {
 					this.setState({
 						submitLoading: false
@@ -286,7 +286,8 @@ export class AccountPriceForm extends Component {
 export class AccountFeatureForm extends Component {
 	webpackExtraFormData = (values) => {
 		if (values.base) {
-			values.base.areaId = (values.base.areaId || []).pop();
+      let area = [...(values.base.areaId || [])]
+      values.base.areaId = area.pop() || 0;
 		}
 		if (values.extend) {
 			let hasCar = values.extend.hasCar;
