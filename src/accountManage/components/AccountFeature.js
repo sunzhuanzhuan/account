@@ -215,7 +215,7 @@ export class AccountFeature extends React.Component {
 						rules: [{ required: false }],
 						initialValue: level
 					})(
-						<InputNumber min={0} max={1000} disabled={parseInt(isLevelEditable) !== 1} />
+						<InputNumber min={0} max={300} disabled={parseInt(isLevelEditable) !== 1} />
 					)}
 				</FormItem>
 				<FormItem {...formItemLayout} label='是否认证:'>

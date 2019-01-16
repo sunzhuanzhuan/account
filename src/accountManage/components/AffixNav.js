@@ -49,7 +49,8 @@ export default class AffixNav extends Component {
 				this.setState({
 					submitLoading: false
 				})
-				message.success(data.message || '更新账号成功')
+				message.success(data.message || '更新账号成功', 1.5, () => window.location.reload())
+
 			}).catch(({ errorMsg }) => {
 				this.setState({
 					submitLoading: false
