@@ -14,7 +14,7 @@ const CheckboxGroup = Checkbox.Group;
 const { TextArea } = Input;
 
 function handleWeeks(weeks) {
-  let result
+  let result = []
   if(weeks){
     if(Array.isArray(weeks)){
       return weeks.map(num => num.toString())

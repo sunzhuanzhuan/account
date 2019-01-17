@@ -136,6 +136,7 @@ export class CooperateInfo extends React.Component {
     param.string = value;
     sensitiveWordsFilter(param).then(result => {
       if (result.code != 200) {
+        message.destroy()
         message.error('查询敏感词接口出错，请重试！');
       } else {
         let is_sensitive_words = result.data && result.data.is_sensitive_words;
