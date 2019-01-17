@@ -307,8 +307,6 @@ export class FamousPrice extends Component {
 			partnerType,
 			skuList
 		} = priceInfo
-    console.log(taxInPrice, // 在主帐号中有
-      partnerType, '+++++++++');
 		/*const orderStatus = {
 			isCheck: is_flowunit_off_shelf == 1, // 是否流单过多下架
 			accept_order: isAllowOrderStatus == 1, // 是否接单

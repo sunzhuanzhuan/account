@@ -13,6 +13,20 @@ const { RangePicker } = DatePicker;
 const CheckboxGroup = Checkbox.Group;
 const { TextArea } = Input;
 
+function handleWeeks(weeks) {
+  let result
+  if(weeks){
+    if(Array.isArray(weeks)){
+      return weeks.map(num => num.toString())
+    }
+    try {
+      result = JSON.parse(weeks)
+    }catch (e) {
+      result = []
+    }
+  }
+  return result.map(num => num.toString())
+}
 export class OrderTakeStrategy extends React.Component {
 	initiaCheckBoxValue = () => {
 		let [...tempContent] = this.checkedArr;
@@ -157,7 +171,7 @@ export class OrderTakeStrategy extends React.Component {
 		this.patchHandleDisabledForCheckbox(checkedValues);
 	}
 	patchHandleDisabledForCheckbox = (checkedValues) => {
-		checkedValues = checkedValues || JSON.stringify(checkedValues) || []
+		checkedValues = handleWeeks(checkedValues)
 		let len = checkedValues.length;
 		let tempArr = [...this.state.options];
 		if (len == 6) {
@@ -348,7 +362,7 @@ export class OrderTakeStrategy extends React.Component {
 				>
 					{getFieldDecorator('strategy.weeks', {
 						rules: [{ required: true, message: '请选择星期！' }],
-						initialValue: strategy && strategy.weeks
+						initialValue: handleWeeks(strategy && strategy.weeks)
 					})(
 						<CheckboxGroup options={options} onChange={this.handleChangeForCheckBox} />
 					)}

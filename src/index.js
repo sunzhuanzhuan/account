@@ -15,17 +15,14 @@ import 'numeral/locales/chs';
 // 顶级根目录页面
 import App from './containers/App';
 import AccountManage from './accountManage';
+import { linkTo } from '@/util/linkTo';
 // 设置语言包
 numeral.locale('chs');
 moment.locale('zh-cn');
 // 处理跳转到其他项目的路由
-const redirectToOtherProjects = ({ location: { pathname = '/error' } }) => {
+const redirectToOtherProjects = ({ location: { pathname = '/error', search = '' } }) => {
   /** 新B端测试环境地址 @namespace process.env.REACT_APP_TRUNK_BENTLEY_ADDRESS **/
-  if (process.env.NODE_ENV === 'development') {
-    window.location.replace(process.env.REACT_APP_TRUNK_BENTLEY_ADDRESS + pathname);
-  } else {
-    window.location.replace(pathname);
-  }
+  linkTo(pathname + search)
   return null;
 };
 // 项目内路由
