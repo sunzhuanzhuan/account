@@ -232,7 +232,7 @@ export const AccountID = (props) => {
   const { data: { accountInfo } } = props;
   const id = accountInfo['accountId'] || '-';
   const { formItemLayout = {} } = props;
-  return <FormItem {...formItemLayout} label='accountId'>
+  return <FormItem {...formItemLayout} label='account_id'>
     {id}
   </FormItem>;
 };

@@ -93,7 +93,7 @@ export class AccountFeature extends React.Component {
 			verificationInfo, weiboUrl,
 			realName, supportMultiPlatformOriginalPost,
 			multiPlatformOriginalPostTips, snbt,
-			true_fans_rate, hasHouse,
+			trueFansRate, hasHouse,
 			hasCar, hasBaby, accountId,
 			isGenderEditable, genderMaintainedTime, isAreaIdEditable,areaIdMaintainedTime,
 			isLevelEditable, levelMaintainedTime, birthDate
@@ -299,7 +299,7 @@ export class AccountFeature extends React.Component {
 					<span>{snbt ? snbt : '--'}</span>
 				</FormItem>
 				<FormItem {...formItemLayout} label='真粉率:'>
-					<span>{true_fans_rate ? true_fans_rate : '--'}</span>
+					<span>{trueFansRate ? trueFansRate : '--'}</span>
 				</FormItem>
 				<FormItem {...formItemLayout} label='家庭状况:'>
 					<FormItem {...formItemLayout}
