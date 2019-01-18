@@ -39,7 +39,7 @@ export class AccountInfos extends Component {
     const {
       babysitterHost = babysitter_host.value || 'http://toufang.weiboyi.com',
       accountId,
-      latestPublishTime,
+      modifiedAt,
       platformId
     } = accountInfo;
 
@@ -48,7 +48,7 @@ export class AccountInfos extends Component {
     let href = isOwner ? `${babysitterHost}/user/index/type/huanma/account_id/${accountId}/weibo_type/${platformId}` : `${babysitterHost}/user/chowner/account_id/${accountId}`;
 
     const rightC = <div className='wrap-panel-right-content'>
-      <span className='gray-text'>信息更新时间 : {latestPublishTime || '--'}</span>
+      <span className='gray-text'>信息更新时间 : {modifiedAt || '--'}</span>
       <a target={'_blank'} href={href}>更换主账号</a>
     </div>;
     return <div className='account-info-container update-page'>
@@ -525,10 +525,10 @@ export class AudiencePortraitForm extends Component {
     const { form, params } = this.props;
     const { data: { accountInfo } } = params;
     const {
-      latestPublishTime
+      modifiedAt
     } = accountInfo;
     const rightC = <div className='wrap-panel-right-content'>
-      <span className='gray-text'>信息更新时间 : {latestPublishTime || '--'}</span>
+      <span className='gray-text'>信息更新时间 : {modifiedAt || '--'}</span>
       <Button loading={this.state.isLoading} size='small' type='primary' onClick={this.submit}>{'保存'}</Button>
     </div>;
     return <Form>
