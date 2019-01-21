@@ -67,7 +67,7 @@ export default class PriceInput extends Component {
 						onChange={this.onChange}
 						onBlur={this.onBlur}
 						placeholder="请输入价格"
-						maxLength={9}
+						maxLength={8}
 					/>
 				</Popover> : <p style={{textAlign:'center', margin:"0",fontWeight: '500', color: '#333'}}>{value || '-'}</p>
 		);

@@ -30,8 +30,8 @@ const FollowersCount = (props) => {
 		{getFieldDecorator('base.followerCount', {
 			initialValue: count,
 			rules: [{ required: true, message: '粉丝数不能为空' },{
-				pattern: /^\d{0,10}$/,
-				message: '只能输入不超过10位数的数字'
+				pattern: /^\d{0,9}$/,
+				message: '只能输入不超过9位数的数字'
 			}]
 		})(
 			<InputNumber style={{ width: '320px' }} max={max} disabled={disabled} placeholder="粉丝数" />

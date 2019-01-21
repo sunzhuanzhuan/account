@@ -48,7 +48,7 @@ export class AccountInfos extends Component {
     let href = isOwner ? `${babysitterHost}/user/index/type/huanma/account_id/${accountId}/weibo_type/${platformId}` : `${babysitterHost}/user/chowner/account_id/${accountId}`;
 
     const rightC = <div className='wrap-panel-right-content'>
-      <span className='gray-text'>信息更新时间 : {modifiedAt || '--'}</span>
+      <span className='gray-text'>信息更新时间 : {(modifiedAt && modifiedAt !== '1970-01-01 08:00:00') ? modifiedAt : '--'}</span>
       <a target={'_blank'} href={href}>更换主账号</a>
     </div>;
     return <div className='account-info-container update-page'>
@@ -255,7 +255,7 @@ export class AccountPriceForm extends Component {
 
     const _isFamous = isFamous === 1;
     const rightC = <div className='wrap-panel-right-content'>
-      <span className='gray-text'>信息更新时间 : {modifiedAt || '--'}</span>
+      <span className='gray-text'>信息更新时间 : {(modifiedAt && modifiedAt !== '1970-01-01 08:00:00') ? modifiedAt : '--'}</span>
       <Button size='small' type='primary' onClick={this.submit}>{'保存'}</Button>
     </div>;
     return <Form>
@@ -528,7 +528,7 @@ export class AudiencePortraitForm extends Component {
       modifiedAt
     } = accountInfo;
     const rightC = <div className='wrap-panel-right-content'>
-      <span className='gray-text'>信息更新时间 : {modifiedAt || '--'}</span>
+      <span className='gray-text'>信息更新时间 : {(modifiedAt && modifiedAt !== '1970-01-01 08:00:00') ? modifiedAt : '--'}</span>
       <Button loading={this.state.isLoading} size='small' type='primary' onClick={this.submit}>{'保存'}</Button>
     </div>;
     return <Form>
