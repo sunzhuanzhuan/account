@@ -48,6 +48,7 @@ export class OtherInfo extends React.Component {
 								<span>是</span>
 							</Tooltip>}
 							{isLowQuality&&isLowQuality==2&&<span>否</span>}
+							{!isLowQuality && '未获取到数据'}
 							</div>
 						)}
 					</Col>
