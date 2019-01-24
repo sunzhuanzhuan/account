@@ -1,94 +1,81 @@
-import React from "react"
-import '../base/SimpleTag.less'
-import { Input, Button, Select } from 'antd';
-import { cityMap } from '../constants/city'
+import React from 'react';
+import '../base/SimpleTag.less';
+import { Input, Button, Cascader } from 'antd';
+import city from '@/constants/city';
+import { analyzeAreaCode } from '@/util/analyzeAreaCode';
+import isEqual from 'lodash/isEqual'
 
 const InputGroup = Input.Group;
-const Option = Select.Option;
 
 const fixStyle = {
-	color: 'rgba(0, 0, 0, 0.65)',
-	padding: '0 11px',
-	background: '#fafafa'
+  color: 'rgba(0, 0, 0, 0.65)',
+  padding: '0 11px',
+  background: '#fafafa'
+};
+function disabledList(list, cond) {
+  return list.map((item) => {
+    item.disabled = !!cond.some((condId = '') => item.id.toString() === condId.toString());
+    if (item.childrenList) {
+      item.childrenList = disabledList(item.childrenList, cond);
+    }
+    return item;
+  });
 }
 
 class TopCity extends React.Component {
-	state = {
-		value: this.props.value || Array(3).fill(undefined),
-		list: []
-	}
 
-	handleSelect = index => n => {
-		let _val = n || 0
-		let value = [...this.state.value]
-		value[index] = _val
-		this.setState({ value }, () => {
-			this.props.onChange(value)
-		})
-	}
+  handleSelect = index => n => {
+    let _val = n || 0;
+    let value = [...this.state.value];
+    value[index] = _val.slice(-1)[0];
+    if(!isEqual(this.state.value, value)){
+      this.setState({
+        list: disabledList(this.state.list, value)
+      })
+    }
+    this.setState({
+      value
+    }, () => {
+      this.props.onChange && this.props.onChange(value);
+    });
+  };
+  constructor(props){
+    super(props)
+    let value = this.props.value || Array(3).fill(undefined)
+    this.state = {
+      value,
+      list: disabledList(city, value)
+    };
+  }
 
-	constructor(props) {
-		super(props)
-		this.cityList = []
-	}
-
-	componentWillMount() {
-		this.props.getList().then(({ data }) => {
-			this.setState({ list: data })
-		})
-	}
-
-	render() {
-		const { value, list } = this.state
-		const [top1, top2, top3] = value
-		const cityList = list.map(({ id, areaName }) =>
-			<Option disabled={!!value.find(key => String(id) === String(key))} key={id}>{areaName}</Option>)
-		return cityList.length ? <div>
-			<InputGroup compact style={{ width: '186px', marginRight: '28px' }}>
-				<Button disabled style={fixStyle}>TOP1</Button>
-				<Select
-					showSearch
-					allowClear
-					style={{ width: 120 }}
-					placeholder="选择城市"
-					defaultValue={cityMap[top1]}
-					optionFilterProp="children"
-					onChange={this.handleSelect(0)}
-				>
-					{cityList}
-				</Select>
-			</InputGroup>
-			<InputGroup compact style={{ width: '186px', marginRight: '28px' }}>
-				<Button disabled style={fixStyle}>TOP2</Button>
-				<Select
-					showSearch
-					allowClear
-					style={{ width: 120 }}
-					placeholder="选择城市"
-					defaultValue={cityMap[top2]}
-					optionFilterProp="children"
-					onChange={this.handleSelect(1)}
-				>
-					{cityList}
-				</Select>
-			</InputGroup>
-			<InputGroup compact style={{ width: '186px', marginRight: '28px' }}>
-				<Button disabled style={fixStyle}>TOP3</Button>
-				<Select
-					showSearch
-					allowClear
-					style={{ width: 120 }}
-					placeholder="选择城市"
-					defaultValue={cityMap[top3]}
-					optionFilterProp="children"
-					onChange={this.handleSelect(2)}
-				>
-					{cityList}
-				</Select>
-			</InputGroup>
-		</div>: <p>Loading...</p>
-	}
+  render() {
+    const { value, list } = this.state;
+    let _value = value.map(code => analyzeAreaCode(code));
+    let filterList = list
+    return <div>
+      {
+        _value.map((val, index) => (
+          <InputGroup key={index} compact style={{ width: '186px', marginRight: '28px' }}>
+            <Button disabled style={fixStyle}>TOP{index + 1}</Button>
+            <Cascader
+              fieldNames={{
+                label: 'areaName',
+                value: 'id',
+                children: 'childrenList'
+              }}
+              defaultValue={val}
+              placeholder="选择城市"
+              displayRender={label => label.slice(-1)}
+              style={{ width: 120 }}
+              options={filterList}
+              onChange={this.handleSelect(index)}
+            />
+          </InputGroup>
+        ))
+      }
+    </div>;
+  }
 
 }
 
-export default TopCity
+export default TopCity;

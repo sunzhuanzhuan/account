@@ -8,7 +8,6 @@ import './container.less'
 // 懒加载路由级组件
 const AddPage = lazyLoadComponent(() => import('./containers/AddPage'))
 const UpdatePage = lazyLoadComponent(() => import('./containers/UpdatePage'))
-const Test = lazyLoadComponent(() => import('./containers/Test'))
 
 
 class AccountEnterIndex extends Component {
@@ -19,7 +18,6 @@ class AccountEnterIndex extends Component {
 			<div className='account-manage' id='account-manage-container'>
 				<Route path='/account/manage/add' component={AddPage} />
 				<Route path='/account/manage/update' component={UpdatePage} />
-				<Route path='/account/manage/test' component={Test} />
 			</div>
 		);
 	}
