@@ -27,7 +27,7 @@ class TopCity extends React.Component {
   handleSelect = index => n => {
     let _val = n || 0;
     let value = [...this.state.value];
-    value[index] = _val.slice(-1)[0];
+    value[index] = _val.slice(-1)[0] || 0;
     if(!isEqual(this.state.value, value)){
       this.setState({
         list: disabledList(this.state.list, value)
