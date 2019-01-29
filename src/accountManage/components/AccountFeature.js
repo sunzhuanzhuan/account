@@ -12,24 +12,12 @@ import {
 } from 'antd';
 import moment from 'moment';
 import areas from '@/constants/areas.json'
+import { analyzeAreaCode } from '@/util/analyzeAreaCode'
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
 const { TextArea } = Input;
-function analyzeArea(areaId = '') {
-	// 101 01 01 01
-	let areaAry = []
-	if (!areaId) return []
-	areaId = areaId + ''
-	if (areaId.length > 8) {
-		areaAry = [areaId.slice(0, 3), areaId.slice(0, 5), areaId.slice(0, 7), areaId]
-	} else {
-		areaAry = [areaId]
-	}
-	return areaAry.map(area => parseInt(area))
-}
-
 
 export class AccountFeature extends React.Component {
 	handleExtraContent = () => {
@@ -99,7 +87,7 @@ export class AccountFeature extends React.Component {
 			levelFrom, levelMaintainedTime, birthDate
 		} = accountInfo;
 		const width = { width: '40%' };
-		let area = analyzeArea(areaId)
+		let area = analyzeAreaCode(areaId)
 		let { visibleForExtarContent, textCount } = this.state;
 		return <div>
 			{getFieldDecorator('id', {
