@@ -95,8 +95,8 @@ export class AccountFeature extends React.Component {
 			multiPlatformOriginalPostTips, snbt,
 			trueFansRate, hasHouse,
 			hasCar, hasBaby, accountId,
-			isGenderEditable, genderMaintainedTime, isAreaIdEditable,areaIdMaintainedTime,
-			isLevelEditable, levelMaintainedTime, birthDate
+			genderFrom, genderMaintainedTime, areaIdFrom,areaIdMaintainedTime,
+			levelFrom, levelMaintainedTime, birthDate
 		} = accountInfo;
 		const width = { width: '40%' };
 		let area = analyzeArea(areaId)
@@ -112,8 +112,8 @@ export class AccountFeature extends React.Component {
 			})(
 				<input type="hidden" />
 			)}*/}
-			{getFieldDecorator('base.isGenderEditable', {
-				initialValue: isGenderEditable
+			{getFieldDecorator('base.genderFrom', {
+				initialValue: genderFrom
 			})(
 				<input type="hidden" />
 			)}
@@ -122,8 +122,8 @@ export class AccountFeature extends React.Component {
 			})(
 				<input type="hidden" />
 			)}
-			{getFieldDecorator('base.isAreaIdEditable', {
-				initialValue: isAreaIdEditable
+			{getFieldDecorator('base.areaIdFrom', {
+				initialValue: areaIdFrom
 			})(
 				<input type="hidden" />
 			)}
@@ -132,8 +132,8 @@ export class AccountFeature extends React.Component {
 			})(
 				<input type="hidden" />
 			)}
-			{getFieldDecorator('base.isLevelEditable', {
-				initialValue: isLevelEditable
+			{getFieldDecorator('base.levelFrom', {
+				initialValue: levelFrom
 			})(
 				<input type="hidden" />
 			)}
@@ -183,7 +183,7 @@ export class AccountFeature extends React.Component {
 						rules: [{ required: false }],
 						initialValue: gender
 					})(
-						<RadioGroup style={width} disabled={parseInt(isGenderEditable) !== 1}>
+						<RadioGroup style={width} disabled={parseInt(genderFrom) !== 1}>
 							<Radio value={3}>未知/其他</Radio>
 							<Radio value={1}>男</Radio>
 							<Radio value={2}>女</Radio>
@@ -215,7 +215,7 @@ export class AccountFeature extends React.Component {
 						rules: [{ required: false }],
 						initialValue: level
 					})(
-						<InputNumber min={0} max={300} disabled={parseInt(isLevelEditable) !== 1} />
+						<InputNumber min={0} max={300} disabled={parseInt(levelFrom) !== 1} />
 					)}
 				</FormItem>
 				<FormItem {...formItemLayout} label='是否认证:'>

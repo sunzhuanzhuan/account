@@ -37,17 +37,17 @@ export class BaseInfo extends Component {
 		} = this.props
 		const {
 			snsName,
-			isSnsNameEditable,
+			snsNameFrom,
 			snsNameMaintainedTime,
 			snsId,
-			isSnsIdEditable,
+			snsIdFrom,
 			snsIdMaintainedTime,
 			url,
-			isUrlEditable,
+			urlFrom,
 			urlMaintainedTime,
 			snsUniqueId,
 			avatarUrl,
-			isAvatarUrlEditable,
+			avatarUrlFrom,
 			avatarUrlMaintainedTime
 		} = accountInfo
 		const { accountNameLen, IDLen, accountNameShow, IDShow } = this.state
@@ -61,7 +61,7 @@ export class BaseInfo extends Component {
 						message: '账号名称最多可输入80个字符'
 					}]
 				})(
-					<Input disabled={isSnsNameEditable == 2} suffix={accountNameShow ?
+					<Input disabled={snsNameFrom == 2} suffix={accountNameShow ?
 						<span className='input-suffix-text'>{accountNameLen}/80</span> : null} onFocus={this.displayInputLen('accountName', true)} placeholder="账号名称" onChange={this.setInputLen('accountNameLen')} onBlur={this.displayInputLen('accountName', false)} />
 				)}
 			</FormItem>
@@ -74,7 +74,7 @@ export class BaseInfo extends Component {
 						message: '账号ID最多可输入100个字符'
 					}]
 				})(
-					<Input disabled={isSnsIdEditable == 2} suffix={IDShow ?
+					<Input disabled={snsIdFrom == 2} suffix={IDShow ?
 						<span className='input-suffix-text'>{IDLen}/100</span> : null} onFocus={this.displayInputLen('ID', true)} placeholder="账号ID" onChange={this.setInputLen('IDLen')} onBlur={this.displayInputLen('ID', false)} />
 				)}
 			</FormItem>
@@ -87,7 +87,7 @@ export class BaseInfo extends Component {
 						message: '主页链接格式不正确，请填写前缀为“http://或https://”的主页链接'
 					}, { max: 1024, message: '主页链接最多可输入1024个字符' }]
 				})(
-					<Input disabled={isUrlEditable == 2} placeholder="主页链接" />
+					<Input disabled={urlFrom == 2} placeholder="主页链接" />
 				)}
 			</FormItem>}
 			{hideUniqueId ? null :
@@ -110,26 +110,26 @@ export class BaseInfo extends Component {
 					})(
 						<WBYUploadFile tok={actions.getNewToken} uploadUrl='/api/common-file/file/v1/uploadPubBucket' accept={'.bmp, .gif, image/jpeg'} showUploadList={{
 							showPreviewIcon: true,
-							showRemoveIcon: !(isAvatarUrlEditable == 2)
-						}} uploadText={'点击上传'} size={5} disabled={isAvatarUrlEditable == 2} />
+							showRemoveIcon: !(avatarUrlFrom == 2)
+						}} uploadText={'点击上传'} size={5} disabled={avatarUrlFrom == 2} />
 					)}
 				</div>
 				<p className='input-desc-bottom'>请上传bmp, jpeg, jpg, gif;5M以内的图片</p>
 			</FormItem>
       {/* 隐藏域提交 */}
-      {getFieldDecorator('base.isSnsNameEditable', { initialValue: isSnsNameEditable })(
+      {getFieldDecorator('base.snsNameFrom', { initialValue: snsNameFrom })(
         <input type="hidden" />)}
       {getFieldDecorator('base.snsNameMaintainedTime', { initialValue: snsNameMaintainedTime })(
         <input type="hidden" />)}
-      {getFieldDecorator('base.isSnsIdEditable', { initialValue: isSnsIdEditable })(
+      {getFieldDecorator('base.snsIdFrom', { initialValue: snsIdFrom })(
         <input type="hidden" />)}
       {getFieldDecorator('base.snsIdMaintainedTime', { initialValue: snsIdMaintainedTime })(
         <input type="hidden" />)}
-      {getFieldDecorator('base.isUrlEditable', { initialValue: isUrlEditable })(
+      {getFieldDecorator('base.urlFrom', { initialValue: urlFrom })(
         <input type="hidden" />)}
       {getFieldDecorator('base.urlMaintainedTime', { initialValue: urlMaintainedTime })(
         <input type="hidden" />)}
-      {getFieldDecorator('base.isAvatarUrlEditable', { initialValue: isAvatarUrlEditable })(
+      {getFieldDecorator('base.avatarUrlFrom', { initialValue: avatarUrlFrom })(
         <input type="hidden" />)}
       {getFieldDecorator('base.avatarUrlMaintainedTime', { initialValue: avatarUrlMaintainedTime })(
         <input type="hidden" />)}

@@ -91,7 +91,7 @@ const FansEdit = (props) => {
 	} = props
 	const {
 		followerCount,
-		isFollowerCountEditable,
+		followerCountFrom,
 		followerCountMaintainedTime,
 		followerCountVerificationStatus,
 		followerCountScreenshotUrl,
@@ -99,11 +99,11 @@ const FansEdit = (props) => {
 		catched_at
 	} = accountInfo
 	return <div>
-		<FollowersCount {...props} count={followerCount} disabled={isDisableFollowersCount || isFollowerCountEditable == 2 || disabled} />
+		<FollowersCount {...props} count={followerCount} disabled={isDisableFollowersCount || followerCountFrom == 2 || disabled} />
 		{isFansNumberImg && <FollowersScreenShot {...props} url={followerCountScreenshotUrl} token={token}/>}
 		{isUpdate && <FollowerBeIdentified {...props} status={followerCountVerificationStatus} />}
 		{/* 隐藏域提交 */}
-		{getFieldDecorator('base.isFollowerCountEditable', {initialValue: isFollowerCountEditable})(<input type="hidden" />)}
+		{getFieldDecorator('base.followerCountFrom', {initialValue: followerCountFrom})(<input type="hidden" />)}
 		{getFieldDecorator('base.followerCountMaintainedTime', {initialValue: followerCountMaintainedTime})(<input type="hidden" />)}
 		{getFieldDecorator('catched_at', {initialValue: catched_at})(<input type="hidden" />)}
 		{children}

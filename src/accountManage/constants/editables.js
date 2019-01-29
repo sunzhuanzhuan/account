@@ -1,11 +1,11 @@
 export const allEditables = {
-	"isAvatarUrlEditable": "avatarUrl", //头像是否可修改
-	"isSnsNameEditable": "snsName", //账号名是否可修改
-	"isSnsIdEditable": "snsId", //ID是否可修改
-	"isUrlEditable": "url", //url是否可修改
-	"isQrCodeUrlEditable": "qrCodeUrl", //二维码是否可修改
-	"isFollowerCountEditable": "followerCount", //粉丝数是否可修改
-	"isGenderEditable": "gender", //性别是否可修改
-	"isAreaIdEditable": "areaId", //地域是否可修改
-	"isLevelEditable": "level", //账号平台等级是否可修改
+	"avatarUrlFrom": "avatarUrl", //头像是否可修改
+	"snsNameFrom": "snsName", //账号名是否可修改
+	"snsIdFrom": "snsId", //ID是否可修改
+	"urlFrom": "url", //url是否可修改
+	"qrCodeUrlFrom": "qrCodeUrl", //二维码是否可修改
+	"followerCountFrom": "followerCount", //粉丝数是否可修改
+	"genderFrom": "gender", //性别是否可修改
+	"areaIdFrom": "areaId", //地域是否可修改
+	"levelFrom": "level", //账号平台等级是否可修改
 }

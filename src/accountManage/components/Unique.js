@@ -28,7 +28,7 @@ export const QCCodeUpload = (props) => {
   const { getFieldDecorator, formItemLayout, data: { accountInfo }, actions } = props;
   const {
     qrCodeUrl,
-    isQrCodeUrlEditable,
+    qrCodeUrlFrom,
     qrCodeUrlMaintainedTime
   } = accountInfo;
   return <div>
@@ -44,14 +44,14 @@ export const QCCodeUpload = (props) => {
         })(
           <WBYUploadFile tok={actions.getNewToken} accept={'.bmp, .gif, image/jpeg'} uploadUrl='/api/common-file/file/v1/uploadPubBucket' uploadText={'点击上传'} size={5} showUploadList={{
             showPreviewIcon: true,
-            showRemoveIcon: !(isQrCodeUrlEditable == 2)
-          }} disabled={isQrCodeUrlEditable == 2} />
+            showRemoveIcon: !(qrCodeUrlFrom == 2)
+          }} disabled={qrCodeUrlFrom == 2} />
         )}
       </div>
       <p className='input-desc-bottom'>请上传bmp, jpeg, jpg, gif;5M以内的图片</p>
     </FormItem>
     {/* 隐藏域提交 */}
-    {getFieldDecorator('base.isQrCodeUrlEditable', { initialValue: isQrCodeUrlEditable })(
+    {getFieldDecorator('base.qrCodeUrlFrom', { initialValue: qrCodeUrlFrom })(
       <input type="hidden" />)}
     {getFieldDecorator('base.qrCodeUrlMaintainedTime', { initialValue: qrCodeUrlMaintainedTime })(
       <input type="hidden" />)}
