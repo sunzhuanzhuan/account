@@ -55,9 +55,7 @@ class UpdatePage extends Component {
 		let accountId = this.accountId = qs.parse(this.props.location.search.substring(1))['account_id']
 		if (!accountId) {
 			console.error('参数错误: account_id 错误');
-			message.error('参数错误: 账号不存在或id无效', 2, () => {
-				this.props.history.push('/error');
-			});
+      this.setState({ loading: false, error: true, errorMsg: '参数错误: 账号不存在或id无效' })
 			return
 		}
 		if (qs.parse(this.props.location.search.substring(1))['addQuote']) {

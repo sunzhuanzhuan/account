@@ -117,9 +117,7 @@ class AddPage extends Component {
 		let userId = qs.parse(this.props.location.search.substring(1))['user_id']
 		if (!userId) {
 			console.error('参数错误: user_id 错误');
-			message.error('参数错误: 主账号不存在或id无效', 2, () => {
-				this.props.history.push('/error');
-			});
+      this.setState({ loading: false, error: true, errorMsg: '参数错误: 主账号不存在或id无效' })
 			return;
 		}
 		let pid = this.pid = path[path.length - 1]
