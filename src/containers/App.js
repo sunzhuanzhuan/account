@@ -80,7 +80,8 @@ class App extends Component {
 			top: '10px'
 		}
 
-		const { loginReducer: { userLoginInfo }, siderMenuAuth = [] } = this.props;
+		const { loginReducer: { userLoginInfo, UserConfigKey }, siderMenuAuth = [] } = this.props;
+    const { babysitter_host = {} } = UserConfigKey;
 		return userLoginInfo['X-Access-Token'] ? <Layout style={layStyle}>
 			<Header style={headerStyle}>
 				<span>NB</span>
@@ -90,7 +91,7 @@ class App extends Component {
 					{userLoginInfo.user_info.real_name}
 				</div>
 				<Button type="primary" className="old-platform"
-					href="http://toufang.weiboyi.com:8080/"
+					href={babysitter_host.value || "http://toufang.weiboyi.com:8080/"}
 					icon="logout"
 				>老平台</Button>
 				<Button type="primary" onClick={this.logout.bind(this)} style={btnStyle}>退出</Button>
