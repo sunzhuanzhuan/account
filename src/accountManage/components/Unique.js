@@ -178,7 +178,7 @@ export const ReferencePrice = (props) => {
         </table>
       </div>
       <p className='input-desc-bottom'>微任务,
-        WEIQ价格更新时间: <span>{weitaskFetchedTime ? moment(weitaskFetchedTime * 1000).format('YYYY-MM-DD') : '--'}</span>
+        WEIQ价格更新时间: <span>{weitaskFetchedTime ? moment(weitaskFetchedTime).format('YYYY-MM-DD') : '--'}</span>
       </p>
     </FormItem>
   </div>;
