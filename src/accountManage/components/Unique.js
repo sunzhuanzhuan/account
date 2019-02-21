@@ -147,11 +147,11 @@ export const ContentCategory = (props) => {
 export const ReferencePrice = (props) => {
   const { formItemLayout = {}, data: { accountInfo } } = props;
   const {
-    price_micro_task_tweet,
-    price_micro_task_retweet,
-    price_weiq_tweet,
-    price_weiq_retweet,
-    weitask_fetched_time
+    priceMicroTaskTweet,
+    priceMicroTaskRetweet,
+    priceWeiqTweet,
+    priceWeiqRetweet,
+    weitaskFetchedTime
   } = accountInfo;
   return <div>
     <FormItem {...formItemLayout} label='参考报价'>
@@ -160,25 +160,25 @@ export const ReferencePrice = (props) => {
           <tbody>
           <tr>
             <th>微任务原发价</th>
-            <td>{price_micro_task_tweet || '--'}</td>
+            <td>{priceMicroTaskTweet || '--'}</td>
           </tr>
           <tr>
             <th>微任务转发价</th>
-            <td>{price_micro_task_retweet || '--'}</td>
+            <td>{priceMicroTaskRetweet || '--'}</td>
           </tr>
           <tr>
             <th>WEIQ原发价</th>
-            <td>{price_weiq_tweet || '--'}</td>
+            <td>{priceWeiqTweet || '--'}</td>
           </tr>
           <tr>
             <th>WEIQ转发价</th>
-            <td>{price_weiq_retweet || '--'}</td>
+            <td>{priceWeiqRetweet || '--'}</td>
           </tr>
           </tbody>
         </table>
       </div>
       <p className='input-desc-bottom'>微任务,
-        WEIQ价格更新时间: <span>{weitask_fetched_time ? moment(weitask_fetched_time * 1000).format('YYYY-MM-DD') : '--'}</span>
+        WEIQ价格更新时间: <span>{weitaskFetchedTime ? moment(weitaskFetchedTime).format('YYYY-MM-DD') : '--'}</span>
       </p>
     </FormItem>
   </div>;

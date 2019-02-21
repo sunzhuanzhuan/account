@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
-import lazyLoadComponent from 'lazy-load-component'
+import lazyLoadComponent from '@/components/LazyLoadComponent'
 import './container.less'
 // import moment from 'moment'
 // moment.fn.toJSON = function () {return moment(this).format("YYYY-MM-DD HH:mm:ss")}
