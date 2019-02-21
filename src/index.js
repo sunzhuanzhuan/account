@@ -5,7 +5,7 @@ import store, { history } from './store';
 import 'babel-polyfill';
 import { LocaleProvider } from 'antd';
 import './index.less';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import moment from 'moment';
 import numeral from 'numeral';
 // 导入语言包
@@ -30,7 +30,7 @@ const routes = () => (
   <App history={history}>
     <Switch>
       <Route path="/account/manage" component={AccountManage} />
-      <Redirect to="/error" />
+      <Route render={() => linkTo('/error')} />
     </Switch>
   </App>
 );

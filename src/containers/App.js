@@ -22,6 +22,7 @@ class App extends Component {
 		this.setState({ collapsed });
 	}
 	logout = () => {
+    Cookies.remove('token');
 		this.props.history.push('/login');
 		this.props.actions.resetSiderAuth()
 	}
@@ -50,7 +51,7 @@ class App extends Component {
 		})
 	}
 	componentWillUnmount() {
-		Cookies.remove('token');
+		// Cookies.remove('token');
 		window.removeEventListener('resize', this.setHeight);
 	}
 	render() {
