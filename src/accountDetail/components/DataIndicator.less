@@ -1,0 +1,76 @@
+@font-color: #b0b0b0;
+.back-padding {
+    background: #f7f7f7;
+    padding: 20px 12px;
+}
+
+.data-indicator {
+    .fan-release {
+        display: flex;
+        justify-content: space-between;
+        flex: 1;
+        .fan-release-item {
+            flex: 1;
+            display: flex;
+            .back-padding;
+            margin: 2px 6px;
+        }
+        .rate-number {
+            margin-top: 20px;
+            margin-left: 10px;
+            .rate-number-item {
+                display: flex;
+                justify-content: space-between;
+                .rate-number-flex {
+                    display: flex;
+                }
+            }
+        }
+    }
+    .head-box {
+        .title {
+            color: #4c4c4c
+        }
+        .head-box-flex {
+            display: flex;
+            align-items: baseline;
+            .number {
+                font-size: 18px;
+                color: #353535
+            }
+            .unit {
+                font-size: 12px;
+            }
+        }
+    }
+    .operate-four {
+        display: flex;
+        justify-content: space-between;
+        margin: 30px 8px 10px;
+        flex: 1;
+    }
+    .operate-item {
+        flex: 1;
+        margin-left: 12px;
+        .avg-sum-flex {
+            display: flex;
+            margin-top: 10px;
+        }
+        .back-box {
+            margin-top: 4px;
+            .back-padding;
+        }
+    }
+    .operate-item:nth-of-type(1) {
+        margin-left: 0px;
+    }
+    .three-avg-box {
+        flex: 1;
+        .title {
+            color: @font-color
+        }
+        .number {
+            font-size: 16px;
+        }
+    }
+}

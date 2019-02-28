@@ -1,0 +1,109 @@
+@font-color: #b0b0b0;
+@border-left-line: 3px solid #f9fafc;
+@color-red: #ff4d4b;
+.text-color {
+    color: @font-color;
+}
+
+.fat-lable {
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    margin-top: -2px;
+    font-size-adjust: 0.58;
+}
+
+.head-info {
+    background: #fff;
+    display: flex;
+    padding-bottom: 10px;
+    .head-avatar {
+        .avatar-img {
+            width: 100px;
+            margin: 10px auto;
+        }
+        .avatar-mark {
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+    }
+    .info-right-box {
+        width: 100%;
+        margin-left: 20px;
+        .head-box {
+            .account-info {
+                display: flex;
+                align-items: flex-end;
+            }
+            .account-name {
+                font-size: 16px;
+            }
+            .account-code {
+                .text-color;
+            }
+        }
+        .info-bottom-three {
+            display: flex;
+            flex: 1;
+            margin-top: 20px;
+            .base-info {
+                flex: 4;
+                .base-info-flex {
+                    height: 30px;
+                    display: flex;
+                    .title {
+                        .text-color;
+                    }
+                }
+            }
+            .type-info {
+                border-left: @border-left-line;
+                border-right: @border-left-line;
+                flex: 3;
+                display: flex;
+                justify-content: space-around;
+                .type-info-flex {
+                    height: 70px;
+                }
+                .title {
+                    margin-top: 4px;
+                    .text-color;
+                }
+                .content {
+                    color: #434343;
+                    font-size: 16px;
+                    margin: 3px 0px;
+                }
+                .last {
+                    .text-color;
+                    font-size: 12px;
+                }
+            }
+            .release-info {
+                flex: 3;
+                padding: 0px 20px;
+                .release-info-box {
+                    display: flex;
+                    justify-content: space-between;
+                    background: #f7f7f7;
+                }
+                .release-info-three {
+                    padding: 10px;
+                    .title {
+                        .text-color;
+                    }
+                    .content {
+                        margin: 3px 0px;
+                        color: @color-red;
+                        font-size: 16px
+                    }
+                    .last {
+                        .text-color;
+                        font-size: 12px;
+                    }
+                }
+            }
+        }
+    }
+}
