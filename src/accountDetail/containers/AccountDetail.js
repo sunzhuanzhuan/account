@@ -1,5 +1,16 @@
 import React, { Component } from 'react'
-import { HeadInfo, DataIndicator, Composite } from "../components";
+import { HeadInfo, DataIndicator, Composite, HistoricalAD } from "../components";
+// import CompositeRadar from "../components/chart/CompositeRadar";
+// import CurveLine from "../components/chart/CurveLine";
+// import DataBox from "../components/chart/DataBox";
+// import HistogramLine from "../components/chart/HistogramLine";
+// import Landscape from "../components/chart/Landscape";
+// import PieChart from "../components/chart/PieChart";
+import ChinaMap from "../components/chart/ChinaMap";
+
+
+
+
 import './AccountDetail.less'
 class AccountDetail extends Component {
   constructor(props) {
@@ -18,6 +29,8 @@ class AccountDetail extends Component {
             <Composite />
           </div>
         </div>
+        <HistoricalAD />
+        <ChinaMap />
       </div>
     );
   }
