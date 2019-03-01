@@ -5,7 +5,7 @@ import store, { history } from './store';
 import 'babel-polyfill';
 import { LocaleProvider } from 'antd';
 import './index.less';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import numeral from 'numeral';
 // 导入语言包
@@ -40,6 +40,10 @@ render(
     <Provider store={store}>
       <Router>
         <Switch>
+          {
+            process.env.NODE_ENV === 'development' ?
+              <Route exact path="/" render={() => <Redirect to="/account/manage" />} /> : null
+          }
           <Route path="/account" render={routes} />
           <Route render={redirectToOtherProjects} />
         </Switch>
