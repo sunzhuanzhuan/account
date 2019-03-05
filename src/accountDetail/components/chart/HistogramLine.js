@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { g2Tooltip, legendPosition } from "./config";
 import {
   Chart,
   Geom,
@@ -44,10 +45,14 @@ class HistogramLine extends Component {
       },
     };
     let chartIns = null;
+    const {
+      height = 400
+    } = this.props
     return (
+
       <div>
         <Chart
-          height={window.innerHeight}
+          height={height}
           scale={scale}
           forceFit
           data={data}
@@ -56,6 +61,7 @@ class HistogramLine extends Component {
           }}
         >
           <Legend
+            {...legendPosition}
             custom={true}
             allowAllCanceled={true}
             items={[
@@ -105,7 +111,7 @@ class HistogramLine extends Component {
               }
             }}
           />
-          <Tooltip name='' />
+          <Tooltip name='' g2-tooltip={g2Tooltip} />
           <Geom type="interval" position="time*waiting" color="#39a0ff" />
           <Geom
             type="line"

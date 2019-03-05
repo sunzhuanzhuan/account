@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import UpDownPercentage from "../base/UpDownPercentage";
 import './DataIndicator.less'
 import { Icon } from 'antd';
+import Composite from "./Composite";
 class DataIndicator extends Component {
   constructor(props) {
     super(props);
@@ -11,23 +12,30 @@ class DataIndicator extends Component {
     return (
       <div className='data-indicator'>
         <div className='title-big'>数据指标</div>
-        <div className='fan-release'>
-          <div className='fan-release-item'>
-            <HeadBox title={'总粉丝数'} number={123123} unit={'万'} percent={33} type={'up'} />
-            <ThreeBox title='粉丝互动率' number={'57%'} percent={9} type='up' isBig={true} />
-            <ThreeBox title='粉丝互动数' number={'57%'} percent={9} type='up' isBig={true} />
+        <div className='content' >
+          <div className='left-indicator'>
+            <div className='fan-release'>
+              <div className='fan-release-item'>
+                <HeadBox title={'总粉丝数'} number={123123} unit={'万'} percent={33} type={'up'} />
+                <ThreeBox title='粉丝互动率' number={'57%'} percent={9} type='up' isBig={true} />
+                <ThreeBox title='粉丝互动数' number={'57%'} percent={9} type='up' isBig={true} />
+              </div>
+              <div className='fan-release-item'>
+                <HeadBox title={'总粉丝数'} number={123123} unit={'万'} percent={33} type={'up'} />
+                <ThreeBox title='90天发布数' number={'30条'} notPercent={true} />
+                <ThreeBox title='28天粉丝增长率' number={'47%'} notPercent={true} />
+              </div>
+            </div>
+            <div className='operate-four'>
+              <OperateItem typeText='点赞' numberAvg='111' percentAvg='12' typeAvg='234' sumAvgNumber='123' sumAvgPercent='123' sumAvgType='123' numberSum='123' percentSum='123' typeSum="123" />
+              <OperateItem typeText='转发' numberAvg='111' percentAvg='12' typeAvg='234' sumAvgNumber='123' sumAvgPercent='123' sumAvgType='123' numberSum='123' percentSum='123' typeSum="123" />
+              <OperateItem typeText='评论' numberAvg='111' percentAvg='12' typeAvg='234' sumAvgNumber='123' sumAvgPercent='123' sumAvgType='123' numberSum='123' percentSum='123' typeSum="123" />
+              <OperateItem typeText='播放' numberAvg='111' percentAvg='12' typeAvg='234' sumAvgNumber='123' sumAvgPercent='123' sumAvgType='123' numberSum='123' percentSum='123' typeSum="123" />
+            </div>
           </div>
-          <div className='fan-release-item'>
-            <HeadBox title={'总粉丝数'} number={123123} unit={'万'} percent={33} type={'up'} />
-            <ThreeBox title='90天发布数' number={'30条'} notPercent={true} />
-            <ThreeBox title='28天粉丝增长率' number={'47%'} notPercent={true} />
+          <div className='right-composite'>
+            <Composite />
           </div>
-        </div>
-        <div className='operate-four'>
-          <OperateItem typeText='点赞' numberAvg='111' percentAvg='12' typeAvg='234' sumAvgNumber='123' sumAvgPercent='123' sumAvgType='123' numberSum='123' percentSum='123' typeSum="123" />
-          <OperateItem typeText='转发' numberAvg='111' percentAvg='12' typeAvg='234' sumAvgNumber='123' sumAvgPercent='123' sumAvgType='123' numberSum='123' percentSum='123' typeSum="123" />
-          <OperateItem typeText='评论' numberAvg='111' percentAvg='12' typeAvg='234' sumAvgNumber='123' sumAvgPercent='123' sumAvgType='123' numberSum='123' percentSum='123' typeSum="123" />
-          <OperateItem typeText='播放' numberAvg='111' percentAvg='12' typeAvg='234' sumAvgNumber='123' sumAvgPercent='123' sumAvgType='123' numberSum='123' percentSum='123' typeSum="123" />
         </div>
       </div>
     );

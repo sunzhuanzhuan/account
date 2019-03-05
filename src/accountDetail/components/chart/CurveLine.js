@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import { g2Tooltip, legendPosition } from "./config";
 import {
   Chart,
   Geom,
@@ -61,18 +61,22 @@ class CurveLine extends Component {
     };
     return (
       <div>
-        <Chart height={400} data={dv} scale={cols} forceFit>
-          <Legend />
+        <Chart height={400} data={dv} scale={cols}
+          padding={[50, 90]}
+          forceFit>
+          <Legend marker='circle' {...legendPosition} />
           <Axis name="month" />
           <Axis
             name="temperature"
-            label={{
-              formatter: val => `${val}°C`
-            }}
+            visible={false}
+          // label={{
+          //   formatter: val => `${val}°C`
+          // }}
           />
           <Tooltip
+            g2-tooltip={g2Tooltip}
             crosshairs={{
-              type: "y"
+              type: "y",//rect: 矩形框,x: 水平辅助线,y: 垂直辅助线,cross: 十字辅助线。
             }}
           />
           <Geom
@@ -82,7 +86,7 @@ class CurveLine extends Component {
             color={"city"}
             shape={"smooth"}
           />
-          <Geom
+          {/* <Geom
             type="point"
             position="month*temperature"
             size={4}
@@ -92,7 +96,7 @@ class CurveLine extends Component {
               stroke: "#fff",
               lineWidth: 1
             }}
-          />
+          /> */}
         </Chart>
       </div>
     );

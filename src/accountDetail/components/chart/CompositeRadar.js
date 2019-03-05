@@ -9,6 +9,7 @@ import {
 } from "bizcharts";
 import DataSet from "@antv/data-set";
 import './CompositeRadar.less'
+import { g2Tooltip, legendPosition } from "./config";
 class CompositeRadar extends Component {
   constructor(props) {
     super(props);
@@ -20,7 +21,11 @@ class CompositeRadar extends Component {
       {
         item: "内容传播指数",
         a: 70,
-        b: 30
+        b: 30,
+        c: '服务指数',
+        d: 90,
+        e: 85,
+        f:'11%',
       },
       {
         item: "SNBT指数",
@@ -55,7 +60,11 @@ class CompositeRadar extends Component {
       // 展开字段集
       key: "user",
       // key字段
-      value: "score" // value字段
+      value: "score", // value字段
+      callback: obj => {
+        obj.range = [obj.a, obj.b, obj.c, obj.d, obj.e];
+        return obj;
+      }
     });
     const scale = {
       score: {
@@ -64,15 +73,11 @@ class CompositeRadar extends Component {
       },
       user: { formatter: d => ({ a: '该账号', b: '美妆分类平均值' }[d]) }
     };
-    const tooltipCfg = {
-      custom: true,
-      containerTpl: '<div class="ac-tooltip" style="position:absolute;visibility: hidden;background: rgba(255, 44, 52, 0.5);color: #fff;border-radius: 50%;padding: 10px 20px;text-align: center;"><h4 class="ac-title" style="margin: 0;padding: 5px 0;border-bottom: 1px solid #fff;"></h4><table class="ac-list custom-table" style="padding: 5px 0;"></table></div>',
-      itemTpl: '<tr><td style="display:none">{index}</td><td style="color:{color}">{b}</td><td>{value}k</td></tr>'
-    };
+   
     return (
       <div>
         <Chart
-          height={300}
+          height={240}
           data={dv}
           padding={[50, 10, 20, 20]}
           scale={scale}
@@ -91,8 +96,17 @@ class CompositeRadar extends Component {
             }}
           />
           <Tooltip
-            useHtml
-            {...tooltipCfg}
+            g2-tooltip={g2Tooltip}
+            crosshairs={{
+              type: "rect",
+            }}
+            itemTpl="<li data-index={index} 
+            style=&quot;margin-bottom:4px;&quot;>{a}<br/>
+             <span style=&quot;padding-left: 16px&quot;>{c}：{b}</span><br/>
+             <span style=&quot;padding-left: 16px&quot;>上四分位数：{c}</span><br/>
+             <span style=&quot;padding-left: 16px&quot;>中位数：{d}</span><br/>
+             <span style=&quot;padding-left: 16px&quot;>下四分位数：{e}</span><br/>
+             <span style=&quot;padding-left: 16px&quot;>最小值：{low}</span><br/></li>"
           />
           <Axis
             name="score"

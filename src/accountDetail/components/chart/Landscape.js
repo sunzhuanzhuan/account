@@ -44,7 +44,7 @@ class Landscape extends React.Component {
     });
     return (
       <div>
-        <Chart height={400} data={dv} forceFit>
+        <Chart height={300} data={dv} forceFit>
           <Coord transpose />
           <Axis
             name="country"

@@ -1,0 +1,33 @@
+@import '../index.less';
+.new-video {
+    .title-big {
+        @color333-font20();
+    }
+    .video-list {
+        background: #fff;
+        @flex-between();
+        @margin-left-right-10();
+        .video-item {
+            padding: 30px 15px 0px;
+            flex: 1;
+            min-width: 240px;
+            .img,
+            .img>img {
+                height: 139px;
+                width: 100%;
+            }
+            .title {
+                @nowrap-hidden-ellipsis();
+                @color333-font16();
+            }
+            .last-box {
+                @flex-between();
+                align-items: center;
+            }
+            .number {}
+            .date-time {
+                @color999-font12();
+            }
+        }
+    }
+}

@@ -1,8 +1,19 @@
 @border-left-line: 1px solid #F5F5F5;
+@back-color: #F9FAFB;
+@line-width: 10px;
+.font-color(@color: #999, @font-size: 12px) {
+    color: @color;
+    font-size: @font-size;
+}
+
 @nowrap-hidden-ellipsis: {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+@margin-left-right-10: {
+    margin: 0px @line-width;
 }
 
 @base-font-16: {
@@ -14,23 +25,19 @@
 }
 
 @color999-font13: {
-    color: #999;
-    font-size: 13px;
+    .font-color(#999, 13px);
 }
 
 @color999-font12: {
-    @color999-font13();
-    font-size: 12px;
+    .font-color(#999, 12px);
 }
 
 @color333-font16: {
-    color: #333;
-    font-size: 16px;
+    .font-color(#333, 16px);
 }
 
 @color333-font13: {
-    color: #333;
-    font-size: 13px;
+    .font-color(#333, 13px);
 }
 
 @flex-between: {
@@ -44,8 +51,6 @@
 }
 
 @color333-font20: {
-    color: #333;
-    font-size: 20px;
-    margin-bottom: 8px;
-    margin-left: 20px;
+    .font-color(#333, 20px);
+    margin: 40px 0px 8px 20px;
 }

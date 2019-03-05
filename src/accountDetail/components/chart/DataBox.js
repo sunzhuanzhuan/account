@@ -6,6 +6,7 @@ import {
   Tooltip,
 } from "bizcharts";
 import DataSet from "@antv/data-set";
+import { g2Tooltip, } from "./config";
 
 class DataBox extends Component {
   render() {
@@ -92,7 +93,7 @@ class DataBox extends Component {
     return (
       <div>
         <Chart
-          height={window.innerHeight}
+          height={400}
           data={dv}
           scale={cols}
           padding={[20, 120, 95]}
@@ -102,6 +103,7 @@ class DataBox extends Component {
           <Axis name="range" />
           <Tooltip
             showTitle={false}
+            g2-tooltip={g2Tooltip}
             crosshairs={{
               type: "rect",
               style: {

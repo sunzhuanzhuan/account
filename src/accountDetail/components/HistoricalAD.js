@@ -2,14 +2,14 @@
  * @Author: wangxinyue 
  * @Date: 2019-02-28 17:43:12 
  * @Last Modified by: wangxinyue
- * @Last Modified time: 2019-03-05 10:24:18
+ * @Last Modified time: 2019-03-05 18:34:42
  * 历史广告案例
  */
 
 import React, { Component } from 'react'
 import TabArr from "../base/TabArr";
 import "./HistoricalAD.less"
-import { Icon, Divider } from 'antd';
+import DividerArr from "../base/DividerArr";
 class HistoricalAD extends Component {
   constructor(props) {
     super(props);
@@ -73,9 +73,9 @@ class HistoricalAD extends Component {
                   {one.title}
                 </div>
                 <DividerArr list={[
-                  { icon: 'd', number: one.a },
-                  { icon: 'd', number: one.b },
-                  { icon: 'd', number: one.c }]} />
+                  { icon: 'like-gray', number: one.a },
+                  { icon: 'comment-gray', number: one.b },
+                  { icon: 'share', number: one.c }]} />
               </div>
               <div className='info-type-flex'>
                 <TwoBox type='服务行业' value={one.d} />
@@ -94,14 +94,5 @@ const TwoBox = ({ type, value, marginLeft }) => {
     <div className='value'>{value}</div>
   </div>
 }
-const DividerArr = ({ list }) => {
-  return <div className='divider-arr'>
-    {list.map((one, index) => <div key={index} className='dicider-text'>
-      {index == 0 ? null : <Divider type="vertical" style={{ marginTop: 14 }} />}<div className='text'>
-        <div>{one.icon}</div>
-        <div>{one.number}</div>
-      </div>
-    </div>)}
-  </div>
-}
+
 export default HistoricalAD;

@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import TitleAndDecide from "../base/TitleAndDecide";
 import "./Composite.less"
 import CompositeRadar from "./chart/CompositeRadar";
 class Composite extends Component {

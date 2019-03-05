@@ -9,6 +9,7 @@ import {
   Legend,
 } from "bizcharts";
 import DataSet from "@antv/data-set";
+import { g2Tooltip, legendPosition } from "./config";
 
 class PieChart extends Component {
   render() {
@@ -20,7 +21,7 @@ class PieChart extends Component {
       },
       {
         item: "安卓",
-        count: 21
+        count: 60
       },
 
     ];
@@ -45,20 +46,19 @@ class PieChart extends Component {
     return (
       <div>
         <Chart
-          height={window.innerHeight}
+          height={300}
           data={dv}
           scale={cols}
-          padding={[80, 100, 80, 80]}
+          padding={[30]}
           forceFit
         >
-          <Coord type="theta" radius={0.75} />
+          <Coord type="theta" radius={0.8} />
           <Axis name="percent" />
-          <Legend
-            position="right"
+          <Legend position='right'
             offsetY={-window.innerHeight / 2 + 120}
-            offsetX={-100}
-          />
+            offsetX={-70} />
           <Tooltip
+            g2-tooltip={g2Tooltip}
             showTitle={false}
             itemTpl="<li><span style=&quot;background-color:{color};&quot; class=&quot;g2-tooltip-marker&quot;></span>{name}: {value}</li>"
           />

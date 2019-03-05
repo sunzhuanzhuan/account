@@ -9,16 +9,32 @@
 }
 
 .data-indicator {
-    margin-top: 40px;
+    background: @back-color;
     .title-big {
         @color333-font20();
+    }
+    .content {
+        display: flex;
+        flex: 1;
+        .left-indicator {
+            background: #fff;
+            padding: 10px 10px 10px;
+            flex: 2;
+            margin-left: 10px;
+        }
+        .right-composite {
+            @margin-left-right-10();
+            margin-left: 40px;
+            background: #fff;
+            flex: 1;
+        }
     }
     .fan-release {
         @flex-between();
         flex: 1;
         .fan-release-item {
-            flex: 1;
             @flex-between();
+            flex: 1;
             align-items: flex-end;
             .back-padding;
             margin: 2px 6px;

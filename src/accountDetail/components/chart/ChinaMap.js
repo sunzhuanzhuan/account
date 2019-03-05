@@ -134,7 +134,7 @@ class MapChart extends Component {
     };
 
     return (
-      <Chart height={650} width={800} scale={scale} data={data} padding={0}>
+      <Chart height={500} width={645} scale={scale} data={data} padding={[0, 0, 0, 90]}>
         <Geom type="polygon" position="longitude*latitude"
           color={['valueNum', ['#31c5f8', '#61d3f8', '#89dcfd', '#b0e8f8', '#d8f3ff']]}
           tooltip={['name*valueNum', (name, valueNum) => {
