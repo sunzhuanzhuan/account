@@ -1,0 +1,51 @@
+@border-left-line: 1px solid #F5F5F5;
+@nowrap-hidden-ellipsis: {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@base-font-16: {
+    width: 201px;
+    height: 22px;
+    @color333-font16();
+    font-weight: 600;
+    line-height: 22px;
+}
+
+@color999-font13: {
+    color: #999;
+    font-size: 13px;
+}
+
+@color999-font12: {
+    @color999-font13();
+    font-size: 12px;
+}
+
+@color333-font16: {
+    color: #333;
+    font-size: 16px;
+}
+
+@color333-font13: {
+    color: #333;
+    font-size: 13px;
+}
+
+@flex-between: {
+    display: flex;
+    justify-content: space-between;
+}
+
+@flex-between-column: {
+    @flex-between();
+    flex-direction: column;
+}
+
+@color333-font20: {
+    color: #333;
+    font-size: 20px;
+    margin-bottom: 8px;
+    margin-left: 20px;
+}

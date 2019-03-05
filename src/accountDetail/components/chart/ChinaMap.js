@@ -16,12 +16,12 @@ const constructGeoJSON = (features) => {
   return features;
 };
 var dataChina = [
-  { name: "北京市", valueNum: 177 },
+  { name: "北京市", valueNum: 3 },
   { name: "天津市", valueNum: 42 },
-  { name: "河北", valueNum: 102 },
+  { name: "河北", valueNum: 55 },
   { name: "山西", valueNum: 81 },
   { name: "内蒙古", valueNum: 47 },
-  { name: "辽宁", valueNum: 67 },
+  { name: "辽宁", valueNum: 899 },
   { name: "吉林", valueNum: 82 },
   { name: "黑龙江", valueNum: 66 },
   { name: "上海", valueNum: 24 },
@@ -104,19 +104,13 @@ class MapChart extends Component {
       const name = one.properties.name
       dataValue.map((item) => {
         if (name.includes(item.name)) {
-          one.properties.valueNum = item.valueNum
+          one.valueNum = item.valueNum
         }
       })
     })
-    console.log('===========geoData=========================');
-    console.log(geoData);
-    console.log('====================================');
     const geoDv = new DataSet.View().source(geoData, {
       type: 'GeoJSON',
     });
-    console.log('===========geoDv=========================');
-    console.log(geoDv);
-    console.log('====================================');
     return geoDv;
   }
 
@@ -142,7 +136,7 @@ class MapChart extends Component {
     return (
       <Chart height={650} width={800} scale={scale} data={data} padding={0}>
         <Geom type="polygon" position="longitude*latitude"
-          color={['valueNum', (v) => v > 10 ? '#d9f4ff' : v > 30 ? '#87ddfc' : '#B0e9fc']}
+          color={['valueNum', ['#31c5f8', '#61d3f8', '#89dcfd', '#b0e8f8', '#d8f3ff']]}
           tooltip={['name*valueNum', (name, valueNum) => {
             return {
               name: name,

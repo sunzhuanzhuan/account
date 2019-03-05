@@ -11,10 +11,11 @@ class Composite extends Component {
     return (
       <div className='composite-exponent'>
         <div className='head-center'>
-          <TitleAndDecide text='综合指数' />
+          <div className='text'>综合指数</div>
           <div className='score'>85</div>
           <span className='lable'>美妆第一名</span>
         </div>
+
         <div>
           <CompositeRadar />
         </div>

@@ -8,6 +8,7 @@ import {
   Legend,
 } from "bizcharts";
 import DataSet from "@antv/data-set";
+import './CompositeRadar.less'
 class CompositeRadar extends Component {
   constructor(props) {
     super(props);
@@ -63,12 +64,17 @@ class CompositeRadar extends Component {
       },
       user: { formatter: d => ({ a: '该账号', b: '美妆分类平均值' }[d]) }
     };
+    const tooltipCfg = {
+      custom: true,
+      containerTpl: '<div class="ac-tooltip" style="position:absolute;visibility: hidden;background: rgba(255, 44, 52, 0.5);color: #fff;border-radius: 50%;padding: 10px 20px;text-align: center;"><h4 class="ac-title" style="margin: 0;padding: 5px 0;border-bottom: 1px solid #fff;"></h4><table class="ac-list custom-table" style="padding: 5px 0;"></table></div>',
+      itemTpl: '<tr><td style="display:none">{index}</td><td style="color:{color}">{b}</td><td>{value}k</td></tr>'
+    };
     return (
       <div>
         <Chart
-          height={200}
+          height={300}
           data={dv}
-          padding={[60, 10, 20, 20]}
+          padding={[50, 10, 20, 20]}
           scale={scale}
           forceFit
         >
@@ -84,7 +90,10 @@ class CompositeRadar extends Component {
               hideFirstLine: false
             }}
           />
-          <Tooltip />
+          <Tooltip
+            useHtml
+            {...tooltipCfg}
+          />
           <Axis
             name="score"
             line={null}

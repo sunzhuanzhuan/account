@@ -33,7 +33,7 @@ const routes = () => (
     <Switch>
       <Route path="/account/manage" component={AccountManage} />
       <Route path="/account/view" component={AccountDetail} />
-      <Redirect to="/error" />
+      <Route render={() => linkTo('/error')} />
     </Switch>
   </App>
 );
@@ -43,6 +43,10 @@ render(
     <Provider store={store}>
       <Router>
         <Switch>
+          {
+            process.env.NODE_ENV === 'development' ?
+              <Route exact path="/" render={() => <Redirect to="/account/view/detail" />} /> : null
+          }
           <Route path="/account" render={routes} />
           <Route render={redirectToOtherProjects} />
         </Switch>

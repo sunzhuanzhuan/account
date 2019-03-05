@@ -15,14 +15,14 @@ class HeadInfo extends Component {
       <div className="head-info">
         <div className='head-avatar'>
           <div className="avatar-img">
-            <Avatar size={100} src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />
+            <Avatar size={60} src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />
           </div>
           <div className="avatar-mark">抖音排行第一</div>
         </div>
         <div className="info-right-box">
           <div className='head-box'>
             <div className='account-info' >
-              <div className='account-name'>微微一笑很倾城</div>
+              <div className='account-name'>微微一笑很倾城微微一笑很倾城微微一笑很倾城</div>
               <LookIndex />
               <BloggerInfo />
             </div>
@@ -30,14 +30,14 @@ class HeadInfo extends Component {
           </div>
           <div className='info-bottom-three'>
             <div className='base-info'>
-              <OneLine title='账号标签' content={<div>
-                <FatLable color='#fef0ef' text='胖标签' />
-              </div>} />
-              <OneLine title='功能标签' content={<div>
-                <FatLable color='#baf4e6' text='直播' />
-              </div>} />
-              <OneLine title='受众信息' content={<div>sdasd</div>} />
-              <OneLine title='简介' content={<div>asdas</div>} />
+              <OneLine title='账号标签' content={
+                <FatLable backColor='#F3F8FD' color='#78A3CE' list={['胖标签', '胖标签']} />
+              } />
+              <OneLine title='功能标签' content={
+                <FatLable backColor='#FFEBEA' color='#FE6A60' list={['直播', '直播', '直播']} />
+              } />
+              <OneLine title='受众信息' content={<div className='content-font'>sdasd</div>} />
+              <OneLine title='简介' content={<div className='content-font'>asdas</div>} />
             </div>
             <div className='type-info'>
               <div className='type-info-row' >
@@ -56,8 +56,8 @@ class HeadInfo extends Component {
                 <OneRelease title='发布' content='￥1231' last="asda/asdasd" />
                 <OneRelease title='原创+发布' content='￥1231' last="asda/asdasd" />
               </div>
-              <Button style={{ width: '100%', marginTop: 30 }}>加入选号车</Button>
-              <div style={{ textAlign: "right", marginTop: 8 }}>收藏（100收藏）</div>
+              <Button style={{ width: '100%', marginTop: 30 }} type='primary'>加入选号车</Button>
+              <div style={{ textAlign: "center", marginTop: 12 }}>加入收藏<span className='collect'>（100人已收藏）</span></div>
             </div>
 
 
@@ -77,8 +77,10 @@ const OneLine = ({ title, content, last }) => {
 const OneType = ({ title, content, last, color }) => {
   return <div className='type-info-flex'>
     <div className='title'>{title}</div>
-    <div className='content' style={{ color: color }}>{content}</div>
-    <div className='last'>{last}</div>
+    <div className='second-row-flex'>
+      <div className='content' style={{ color: color }}>{content}</div>
+      <div className='last'>{last}</div>
+    </div>
   </div>
 }
 const OneRelease = ({ title, content, last }) => {
@@ -88,7 +90,12 @@ const OneRelease = ({ title, content, last }) => {
     <div className='last'>{last}</div>
   </div>
 }
-const FatLable = ({ color, text }) => {
-  return <div className='fat-lable' style={{ background: color }}>{text}</div>
+const FatLable = ({ backColor, color, list }) => {
+  return <div className='fat-lable-flex'>
+    {list.map((one, index) => <div
+      className='fat-lable'
+      style={{ marginLeft: index == 0 ? 0 : '', background: backColor, color: color }}
+      key={index}>{one}</div>)}
+  </div>
 }
 export default HeadInfo;

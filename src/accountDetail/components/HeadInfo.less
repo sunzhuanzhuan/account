@@ -1,16 +1,15 @@
-@font-color: #b0b0b0;
-@border-left-line: 3px solid #f9fafc;
+@import "../index.less";
 @color-red: #ff4d4b;
-.text-color {
-    color: @font-color;
-}
-
-.fat-lable {
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-size: 12px;
-    margin-top: -2px;
-    font-size-adjust: 0.58;
+.fat-lable-flex {
+    display: flex;
+    .fat-lable {
+        height: 20px;
+        margin-left: 12px;
+        line-height: 20px;
+        font-size: 14px;
+        padding: 0px 8px;
+        border-radius: 2px;
+    }
 }
 
 .head-info {
@@ -19,13 +18,19 @@
     padding-bottom: 10px;
     .head-avatar {
         .avatar-img {
-            width: 100px;
             margin: 10px auto;
+            text-align: center;
         }
         .avatar-mark {
-            border-radius: 10px;
+            height: 20px;
+            padding: 0px 8px;
+            line-height: 20px;
+            color: #fff;
             text-align: center;
-            border: 1px solid #ccc;
+            white-space: nowrap;
+            background: linear-gradient(360deg, rgba(112, 112, 112, 1) 0%, rgba(25, 11, 25, 1) 100%);
+            border-radius: 10px;
+            font-size: 12px;
         }
     }
     .info-right-box {
@@ -37,70 +42,84 @@
                 align-items: flex-end;
             }
             .account-name {
-                font-size: 16px;
+                @base-font-16();
+                @nowrap-hidden-ellipsis();
             }
             .account-code {
-                .text-color;
+                @color999-font12();
             }
         }
         .info-bottom-three {
             display: flex;
             flex: 1;
-            margin-top: 20px;
             .base-info {
-                flex: 4;
+                flex-grow: 2;
                 .base-info-flex {
-                    height: 30px;
+                    height: 20px;
+                    margin-top: 19px;
                     display: flex;
                     .title {
-                        .text-color;
+                        line-height: 20px;
+                        width: 80px;
+                        @color999-font13();
+                        text-align: right;
                     }
+                }
+                .content-font {
+                    font-size: 14px;
+                    color: #333;
                 }
             }
             .type-info {
+                flex-grow: 1;
                 border-left: @border-left-line;
                 border-right: @border-left-line;
-                flex: 3;
                 display: flex;
+                min-width: 260px;
+                margin-left: auto;
                 justify-content: space-around;
                 .type-info-flex {
                     height: 70px;
                 }
                 .title {
-                    margin-top: 4px;
-                    .text-color;
+                    @color999-font13();
+                }
+                .second-row-flex {
+                    display: flex;
+                    align-items: flex-end;
+                    margin: 4px 0px 20px;
                 }
                 .content {
-                    color: #434343;
-                    font-size: 16px;
-                    margin: 3px 0px;
+                    @color333-font16();
                 }
                 .last {
-                    .text-color;
-                    font-size: 12px;
+                    @color999-font12();
+                    margin-left: 4px;
                 }
             }
             .release-info {
-                flex: 3;
+                flex-grow: 1;
+                min-width: 230px;
                 padding: 0px 20px;
                 .release-info-box {
                     display: flex;
                     justify-content: space-between;
-                    background: #f7f7f7;
+                }
+                .collect {
+                    @color999-font12();
                 }
                 .release-info-three {
+                    border-bottom: @border-left-line;
                     padding: 10px;
                     .title {
-                        .text-color;
+                        @color999-font13();
                     }
                     .content {
-                        margin: 3px 0px;
-                        color: @color-red;
-                        font-size: 16px
+                        color: #F4655B;
+                        font-size: 22px;
                     }
                     .last {
-                        .text-color;
-                        font-size: 12px;
+                        @color999-font12();
                     }
                 }
             }
