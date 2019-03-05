@@ -142,7 +142,7 @@ export const priceInfo = handleActions({
 export const priceTypeList = handleActions({
 	[combineActions(getSkuTypeList_success)]: (state, action) => {
 		return [
-			...state,
+			// ...state,
 			...action.payload.data
 		]
 	}
