@@ -1,11 +1,18 @@
 import React, { Component } from 'react'
 import { HeadInfo, DataIndicator, HistoricalAD, ContentData, AudienceAttribute, NewVideo } from "../components";
-
 import './AccountDetail.less'
 class AccountDetail extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isShowBaseInfo: false
+    };
+  }
+  componentDidMount = () => {
+
+  }
+
+  componentWillUnmount() {
   }
   render() {
     return (
