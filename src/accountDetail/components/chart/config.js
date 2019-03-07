@@ -1,6 +1,6 @@
 export const g2Tooltip = {
-  backgroundColor: '#000',
-  opacity: 0.75,
+  backgroundColor: '#181818',
+  opacity: 0.9,
   color: '#fff',
   fontSize: 14
 }

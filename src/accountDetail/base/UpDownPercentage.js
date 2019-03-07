@@ -2,7 +2,7 @@ import React from 'react'
 import { Icon } from 'antd';
 const UpDownPercentage = ({ type, percent, isBackColor = false }) => {
   const isBackColorProps = isBackColor ? {
-    background: '#FF4848',
+    background: type=='up'?'#FF4848':'#0CAD67',
     color: '#fff',
     fontSize: 12,
   

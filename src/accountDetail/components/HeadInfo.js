@@ -25,7 +25,7 @@ class HeadInfo extends Component {
             <div className='account-info' >
               <div className='account-name'>微微一笑很倾城微微一笑很倾城微微一笑很倾城</div><PopoverFormat text='等级' content='抖音音乐人' />
               <LookIndex />
-              <a style={{ marginLeft: 20 }} onClick={() => setShowModal(true, { content: <BloggerInfo />, title: '博主信息', width: 700 })}>
+              <a style={{ marginLeft: 20,color:' #1990FF'}}  onClick={() => setShowModal(true, { content: <BloggerInfo />, title: '博主信息', width: 700 })}>
                 <Icon type='user' />查看博主信息</a>
             </div>
             <div className='account-code'>抖音号：123</div>

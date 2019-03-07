@@ -26,7 +26,7 @@ class CurveLine extends Component {
       },
       {
         month: "10.29-11.04",
-        fansNum: 9.5,
+        fansNum: 22,
         numberAdd: 18.2,
         upNumber: 5.7
       },

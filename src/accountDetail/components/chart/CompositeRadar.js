@@ -23,11 +23,11 @@ class CompositeRadar extends Component {
         a: 70,
         b: 30,
         c: '服务指数',
-        d: [[
+        d: [
           { name: '哈哈哈', value: 'ssss', value2: '333', up: 20 },
-          { name: '哈哈哈', value: 'ssss', value2: '333', up: -20 },
-          { name: '哈哈哈', value: 'ssss', value2: '333', up: 30 },
-          { name: '哈哈哈', value: 'ssss', value2: '333', up: -32 }]]
+          { name: '服务', value: 'ssss', value2: '333', up: 20 },
+          { name: '订单打分', value: 'ssss', value2: '333', up: 30 },
+          { name: '拉黑比例', value: 'ssss', value2: '333', up: 32 }]
       },
       {
         item: "SNBT指数",
@@ -36,9 +36,9 @@ class CompositeRadar extends Component {
         c: '服务指数',
         d: [
           { name: '哈哈哈', value: 'ssss', value2: '333', up: 20 },
-          { name: '哈哈哈', value: 'ssss', value2: '333', up: -20 },
+          { name: '哈哈哈', value: 'ssss', value2: '333', up: '' },
           { name: '哈哈哈', value: 'ssss', value2: '333', up: 30 },
-          { name: '哈哈哈', value: 'ssss', value2: '333', up: -32 }]
+          { name: '哈哈哈', value: 'ssss', value2: '333', up: '' }]
       },
       {
         item: "黑马指数",
@@ -148,26 +148,24 @@ class CompositeRadar extends Component {
             useHtml={true}
             htmlContent={function (title, items) {
               const { d = [] } = items[0]
-              const content = `<div class='custom-tooltip'>
-              <div class='custom-tooltip-head'>
-                 <div class='custom-tooltip-head-title-first' >该账号</div>
-                 <div class='custom-tooltip-head-title'>平均值</div>
-                 <div class='custom-tooltip-head-title' style="width:80px">与同分类相比</div>
-              </div>
-              <div class='custom-tooltip-head'>
-              ${d.map((one, index) => {
-                return `<div style="fontSize: ${index == 0 ? 13 : 12}px;" class='data-line'key={index}>
-                  <div style="color: ${index == 0 ? '#fff' : ''}" class='data-item-first'>
-                    ${one.name} <span style="color: #fff">${one.value}</span>
-                  </div>
-                  <div style="color: ${index == 0 ? '#fff' : ''}" class='data-item'>${one.value2}</div>
-                  <div style="color: ${one.up > 0 ? '#EF554A' : '#7ED321'}" class='data-item'>
-                    ${one.up}</div>
-                </div>`
-              })}
-               </div>
-              </div>`
-              return content
+              return `<div class='custom-tooltip'>
+              <div class='custom-tooltip-head-box'>
+                <div class='custom-tooltip-head-title-first' >该账号</div>
+                <div class='custom-tooltip-head-title'>平均值</div>
+                <div class='custom-tooltip-head-title' style="width:80px">与同分类相比</div>
+             </div>
+             <div class='custom-tooltip-head'>
+              ${d.map((one, index) => `<div  class='${index == 0 ? 'data-line-first' : 'data-line'}' key={index}>
+                           <div class="${index == 0 ? 'data-item-first-border' : 'data-item-first'}">
+                               ${one.name} <div class='span-wihte'>${one.value}</div>
+                           </div>
+                           <div style="color: ${index == 0 ? '#fff' : '#999'}" class='data-item'>${one.value2}</div>
+                          ${one.up ? `<div style="color: ${one.up > 0 ? '#EF554A' : '#7ED321'}" class='data-item'>
+                           <img width='12px' src='${require(one.up > 0 ? "../img/up-red.png" : "../img/down-green.png")}'/>${one.up}
+                            </div>`: "<div class='data-item'style='color:#999'>-</div>"}
+                        <div/>` ).join('')}
+             </div>
+      </div>`
             }}
           />
           <Axis
@@ -183,14 +181,17 @@ class CompositeRadar extends Component {
             }}
           />
           <Legend name="user" marker="circle" offset={30} position='top-center' data={['环节一', '环节二']} />
-          <Geom type="line" position="item*score" color="user" size={2}
+          <Geom type="line"
+            position="item*score"
+            color={['user', ['#1990FF', '#FACC14']]}
+            size={2}
             tooltip={toopicConfig} />
           <Geom
             type="point"
             position="item*score"
-            color="user"
             shape="circle"
             size={4}
+            color={['user', ['#1990FF', '#FACC14']]}
             style={{
               stroke: "#fff",
               lineWidth: 1,

@@ -13,6 +13,9 @@ class DataIndicator extends Component {
       <div className='data-indicator'>
         <div className='title-big'>数据指标</div>
         <div className='content' >
+          <div className='right-composite'>
+            <Composite />
+          </div>
           <div className='left-indicator'>
             <div className='fan-release'>
               <div className='fan-release-item'>
@@ -33,15 +36,13 @@ class DataIndicator extends Component {
               </div>
             </div>
             <div className='operate-four'>
-              <OperateItem typeText='点赞' numberAvg='111' percentAvg='12' typeAvg='234' sumAvgNumber='123' sumAvgPercent='123' sumAvgType='123' numberSum='123' percentSum='123' typeSum="123" />
-              <OperateItem typeText='转发' numberAvg='111' percentAvg='12' typeAvg='234' sumAvgNumber='123' sumAvgPercent='123' sumAvgType='123' numberSum='123' percentSum='123' typeSum="123" />
-              <OperateItem typeText='评论' numberAvg='111' percentAvg='12' typeAvg='234' sumAvgNumber='123' sumAvgPercent='123' sumAvgType='123' numberSum='123' percentSum='123' typeSum="123" />
-              <OperateItem typeText='播放' numberAvg='111' percentAvg='12' typeAvg='234' sumAvgNumber='123' sumAvgPercent='123' sumAvgType='123' numberSum='123' percentSum='123' typeSum="123" />
+              <OperateItem typeText='点赞' numberAvg='111' percentAvg='12' typeAvg='down' sumAvgNumber='123' sumAvgPercent='123' sumAvgType='down' numberSum='123' percentSum='123' typeSum="123" />
+              <OperateItem typeText='转发' numberAvg='111' percentAvg='12' typeAvg='up' sumAvgNumber='123' sumAvgPercent='123' sumAvgType='up' numberSum='123' percentSum='123' typeSum="123" />
+              <OperateItem typeText='评论' numberAvg='111' percentAvg='12' typeAvg='up' sumAvgNumber='123' sumAvgPercent='123' sumAvgType='up' numberSum='123' percentSum='123' typeSum="123" />
+              <OperateItem typeText='播放' numberAvg='111' percentAvg='12' typeAvg='down' sumAvgNumber='123' sumAvgPercent='123' sumAvgType='up' numberSum='123' percentSum='123' typeSum="123" />
             </div>
           </div>
-          <div className='right-composite'>
-            <Composite />
-          </div>
+
         </div>
       </div>
     );
