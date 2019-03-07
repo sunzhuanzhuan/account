@@ -18,7 +18,7 @@ class HistoricalAD extends Component {
   render() {
     const listCase = [{
       title: ' 小叶带你玩偷吃的最好技能哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈',
-      img: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+      img: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2924416775,758818339&fm=26&gp=0.jpg',
       a: 1,
       b: 22,
       c: 33333,
@@ -26,7 +26,7 @@ class HistoricalAD extends Component {
       brand: '保洁爸爸'
     }, {
       title: ' 小叶带你玩偷吃的最好技能哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈',
-      img: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+      img: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2924416775,758818339&fm=26&gp=0.jpg',
       a: 1,
       b: 22,
       c: 33333,
@@ -34,7 +34,7 @@ class HistoricalAD extends Component {
       brand: '保洁爸爸'
     }, {
       title: ' 小叶带你玩偷吃的最好技能哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈',
-      img: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+      img: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2924416775,758818339&fm=26&gp=0.jpg',
       a: 1,
       b: 22,
       c: 33333,
@@ -42,7 +42,7 @@ class HistoricalAD extends Component {
       brand: '保洁爸爸'
     }, {
       title: ' 小叶带你玩偷吃的最好技能哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈',
-      img: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+      img: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2924416775,758818339&fm=26&gp=0.jpg',
       a: 13,
       b: 23,
       c: 44,
@@ -65,7 +65,7 @@ class HistoricalAD extends Component {
         <div className='historical-ad-case'>
           {listCase.map((one, index) => <div className='case-item' key={index}>
             <div className='left-img'>
-              <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />
+              <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2924416775,758818339&fm=26&gp=0.jpg" />
             </div>
             <div className='right-info'>
               <div>

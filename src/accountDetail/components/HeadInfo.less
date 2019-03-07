@@ -104,6 +104,7 @@
                 flex-grow: 1;
                 min-width: 230px;
                 padding: 0px 20px;
+                flex-wrap: wrap;
                 .release-info-box {
                     display: flex;
                     justify-content: space-between;
@@ -116,6 +117,10 @@
                     padding: 10px;
                     .title {
                         @color999-font13();
+                    }
+                    .two-line-flex {
+                        @flex-between();
+                        align-items: baseline;
                     }
                     .content {
                         color: #F4655B;

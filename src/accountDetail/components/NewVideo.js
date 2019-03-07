@@ -10,28 +10,28 @@ class NewVideo extends Component {
   render() {
     const videoList = [{
       title: ' 小叶带你玩偷吃的最好技能哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈',
-      img: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+      img: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2924416775,758818339&fm=26&gp=0.jpg',
       a: 1,
       b: 22,
       c: 33333,
       time: '2019-01-02'
     }, {
       title: ' 小叶带你玩偷吃的最好技能哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈',
-      img: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+      img: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2924416775,758818339&fm=26&gp=0.jpg',
       a: 1,
       b: 22,
       c: 33333,
       time: '2019-01-02'
     }, {
       title: ' 小叶带你玩偷吃的最好技能哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈',
-      img: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+      img: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2924416775,758818339&fm=26&gp=0.jpg',
       a: 1,
       b: 22,
       c: 33333,
       time: '2019-01-02'
     }, {
       title: ' 小叶带你玩偷吃的最好技能哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈',
-      img: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
+      img: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2924416775,758818339&fm=26&gp=0.jpg',
       a: 13,
       b: 23,
       c: 44,
@@ -43,7 +43,7 @@ class NewVideo extends Component {
         <div className='video-list'>
           {videoList.map((one, index) => <div className='video-item' key={index} >
             <div className='img'>
-              <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />
+              <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2924416775,758818339&fm=26&gp=0.jpg" />
             </div>
             <div className='title'>
               {one.title}

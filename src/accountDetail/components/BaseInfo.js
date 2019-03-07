@@ -11,7 +11,7 @@ class BaseInfo extends Component {
       <div className='floating-base-info'>
         <div className='floating-base-info-flex'>
           <div className='img'>
-            <Avatar size={60} src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />
+            <Avatar size={60} src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2924416775,758818339&fm=26&gp=0.jpg" />
           </div>
           <div className='detail'>
             <div className='account-name'>微微一笑很倾城微微一笑很倾城微微一笑很倾城</div>

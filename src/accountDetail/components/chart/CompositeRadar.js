@@ -141,9 +141,6 @@ class CompositeRadar extends Component {
           />
           <Tooltip
             g2-tooltip={g2Tooltip}
-            crosshairs={{
-              type: "rect",
-            }}
             inPlot={true}
             useHtml={true}
             htmlContent={function (title, items) {
@@ -161,7 +158,7 @@ class CompositeRadar extends Component {
                            </div>
                            <div style="color: ${index == 0 ? '#fff' : '#999'}" class='data-item'>${one.value2}</div>
                           ${one.up ? `<div style="color: ${one.up > 0 ? '#EF554A' : '#7ED321'}" class='data-item'>
-                           <img width='12px' src='${require(one.up > 0 ? "../img/up-red.png" : "../img/down-green.png")}'/>${one.up}
+                           <img width='10px' src='${require(one.up > 0 ? "../img/up-red.png" : "../img/down-green.png")}'/>${one.up}
                             </div>`: "<div class='data-item'style='color:#999'>-</div>"}
                         <div/>` ).join('')}
              </div>
@@ -187,6 +184,7 @@ class CompositeRadar extends Component {
             size={2}
             tooltip={toopicConfig} />
           <Geom
+            tooltip={toopicConfig}
             type="point"
             position="item*score"
             shape="circle"

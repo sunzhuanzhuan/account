@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import './ContentData.less'
 import { CharTitle, CurveLine, HistogramLine, DataBox } from "./chart";
+import { Radio } from 'antd';
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
 class ContentData extends Component {
   constructor(props) {
     super(props);
@@ -27,6 +30,13 @@ class ContentData extends Component {
             <CharTitle title='内容数据箱线图' />
             <div className='last-box-decide'>
               <div className='data-box-left'>
+                <div style={{ marginTop: 16, textAlign: "center" }}>
+                  <RadioGroup defaultValue="a">
+                    <RadioButton value="a">点赞</RadioButton>
+                    <RadioButton value="b">评论</RadioButton>
+                    <RadioButton value="c">转发</RadioButton>
+                  </RadioGroup>
+                </div>
                 <DataBox />
               </div>
               <div className='right-decide'>
