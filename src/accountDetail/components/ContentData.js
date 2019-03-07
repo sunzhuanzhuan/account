@@ -12,15 +12,15 @@ class ContentData extends Component {
         <div className='title-big' >内容数据服务</div>
         <div className='content-char-box'>
           <div className='content-char'>
-            <CharTitle title='内容累计趋势图' />
+            <CharTitle title='内容累计趋势图' content='可观察最近90天账号基础数据趋势表现' />
             <CurveLine />
           </div>
           <div className='content-char'>
-            <CharTitle title='粉丝点赞趋势图' />
+            <CharTitle title='粉丝点赞趋势图' content='可观察最近90天内粉丝质量变化趋势' />
             <HistogramLine />
           </div>
           <div className='content-char'>
-            <CharTitle title='粉丝互动率趋势图' />
+            <CharTitle title='粉丝互动率趋势图' content='可观察最近90天内内容质量变化趋势' />
             <HistogramLine />
           </div>
           <div className='content-char'>

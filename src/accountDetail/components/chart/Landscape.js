@@ -7,6 +7,7 @@ import {
   Coord,
 } from "bizcharts";
 import DataSet from "@antv/data-set";
+import { g2Tooltip, l } from "./config";
 
 class Landscape extends React.Component {
   render() {
@@ -53,8 +54,10 @@ class Landscape extends React.Component {
             }}
           />
           <Axis name="population" />
-          <Tooltip />
-          <Geom type="interval" position="country*population" />
+          <Tooltip g2-tooltip={g2Tooltip} />
+          <Geom type="interval" position="country*population"
+            color={['country', ['#0760BF', '#1680E6', '#219BDD', '#35CFC9', '#86E6C8', '#BEF7C8', '#E3F4BF']]}
+          />
         </Chart>
       </div>
     );

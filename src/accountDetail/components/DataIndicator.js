@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import UpDownPercentage from "../base/UpDownPercentage";
 import './DataIndicator.less'
-import { Icon } from 'antd';
+import { PopoverFormat } from "../base/TitleAndDecide";
 import Composite from "./Composite";
 class DataIndicator extends Component {
   constructor(props) {
@@ -16,8 +16,14 @@ class DataIndicator extends Component {
           <div className='left-indicator'>
             <div className='fan-release'>
               <div className='fan-release-item'>
-                <HeadBox title={'总粉丝数'} number={123123} unit={'万'} percent={33} type={'up'} />
-                <ThreeBox title='粉丝互动率' number={'57%'} percent={9} type='up' isBig={true} />
+                <PopoverFormat
+                  text={<div><HeadBox title={'总粉丝数'} number={123123} unit={'万'} percent={33} type={'up'} /></div>}
+                  content='高于同分类同价格总粉丝数均值'
+                />
+                <PopoverFormat
+                  text={<div> <ThreeBox title='粉丝互动率' number={'57%'} percent={9} type='up' isBig={true} /> </div>}
+                  content='高于同分类同价格粉丝数互动率均值'
+                />
                 <ThreeBox title='粉丝互动数' number={'57%'} percent={9} type='up' isBig={true} />
               </div>
               <div className='fan-release-item'>
@@ -64,10 +70,17 @@ const ThreeBox = ({ title, number, percent, type, isBig = false, notPercent = fa
   </div>
 }
 const OperateItem = ({ typeText, numberAvg, percentAvg, typeAvg, sumAvgNumber, sumAvgPercent, sumAvgType, numberSum, percentSum, typeSum }) => {
+  const hoverHead = <HeadBox title='近30条视频均' isLeft={true} number={numberAvg} unit={'万'} percent={percentAvg} type={typeAvg} />
+
   return <div className='operate-item'>
     <div>{typeText}</div>
     <div className='back-box'>
-      <HeadBox title='近30条视频均' isLeft={true} number={numberAvg} unit={'万'} percent={percentAvg} type={typeAvg} />
+      {typeText == '转发' ?
+        <PopoverFormat
+          text={<div>{hoverHead}</div>}
+          content='低于同分类同价格近30条视频转发均值'
+        />
+        : hoverHead}
       <div className='avg-sum-flex'>
         <ThreeBox title='总平均' number={sumAvgNumber} percent={sumAvgPercent} type={sumAvgType} />
         <ThreeBox title='累计' number={numberSum} percent={percentSum} type={typeSum} />

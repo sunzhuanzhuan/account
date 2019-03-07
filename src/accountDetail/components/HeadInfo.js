@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import LookIndex from "./LookIndex";
 import BloggerInfo from "./BloggerInfo";
-
+import { PopoverFormat } from "../base/TitleAndDecide";
 import "./HeadInfo.less"
-import { Avatar, Button } from 'antd';
+import { Avatar, Button, Icon } from 'antd';
 
 class HeadInfo extends Component {
   constructor(props) {
@@ -11,20 +11,22 @@ class HeadInfo extends Component {
     this.state = {};
   }
   render() {
+    const { setShowModal, isCar } = this.props
     return (
       <div className="head-info">
         <div className='head-avatar'>
           <div className="avatar-img">
             <Avatar size={60} src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />
           </div>
-          <div className="avatar-mark">抖音排行第一</div>
+          <PopoverFormat text={<div className="avatar-mark">抖音排行第一</div>} content='抖音排行第一' />
         </div>
         <div className="info-right-box">
           <div className='head-box'>
             <div className='account-info' >
-              <div className='account-name'>微微一笑很倾城微微一笑很倾城微微一笑很倾城</div>
+              <div className='account-name'>微微一笑很倾城微微一笑很倾城微微一笑很倾城</div><PopoverFormat text='等级' content='抖音音乐人' />
               <LookIndex />
-              <BloggerInfo />
+              <a style={{ marginLeft: 20 }} onClick={() => setShowModal(true, { content: <BloggerInfo />, title: '博主信息', width: 700 })}>
+                <Icon type='user' />查看博主信息</a>
             </div>
             <div className='account-code'>抖音号：123</div>
           </div>
@@ -56,8 +58,9 @@ class HeadInfo extends Component {
                 <OneRelease title='发布' content='￥1231' last="asda/asdasd" />
                 <OneRelease title='原创+发布' content='￥1231' last="asda/asdasd" />
               </div>
-              <Button style={{ width: '100%', marginTop: 30 }} type='primary'>加入选号车</Button>
-              <div style={{ textAlign: "center", marginTop: 12 }}>加入收藏<span className='collect'>（100人已收藏）</span></div>
+              {isCar ? <Button style={{ width: '100%', marginTop: 30 }} type='primary'>加入选号车</Button> :
+                <Button style={{ width: '100%', marginTop: 30, background: '#999', color: '#fff' }} >移除选号车</Button>}
+              {/* <div style={{ textAlign: "center", marginTop: 12 }}>加入收藏<span className='collect'>（100人已收藏）</span></div> */}
             </div>
 
 
@@ -87,7 +90,7 @@ const OneRelease = ({ title, content, last }) => {
   return <div className='release-info-three'>
     <div className='title'>{title}</div>
     <div className='content'>{content}</div>
-    <div className='last'>{last}</div>
+    <PopoverFormat text={<div className='last'>{last}</div>} content='平均每千粉丝单价' />
   </div>
 }
 const FatLable = ({ backColor, color, list }) => {

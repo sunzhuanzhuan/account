@@ -15,9 +15,9 @@ class CharTitle extends Component {
     }
     return (<div>
       {content ? <Popover content={content} title={title} trigger="hover" getPopupContainer={() => document.querySelector('.account-view-detail')}>
-        <div style={{ ...titleStyle }}>
+        <div style={{ ...titleStyle, float: 'left' }}>
           {title}
-        </div><Icon type="question-circle" theme="outlined" style={{ color: '#999', fontSize: 14 }} />
+        </div><Icon type="info-circle" theme="outlined" style={{ color: '#999', fontSize: 14,margin:'24px 0px 0px 5px' }} />
       </Popover> : <div style={{ ...titleStyle }}>
           {title}
         </div>}

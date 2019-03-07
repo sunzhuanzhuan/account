@@ -42,7 +42,7 @@ class PieChart extends Component {
 
     };
     const { isThree = false } = this.props
-    const colorArr = isThree ? ['#4980ff', '#4466b0', '#b1c7ff'] : ['#4980ff', '#b1c7ff']
+    const colorArr = isThree ? ['#3AA1FF', '#F4655B', '#FCD435'] : ['#3AA1FF', '#F4655B']
     return (
       <div>
         <Chart
