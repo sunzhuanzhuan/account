@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { HeadInfo, DataIndicator, HistoricalAD, ContentData, AudienceAttribute, NewVideo } from "../components";
 import './AccountDetail.less'
 import { Modal } from 'antd';
-
+import LazyLoad from 'react-lazyload';
 class AccountDetail extends Component {
   constructor(props) {
     super(props);
@@ -35,10 +35,18 @@ class AccountDetail extends Component {
 
         <HeadInfo setShowModal={this.setShowModal} />
         <DataIndicator />
-        <HistoricalAD />
-        <ContentData />
-        <AudienceAttribute />
-        <NewVideo />
+        <LazyLoad once overflow>
+          <HistoricalAD />
+        </LazyLoad>
+        <LazyLoad once overflow>
+          <ContentData />
+        </LazyLoad>
+        <LazyLoad once overflow>
+          <AudienceAttribute />
+        </LazyLoad>
+        <LazyLoad once overflow>
+          <NewVideo />
+        </LazyLoad>
         <Modal
           title={showModal.title}
           visible={visible}

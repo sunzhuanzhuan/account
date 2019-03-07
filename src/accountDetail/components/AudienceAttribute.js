@@ -6,6 +6,9 @@ class AudienceAttribute extends Component {
     super(props);
     this.state = {};
   }
+  componentDidMount = () => {
+    console.log('受众属性数据加载啦啦啦啦')
+  }
   render() {
     return (
       <div className='audience-attribute'>

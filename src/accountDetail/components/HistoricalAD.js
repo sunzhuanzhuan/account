@@ -2,7 +2,7 @@
  * @Author: wangxinyue 
  * @Date: 2019-02-28 17:43:12 
  * @Last Modified by: wangxinyue
- * @Last Modified time: 2019-03-05 18:34:42
+ * @Last Modified time: 2019-03-07 21:12:13
  * 历史广告案例
  */
 
@@ -14,6 +14,9 @@ class HistoricalAD extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+  }
+  componentDidMount = () => {
+    console.log('加载数据哈哈哈HistoricalAD')
   }
   render() {
     const listCase = [{

@@ -7,6 +7,9 @@ class NewVideo extends Component {
     super(props);
     this.state = {};
   }
+  componentDidMount = () => {
+    console.log('最新视频数据加载啦啦啦啦')
+  }
   render() {
     const videoList = [{
       title: ' 小叶带你玩偷吃的最好技能哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈',
