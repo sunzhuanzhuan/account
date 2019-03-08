@@ -141,7 +141,7 @@ class CompositeRadar extends Component {
           />
           <Tooltip
             g2-tooltip={g2Tooltip}
-            inPlot={true}
+            inPlot={false}
             useHtml={true}
             htmlContent={function (title, items) {
               const { d = [] } = items[0]

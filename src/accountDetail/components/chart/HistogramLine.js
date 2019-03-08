@@ -17,18 +17,48 @@ class HistogramLine extends Component {
         call: 4,
         waiting: 2,
         people: 2
+      }, {
+        time: "美容美妆1",
+        call: 24,
+        waiting: 22,
+        people: 2
+      }, {
+        time: "美容美妆2",
+        call: 4,
+        waiting: 12,
+        people: 22
       },
       {
         time: "旅游",
         call: 2,
         waiting: 6,
         people: 3
+      }, {
+        time: "旅游2",
+        call: 12,
+        waiting: 6,
+        people: 3
+      }, {
+        time: "旅游1",
+        call: 2,
+        waiting: 6,
+        people: 13
       },
       {
         time: "美食",
         call: 13,
         waiting: 2,
         people: 5
+      }, {
+        time: "美食2",
+        call: 13,
+        waiting: 12,
+        people: 5
+      }, {
+        time: "美食23",
+        call: 13,
+        waiting: 2,
+        people: 15
       },
     ];
     const scale = {

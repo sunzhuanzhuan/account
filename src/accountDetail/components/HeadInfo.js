@@ -16,7 +16,7 @@ class HeadInfo extends Component {
       <div className="head-info">
         <div className='head-avatar'>
           <div className="avatar-img">
-            <Avatar size={60} src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2924416775,758818339&fm=26&gp=0.jpg" />
+            <Avatar size={60} src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1551975300229&di=91b436f0a816ac37d732b6fb41ae3a8e&imgtype=0&src=http%3A%2F%2Fwww.jf258.com%2Fuploads%2F2013-07-16%2F055639666.jpg" />
           </div>
           <PopoverFormat text={<div className="avatar-mark">抖音排行第一</div>} content='抖音排行第一' />
         </div>
