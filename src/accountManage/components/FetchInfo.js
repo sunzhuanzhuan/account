@@ -49,13 +49,15 @@ export class FetchInfo extends React.Component {
 		let params = isUpdate ? {
 			platformId: pid,
 			[keys]: value,
-			is_edit_account_page: 1
+			is_edit_account_page: 1,
+      accountId: accountInfo.accountId
 		} : { platformId: pid, [keys]: value }
 		action(params).then((data = {}) => {
 			this.setState({ isLoading: false })
 			let value = data.data
 			if (isUpdate) {
-				if (value['snsUniqueId'] && (flag_id != value['snsUniqueId'])) {
+        let reg = /^wby_|_old$/
+				if (value['snsUniqueId'] && !reg.test(flag_id) && (flag_id != value['snsUniqueId'])) {
 					value = {}
 					return info()
 				}
