@@ -36,7 +36,8 @@ class HeadInfo extends Component {
         <div className="info-right-box">
           <div className='head-box'>
             <div className='account-info' >
-              <div className='account-name'>{snsName}</div><PopoverFormat text='等级' content='抖音音乐人' />
+              <PopoverFormat text={<div className='account-name'>{snsName}</div>} content={snsName} />
+              <PopoverFormat text='等级' content='抖音音乐人' />
               <LookIndex url={url} qrCodeUrl={qrCodeUrl} />
               {/* <a style={{ marginLeft: 20, color: ' #1990FF' }} onClick={() => setShowModal(true, { content: <BloggerInfo />, title: '博主信息', width: 700 })}>
                 <Icon type='user' />查看博主信息</a> */}
@@ -54,7 +55,7 @@ class HeadInfo extends Component {
               <OneLine title='受众信息' content={<div className='content-font'>sdasd</div>} />
               <OneLine title='简介' content={
                 <div className='content-font' style={{ maxWidth: 300 }}>
-                  <MultiClamp ellipsis="..." clamp={2}>{introduction}</MultiClamp>
+                  <PopoverFormat popoverProps={{ overlayStyle: { width: 400 } }} text={<MultiClamp ellipsis="..." clamp={2}>{introduction}</MultiClamp>} content={introduction} />
                 </div>}
               />
             </div>

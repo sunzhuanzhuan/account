@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import UpDownPercentage from "../base/UpDownPercentage";
 import './DataIndicator.less'
 import { PopoverFormat } from "../base/TitleAndDecide";
-
-import Composite from "./Composite";
+import CompositeRadar from "./chart/CompositeRadar";
 class DataIndicator extends Component {
   constructor(props) {
     super(props);
@@ -12,10 +11,10 @@ class DataIndicator extends Component {
   render() {
     const { baseInfo = {} } = this.props
     const { feature = {}, base = {}, composite = {} } = baseInfo
-    console.log('================composite.data====================');
-    console.log(composite.data);
-    console.log('====================================');
+
     const {
+      wholeIndex, //综合指数
+      wholeRankOnClassification, //类型排名
       videoCount,
       followerCountRateOnClassificationPriceTag, //总粉丝数同别的对比
       mediaInteractionProportionRateOnClassificationPriceTag, //账号粉丝互动率 比 同行业同价位平均粉丝互动率
@@ -49,7 +48,17 @@ class DataIndicator extends Component {
         <div className='title-big'>数据指标</div>
         <div className='content' >
           <div className='right-composite'>
-            <Composite data={composite.data} />
+            <div className='composite-exponent'>
+              <div className='head-center'>
+                <div className='text'>综合指数</div>
+                <div className='score'>{wholeIndex * 100}</div>
+                <span className='lable'>{wholeRankOnClassification}</span>
+              </div>
+
+              <div>
+                <CompositeRadar data={composite.data} />
+              </div>
+            </div>
           </div>
           <div className='left-indicator'>
             <div className='fan-release'>
