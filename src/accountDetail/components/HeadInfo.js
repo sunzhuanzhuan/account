@@ -20,7 +20,8 @@ class HeadInfo extends Component {
       snsName, snsId, followerCount, introduction, platformId = 0,
       url, qrCodeUrl,
     } = base
-    const { classification, wholeRank = 0, orderResponseDuration, orderNumRateOnClassification, orderAcceptanceRate, orderMajorIndustryCategory } = feature
+    const { classification, wholeRank = 0, orderResponseDuration, orderResponsePercentile,
+      orderNumRateOnClassification, orderAcceptanceRate, orderMajorIndustryCategory } = feature
 
     //排名处理
     const wholeRankCN = `${platformView[platformId]}排行第${nzhcn.encodeS(wholeRank)}`
@@ -63,7 +64,7 @@ class HeadInfo extends Component {
               <div className='type-info-row' >
                 <OneType title="内容分类" content={classification} color='#ff4d4b' />
                 <OneType title="接单数" content={orderNumRateOnClassification} />
-                <OneType title="响应时间" content={FieldMap.getSegmentByFloat(orderResponseDuration)} last={orderResponseDuration} />
+                <OneType title="响应时间" content={FieldMap.getSegmentByFloat(orderResponsePercentile)} last={`${orderResponseDuration}s`} />
               </div>
               <div className='type-info-row'>
                 <OneType title="历史服务最多分类" content={orderMajorIndustryCategory} />
