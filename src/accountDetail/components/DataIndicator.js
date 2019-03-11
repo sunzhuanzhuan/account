@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import UpDownPercentage from "../base/UpDownPercentage";
 import './DataIndicator.less'
 import { PopoverFormat } from "../base/TitleAndDecide";
+
 import Composite from "./Composite";
 class DataIndicator extends Component {
   constructor(props) {
@@ -9,37 +10,87 @@ class DataIndicator extends Component {
     this.state = {};
   }
   render() {
+    const { baseInfo = {} } = this.props
+    const { feature = {}, base = {}, composite = {} } = baseInfo
+    console.log('================composite.data====================');
+    console.log(composite.data);
+    console.log('====================================');
+    const {
+      videoCount,
+      followerCountRateOnClassificationPriceTag, //总粉丝数同别的对比
+      mediaInteractionProportionRateOnClassificationPriceTag, //账号粉丝互动率 比 同行业同价位平均粉丝互动率
+      mediaInteractionRateOnClassificationPriceTag, //平均互动数
+      //点赞
+      mediaLikeAvg30itemOnClassification, // 行业互动点赞
+      mediaLikeAvg30itemRateOnClassificationPriceTag, //30条平均点赞 比同行业其他人多
+      mediaLikeAvgRateOnClassificationPriceTag, //总平均点赞 比同行业其他人多
+      mediaLikeSumRateOnClassificationPriceTag, //累计点赞比同行业其他人多
+
+      //转发
+      mediaRepostAvg30itemOnClassification, //近30条互动转发均值
+      mediaRepostAvg30itemRateOnClassificationPriceTag, //账号近30条平均转发比同行业同价位近30条平均转发
+      mediaRepostAvgRateOnClassificationPriceTag, // 账号平均转发比同行业同价位平均单视频转发
+      mediaRepostSumRateOnClassificationPriceTag, //账号平均转发比同行业同价位平均累计转发
+      //评论
+      mediaCommentAvg30itemRateOnClassification, //近30评论平均值
+      mediaCommentAvg30itemRateOnClassificationPriceTag, //账号近30条平均评论/同行业同价位近30条平均评论		 
+      mediaCommentAvgRateOnClassificationPriceTag, //账号平均评论/同行业同价位平均单视频评论		 
+      mediaCommentSumRateOnClassificationPriceTag, //账号平均评论/同行业同价位平均累计评论
+
+      //播放
+      mediaPlayAvg30itemRateOnClassificationPriceTag, //账号近30条平均播放/同行业同价位近30条平均播放	Float	 
+      mediaPlayAvgRateOnClassificationPriceTag, //	账号平均播放/同行业同价位平均单视频播放	Float	 
+      mediaPlaySumRateOnClassificationPriceTag, //	账号平均播放/同行业同价位平均累计播放
+
+
+    } = feature
     return (
       <div className='data-indicator'>
         <div className='title-big'>数据指标</div>
         <div className='content' >
           <div className='right-composite'>
-            <Composite />
+            <Composite data={composite.data} />
           </div>
           <div className='left-indicator'>
             <div className='fan-release'>
               <div className='fan-release-item'>
                 <PopoverFormat
-                  text={<div><HeadBox title={'总粉丝数'} number={123123} unit={'万'} percent={33} type={'up'} /></div>}
+                  text={<div><HeadBox title={'总粉丝数'} number={123123} unit={'万'} percent={followerCountRateOnClassificationPriceTag} /></div>}
                   content='高于同分类同价格总粉丝数均值'
                 />
                 <PopoverFormat
-                  text={<div> <ThreeBox title='粉丝互动率' number={'57%'} percent={9} type='up' isBig={true} /> </div>}
+                  text={<div> <ThreeBox title='粉丝互动率' number={1} percent={mediaInteractionProportionRateOnClassificationPriceTag} isBig={true} /> </div>}
                   content='高于同分类同价格粉丝数互动率均值'
                 />
-                <ThreeBox title='粉丝互动数' number={'57%'} percent={9} type='up' isBig={true} />
+                <ThreeBox title='粉丝互动数' number={mediaInteractionRateOnClassificationPriceTag} percent={0.9} isBig={true} />
               </div>
               <div className='fan-release-item'>
-                <HeadBox title={'总粉丝数'} number={123123} unit={'万'} percent={33} type={'up'} />
+                <HeadBox title={'总发布数'} number={videoCount} unit={'万'} percent={0.33} />
                 <ThreeBox title='90天发布数' number={'30条'} notPercent={true} />
                 <ThreeBox title='28天粉丝增长率' number={'47%'} notPercent={true} />
               </div>
             </div>
             <div className='operate-four'>
-              <OperateItem typeText='点赞' numberAvg='111' percentAvg='12' typeAvg='down' sumAvgNumber='123' sumAvgPercent='123' sumAvgType='down' numberSum='123' percentSum='123' typeSum="123" />
-              <OperateItem typeText='转发' numberAvg='111' percentAvg='12' typeAvg='up' sumAvgNumber='123' sumAvgPercent='123' sumAvgType='up' numberSum='123' percentSum='123' typeSum="123" />
-              <OperateItem typeText='评论' numberAvg='111' percentAvg='12' typeAvg='up' sumAvgNumber='123' sumAvgPercent='123' sumAvgType='up' numberSum='123' percentSum='123' typeSum="123" />
-              <OperateItem typeText='播放' numberAvg='111' percentAvg='12' typeAvg='down' sumAvgNumber='123' sumAvgPercent='123' sumAvgType='up' numberSum='123' percentSum='123' typeSum="123" />
+              <OperateItem typeText='点赞'
+                numberAvg={mediaLikeAvg30itemOnClassification} percentAvg={mediaLikeAvg30itemRateOnClassificationPriceTag}
+                sumAvgNumber={'123'} sumAvgPercent={mediaLikeAvgRateOnClassificationPriceTag}
+                numberSum='123' percentSum={mediaLikeSumRateOnClassificationPriceTag}
+                typeSum="123" />
+              <OperateItem typeText='转发'
+                numberAvg={mediaRepostAvg30itemOnClassification} percentAvg={mediaRepostAvg30itemRateOnClassificationPriceTag}
+                sumAvgNumber='123' sumAvgPercent={mediaRepostAvgRateOnClassificationPriceTag}
+                numberSum='123' percentSum={mediaRepostSumRateOnClassificationPriceTag}
+                typeSum="123" />
+              <OperateItem typeText='评论'
+                numberAvg={mediaCommentAvg30itemRateOnClassification} percentAvg={mediaCommentAvg30itemRateOnClassificationPriceTag}
+                sumAvgNumber='123' sumAvgPercent={mediaCommentAvgRateOnClassificationPriceTag}
+                numberSum='123' percentSum={mediaCommentSumRateOnClassificationPriceTag}
+                typeSum="123" />
+              <OperateItem typeText='播放'
+                numberAvg='111' percentAvg={mediaPlayAvg30itemRateOnClassificationPriceTag}
+                sumAvgNumber='123' sumAvgPercent={mediaPlayAvgRateOnClassificationPriceTag}
+                numberSum='123' percentSum={mediaPlaySumRateOnClassificationPriceTag}
+                typeSum="123" />
             </div>
           </div>
 
@@ -48,8 +99,9 @@ class DataIndicator extends Component {
     );
   }
 }
-const HeadBox = ({ title, number, unit, percent, type, isLeft = false }) => {
-  const unConfig = <UpDownPercentage percent={percent} type={type} isBackColor={true} />
+const HeadBox = ({ title, number, unit, percent, isLeft = false }) => {
+
+  const unConfig = <UpDownPercentage percent={percent} isBackColor={true} />
   return <div className='head-box'>
     <div className={`${isLeft ? 'title-light' : 'title'}`}>{title}</div>
     <div className='head-box-flex'>
@@ -61,17 +113,17 @@ const HeadBox = ({ title, number, unit, percent, type, isLeft = false }) => {
 
   </div>
 }
-const ThreeBox = ({ title, number, percent, type, isBig = false, notPercent = false }) => {
+const ThreeBox = ({ title, number, percent, isBig = false, notPercent = false }) => {
   return <div className='three-avg-box' >
     <div className={notPercent ? 'big-title' : 'title'}>{title}</div>
     <div className={`${isBig ? 'big-number' : 'number'}`}>{number}</div>
     {notPercent ? null : <div className='down' >
-      <UpDownPercentage percent={percent} type={type} />
+      <UpDownPercentage percent={percent} />
     </div>}
   </div>
 }
-const OperateItem = ({ typeText, numberAvg, percentAvg, typeAvg, sumAvgNumber, sumAvgPercent, sumAvgType, numberSum, percentSum, typeSum }) => {
-  const hoverHead = <HeadBox title='近30条视频均' isLeft={true} number={numberAvg} unit={'万'} percent={percentAvg} type={typeAvg} />
+const OperateItem = ({ typeText, numberAvg, percentAvg, sumAvgNumber, sumAvgPercent, numberSum, percentSum }) => {
+  const hoverHead = <HeadBox title='近30条视频均' isLeft={true} number={numberAvg} unit={'万'} percent={percentAvg} />
 
   return <div className='operate-item'>
     <div>{typeText}</div>
@@ -83,8 +135,8 @@ const OperateItem = ({ typeText, numberAvg, percentAvg, typeAvg, sumAvgNumber, s
         />
         : hoverHead}
       <div className='avg-sum-flex'>
-        <ThreeBox title='总平均' number={sumAvgNumber} percent={sumAvgPercent} type={sumAvgType} />
-        <ThreeBox title='累计' number={numberSum} percent={percentSum} type={typeSum} />
+        <ThreeBox title='总平均' number={sumAvgNumber} percent={sumAvgPercent} />
+        <ThreeBox title='累计' number={numberSum} percent={percentSum} />
       </div>
     </div>
 

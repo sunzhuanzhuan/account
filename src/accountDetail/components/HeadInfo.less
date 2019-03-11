@@ -63,7 +63,7 @@
                     display: flex;
                     .title {
                         line-height: 20px;
-                        width: 80px;
+                        min-width: 80px;
                         @color999-font13();
                         text-align: right;
                     }
@@ -114,13 +114,9 @@
                 }
                 .release-info-three {
                     border-bottom: @border-left-line;
-                    padding: 10px;
+                    padding: 0px 10px;
                     .title {
                         @color999-font13();
-                    }
-                    .two-line-flex {
-                        @flex-between();
-                        align-items: baseline;
                     }
                     .content {
                         color: #F4655B;

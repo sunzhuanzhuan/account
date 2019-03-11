@@ -14,22 +14,12 @@ import { g2Tooltip, legendPosition } from "./config";
 class PieChart extends Component {
   render() {
     const { DataView } = DataSet;
-    const data = [
-      {
-        item: "IOS",
-        count: 40
-      },
-      {
-        item: "安卓",
-        count: 60
-      },
-
-    ];
+    const { isThree = false, data = [] } = this.props
     const dv = new DataView();
     dv.source(data).transform({
       type: "percent",
-      field: "count",
-      dimension: "item",
+      field: "value",
+      dimension: "key",
       as: "percent"
     });
     const cols = {
@@ -39,9 +29,7 @@ class PieChart extends Component {
           return val;
         }
       },
-
     };
-    const { isThree = false } = this.props
     const colorArr = isThree ? ['#3AA1FF', '#F4655B', '#FCD435'] : ['#3AA1FF', '#F4655B']
     return (
       <div>
@@ -65,13 +53,13 @@ class PieChart extends Component {
           <Geom
             type="intervalStack"
             position="percent"
-            color={['item', colorArr]}
+            color={['key', colorArr]}
             tooltip={[
-              "item*percent",
-              (item, percent) => {
+              "key*percent",
+              (key, percent) => {
                 percent = percent * 100 + "%";
                 return {
-                  name: item,
+                  name: key,
                   value: percent
                 };
               }

@@ -7732,6 +7732,10 @@ ms@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.1.tgz#30a5864eb3ebb0a66f2ebe6d727af06a09d86e0a"
 
+multi-clamp@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/multi-clamp/-/multi-clamp-1.1.0.tgz#9d078e3096174a2fb9086a7b7cf19d15c3415862"
+
 multicast-dns-service-types@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/multicast-dns-service-types/-/multicast-dns-service-types-1.1.0.tgz#899f11d9686e5e05cb91b35d5f0e63b773cfc901"
@@ -7968,6 +7972,10 @@ numeral@^2.0.6:
 nwsapi@^2.0.7, nwsapi@^2.0.9:
   version "2.0.9"
   resolved "https://registry.yarnpkg.com/nwsapi/-/nwsapi-2.0.9.tgz#77ac0cdfdcad52b6a1151a84e73254edc33ed016"
+
+nzh@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/nzh/-/nzh-1.0.4.tgz#bded5492cd7148fa5fe1c809fa61932a899769c5"
 
 oauth-sign@~0.9.0:
   version "0.9.0"
@@ -9977,6 +9985,13 @@ react-loadable@^5.4.0:
   resolved "https://registry.yarnpkg.com/react-loadable/-/react-loadable-5.5.0.tgz#582251679d3da86c32aae2c8e689c59f1196d8c4"
   dependencies:
     prop-types "^15.5.0"
+
+react-multi-clamp@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-multi-clamp/-/react-multi-clamp-1.1.0.tgz#30e2340293b6f83a1e8ef039de82964ec8e9d976"
+  dependencies:
+    multi-clamp "^1.1.0"
+    prop-types "^15.6.0"
 
 react-redux@^5.0.7:
   version "5.1.1"

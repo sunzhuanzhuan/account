@@ -7,6 +7,7 @@ class Composite extends Component {
     this.state = {};
   }
   render() {
+    const { data } = this.props
     return (
       <div className='composite-exponent'>
         <div className='head-center'>
@@ -16,7 +17,7 @@ class Composite extends Component {
         </div>
 
         <div>
-          <CompositeRadar />
+          <CompositeRadar data={data} />
         </div>
       </div>
     );

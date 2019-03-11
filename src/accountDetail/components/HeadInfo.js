@@ -4,31 +4,44 @@ import BloggerInfo from "./BloggerInfo";
 import { PopoverFormat } from "../base/TitleAndDecide";
 import "./HeadInfo.less"
 import { Avatar, Button, Icon } from 'antd';
-
+import MultiClamp from 'react-multi-clamp';
+import { platformView } from "../../accountManage/constants/platform";
+import nzhcn from "nzh/cn";//数字转汉字  1->一
+import FieldMap from "../constants/FieldMap";
 class HeadInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
   render() {
-    const { setShowModal, isCar } = this.props
+    const { setShowModal, isCar, baseInfo = {} } = this.props
+    const { base = {}, feature = {} } = baseInfo
+    const { isMale, consumptionLevel, systemType, avatarUrl,
+      snsName, snsId, followerCount, introduction, platformId = 0,
+      url, qrCodeUrl,
+    } = base
+    const { classification, wholeRank = 0, orderResponseDuration, orderNumRateOnClassification, orderAcceptanceRate, orderMajorIndustryCategory } = feature
+
+    //排名处理
+    const wholeRankCN = `${platformView[platformId]}排行第${nzhcn.encodeS(wholeRank)}`
+
     return (
       <div className="head-info">
         <div className='head-avatar'>
           <div className="avatar-img">
-            <Avatar size={60} src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1551975300229&di=91b436f0a816ac37d732b6fb41ae3a8e&imgtype=0&src=http%3A%2F%2Fwww.jf258.com%2Fuploads%2F2013-07-16%2F055639666.jpg" />
+            <Avatar size={60} src={avatarUrl} />
           </div>
-          <PopoverFormat text={<div className="avatar-mark">抖音排行第一</div>} content='抖音排行第一' />
+          <PopoverFormat text={<div className="avatar-mark">{wholeRankCN}</div>} content={`${wholeRankCN}`} />
         </div>
         <div className="info-right-box">
           <div className='head-box'>
             <div className='account-info' >
-              <div className='account-name'>微微一笑很倾城微微一笑很倾城微微一笑很倾城</div><PopoverFormat text='等级' content='抖音音乐人' />
-              <LookIndex />
-              <a style={{ marginLeft: 20, color: ' #1990FF' }} onClick={() => setShowModal(true, { content: <BloggerInfo />, title: '博主信息', width: 700 })}>
-                <Icon type='user' />查看博主信息</a>
+              <div className='account-name'>{snsName}</div><PopoverFormat text='等级' content='抖音音乐人' />
+              <LookIndex url={url} qrCodeUrl={qrCodeUrl} />
+              {/* <a style={{ marginLeft: 20, color: ' #1990FF' }} onClick={() => setShowModal(true, { content: <BloggerInfo />, title: '博主信息', width: 700 })}>
+                <Icon type='user' />查看博主信息</a> */}
             </div>
-            <div className='account-code'>抖音号：123</div>
+            <div className='account-code'>{platformView[platformId]}号：{snsId}</div>
           </div>
           <div className='info-bottom-three'>
             <div className='base-info'>
@@ -39,17 +52,21 @@ class HeadInfo extends Component {
                 <FatLable backColor='#FFEBEA' color='#FE6A60' list={['直播', '直播', '直播']} />
               } />
               <OneLine title='受众信息' content={<div className='content-font'>sdasd</div>} />
-              <OneLine title='简介' content={<div className='content-font'>asdas</div>} />
+              <OneLine title='简介' content={
+                <div className='content-font' style={{ maxWidth: 300 }}>
+                  <MultiClamp ellipsis="..." clamp={2}>{introduction}</MultiClamp>
+                </div>}
+              />
             </div>
             <div className='type-info'>
               <div className='type-info-row' >
-                <OneType title="内容分类" content='美妆' color='#ff4d4b' />
-                <OneType title="接单数" content='50单' />
-                <OneType title="响应时间" content='美妆' last='30s' />
+                <OneType title="内容分类" content={classification} color='#ff4d4b' />
+                <OneType title="接单数" content={orderNumRateOnClassification} />
+                <OneType title="响应时间" content={FieldMap.getSegmentByFloat(orderResponseDuration)} last={orderResponseDuration} />
               </div>
               <div className='type-info-row'>
-                <OneType title="历史服务最多分类" content='美妆' />
-                <OneType title="接单率" content='极好' last='30%' />
+                <OneType title="历史服务最多分类" content={orderMajorIndustryCategory} />
+                <OneType title="接单率" content={FieldMap.getSegmentByFloat(orderAcceptanceRate)} last={orderAcceptanceRate} />
                 <OneType title="平均订单完结周期" content='1周' />
               </div>
             </div>
@@ -58,13 +75,13 @@ class HeadInfo extends Component {
                 <OneRelease title='发布' content='￥1231' last="asda/asdasd" />
                 <OneRelease title='原创+发布' content='￥1231' last="asda/asdasd" />
               </div>
-              <div className='release-info-box'>
+              <div className='release-info-box' style={{ marginTop: 10 }}>
                 <OneRelease title='发布' content='￥1231' last="asda/asdasd" />
                 <OneRelease title='原创+发布' content='￥1231' last="asda/asdasd" />
               </div>
               <div style={{ textAlign: 'center' }}>
-                {isCar ? <Button style={{ width: '80%', marginTop: 20 }} type='primary'>加入选号车</Button> :
-                  <Button style={{ width: '80%', marginTop: 20, background: '#999', color: '#fff' }} >移除选号车</Button>}
+                {isCar ? <Button style={{ width: '80%', marginTop: 10 }} type='primary'>加入选号车</Button> :
+                  <Button style={{ width: '80%', marginTop: 10, background: '#999', color: '#fff' }} >移除选号车</Button>}
               </div>
               {/* <div style={{ textAlign: "center", marginTop: 12 }}>加入收藏<span className='collect'>（100人已收藏）</span></div> */}
             </div>
@@ -86,10 +103,11 @@ const OneLine = ({ title, content, last }) => {
 const OneType = ({ title, content, last, color }) => {
   return <div className='type-info-flex'>
     <div className='title'>{title}</div>
-    <div className='second-row-flex'>
-      <div className='content' style={{ color: color }}>{content}</div>
-      <div className='last'>{last}</div>
+    <div className='content' style={{ color: color }}>
+      {content}
+      <span className='last'>{last}</span>
     </div>
+
   </div>
 }
 const OneRelease = ({ title, content, last }) => {

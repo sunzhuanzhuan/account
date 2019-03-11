@@ -3,6 +3,11 @@ import { HeadInfo, DataIndicator, HistoricalAD, ContentData, AudienceAttribute, 
 import './AccountDetail.less'
 import { Modal } from 'antd';
 import LazyLoad from 'react-lazyload';
+import { Route, withRouter } from 'react-router-dom'
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import * as action from '../actions/index'
+import * as commonAction from "@/actions";
 class AccountDetail extends Component {
   constructor(props) {
     super(props);
@@ -12,7 +17,8 @@ class AccountDetail extends Component {
     };
   }
   componentDidMount = () => {
-
+    const { actions } = this.props
+    actions.getBaseInfo()
   }
 
   componentWillUnmount() {
@@ -30,19 +36,29 @@ class AccountDetail extends Component {
   }
   render() {
     const { showModal, visible } = this.state
+    const { actions, accountDetail } = this.props
+    const {
+      baseInfo,
+      trendInfo,
+      audienceAttributeInfo } = accountDetail
+    const { getTrend, getAudienceAttribute } = actions
+    const contentDataProps = {
+      trendInfo,
+      getTrend
+    }
     return (
       <div className="account-view-detail" id='Js-account-view-detail-Id'>
 
-        <HeadInfo setShowModal={this.setShowModal} />
-        <DataIndicator />
+        <HeadInfo setShowModal={this.setShowModal} baseInfo={baseInfo} />
+        <DataIndicator baseInfo={baseInfo} />
         <LazyLoad once overflow>
           <HistoricalAD />
         </LazyLoad>
         <LazyLoad once overflow>
-          <ContentData />
+          <ContentData {...contentDataProps} />
         </LazyLoad>
         <LazyLoad once overflow>
-          <AudienceAttribute />
+          <AudienceAttribute getAudienceAttribute={getAudienceAttribute} audienceAttributeInfo={audienceAttributeInfo} />
         </LazyLoad>
         <LazyLoad once overflow>
           <NewVideo />
@@ -61,5 +77,17 @@ class AccountDetail extends Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    accountDetail: state.accountDetailReducer
+  }
+}
 
-export default AccountDetail;
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators({ ...commonAction, ...action }, dispatch)
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(AccountDetail))

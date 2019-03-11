@@ -11,53 +11,30 @@ import DataSet from "@antv/data-set";
 
 class CurveLine extends Component {
   render() {
-    const data = [
-      {
-        month: "10.15-10.21",
-        fansNum: 7.0,
-        numberAdd: 1.2,
-        upNumber: 3.9
-      },
-      {
-        month: "10.22-10.28",
-        fansNum: 6.9,
-        numberAdd: 11.2,
-        upNumber: 4.2
-      },
-      {
-        month: "10.29-11.04",
-        fansNum: 22,
-        numberAdd: 18.2,
-        upNumber: 5.7
-      },
-      {
-        month: "11.05-11.11",
-        fansNum: 14.5,
-        numberAdd: 11.2,
-        upNumber: 8.5
-      },
-      {
-        month: "11.12-11.18",
-        fansNum: 18.4,
-        numberAdd: 11.2,
-        upNumber: 11.9
-      }];
+    // const data = [
+    //   {
+    //     month: "10.15-10.21",
+    //     followerCountFull: 7.0,
+    //     mediaCountIncre: 1.2,
+    //     mediaLikeSumIncre: 3.9
+    //   },
+    // ];
+    const { data = [] } = this.props
     const ds = new DataSet();
     const dv = ds.createView().source(data);
     dv.transform({
       type: "fold",
-      fields: ["fansNum", "upNumber", 'numberAdd'],
+      fields: ["followerCountFull", "mediaLikeSumIncre", 'mediaCountIncre'],
       // 展开字段集
       key: "city",
       // key字段
       value: "temperature" // value字段
     });
-    console.log(dv);
     const cols = {
-      month: {
+      dateRange: {
         range: [0, 1]
       },
-      city: { formatter: d => ({ fansNum: '粉丝累计数', upNumber: '点赞净增数', numberAdd: '发布净增数' }[d]) }
+      city: { formatter: d => ({ followerCountFull: '粉丝累计数', mediaLikeSumIncre: '点赞净增数', mediaCountIncre: '发布净增数' }[d]) }
     };
     return (
       <div>
@@ -65,7 +42,7 @@ class CurveLine extends Component {
           padding={[50, 90]}
           forceFit>
           <Legend marker='circle' {...legendPosition} />
-          <Axis name="month" />
+          <Axis name="dateRange" />
           <Axis
             name="temperature"
             visible={false}
@@ -81,7 +58,7 @@ class CurveLine extends Component {
           />
           <Geom
             type="line"
-            position="month*temperature"
+            position="dateRange*temperature"
             size={2}
             color={"city"}
             shape={"smooth"}
