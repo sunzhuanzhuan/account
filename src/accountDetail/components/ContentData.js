@@ -53,11 +53,17 @@ class ContentData extends Component {
           </div>
           <div className='content-char'>
             <CharTitle title='粉丝点赞趋势图' content='可观察最近90天内粉丝质量变化趋势' />
-            <HistogramLine data={trendInfo.like} positionConfig='dateRange*mediaLikeSumIncre' lineText='点赞净增数' boxText='粉丝累计数' />
+            <HistogramLine data={trendInfo.like}
+              positionIntervalConfig='dateRange*followerCountFull'
+              positionConfig='dateRange*mediaLikeSumIncre'
+              lineText='点赞净增数' boxText='粉丝累计数' />
           </div>
           <div className='content-char'>
             <CharTitle title='粉丝互动率趋势图' content='可观察最近90天内内容质量变化趋势' />
-            <HistogramLine data={trendInfo.interactive} positionConfig='dateRange*interactionProportionIncre' lineText='平均互动率' boxText='发布净增数' />
+            <HistogramLine data={trendInfo.interactive}
+              positionIntervalConfig='dateRange*mediaCountIncre'
+              positionConfig='dateRange*interactionProportionIncre'
+              lineText='平均互动率' boxText='发布净增数' />
           </div>
           <div className='content-char'>
             <CharTitle title='内容数据箱线图' />

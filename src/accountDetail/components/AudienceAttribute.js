@@ -29,7 +29,11 @@ class AudienceAttribute extends Component {
             </div>
             <div className='two-line-item'>
               <CharTitle title='TGL' />
-              <HistogramLine height={300} data={audienceAttributeInfo.tgl} positionConfig='dateRange*call' lineText='TGL' boxText='兴趣爱好' />
+              <HistogramLine height={300} data={audienceAttributeInfo.tgl}
+                positionConfig='dateRange*call'
+                positionIntervalConfig='dateRange*like'
+                lineText='TGL'
+                boxText='兴趣爱好' />
             </div>
 
           </div>

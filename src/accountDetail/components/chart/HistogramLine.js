@@ -19,18 +19,31 @@ class HistogramLine extends Component {
     //     people: 2
     //   }
     // ];
-    const { data = [], positionConfig, lineText, boxText } = this.props
+    const { data = [], positionConfig, lineText, boxText, positionIntervalConfig } = this.props
     const scale = {
       followerCountFull: {
-        min: 0
+        min: 0,
+        alias: '粉丝累计数'
       },
       mediaCountIncre: {
         min: 0,
-        alias: lineText
+        alias: '发布净增数'
       },
       mediaLikeSumIncre: {
         min: 0,
-        alias: boxText
+        alias: '点赞净增收'
+      },
+      interactionProportionIncre: {
+        min: 0,
+        alias: '平均互动率'
+      },
+      call: {
+        min: 0,
+        alias: 'TGL'
+      },
+      like: {
+        min: 0,
+        alias: '兴趣爱好'
       },
     };
     let chartIns = null;
@@ -102,7 +115,7 @@ class HistogramLine extends Component {
             }}
           />
           <Tooltip name='' g2-tooltip={g2Tooltip} />
-          <Geom type="interval" position={positionConfig} color="#39a0ff" />
+          <Geom type="interval" position={positionIntervalConfig} color="#39a0ff" />
           <Geom
             type="line"
             position={positionConfig}
