@@ -8,7 +8,7 @@ import AudiencePortrait from '../../components/AudiencePortrait';
 import { BaseInfo } from '@/accountManage/components/BaseInfo';
 import {
   AccountDesc,
-  AccountID, AccountIsNameless, ContentCategory,
+  AccountID, AccountIsNameless, AgentConfigAndPrice, ContentCategory,
   OrderStrategy, PriceInclude, QCCodeUpload, ReferencePrice
 } from '@/accountManage/components/Unique';
 import { FamousPrice, NamelessPrice } from '@/accountManage/components/AccountPrice';
@@ -262,8 +262,6 @@ export class AccountPriceForm extends Component {
       <WrapPanel header='账号报价' right={rightC}>
         {_isFamous ?
           <FamousPrice {...params} {...form} priceKeys={priceKeys}>
-            {diff.referencePrice ? <ReferencePrice  {...params} {...form} /> :
-              <i style={{ display: 'none' }} />}
             {diff.priceInclude ? <PriceInclude  {...params} {...form} /> :
               <i style={{ display: 'none' }} />}
             <OrderStrategy {...params} {...form} />
@@ -275,6 +273,34 @@ export class AccountPriceForm extends Component {
             <OrderStrategy {...params} {...form} />
           </NamelessPrice>
         }
+      </WrapPanel>
+    </Form>;
+  }
+}
+
+/**
+ * 三方平台报价相关
+ */
+@Form.create()
+export class AgentConfigAndPriceForm extends Component {
+  submit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        console.log(values);
+      }
+    });
+  };
+
+  render() {
+    const { form, params } = this.props;
+    const { data: { accountInfo, priceInfo } } = params;
+    const rightC = <div className='wrap-panel-right-content'>
+      <Button size='small' type='primary' onClick={this.submit}>{'保存'}</Button>
+    </div>;
+    return <Form>
+      <WrapPanel header='三方平台报价' right={rightC}>
+        <AgentConfigAndPrice {...params} {...form} />
       </WrapPanel>
     </Form>;
   }
@@ -337,7 +363,7 @@ export class CooperateInfoForm extends Component {
     let { cooperationCases = [] } = values;
     // 设置index
     let n = 1;
-    cooperationCases = cooperationCases.filter(({ isDeleted, cooperationCaseId }) => !isDeleted || cooperationCaseId)
+    cooperationCases = cooperationCases.filter(({ isDeleted, cooperationCaseId }) => !isDeleted || cooperationCaseId);
     cooperationCases.forEach((item) => {
       if (item.isDeleted) delete item.index;
       item.isDeleted = item.isDeleted ? 1 : 2;

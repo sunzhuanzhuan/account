@@ -4,6 +4,7 @@ import { Form, Select, Input, Checkbox, Popover, Radio } from 'antd';
 import SimpleTag from '../base/SimpleTag';
 import moment from 'moment';
 import { platformToDesc } from '../constants/placeholder';
+import PriceInput from '@/accountManage/base/PriceInput';
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -142,6 +143,76 @@ export const ContentCategory = (props) => {
 };
 
 /**
+ * 三方平台报价项及相关设置
+ */
+export const AgentConfigAndPrice = (props) => {
+  const { formItemLayout = {}, data: { accountInfo }, getFieldDecorator, getFieldValue } = props;
+  const {
+    priceMicroTaskTweet,
+    priceMicroTaskRetweet,
+    priceWeiqTweet,
+    priceWeiqRetweet,
+    weitaskFetchedTime
+  } = accountInfo;
+  return <div>
+    <FormItem {...formItemLayout} label='是否可在三方平台下单'>
+      {getFieldDecorator('isssssOrderStatus', {
+        initialValue: 1
+      })(
+        <RadioGroup>
+          <Radio value={1}>是</Radio>
+          <Radio value={2}>否</Radio>
+        </RadioGroup>
+      )}
+    </FormItem>
+    {getFieldValue('isssssOrderStatus') === 1 ? <FormItem {...formItemLayout} label='下单方'>
+      {getFieldDecorator('issOrderStatus', {
+        initialValue: 1
+      })(
+        <RadioGroup>
+          <Radio value={1}>微博易代下</Radio>
+          <Radio value={2}>播主代下</Radio>
+        </RadioGroup>
+      )}
+    </FormItem> : null}
+    <FormItem {...formItemLayout} label='参考报价'>
+      <div className='sina-reference-table'>
+        <table>
+          <tbody>
+          <tr>
+            <th>微任务原发价</th>
+            <td style={{padding: "0 4px"}}>
+                {getFieldDecorator(`price[0].reference[${1}].key`, {
+                  initialValue: priceMicroTaskTweet
+                })(<PriceInput isEdit/>)}
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </FormItem>
+    <FormItem {...formItemLayout} label='增值服务'>
+      <div className='sina-reference-table'>
+        <table>
+          <tbody>
+          <tr>
+            <th>微任务原发价</th>
+            <td>
+                {getFieldDecorator(`price[0].other[${1}].key`, {
+                  initialValue: priceMicroTaskTweet
+                })(<PriceInput isEdit/>)}
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </FormItem>
+    <p className='input-desc-bottom'>价格更新时间: <span>{weitaskFetchedTime ? moment(weitaskFetchedTime).format('YYYY-MM-DD') : '--'}</span>
+    </p>
+  </div>;
+};
+
+/**
  * 微博报价特有项(参考报价)
  */
 export const ReferencePrice = (props) => {
@@ -188,7 +259,7 @@ export const ReferencePrice = (props) => {
  * 微博报价特有项(报价包含)
  */
 export const PriceInclude = (props) => {
-  const { getFieldDecorator, formItemLayout = {}, data: { priceInfo } } = props;
+  const { getFieldDecorator,getFieldValue, formItemLayout = {}, data: { priceInfo } } = props;
   const {
     isSupportTopicAndLink,
     isPreventShielding
@@ -197,9 +268,9 @@ export const PriceInclude = (props) => {
     <FormItem {...formItemLayout} label='报价包含'>
       {getFieldDecorator('isPreventShielding', {
         valuePropName: 'checked',
-        initialValue: isPreventShielding == 1
+        initialValue: getFieldValue('isssssOrderStatus') === 1
       })(
-        <Checkbox>防屏蔽（博主可自行下微任务/接WEIQ订单）</Checkbox>)}
+        <Checkbox disabled>防屏蔽（博主可自行下微任务/接WEIQ订单）</Checkbox>)}
     </FormItem>
     <FormItem style={{ top: '-16px' }}  {...formItemLayout} label=' ' colon={false}>
       {getFieldDecorator('isSupportTopicAndLink', {
