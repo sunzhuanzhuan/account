@@ -2,7 +2,7 @@
  * @Author: wangxinyue 
  * @Date: 2019-02-28 17:43:12 
  * @Last Modified by: wangxinyue
- * @Last Modified time: 2019-03-14 19:04:16
+ * @Last Modified time: 2019-03-14 20:22:18
  * 历史广告案例
  */
 
@@ -21,18 +21,14 @@ class HistoricalAD extends Component {
     this.props.getQueryIndustryInfoList()
   }
   render() {
-    const { queryOrderCooperationList: { list = [] }, queryIndustryInfoList = [] } = this.props
-    console.log('queryIndustryInfoList', [
-      { name: '全部', id: 1 },
-      ...queryIndustryInfoList]);
-
+    const { getQueryOrderCooperationList, queryOrderCooperationList: { list = [] }, queryIndustryInfoList = [] } = this.props
     return (
       <div className='historical-advertising'>
         <div className='title-big'>历史广告案例</div>
         <div className='head-box'>
           <div className='tab-box'>
-            <TabArr tabArrData={[
-              { industryName: '全部', industryCode: 1 },
+            <TabArr onChange={getQueryOrderCooperationList} tabArrData={[
+              { industryName: '全部', industryCode: 0 },
               ...queryIndustryInfoList]} />
           </div>
         </div>

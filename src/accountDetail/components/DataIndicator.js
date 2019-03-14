@@ -123,7 +123,7 @@ const HeadBox = ({ title, number, percent, isLeft = false }) => {
       {/* <div className='number'>{number}</div>
       <div className='unit'>{unit}</div> */}
       <ValueFormat value={number} valueClass='number' unitClass='unit' />
-      {isLeft ? unConfig : ""}
+      {isLeft ? <div style={{ marginTop: 9, marginLeft: 3 }}>{unConfig} </div> : ""}
     </div>
     {isLeft ? "" : unConfig}
 
@@ -159,3 +159,4 @@ const OperateItem = ({ typeText, numberAvg, percentAvg, sumAvgNumber, sumAvgPerc
 }
 
 export default DataIndicator;
+

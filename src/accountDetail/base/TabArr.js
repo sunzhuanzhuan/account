@@ -4,14 +4,12 @@ class TabArr extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      cheackedNum: 1
+      cheackedNum: 0
     };
   }
   onChangeTab = (id) => {
     const { onChange } = this.props
-    onChange && onChange()
-    console.log(id);
-
+    onChange && onChange({ industryCode: id })
     this.setState({ cheackedNum: id })
   }
   render() {
@@ -20,7 +18,7 @@ class TabArr extends Component {
     return (
       <div className='tab-arr'>
         {tabArrData.map(((one, index) => <div
-          className={`tab-arr-item ${cheackedNum == one.iindustryCode ? 'tab-cheacked' : ''}`}
+          className={`tab-arr-item ${cheackedNum == one.industryCode ? 'tab-cheacked' : ''}`}
           key={one.industryCode}
           onClick={() => this.onChangeTab(one.industryCode)}>{one.industryName}</div>))
         }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { HeadInfo, DataIndicator, HistoricalAD, ContentData, AudienceAttribute, NewVideo } from "../components";
+import { HeadInfo, DataIndicator, HistoricalAD, ContentData, AudienceAttribute, NewVideo, AccountRecommend } from "../components";
 import './AccountDetail.less'
 import { Modal } from 'antd';
 import LazyLoad from 'react-lazyload';
@@ -50,7 +50,6 @@ class AccountDetail extends Component {
     }
     return (
       <div className="account-view-detail" id='Js-account-view-detail-Id'>
-
         <HeadInfo setShowModal={this.setShowModal} baseInfo={baseInfo} />
         <DataIndicator baseInfo={baseInfo} />
         <LazyLoad once overflow>
@@ -66,9 +65,12 @@ class AccountDetail extends Component {
         <LazyLoad once overflow>
           <AudienceAttribute getAudienceAttribute={getAudienceAttribute} audienceAttributeInfo={audienceAttributeInfo} />
         </LazyLoad>
-        {/* <LazyLoad once overflow>
+        <LazyLoad once overflow>
           <NewVideo />
-        </LazyLoad> */}
+        </LazyLoad>
+        {/* 账号推荐
+          <AccountRecommend /> 
+        */}
         <Modal
           title={showModal.title}
           visible={visible}
