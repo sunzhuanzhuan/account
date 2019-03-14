@@ -22,8 +22,22 @@ export const audienceAttributeInfo = handleActions({
 }, {})
 
 
+export const queryIndustryInfoList = handleActions({
+  [accountDetail.getQueryIndustryInfoList_success]: (state, action) => {
+    return [...action.payload.data]
+  }
+}, [])
+export const queryOrderCooperationList = handleActions({
+  [accountDetail.getQueryOrderCooperationList_success]: (state, action) => {
+    return { ...action.payload.data }
+  }
+}, {})
+
+
 export default combineReducers({
   baseInfo,
   audienceAttributeInfo,
-  trendInfo
+  trendInfo,
+  queryOrderCooperationList,
+  queryIndustryInfoList
 })

@@ -40,8 +40,10 @@ class AccountDetail extends Component {
     const {
       baseInfo,
       trendInfo,
-      audienceAttributeInfo } = accountDetail
-    const { getTrend, getAudienceAttribute } = actions
+      audienceAttributeInfo,
+      queryOrderCooperationList,
+      queryIndustryInfoList } = accountDetail
+    const { getTrend, getAudienceAttribute, getQueryOrderCooperationList, getQueryIndustryInfoList } = actions
     const contentDataProps = {
       trendInfo,
       getTrend
@@ -52,7 +54,11 @@ class AccountDetail extends Component {
         <HeadInfo setShowModal={this.setShowModal} baseInfo={baseInfo} />
         <DataIndicator baseInfo={baseInfo} />
         <LazyLoad once overflow>
-          <HistoricalAD />
+          <HistoricalAD
+            getQueryOrderCooperationList={getQueryOrderCooperationList}
+            queryOrderCooperationList={queryOrderCooperationList}
+            queryIndustryInfoList={queryIndustryInfoList}
+            getQueryIndustryInfoList={getQueryIndustryInfoList} />
         </LazyLoad>
         <LazyLoad once overflow>
           <ContentData {...contentDataProps} />

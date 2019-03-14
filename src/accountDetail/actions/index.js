@@ -18,3 +18,15 @@ export const {
   getAudienceAttribute,
   getAudienceAttribute_success
 } = createHttpAction('getAudienceAttribute', Interface.getAudienceAttribute);
+
+//获取广告案例类型
+export const {
+  getQueryIndustryInfoList,
+  getQueryIndustryInfoList_success
+} = createHttpAction('getQueryIndustryInfoList', Interface.getQueryIndustryInfoList);
+
+//获取历史广告案例
+export const {
+  getQueryOrderCooperationList,
+  getQueryOrderCooperationList_success
+} = createHttpAction('getQueryOrderCooperationList', Interface.getQueryOrderCooperationList);

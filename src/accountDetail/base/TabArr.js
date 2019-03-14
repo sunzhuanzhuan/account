@@ -20,9 +20,9 @@ class TabArr extends Component {
     return (
       <div className='tab-arr'>
         {tabArrData.map(((one, index) => <div
-          className={`tab-arr-item ${cheackedNum == one.id ? 'tab-cheacked' : ''}`}
-          key={one.id}
-          onClick={() => this.onChangeTab(one.id)}>{one.name}</div>))
+          className={`tab-arr-item ${cheackedNum == one.iindustryCode ? 'tab-cheacked' : ''}`}
+          key={one.industryCode}
+          onClick={() => this.onChangeTab(one.industryCode)}>{one.industryName}</div>))
         }
       </div>
     );
