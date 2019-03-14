@@ -21,7 +21,7 @@ var dataChina = [
   { name: "河北", valueNum: 55 },
   { name: "山西", valueNum: 81 },
   { name: "内蒙古", valueNum: 47 },
-  { name: "辽宁", valueNum: 899 },
+  { name: "辽宁", valueNum: 200 },
   { name: "吉林", valueNum: 82 },
   { name: "黑龙江", valueNum: 66 },
   { name: "上海", valueNum: 24 },
@@ -108,6 +108,7 @@ class MapChart extends Component {
         }
       })
     })
+
     const geoDv = new DataSet.View().source(geoData, {
       type: 'GeoJSON',
     });
@@ -136,7 +137,9 @@ class MapChart extends Component {
     return (
       <Chart height={500} width={645} scale={scale} data={data} padding={[0, 0, 0, 90]}>
         <Geom type="polygon" position="longitude*latitude"
-          color={['valueNum', ['#31c5f8', '#61d3f8', '#89dcfd', '#b0e8f8', '#d8f3ff']]}
+          style={{lineWidth: 1, stroke: "white"}}
+          // color={['valueNum', ['#31c5f8', '#61d3f8', '#89dcfd', '#b0e8f8', '#d8f3ff']]}
+          color={['valueNum', ['#d9f4ff', '#33c5f6']]}
           tooltip={['name*valueNum', (name, valueNum) => {
             return {
               name: name,
@@ -144,7 +147,7 @@ class MapChart extends Component {
             }
           }]}
         >
-          <Label content="name" offset={0} />
+          <Label content="" offset={0} />
           <Tooltip showTitle={false} />
         </Geom>
       </Chart>);
