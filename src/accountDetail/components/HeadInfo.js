@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import LookIndex from "./LookIndex";
-import BloggerInfo from "./BloggerInfo";
 import { PopoverFormat } from "../base/TitleAndDecide";
 import "./HeadInfo.less"
 import { Avatar, Button, Icon } from 'antd';
@@ -8,6 +7,7 @@ import MultiClamp from 'react-multi-clamp';
 import { platformView } from "../../accountManage/constants/platform";
 import nzhcn from "nzh/cn";//数字转汉字  1->一
 import FieldMap from "../constants/FieldMap";
+import numeral from "numeral";
 class HeadInfo extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +15,7 @@ class HeadInfo extends Component {
   }
   render() {
     const { setShowModal, isCar, baseInfo = {} } = this.props
-    const { base = {}, feature = {} } = baseInfo
+    const { base = {}, feature = {}, skuList = [] } = baseInfo
     const { isMale, consumptionLevel, systemType, avatarUrl,
       snsName, snsId, followerCount, introduction, platformId = 0,
       url, qrCodeUrl,
@@ -74,12 +74,7 @@ class HeadInfo extends Component {
             </div>
             <div className='release-info'>
               <div className='release-info-box'>
-                <OneRelease title='发布' content='￥1231' last="asda/asdasd" />
-                <OneRelease title='原创+发布' content='￥1231' last="asda/asdasd" />
-              </div>
-              <div className='release-info-box' style={{ marginTop: 10 }}>
-                <OneRelease title='发布' content='￥1231' last="asda/asdasd" />
-                <OneRelease title='原创+发布' content='￥1231' last="asda/asdasd" />
+                {skuList.map(one => <OneRelease key={one.skuId} title={one.skuTypeName} content={one.quotePrice} last={one.unitPrice} />)}
               </div>
               <div style={{ textAlign: 'center' }}>
                 {isCar ? <Button style={{ width: '80%', marginTop: 10 }} type='primary'>加入选号车</Button> :
@@ -87,8 +82,6 @@ class HeadInfo extends Component {
               </div>
               {/* <div style={{ textAlign: "center", marginTop: 12 }}>加入收藏<span className='collect'>（100人已收藏）</span></div> */}
             </div>
-
-
           </div>
         </div>
       </div>
@@ -116,8 +109,8 @@ const OneRelease = ({ title, content, last }) => {
   return <div className='release-info-three'>
     <div className='title'>{title}</div>
     <div className='two-line-flex'>
-      <div className='content'>{content}</div>
-      <PopoverFormat text={<div className='last'>{last}</div>} content='平均每千粉丝单价' />
+      <div className='content'>¥{numeral(content).format('0,0')}</div>
+      <PopoverFormat text={<div className='last'>{last}元/千粉丝</div>} content='平均每千粉丝单价' />
     </div>
   </div>
 }

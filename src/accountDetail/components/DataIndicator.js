@@ -3,6 +3,8 @@ import UpDownPercentage from "../base/UpDownPercentage";
 import './DataIndicator.less'
 import { PopoverFormat } from "../base/TitleAndDecide";
 import CompositeRadar from "./chart/CompositeRadar";
+import ValueFormat from "../base/ValueFormat";
+import { Divider } from "antd";
 class DataIndicator extends Component {
   constructor(props) {
     super(props);
@@ -37,6 +39,7 @@ class DataIndicator extends Component {
       mediaCommentSumRateOnClassificationPriceTag, //账号平均评论/同行业同价位平均累计评论
 
       //播放
+      mediaPlayAvg,
       mediaPlayAvg30itemRateOnClassificationPriceTag, //账号近30条平均播放/同行业同价位近30条平均播放	Float	 
       mediaPlayAvgRateOnClassificationPriceTag, //	账号平均播放/同行业同价位平均单视频播放	Float	 
       mediaPlaySumRateOnClassificationPriceTag, //	账号平均播放/同行业同价位平均累计播放
@@ -50,9 +53,12 @@ class DataIndicator extends Component {
           <div className='right-composite'>
             <div className='composite-exponent'>
               <div className='head-center'>
-                <div className='text'>综合指数</div>
-                <div className='score'>{wholeIndex * 100}</div>
-                <span className='lable'>{wholeRankOnClassification}</span>
+                <div className='left-index'>
+                  <div className='text'>综合指数</div>
+                  <div className='score'>{wholeIndex * 100}</div>
+                </div>
+                <Divider type="vertical" style={{ height: 40, margin: '0px 20px' }} />
+                <div className='lable'>{wholeRankOnClassification}</div>
               </div>
 
               <div>
@@ -64,7 +70,7 @@ class DataIndicator extends Component {
             <div className='fan-release'>
               <div className='fan-release-item'>
                 <PopoverFormat
-                  text={<div><HeadBox title={'总粉丝数'} number={123123} unit={'万'} percent={followerCountRateOnClassificationPriceTag} /></div>}
+                  text={<div><HeadBox title={'总粉丝数'} number={123123} percent={followerCountRateOnClassificationPriceTag} /></div>}
                   content='高于同分类同价格总粉丝数均值'
                 />
                 <PopoverFormat
@@ -74,7 +80,7 @@ class DataIndicator extends Component {
                 <ThreeBox title='粉丝互动数' number={mediaInteractionRateOnClassificationPriceTag} percent={0.9} isBig={true} />
               </div>
               <div className='fan-release-item'>
-                <HeadBox title={'总发布数'} number={videoCount} unit={'万'} percent={0.33} />
+                <HeadBox title={'总发布数'} number={videoCount} percent={0.33} />
                 <ThreeBox title='90天发布数' number={'30条'} notPercent={true} />
                 <ThreeBox title='28天粉丝增长率' number={'47%'} notPercent={true} />
               </div>
@@ -96,7 +102,7 @@ class DataIndicator extends Component {
                 numberSum='123' percentSum={mediaCommentSumRateOnClassificationPriceTag}
                 typeSum="123" />
               <OperateItem typeText='播放'
-                numberAvg='111' percentAvg={mediaPlayAvg30itemRateOnClassificationPriceTag}
+                numberAvg={mediaPlayAvg} percentAvg={mediaPlayAvg30itemRateOnClassificationPriceTag}
                 sumAvgNumber='123' sumAvgPercent={mediaPlayAvgRateOnClassificationPriceTag}
                 numberSum='123' percentSum={mediaPlaySumRateOnClassificationPriceTag}
                 typeSum="123" />
@@ -108,14 +114,15 @@ class DataIndicator extends Component {
     );
   }
 }
-const HeadBox = ({ title, number, unit, percent, isLeft = false }) => {
+const HeadBox = ({ title, number, percent, isLeft = false }) => {
 
   const unConfig = <UpDownPercentage percent={percent} isBackColor={true} />
   return <div className='head-box'>
     <div className={`${isLeft ? 'title-light' : 'title'}`}>{title}</div>
     <div className='head-box-flex'>
-      <div className='number'>{number}</div>
-      <div className='unit'>{unit}</div>
+      {/* <div className='number'>{number}</div>
+      <div className='unit'>{unit}</div> */}
+      <ValueFormat value={number} valueClass='number' unitClass='unit' />
       {isLeft ? unConfig : ""}
     </div>
     {isLeft ? "" : unConfig}
@@ -132,8 +139,7 @@ const ThreeBox = ({ title, number, percent, isBig = false, notPercent = false })
   </div>
 }
 const OperateItem = ({ typeText, numberAvg, percentAvg, sumAvgNumber, sumAvgPercent, numberSum, percentSum }) => {
-  const hoverHead = <HeadBox title='近30条视频均' isLeft={true} number={numberAvg} unit={'万'} percent={percentAvg} />
-
+  const hoverHead = <HeadBox title='近30条视频均' isLeft={true} number={numberAvg} percent={percentAvg} />
   return <div className='operate-item'>
     <div>{typeText}</div>
     <div className='back-box'>
@@ -143,10 +149,10 @@ const OperateItem = ({ typeText, numberAvg, percentAvg, sumAvgNumber, sumAvgPerc
           content='低于同分类同价格近30条视频转发均值'
         />
         : hoverHead}
-      <div className='avg-sum-flex'>
+      {/* <div className='avg-sum-flex'>
         <ThreeBox title='总平均' number={sumAvgNumber} percent={sumAvgPercent} />
         <ThreeBox title='累计' number={numberSum} percent={percentSum} />
-      </div>
+      </div> */}
     </div>
 
   </div>

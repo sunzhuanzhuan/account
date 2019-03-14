@@ -60,9 +60,9 @@ class AccountDetail extends Component {
         <LazyLoad once overflow>
           <AudienceAttribute getAudienceAttribute={getAudienceAttribute} audienceAttributeInfo={audienceAttributeInfo} />
         </LazyLoad>
-        <LazyLoad once overflow>
+        {/* <LazyLoad once overflow>
           <NewVideo />
-        </LazyLoad>
+        </LazyLoad> */}
         <Modal
           title={showModal.title}
           visible={visible}

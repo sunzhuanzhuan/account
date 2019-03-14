@@ -20,7 +20,7 @@
             background: #fff;
             padding: 10px 10px 10px;
             flex: 2;
-            margin-left: 10px;
+            @margin-left-right-10();
         }
         .right-composite {
             @margin-left-right-10();
@@ -110,6 +110,10 @@
             border-bottom: @border-left-line;
             text-align: center;
             height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .left-index {}
         }
         .score {
             @color333-font16();
@@ -120,7 +124,9 @@
             font-size: 14px;
             color: #1990FF;
             border: 1px solid #1990FF;
-            padding: 5px 20px;
+            height: 30px;
+            line-height: 30px;
+            padding: 0px 15px;
         }
     }
 }
