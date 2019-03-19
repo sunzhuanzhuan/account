@@ -118,6 +118,8 @@ class MapChart extends Component {
         >
           <Label content="" offset={0} />
           <Tooltip showTitle={false} />
+          <Legend position='left-bottom'
+            offsetY={-50} />
         </Geom>
       </Chart>);
   }
