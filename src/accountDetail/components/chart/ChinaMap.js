@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 const { AMap, AMapUI } = window;
 
 import {
-  Chart, Axis, View, Geom, Tooltip, Label
+  Chart, Axis, View, Geom, Tooltip, Label, Legend
 } from "bizcharts";
 import DataSet from "@antv/data-set";
 const constructGeoJSON = (features) => {
@@ -15,39 +15,7 @@ const constructGeoJSON = (features) => {
   }
   return features;
 };
-var dataChina = [
-  { name: "北京市", valueNum: 3 },
-  { name: "天津市", valueNum: 42 },
-  { name: "河北", valueNum: 55 },
-  { name: "山西", valueNum: 81 },
-  { name: "内蒙古", valueNum: 47 },
-  { name: "辽宁", valueNum: 200 },
-  { name: "吉林", valueNum: 82 },
-  { name: "黑龙江", valueNum: 66 },
-  { name: "上海", valueNum: 24 },
-  { name: "江苏", valueNum: 92 },
-  { name: "浙江", valueNum: 114 },
-  { name: "安徽", valueNum: 109 },
-  { name: "福建", valueNum: 116 },
-  { name: "江西", valueNum: 91 },
-  { name: "山东", valueNum: 119 },
-  { name: "河南", valueNum: 137 },
-  { name: "湖北", valueNum: 116 },
-  { name: "湖南", valueNum: 114 },
-  { name: "重庆", valueNum: 91 },
-  { name: "四川", valueNum: 125 },
-  { name: "贵州", valueNum: 62 },
-  { name: "云南", valueNum: 83 },
-  { name: "西藏", valueNum: 9 },
-  { name: "陕西", valueNum: 80 },
-  { name: "甘肃", valueNum: 56 },
-  { name: "青海", valueNum: 10 },
-  { name: "宁夏", valueNum: 18 },
-  { name: "新疆", valueNum: 67 },
-  { name: "广东", valueNum: 123 },
-  { name: "广西", valueNum: 59 },
-  { name: "海南", valueNum: 14 },
-];
+
 /*
 * 传入adcode获取geojson，部分数据需要处理一下
 */
@@ -103,8 +71,8 @@ class MapChart extends Component {
     features.map((one) => {
       const name = one.properties.name
       dataValue.map((item) => {
-        if (name.includes(item.name)) {
-          one.valueNum = item.valueNum
+        if (name.includes(item.key)) {
+          one.value = item.value
         }
       })
     })
@@ -116,12 +84,13 @@ class MapChart extends Component {
   }
 
   render() {
+    const { area } = this.props
     const { chinaGeo } = this.state;
     if (!chinaGeo) {
       return '数据加载中...'
     }
 
-    const data = this.processGeoData(chinaGeo, dataChina);
+    const data = this.processGeoData(chinaGeo, area);
 
     const scale = {
       latitude: {
@@ -137,13 +106,13 @@ class MapChart extends Component {
     return (
       <Chart height={500} width={645} scale={scale} data={data} padding={[0, 0, 0, 90]}>
         <Geom type="polygon" position="longitude*latitude"
-          style={{lineWidth: 1, stroke: "white"}}
-          // color={['valueNum', ['#31c5f8', '#61d3f8', '#89dcfd', '#b0e8f8', '#d8f3ff']]}
-          color={['valueNum', ['#d9f4ff', '#33c5f6']]}
-          tooltip={['name*valueNum', (name, valueNum) => {
+          style={{ lineWidth: 1, stroke: "white" }}
+          // color={['value', ['#31c5f8', '#61d3f8', '#89dcfd', '#b0e8f8', '#d8f3ff']]}
+          color={['value', ['#d9f4ff', '#33c5f6']]}
+          tooltip={['name*value', (name, value) => {
             return {
               name: name,
-              value: valueNum
+              value: value
             }
           }]}
         >

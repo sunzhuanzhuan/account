@@ -1,4 +1,4 @@
-const oldPreFix = "/operator-gateway/account/v1/"
+const oldPreFix = "/operator-gateway/accountDetail/v1/"
 export default {
   getBaseInfo: oldPreFix + 'getBaseInfo',
   getAudienceAttribute: oldPreFix + 'getAudienceAttribute',
