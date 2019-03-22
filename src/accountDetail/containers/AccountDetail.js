@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { HeadInfo, DataIndicator, HistoricalAD, ContentData, AudienceAttribute, NewVideo, AccountRecommend } from "../components";
 import './AccountDetail.less'
-import { Modal } from 'antd';
+import { Modal, message } from 'antd';
 import LazyLoad from 'react-lazyload';
 import { Route, withRouter } from 'react-router-dom'
 import { bindActionCreators } from "redux";
@@ -24,9 +24,7 @@ class AccountDetail extends Component {
     actions.getBaseInfo({ accountId: accountId })
   }
 
-  componentWillUnmount() {
-  }
-
+  //弹窗方法
   setShowModal = (visible, showModal) => {
     if (visible) {
       this.setState({
@@ -36,6 +34,20 @@ class AccountDetail extends Component {
     } else {
       this.setState({ visible: visible })
     }
+  }
+  //选号车操作
+  selectCarEdit = async (isAdd) => {
+    const { searchParam: { accountId, platformId } } = this.state
+    const { actions: { removeFromCartAD, addToCartAD } } = this.props
+    if (isAdd) {
+      await addToCartAD({
+        accounts: [{ account_id: accountId, platform_id: platformId }],
+        item_type_id: 1
+      })
+    } else {
+      await removeFromCartAD({ staging_ids: [accountId] })
+    }
+    message.success('操作成功')
   }
   render() {
     const { showModal, visible, searchParam: { accountId } } = this.state
@@ -62,7 +74,7 @@ class AccountDetail extends Component {
     return (
       <div className="account-view-detail" id='Js-account-view-detail-Id'>
         {/* 头部基础信息 */}
-        <HeadInfo setShowModal={this.setShowModal} baseInfo={baseInfo} />
+        <HeadInfo setShowModal={this.setShowModal} baseInfo={baseInfo} selectCarEdit={this.selectCarEdit} />
         <DataIndicator baseInfo={baseInfo} />
         {/* 历史案例 */}
         <LazyLoad once overflow>

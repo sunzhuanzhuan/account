@@ -32,3 +32,23 @@ export const {
 } = createHttpAction('getQueryOrderCooperationList', Interface.getQueryOrderCooperationList, {
   method: 'post',
 });
+//新增购物车账号
+export const {
+  addToCartAD,
+  addToCartAD_success
+} = createHttpAction('addToCartAD', Interface.addToCartAD, {
+  method: 'post',
+  //isTrack: true,
+  // trackResult: (search, data) => {
+  //   return {
+  //     account_id: data && data[0]
+  //   }
+  // }
+})
+//批量删除购物车
+export const {
+  removeFromCartAD,
+  removeFromCartAD_success
+} = createHttpAction('removeFromCartAD', Interface.removeFromCartAD, {
+  method: 'post'
+})
