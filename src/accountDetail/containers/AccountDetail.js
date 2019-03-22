@@ -50,8 +50,10 @@ class AccountDetail extends Component {
     }
     return (
       <div className="account-view-detail" id='Js-account-view-detail-Id'>
+        {/* 头部基础信息 */}
         <HeadInfo setShowModal={this.setShowModal} baseInfo={baseInfo} />
         <DataIndicator baseInfo={baseInfo} />
+        {/* 历史案例 */}
         <LazyLoad once overflow>
           <HistoricalAD
             getQueryOrderCooperationList={getQueryOrderCooperationList}
@@ -59,15 +61,18 @@ class AccountDetail extends Component {
             queryIndustryInfoList={queryIndustryInfoList}
             getQueryIndustryInfoList={getQueryIndustryInfoList} />
         </LazyLoad>
+        {/*内容数据  */}
         <LazyLoad once overflow>
           <ContentData {...contentDataProps} />
         </LazyLoad>
-        <LazyLoad once overflow>
+        {/* 受众画像 */}
+        {/* <LazyLoad once overflow>
           <AudienceAttribute getAudienceAttribute={getAudienceAttribute} audienceAttributeInfo={audienceAttributeInfo} />
-        </LazyLoad>
-        <LazyLoad once overflow>
+        </LazyLoad> */}
+        {/* 最新视频 */}
+        {/* <LazyLoad once overflow>
           <NewVideo />
-        </LazyLoad>
+        </LazyLoad> */}
         {/* 账号推荐
           <AccountRecommend /> 
         */}
