@@ -15,13 +15,17 @@ class AccountDetail extends Component {
     this.state = {
       visible: false,
       showModal: { title: '', content: '' },
-      searchParam: qs.parse(this.props.location.search.substring(1))
+      searchParam: qs.parse(this.props.location.search.substring(1)),
+      isExistCar: false
     };
   }
   componentDidMount = () => {
     const { actions } = this.props
     const { searchParam: { accountId } } = this.state
     actions.getBaseInfo({ accountId: accountId })
+    actions.getAccountIsInCart({ accountId: accountId }).then(({ data }) => {
+      this.setState({ isExistCar: data == 1 })
+    })
   }
 
   //弹窗方法
@@ -50,7 +54,7 @@ class AccountDetail extends Component {
     message.success('操作成功')
   }
   render() {
-    const { showModal, visible, searchParam: { accountId } } = this.state
+    const { showModal, visible, searchParam: { accountId }, isExistCar } = this.state
     const { actions, accountDetail } = this.props
     const {
       baseInfo,
@@ -74,7 +78,7 @@ class AccountDetail extends Component {
     return (
       <div className="account-view-detail" id='Js-account-view-detail-Id'>
         {/* 头部基础信息 */}
-        <HeadInfo setShowModal={this.setShowModal} baseInfo={baseInfo} selectCarEdit={this.selectCarEdit} />
+        <HeadInfo setShowModal={this.setShowModal} baseInfo={baseInfo} selectCarEdit={this.selectCarEdit} isExistCar={isExistCar} />
         <DataIndicator baseInfo={baseInfo} />
         {/* 历史案例 */}
         <LazyLoad once overflow>

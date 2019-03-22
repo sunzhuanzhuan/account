@@ -9,4 +9,6 @@ export default {
   removeFromCartAD: "/export/account/removeFromCart",
   //添加购物车数据
   addToCartAD: "/export/account/addToCart",
+  //查询是否在选号车以选中
+  getAccountIsInCart: "/export/account/getAccountIsInCart",
 }

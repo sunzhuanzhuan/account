@@ -52,3 +52,8 @@ export const {
 } = createHttpAction('removeFromCartAD', Interface.removeFromCartAD, {
   method: 'post'
 })
+//查询是否在选号车以选中
+export const {
+  getAccountIsInCart,
+  getAccountIsInCart_success
+} = createHttpAction('getAccountIsInCart', Interface.getAccountIsInCart)

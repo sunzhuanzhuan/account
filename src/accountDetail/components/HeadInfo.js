@@ -14,7 +14,7 @@ class HeadInfo extends Component {
     this.state = {};
   }
   render() {
-    const { setShowModal, isCar, baseInfo = {}, selectCarEdit } = this.props
+    const { setShowModal, isExistCar, baseInfo = {}, selectCarEdit } = this.props
     const { base = {}, feature = {}, skuList = [] } = baseInfo
     const { isMale, consumptionLevel, systemType, avatarUrl,
       snsName, snsId, followerCount, introduction, platformId = 0,
@@ -77,7 +77,7 @@ class HeadInfo extends Component {
                 {skuList.map(one => <OneRelease key={one.skuId} title={one.skuTypeName} content={one.quotePrice} last={one.unitPrice} />)}
               </div>
               <div style={{ textAlign: 'center' }}>
-                {isCar ? <Button className='add-select-car-button' type='primary' onClick={() => selectCarEdit(true)}>加入选号车</Button> :
+                {isExistCar ? <Button className='add-select-car-button' type='primary' onClick={() => selectCarEdit(true)}>加入选号车</Button> :
                   <Button className='remove-select-car-button' onClick={() => selectCarEdit(false)}>移除选号车</Button>}
               </div>
               {/* <div style={{ textAlign: "center", marginTop: 12 }}>加入收藏<span className='collect'>（100人已收藏）</span></div> */}
