@@ -29,4 +29,6 @@ export const {
 export const {
   getQueryOrderCooperationList,
   getQueryOrderCooperationList_success
-} = createHttpAction('getQueryOrderCooperationList', Interface.getQueryOrderCooperationList);
+} = createHttpAction('getQueryOrderCooperationList', Interface.getQueryOrderCooperationList, {
+  method: 'post',
+});

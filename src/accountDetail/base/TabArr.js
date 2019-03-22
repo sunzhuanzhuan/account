@@ -1,20 +1,20 @@
 import React, { Component } from 'react'
 import './TabArr.less'
+import { Spin } from 'antd';
 class TabArr extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      cheackedNum: 0
+      cheackedNum: 0,
     };
   }
-  onChangeTab = (id) => {
+  onChangeTab = async (id) => {
     const { onChange } = this.props
-    onChange && onChange({ industryCode: id })
-    this.setState({ cheackedNum: id })
+    await onChange && onChange(id)
   }
   render() {
     const { tabArrData } = this.props
-    const { cheackedNum } = this.state
+    const { cheackedNum, } = this.state
     return (
       <div className='tab-arr'>
         {tabArrData.map(((one, index) => <div

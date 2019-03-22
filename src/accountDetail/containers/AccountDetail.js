@@ -8,17 +8,20 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as action from '../actions/index'
 import * as commonAction from "@/actions";
+import qs from "qs";
 class AccountDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
       visible: false,
-      showModal: { title: '', content: '' }
+      showModal: { title: '', content: '' },
+      searchParam: qs.parse(this.props.location.search.substring(1))
     };
   }
   componentDidMount = () => {
     const { actions } = this.props
-    actions.getBaseInfo()
+    const { searchParam: { accountId } } = this.state
+    actions.getBaseInfo({ accountId: accountId })
   }
 
   componentWillUnmount() {
@@ -35,7 +38,7 @@ class AccountDetail extends Component {
     }
   }
   render() {
-    const { showModal, visible } = this.state
+    const { showModal, visible, searchParam: { accountId } } = this.state
     const { actions, accountDetail } = this.props
     const {
       baseInfo,
@@ -46,7 +49,15 @@ class AccountDetail extends Component {
     const { getTrend, getAudienceAttribute, getQueryOrderCooperationList, getQueryIndustryInfoList } = actions
     const contentDataProps = {
       trendInfo,
-      getTrend
+      getTrend,
+      accountId
+    }
+    const historicalADProps = {
+      getQueryOrderCooperationList,
+      queryOrderCooperationList,
+      queryIndustryInfoList,
+      getQueryIndustryInfoList,
+      accountId
     }
     return (
       <div className="account-view-detail" id='Js-account-view-detail-Id'>
@@ -55,11 +66,7 @@ class AccountDetail extends Component {
         <DataIndicator baseInfo={baseInfo} />
         {/* 历史案例 */}
         <LazyLoad once overflow>
-          <HistoricalAD
-            getQueryOrderCooperationList={getQueryOrderCooperationList}
-            queryOrderCooperationList={queryOrderCooperationList}
-            queryIndustryInfoList={queryIndustryInfoList}
-            getQueryIndustryInfoList={getQueryIndustryInfoList} />
+          <HistoricalAD {...historicalADProps} />
         </LazyLoad>
         {/*内容数据  */}
         <LazyLoad once overflow>

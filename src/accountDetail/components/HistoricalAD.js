@@ -2,7 +2,7 @@
  * @Author: wangxinyue 
  * @Date: 2019-02-28 17:43:12 
  * @Last Modified by: wangxinyue
- * @Last Modified time: 2019-03-14 20:22:18
+ * @Last Modified time: 2019-03-22 11:49:58
  * 历史广告案例
  */
 
@@ -17,17 +17,34 @@ class HistoricalAD extends Component {
   }
   componentDidMount = () => {
     console.log('加载数据哈哈哈HistoricalAD')
-    this.props.getQueryOrderCooperationList()
-    this.props.getQueryIndustryInfoList()
+    const { accountId } = this.props
+    this.onChangeIndustryCode()
+    this.props.getQueryIndustryInfoList({ accountId })
   }
+  //历史案例切换
+
+  onChangeIndustryCode = (industryCode) => {
+    const { accountId } = this.props
+    this.props.getQueryOrderCooperationList({
+      page: {
+        currentPage: 1,//当前页
+        pageSize: 4, //每页条数
+      },
+      form: {
+        accountId: accountId,
+        industryCode: industryCode
+      }
+    })
+  }
+
   render() {
-    const { getQueryOrderCooperationList, queryOrderCooperationList: { list = [] }, queryIndustryInfoList = [] } = this.props
+    const { queryOrderCooperationList: { list = [] }, queryIndustryInfoList = [] } = this.props
     return (
       <div className='historical-advertising'>
         <div className='title-big'>历史广告案例</div>
         <div className='head-box'>
           <div className='tab-box'>
-            <TabArr onChange={getQueryOrderCooperationList} tabArrData={[
+            <TabArr onChange={this.onChangeIndustryCode} tabArrData={[
               { industryName: '全部', industryCode: 0 },
               ...queryIndustryInfoList]} />
           </div>
