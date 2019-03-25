@@ -79,6 +79,7 @@ class AccountDetail extends Component {
       <div className="account-view-detail" id='Js-account-view-detail-Id'>
         {/* 头部基础信息 */}
         <HeadInfo setShowModal={this.setShowModal} baseInfo={baseInfo} selectCarEdit={this.selectCarEdit} isExistCar={isExistCar} />
+        {/* 数据指标 */}
         <DataIndicator baseInfo={baseInfo} />
         {/* 历史案例 */}
         <LazyLoad once overflow>

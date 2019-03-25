@@ -21,7 +21,7 @@ class HeadInfo extends Component {
       url, qrCodeUrl,
     } = base
     const { classification, wholeRank = 0, orderResponseDuration, orderResponsePercentile,
-      orderNumRateOnClassification, orderAcceptanceRate, orderMajorIndustryCategory } = feature
+      orderNumRateOnClassification, orderAcceptanceRate, orderMajorIndustryCategory, orderCompleteDuration } = feature
 
     //排名处理
     const wholeRankCN = `${platformView[platformId]}排行第${nzhcn.encodeS(wholeRank)}`
@@ -69,7 +69,7 @@ class HeadInfo extends Component {
               <div className='type-info-row'>
                 <OneType title="历史服务最多分类" content={orderMajorIndustryCategory} />
                 <OneType title="接单率" content={FieldMap.getSegmentByFloat(orderAcceptanceRate)} last={orderAcceptanceRate} />
-                <OneType title="平均订单完结周期" content='1周' />
+                <OneType title="平均订单完结周期" content={orderCompleteDuration} />
               </div>
             </div>
             <div className='release-info'>

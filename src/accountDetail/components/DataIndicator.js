@@ -4,6 +4,7 @@ import './DataIndicator.less'
 import { PopoverFormat } from "../base/TitleAndDecide";
 import CompositeRadar from "./chart/CompositeRadar";
 import ValueFormat from "../base/ValueFormat";
+import numeral from 'numeral'
 import { Divider } from "antd";
 class DataIndicator extends Component {
   constructor(props) {
@@ -13,7 +14,7 @@ class DataIndicator extends Component {
   render() {
     const { baseInfo = {} } = this.props
     const { feature = {}, base = {}, composite = {} } = baseInfo
-
+    const { followerCount } = base
     const {
       wholeIndex, //综合指数
       wholeRankOnClassification, //类型排名
@@ -43,7 +44,9 @@ class DataIndicator extends Component {
       mediaPlayAvg30itemRateOnClassificationPriceTag, //账号近30条平均播放/同行业同价位近30条平均播放	Float	 
       mediaPlayAvgRateOnClassificationPriceTag, //	账号平均播放/同行业同价位平均单视频播放	Float	 
       mediaPlaySumRateOnClassificationPriceTag, //	账号平均播放/同行业同价位平均累计播放
-
+      //     
+      accountPublishMediaCount90d, //90天发布数	
+      followerCountGrowthRate28d, //28天粉丝增长率	
 
     } = feature
     return (
@@ -70,19 +73,19 @@ class DataIndicator extends Component {
             <div className='fan-release'>
               <div className='fan-release-item'>
                 <PopoverFormat
-                  text={<div><HeadBox title={'总粉丝数'} number={123123} percent={followerCountRateOnClassificationPriceTag} /></div>}
+                  text={<div><HeadBox title={'总粉丝数'} number={followerCount} percent={followerCountRateOnClassificationPriceTag} /></div>}
                   content='高于同分类同价格总粉丝数均值'
                 />
                 <PopoverFormat
-                  text={<div> <ThreeBox title='粉丝互动率' number={1} percent={mediaInteractionProportionRateOnClassificationPriceTag} isBig={true} /> </div>}
+                  text={<div> <ThreeBox title='粉丝互动率' number={'缺失'} percent={mediaInteractionProportionRateOnClassificationPriceTag} isBig={true} /> </div>}
                   content='高于同分类同价格粉丝数互动率均值'
                 />
-                <ThreeBox title='粉丝互动数' number={mediaInteractionRateOnClassificationPriceTag} percent={0.9} isBig={true} />
+                <ThreeBox title='粉丝互动数' number={'缺失'} percent={mediaInteractionRateOnClassificationPriceTag} isBig={true} />
               </div>
               <div className='fan-release-item'>
-                <HeadBox title={'总发布数'} number={videoCount} percent={0.33} />
-                <ThreeBox title='90天发布数' number={'30条'} notPercent={true} />
-                <ThreeBox title='28天粉丝增长率' number={'47%'} notPercent={true} />
+                <HeadBox title={'总发布数'} number={videoCount} noLast={true} />
+                <ThreeBox title='90天发布数' number={`${accountPublishMediaCount90d}条`} notPercent={true} />
+                <ThreeBox title='28天粉丝增长率' number={numeral(followerCountGrowthRate28d).format('0.0%')} notPercent={true} />
               </div>
             </div>
             <div className='operate-four'>
@@ -114,9 +117,9 @@ class DataIndicator extends Component {
     );
   }
 }
-const HeadBox = ({ title, number, percent, isLeft = false }) => {
+const HeadBox = ({ title, number, percent, isLeft = false, noLast }) => {
 
-  const unConfig = <UpDownPercentage percent={percent} isBackColor={true} />
+  const unConfig = noLast ? null : <UpDownPercentage percent={percent} isBackColor={true} />
   return <div className='head-box'>
     <div className={`${isLeft ? 'title-light' : 'title'}`}>{title}</div>
     <div className='head-box-flex'>
