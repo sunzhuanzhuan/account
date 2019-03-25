@@ -119,6 +119,7 @@ export class BaseInfoForm extends Component {
           this.setState({
             submitLoading: false
           });
+          window.oldSnsUniqueId = values.base.snsUniqueId
           message.success('更新账号成功');
         }).catch(() => {
           this.setState({
