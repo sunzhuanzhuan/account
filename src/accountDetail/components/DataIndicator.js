@@ -76,7 +76,7 @@ class DataIndicator extends Component {
               <div className='fan-release-item'>
                 <PopoverFormat
                   text={<div><HeadBox title={'总粉丝数'} number={followerCount} percent={followerCountRateOnClassificationPriceTag} /></div>}
-                  content='高于同分类同价格总粉丝数均值'
+                  content={`${followerCountRateOnClassificationPriceTag > 0 ? '高' : '低'}于同分类同价格总粉丝数均值`}
                 />
                 <PopoverFormat
                   text={<div> <ThreeBox title='粉丝互动率' number={mediaInteractionProportion} percent={mediaInteractionProportionRateOnClassificationPriceTag} isBig={true} /> </div>}
