@@ -1,0 +1,28 @@
+@import "../index.less";
+.account-recommend {
+    .recommed-box {
+        @flex-between();
+        background: #fff;
+        height: 220px;
+        .recommed-item {
+            margin: 28px;
+            text-align: center;
+        }
+        .account-name {
+            max-width: 100px;
+            margin-top: 20px;
+            .font-color(#333, 14px);
+            font-weight: 600;
+            @nowrap-hidden-ellipsis();
+        }
+        .account-lable {
+            max-width: 100px;
+            @nowrap-hidden-ellipsis();
+            margin-top: 6px;
+            height: 18px;
+            background: #FFF6E8;
+            border: 1px solid #FEBE4C;
+            .font-color(#333, 12px)
+        }
+    }
+}
