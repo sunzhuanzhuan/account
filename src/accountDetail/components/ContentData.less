@@ -1,6 +1,5 @@
 @import "../index.less";
 .content-data {
-     
     .content-char {
         @margin-left-right-10();
         background: #fff;
@@ -16,12 +15,18 @@
     }
     .right-decide {
         border-left: @border-left-line;
-        padding-left: 30px;
+        padding-left: 20px;
+        margin-bottom: 20px;
         flex: 1;
+        flex-direction: column;
+        display: flex;
+        justify-content: space-between;
+        .line-middle {
+            border-bottom: @border-left-line;
+            margin-right: 20px;
+        }
         .decide-box {
             display: flex;
-            padding: 18px 0px;
-            border-bottom: @border-left-line;
             .img-box {
                 width: 100px;
             }

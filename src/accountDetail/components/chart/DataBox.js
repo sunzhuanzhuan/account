@@ -41,7 +41,7 @@ class DataBox extends Component {
           height={400}
           data={dv}
           scale={cols}
-          padding={[20, 120, 95]}
+          padding={[20, 80, 45]}
           forceFit
         >
           <Axis name="x" />
