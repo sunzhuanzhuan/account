@@ -60,7 +60,7 @@ class DataIndicator extends Component {
               <div className='head-center'>
                 <div className='left-index'>
                   <div className='text'>综合指数</div>
-                  <div className='score'>{wholeIndex * 100}</div>
+                  <div className='score'>{wholeIndex}</div>
                 </div>
                 <Divider type="vertical" style={{ height: 40, margin: '0px 20px' }} />
                 <div className='lable'>{wholeRankOnClassification}</div>
