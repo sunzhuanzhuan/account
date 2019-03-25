@@ -16,16 +16,13 @@ class AccountDetail extends Component {
       visible: false,
       showModal: { title: '', content: '' },
       searchParam: qs.parse(this.props.location.search.substring(1)),
-      isExistCar: false
     };
   }
   componentDidMount = () => {
     const { actions } = this.props
     const { searchParam: { accountId } } = this.state
     actions.getBaseInfo({ accountId: accountId })
-    actions.getAccountIsInCart({ accountId: accountId }).then(({ data }) => {
-      this.setState({ isExistCar: data == 1 })
-    })
+    actions.getAccountIsInCart({ accountId: accountId })
   }
 
   //弹窗方法
@@ -42,7 +39,7 @@ class AccountDetail extends Component {
   //选号车操作
   selectCarEdit = async (isAdd) => {
     const { searchParam: { accountId, platformId } } = this.state
-    const { actions: { removeFromCartAD, addToCartAD } } = this.props
+    const { actions: { removeFromCartAD, addToCartAD, getAccountIsInCart } } = this.props
     if (isAdd) {
       await addToCartAD({
         accounts: [{ account_id: accountId, platform_id: platformId }],
@@ -51,17 +48,19 @@ class AccountDetail extends Component {
     } else {
       await removeFromCartAD({ staging_ids: [accountId] })
     }
+    getAccountIsInCart({ account_id: accountId })
     message.success('操作成功')
   }
   render() {
-    const { showModal, visible, searchParam: { accountId }, isExistCar } = this.state
+    const { showModal, visible, searchParam: { accountId } } = this.state
     const { actions, accountDetail } = this.props
     const {
       baseInfo,
       trendInfo,
       audienceAttributeInfo,
       queryOrderCooperationList,
-      queryIndustryInfoList } = accountDetail
+      queryIndustryInfoList,
+      isExistCar } = accountDetail
     const { getTrend, getAudienceAttribute, getQueryOrderCooperationList, getQueryIndustryInfoList } = actions
     const contentDataProps = {
       trendInfo,

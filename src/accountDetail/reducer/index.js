@@ -27,11 +27,20 @@ export const queryIndustryInfoList = handleActions({
     return [...action.payload.data]
   }
 }, [])
+
 export const queryOrderCooperationList = handleActions({
   [accountDetail.getQueryOrderCooperationList_success]: (state, action) => {
     return { ...action.payload.data }
   }
 }, {})
+
+export const isExistCar = handleActions({
+  [accountDetail.getAccountIsInCart_success]: (state, action) => {
+    const data = action.payload.data
+    return data == 2
+  }
+}, false)
+
 
 
 export default combineReducers({
@@ -39,5 +48,6 @@ export default combineReducers({
   audienceAttributeInfo,
   trendInfo,
   queryOrderCooperationList,
-  queryIndustryInfoList
+  queryIndustryInfoList,
+  isExistCar
 })

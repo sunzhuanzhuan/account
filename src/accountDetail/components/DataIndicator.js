@@ -20,6 +20,8 @@ class DataIndicator extends Component {
       wholeRankOnClassification, //类型排名
       videoCount,
       followerCountRateOnClassificationPriceTag, //总粉丝数同别的对比
+      mediaInteractionProportion, //粉丝互动率
+      mediaInteractionAvg, //平均互动数
       mediaInteractionProportionRateOnClassificationPriceTag, //账号粉丝互动率 比 同行业同价位平均粉丝互动率
       mediaInteractionRateOnClassificationPriceTag, //平均互动数
       //点赞
@@ -77,10 +79,10 @@ class DataIndicator extends Component {
                   content='高于同分类同价格总粉丝数均值'
                 />
                 <PopoverFormat
-                  text={<div> <ThreeBox title='粉丝互动率' number={'缺失'} percent={mediaInteractionProportionRateOnClassificationPriceTag} isBig={true} /> </div>}
+                  text={<div> <ThreeBox title='粉丝互动率' number={mediaInteractionProportion} percent={mediaInteractionProportionRateOnClassificationPriceTag} isBig={true} /> </div>}
                   content='高于同分类同价格粉丝数互动率均值'
                 />
-                <ThreeBox title='粉丝互动数' number={'缺失'} percent={mediaInteractionRateOnClassificationPriceTag} isBig={true} />
+                <ThreeBox title='粉丝互动数' number={mediaInteractionAvg} percent={mediaInteractionRateOnClassificationPriceTag} isBig={true} />
               </div>
               <div className='fan-release-item'>
                 <HeadBox title={'总发布数'} number={videoCount} noLast={true} />
