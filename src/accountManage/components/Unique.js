@@ -146,18 +146,20 @@ export const ContentCategory = (props) => {
  * 三方平台报价项及相关设置
  */
 export const AgentConfigAndPrice = (props) => {
-  const { formItemLayout = {}, data: { accountInfo }, getFieldDecorator, getFieldValue } = props;
+  const { formItemLayout = {}, data: { accountInfo, trinityPriceInfo }, getFieldDecorator, getFieldValue } = props;
   const {
     priceMicroTaskTweet,
-    priceMicroTaskRetweet,
-    priceWeiqTweet,
-    priceWeiqRetweet,
     weitaskFetchedTime
   } = accountInfo;
+  const {
+    trinityIsPreventShielding,
+    trinityPlaceOrderType,
+    trinitySkuInfoResVOList = [],
+  } = trinityPriceInfo;
   return <div>
     <FormItem {...formItemLayout} label='是否可在三方平台下单'>
       {getFieldDecorator('isssssOrderStatus', {
-        initialValue: 1
+        initialValue: trinityIsPreventShielding
       })(
         <RadioGroup>
           <Radio value={1}>是</Radio>
@@ -167,7 +169,7 @@ export const AgentConfigAndPrice = (props) => {
     </FormItem>
     {getFieldValue('isssssOrderStatus') === 1 ? <FormItem {...formItemLayout} label='下单方'>
       {getFieldDecorator('issOrderStatus', {
-        initialValue: 1
+        initialValue: trinityPlaceOrderType
       })(
         <RadioGroup>
           <Radio value={1}>微博易代下</Radio>

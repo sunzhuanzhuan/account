@@ -13,6 +13,7 @@ import {
 	updateFetchInfo,
 	addFetchInfo,
 	getSkuList_success,
+  getTrinitySkuInfoList_success,
 	getSkuTypeList_success,
 	getPrimaryAccountInfo_success,
 	getUploadToken_success,
@@ -139,6 +140,15 @@ export const priceInfo = handleActions({
   },
 }, {})
 
+export const trinityPriceInfo = handleActions({
+	[combineActions(getTrinitySkuInfoList_success)]: (state, action) => {
+		return {
+			...state,
+			...action.payload.data
+		}
+	}
+}, {})
+
 export const priceTypeList = handleActions({
 	[combineActions(getSkuTypeList_success)]: (state, action) => {
 		return [
@@ -181,5 +191,6 @@ export default combineReducers({
 	priceTypeList,
 	regionCode,
 	industryListForAccount,
-	sensitiveWordsFilter
+	sensitiveWordsFilter,
+  trinityPriceInfo,
 })

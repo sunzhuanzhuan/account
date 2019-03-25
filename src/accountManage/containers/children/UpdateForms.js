@@ -294,7 +294,7 @@ export class AgentConfigAndPriceForm extends Component {
 
   render() {
     const { form, params } = this.props;
-    const { data: { accountInfo, priceInfo } } = params;
+    const { data: { accountInfo, priceInfo, trinityPriceInfo } } = params;
     const rightC = <div className='wrap-panel-right-content'>
       <Button size='small' type='primary' onClick={this.submit}>{'保存'}</Button>
     </div>;

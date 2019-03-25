@@ -65,6 +65,16 @@ export const {
 	method: 'get',
 });
 
+// 三方相关报价
+// 编辑账号时，获取三方报价项信息
+export const {
+  getTrinitySkuInfoList,
+  getTrinitySkuInfoList_success
+} = createHttpAction('getTrinitySkuInfoList', Interface.getTrinitySkuInfoList, {
+  method: 'get',
+});
+
+
 // 获取报价项信息
 export const {
 	getSkuTypeList,

@@ -59,15 +59,24 @@ export default class UpdateChild extends Component {
 			itemTypeId: 1,
 			itemId: accountId,
 			platformId
-		}).then(() => {
+		}).finally(() => {
 			this.setState({ isLoading: false })
-		}).catch(() => {
-			this.setState({ isLoading: false })
+		})
+	}
+  getTrinitySkuActions = () => {
+		const { params } = this.props
+		const { actions: { getTrinitySkuInfoList }, data: { accountInfo } } = params
+		const {
+			accountId,
+		} = accountInfo
+		return getTrinitySkuInfoList({
+      itemId: accountId
 		})
 	}
 
 	componentWillMount() {
 		this.getSkuActions()
+    this.getTrinitySkuActions()
 	}
 
 	render() {
