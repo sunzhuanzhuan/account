@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import LookIndex from "./LookIndex";
 import { PopoverFormat } from "../base/TitleAndDecide";
 import "./HeadInfo.less"
-import { Avatar, Button, Icon } from 'antd';
+import { Avatar, Button, Divider } from 'antd';
 import MultiClamp from 'react-multi-clamp';
 import { platformView } from "../../accountManage/constants/platform";
 import nzhcn from "nzh/cn";//数字转汉字  1->一
@@ -48,12 +48,16 @@ class HeadInfo extends Component {
           <div className='info-bottom-three'>
             <div className='base-info'>
               <OneLine title='账号标签' content={
-                <FatLable backColor='#F3F8FD' color='#78A3CE' list={['胖标签', '胖标签']} />
+                classification ? <FatLable backColor='#F3F8FD' color='#78A3CE' list={[classification]} /> : null
               } />
-              <OneLine title='功能标签' content={
+              {/* <OneLine title='功能标签' content={
                 <FatLable backColor='#FFEBEA' color='#FE6A60' list={['直播', '直播', '直播']} />
-              } />
-              <OneLine title='受众信息' content={<div className='content-font'>sdasd</div>} />
+              } /> */}
+              <OneLine title='受众信息' content={<div className='content-font'>
+                <span>{isMale == 1 ? '男性' : '女性'}</span> <Divider type="vertical" />
+                <span>消费水平{consumptionLevel == 1 ? '低' : consumptionLevel == 2 ? '中' : '高'}</span> <Divider type="vertical" />
+                <span>{systemType == 1 ? '安卓' : 'IOS'}</span>
+              </div>} />
               <OneLine title='简介' content={
                 <div className='content-font' style={{ maxWidth: 300 }}>
                   <PopoverFormat popoverProps={{ overlayStyle: { width: 400 } }} text={<MultiClamp ellipsis="..." clamp={2}>{introduction}</MultiClamp>} content={introduction} />
