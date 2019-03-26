@@ -24,7 +24,7 @@ const ValueFormat = ({ value, valueClass, unitClass }) => {
     display: "flex",
     alignItems: "baseline",
   }} >
-    <div className={valueClass}>{valueObj.value}</div>
+    <div className={valueClass}>{valueObj.value || '-'}</div>
     <div className={unitClass}>{valueObj.unit}</div>
   </div>
 }

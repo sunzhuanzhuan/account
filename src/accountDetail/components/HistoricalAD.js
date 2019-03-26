@@ -2,7 +2,7 @@
  * @Author: wangxinyue 
  * @Date: 2019-02-28 17:43:12 
  * @Last Modified by: wangxinyue
- * @Last Modified time: 2019-03-22 11:49:58
+ * @Last Modified time: 2019-03-25 17:46:29
  * 历史广告案例
  */
 
@@ -32,7 +32,7 @@ class HistoricalAD extends Component {
       },
       form: {
         accountId: accountId,
-        industryCode: industryCode
+        industryCode: industryCode == 0 ? null : industryCode
       }
     })
   }

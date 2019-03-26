@@ -4,7 +4,7 @@ export default {
   getAudienceAttribute: oldPreFix + 'getAudienceAttribute',
   getTrend: oldPreFix + 'getTrend',
   getQueryOrderCooperationList: oldPreFix + 'queryOrderCooperationList',
-  getQueryIndustryInfoList: oldPreFix + 'queryIndustryInfoList',
+  getQueryIndustryInfoList: oldPreFix + 'getUserBaseInfoWithAdmin',
   //删除购物车数据
   removeFromCartAD: "/export/account/removeFromCart",
   //添加购物车数据

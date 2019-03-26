@@ -9,6 +9,7 @@ import {
 } from "bizcharts";
 import DataSet from "@antv/data-set";
 import './CompositeRadar.less'
+import numeral from 'numeral'
 import { g2Tooltip, legendPosition } from "./config";
 class CompositeRadar extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class CompositeRadar extends Component {
   }
   render() {
     const { DataView } = DataSet;
-    const { data = [] } = this.props
+    const { data = [], legendType } = this.props
     const dv = new DataView().source(data);
     dv.transform({
       type: "fold",
@@ -32,7 +33,7 @@ class CompositeRadar extends Component {
       }
     });
     const scale = {
-      user: { formatter: d => ({ value: '该账号', avgValue: '美妆分类平均值' }[d]) }
+      user: { formatter: d => ({ value: '该账号', avgValue: `${legendType[1]}分类平均值` }[d]) }
     };
     const toopicConfig = [
       "value*avgValue*list",
@@ -82,9 +83,9 @@ class CompositeRadar extends Component {
              <div class='custom-tooltip-head'>
               ${list.map((one, index) => `<div  class='${index == 0 ? 'data-line-first' : 'data-line'}' key={index}>
                            <div class="${index == 0 ? 'data-item-first-border' : 'data-item-first'}">
-                               ${one.name} <div class='span-wihte'>${one.value}</div>
+                               ${one.name} <div class='span-wihte'>${one.value ? one.value : '-'}</div>
                            </div>
-                           <div style="color: ${index == 0 ? '#fff' : '#999'}" class='data-item'>${one.avgValue}</div>
+                           <div style="color: ${index == 0 ? '#fff' : '#999'}" class='data-item'>${one.avgValue ? one.avgValue : '-'}</div>
                           ${one.compare ? `<div style="color: ${one.compare > 0 ? '#EF554A' : '#7ED321'}" class='data-item'>
                            <img width='10px' src='${require(one.compare > 0 ? "../img/up-red.png" : "../img/down-green.png")}'/>${Math.abs(one.compare)}
                             </div>`: "<div class='data-item'style='color:#999'>-</div>"}

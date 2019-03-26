@@ -31,9 +31,9 @@ class DataBox extends Component {
       }
     });
     const cols = {
-      range: {
-        max: 35
-      }
+      // range: {
+      //   max: 35
+      // }
     };
     return (
       <div>

@@ -51,6 +51,7 @@ class DataIndicator extends Component {
       followerCountGrowthRate28d, //28天粉丝增长率	
 
     } = feature
+    const { data, legend = ['', ''] } = composite
     return (
       <div className='data-indicator'>
         <div className='title-big'>数据指标</div>
@@ -60,14 +61,14 @@ class DataIndicator extends Component {
               <div className='head-center'>
                 <div className='left-index'>
                   <div className='text'>综合指数</div>
-                  <div className='score'>{wholeIndex}</div>
+                  <div className='score'>{numeral(wholeIndex).format('0')}</div>
                 </div>
                 <Divider type="vertical" style={{ height: 40, margin: '0px 20px' }} />
-                <div className='lable'>{wholeRankOnClassification}</div>
+                <div className='lable'>{legend[1]}第{wholeRankOnClassification}名</div>
               </div>
 
               <div>
-                <CompositeRadar data={composite.data} />
+                <CompositeRadar data={data} legendType={legend} />
               </div>
             </div>
           </div>
@@ -137,7 +138,7 @@ const HeadBox = ({ title, number, percent, isLeft = false, noLast }) => {
 const ThreeBox = ({ title, number, percent, isBig = false, notPercent = false }) => {
   return <div className='three-avg-box' >
     <div className={notPercent ? 'big-title' : 'title'}>{title}</div>
-    <div className={`${isBig ? 'big-number' : 'number'}`}>{number}</div>
+    <div className={`${isBig ? 'big-number' : 'number'}`}>{number ? number : '-'}</div>
     {notPercent ? null : <div className='down' >
       <UpDownPercentage percent={percent} />
     </div>}
