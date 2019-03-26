@@ -2,7 +2,7 @@
  * @Author: wangxinyue 
  * @Date: 2019-02-28 17:43:12 
  * @Last Modified by: wangxinyue
- * @Last Modified time: 2019-03-26 16:06:20
+ * @Last Modified time: 2019-03-26 18:08:16
  * 历史广告案例
  */
 
@@ -85,7 +85,7 @@ class HistoricalAD extends Component {
         <div className='historical-ad-case'>
           {list.map((one, index) => <div className='case-item' key={index}>
             <div className='left-img'>
-              <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2924416775,758818339&fm=26&gp=0.jpg" />
+              <img src={one.mediaCoverUrl ? one.mediaCoverUrl : require('./img/deafult-box.png')} onError={(e) => e.target.src = require('./img/deafult-box.png')} />
             </div>
             <div className='right-info'>
               <div>

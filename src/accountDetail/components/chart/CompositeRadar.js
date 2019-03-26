@@ -60,7 +60,6 @@ class CompositeRadar extends Component {
             name="name"
             line={null}
             tickLine={null}
-            visible={false}
             grid={{
               lineStyle: {
                 lineDash: null
@@ -98,7 +97,7 @@ class CompositeRadar extends Component {
           <Axis
             name="score"
             line={null}
-            visible={false}
+            label={null}
             tickLine={null}
             grid={{
               type: "polygon",

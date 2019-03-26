@@ -34,7 +34,7 @@ class NewVideo extends Component {
       time: '2019-01-02'
     }, {
       title: ' 小叶带你玩偷吃的最好技能哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈',
-      img: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2924416775,758818339&fm=26&gp=0.jpg',
+      img: '',
       a: 13,
       b: 23,
       c: 44,
@@ -46,7 +46,7 @@ class NewVideo extends Component {
         <div className='video-list'>
           {videoList.map((one, index) => <div className='video-item' key={index} >
             <div className='img'>
-              <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2924416775,758818339&fm=26&gp=0.jpg" />
+              <img src={one.img ? one.img : require('./img/deafult-box.png')} onError={(e) => e.target.src = require('./img/deafult-box.png')} />
             </div>
             <div className='title'>
               {one.title}
