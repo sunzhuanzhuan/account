@@ -47,7 +47,7 @@ class DataIndicator extends Component {
       mediaPlayAvgRateOnClassificationPriceTag, //	账号平均播放/同行业同价位平均单视频播放	Float	 
       mediaPlaySumRateOnClassificationPriceTag, //	账号平均播放/同行业同价位平均累计播放
       //     
-      accountPublishMediaCount90d, //90天发布数	
+      accountPublishMediaCount90d = '-', //90天发布数	
       followerCountGrowthRate28d, //28天粉丝增长率	
 
     } = feature
@@ -93,7 +93,7 @@ class DataIndicator extends Component {
             </div>
             <div className='operate-four'>
               <OperateItem typeText='点赞'
-                numberAvg={mediaLikeAvg30itemOnClassification} percentAvg={mediaLikeAvg30itemRateOnClassificationPriceTag}
+                numberAvg={mediaLikeAvg30itemOnClassification || 6666} percentAvg={mediaLikeAvg30itemRateOnClassificationPriceTag}
                 sumAvgNumber={'123'} sumAvgPercent={mediaLikeAvgRateOnClassificationPriceTag}
                 numberSum='123' percentSum={mediaLikeSumRateOnClassificationPriceTag}
                 typeSum="123" />

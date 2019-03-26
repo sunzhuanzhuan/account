@@ -61,7 +61,7 @@ class AccountDetail extends Component {
       queryOrderCooperationList,
       queryIndustryInfoList,
       isExistCar } = accountDetail
-    const { getTrend, getAudienceAttribute, getQueryOrderCooperationList, getQueryIndustryInfoList } = actions
+    const { getTrend, getAudienceAttribute, getQueryOrderCooperationList, addQueryIndustryInfoList, getQueryIndustryInfoList } = actions
     const contentDataProps = {
       trendInfo,
       getTrend,
@@ -72,7 +72,8 @@ class AccountDetail extends Component {
       queryOrderCooperationList,
       queryIndustryInfoList,
       getQueryIndustryInfoList,
-      accountId
+      accountId,
+      addQueryIndustryInfoList
     }
     return (
       <div className="account-view-detail" id='Js-account-view-detail-Id'>

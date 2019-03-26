@@ -1,32 +1,45 @@
 @import '../index.less';
+
 .new-video {
-     
+
     .video-list {
         background: #fff;
         @flex-between();
         @margin-left-right-10();
+
         .video-item {
             padding: 30px 15px 10px;
             flex: 1;
             min-width: 220px;
+
+            .img {
+                border: 1px solid #efefef;
+                text-align: center;
+            }
+
             .img,
             .img>img {
                 height: 139px;
-                width: 100%;
+                max-width: 100%;
             }
+
             .title {
                 @nowrap-hidden-ellipsis();
                 @color333-font16();
             }
+
             .last-box {
                 @flex-between();
                 align-items: center;
             }
+
             .number {}
+
             .date-time {
                 @color999-font12();
             }
         }
+
         .video-item:hover {
             @hover-shadow();
         }
