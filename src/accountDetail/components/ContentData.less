@@ -1,18 +1,23 @@
 @import "../index.less";
+
 .content-data {
     .content-char {
         @margin-left-right-10();
         background: #fff;
         margin-bottom: 21px;
+
     }
+
     .last-box-decide {
         @flex-between();
         flex: 1;
     }
+
     .data-box-left {
         width: 100%;
         flex: 2;
     }
+
     .right-decide {
         border-left: @border-left-line;
         padding-left: 20px;
@@ -21,22 +26,28 @@
         flex-direction: column;
         display: flex;
         justify-content: space-between;
+
         .line-middle {
             border-bottom: @border-left-line;
             margin-right: 20px;
         }
+
         .decide-box {
             display: flex;
+
             .img-box {
                 width: 100px;
             }
+
             .text {
                 margin-left: 36px;
                 margin-top: 40px
             }
+
             .small-text {
                 @color999-font12();
             }
+
             .big-text {
                 @color333-font13();
             }

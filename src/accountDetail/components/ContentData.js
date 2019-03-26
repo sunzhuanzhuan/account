@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './ContentData.less'
 import { CharTitle, CurveLine, HistogramLine, DataBox } from "./chart";
-import { Radio } from 'antd';
+import { Radio, Row, Col } from 'antd';
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 class ContentData extends Component {

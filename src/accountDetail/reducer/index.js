@@ -23,12 +23,17 @@ export const audienceAttributeInfo = handleActions({
 
 
 export const queryIndustryInfoList = handleActions({
+
   [accountDetail.getQueryIndustryInfoList_success]: (state, action) => {
     return [...action.payload.data]
   }
 }, [])
 
 export const queryOrderCooperationList = handleActions({
+  [accountDetail.addQueryIndustryInfoList_success]: (state, action) => {
+    const list = [...(state.list), ...(action.payload.data.list)]
+    return { ...state, list }
+  },
   [accountDetail.getQueryOrderCooperationList_success]: (state, action) => {
     return { ...action.payload.data }
   }

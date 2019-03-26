@@ -32,6 +32,13 @@ export const {
 } = createHttpAction('getQueryOrderCooperationList', Interface.getQueryOrderCooperationList, {
   method: 'post',
 });
+//加载更多历史广告案例
+export const {
+  addQueryIndustryInfoList,
+  addQueryIndustryInfoList_success
+} = createHttpAction('addQueryIndustryInfoList', Interface.getQueryOrderCooperationList, {
+  method: 'post',
+});
 //新增购物车账号
 export const {
   addToCartAD,

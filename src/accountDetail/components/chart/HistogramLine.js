@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { g2Tooltip, legendPosition } from "./config";
+import { events } from '@/util'
 import {
   Chart,
   Geom,
@@ -10,6 +11,12 @@ import {
 } from "bizcharts";
 
 class HistogramLine extends Component {
+  componentDidMount() {
+
+    events.on('message', (value) => {
+      window.dispatchEvent(new Event('resize'))
+    })
+  }
   render() {
     // const data = [
     //   {
@@ -22,27 +29,27 @@ class HistogramLine extends Component {
     const { data = [], positionConfig, lineText, boxText, positionIntervalConfig } = this.props
     const scale = {
       followerCountFull: {
-        min: 0,
+        // min: 0,
         alias: '粉丝累计数'
       },
       mediaCountIncre: {
-        min: 0,
+        // min: 0,
         alias: '发布净增数'
       },
       mediaLikeSumIncre: {
-        min: 0,
-        alias: '点赞净增收'
+        // min: 0,
+        alias: '点赞净增数'
       },
       interactionProportionIncre: {
-        min: 0,
+        // min: 0,
         alias: '平均互动率'
       },
       call: {
-        min: 0,
+        // min: 0,
         alias: 'TGL'
       },
       like: {
-        min: 0,
+        // min: 0,
         alias: '兴趣爱好'
       },
     };
@@ -59,9 +66,12 @@ class HistogramLine extends Component {
           padding={[50, 90]}
           forceFit
           data={data}
+          ref={node => this.chart = node}
           onGetG2Instance={chart => {
             chartIns = chart;
+            chart.forceFit()
           }}
+
         >
           <Legend
             {...legendPosition}

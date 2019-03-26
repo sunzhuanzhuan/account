@@ -2,7 +2,7 @@
  * @Author: wangxinyue 
  * @Date: 2019-02-28 17:43:12 
  * @Last Modified by: wangxinyue
- * @Last Modified time: 2019-03-25 17:46:29
+ * @Last Modified time: 2019-03-26 16:06:20
  * 历史广告案例
  */
 
@@ -10,10 +10,16 @@ import React, { Component } from 'react'
 import TabArr from "../base/TabArr";
 import "./HistoricalAD.less"
 import DividerArr from "../base/DividerArr";
+import { Spin, Icon } from 'antd';
 class HistoricalAD extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      moreLoading: false,
+      industryCode: null,
+      currentPage: 2,
+      isShowMore: false
+    };
   }
   componentDidMount = () => {
     console.log('加载数据哈哈哈HistoricalAD')
@@ -34,13 +40,40 @@ class HistoricalAD extends Component {
         accountId: accountId,
         industryCode: industryCode == 0 ? null : industryCode
       }
+    }).then(() => {
+      this.setState({
+        industryCode: industryCode == 0 ? null : industryCode,
+        currentPage: 2,
+      })
+    })
+
+  }
+  loadMore = async () => {
+    const { industryCode, currentPage } = this.state
+    const { accountId } = this.props
+    this.setState({
+      moreLoading: true,
+    })
+    await this.props.addQueryIndustryInfoList({
+      page: {
+        currentPage: currentPage,//当前页
+        pageSize: 4, //每页条数
+      },
+      form: {
+        accountId: accountId,
+        industryCode: industryCode == 0 ? null : industryCode
+      }
+    })
+    this.setState({
+      moreLoading: false,
+      currentPage: currentPage + 1
     })
   }
-
   render() {
-    const { queryOrderCooperationList: { list = [] }, queryIndustryInfoList = [] } = this.props
+    const { moreLoading } = this.state
+    const { queryOrderCooperationList: { list = [], total }, queryIndustryInfoList = [] } = this.props
     return (
-      <div className='historical-advertising'>
+      list.length > 0 ? <div className='historical-advertising'>
         <div className='title-big'>历史广告案例</div>
         <div className='head-box'>
           <div className='tab-box'>
@@ -70,8 +103,12 @@ class HistoricalAD extends Component {
               </div>
             </div>
           </div>)}
+          {list.length < total ? <a className='more-loading' onClick={this.loadMore}>
+            加载更多 {moreLoading ? null : <Icon type="down" />}
+            <Spin spinning={moreLoading} >
+            </Spin></a> : null}
         </div>
-      </div>
+      </div> : null
     );
   }
 }

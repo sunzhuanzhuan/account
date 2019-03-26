@@ -10,6 +10,7 @@ import {
 import DataSet from "@antv/data-set";
 
 class CurveLine extends Component {
+
   render() {
     // const data = [
     //   {

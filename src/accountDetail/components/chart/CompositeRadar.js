@@ -60,6 +60,7 @@ class CompositeRadar extends Component {
             name="name"
             line={null}
             tickLine={null}
+            visible={false}
             grid={{
               lineStyle: {
                 lineDash: null
@@ -87,7 +88,7 @@ class CompositeRadar extends Component {
                            </div>
                            <div style="color: ${index == 0 ? '#fff' : '#999'}" class='data-item'>${one.avgValue ? one.avgValue : '-'}</div>
                           ${one.compare ? `<div style="color: ${one.compare > 0 ? '#EF554A' : '#7ED321'}" class='data-item'>
-                           <img width='10px' src='${require(one.compare > 0 ? "../img/up-red.png" : "../img/down-green.png")}'/>${Math.abs(one.compare)}
+                           <img width='10px' src='${require(one.compare > 0 ? "../img/up-red.png" : "../img/down-green.png")}'/>${numeral(Math.abs(one.compare)).format('0.0%')}
                             </div>`: "<div class='data-item'style='color:#999'>-</div>"}
                         <div/>` ).join('')}
              </div>
@@ -97,6 +98,7 @@ class CompositeRadar extends Component {
           <Axis
             name="score"
             line={null}
+            visible={false}
             tickLine={null}
             grid={{
               type: "polygon",

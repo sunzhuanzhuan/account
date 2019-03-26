@@ -5,7 +5,6 @@ import "./HeadInfo.less"
 import { Avatar, Button, Divider } from 'antd';
 import MultiClamp from 'react-multi-clamp';
 import { platformView } from "../../accountManage/constants/platform";
-import nzhcn from "nzh/cn";//数字转汉字  1->一
 import FieldMap from "../constants/FieldMap";
 import numeral from "numeral";
 class HeadInfo extends Component {
@@ -20,11 +19,11 @@ class HeadInfo extends Component {
       snsName, snsId, followerCount, introduction, platformId = 0,
       url, qrCodeUrl,
     } = base
-    const { classification, wholeRank = 0, orderResponseDuration, orderResponsePercentile,
-      orderNumRateOnClassification, orderAcceptanceRate, orderMajorIndustryCategory, orderCompleteDuration } = feature
+    const { classification = '-', wholeRank = 0, orderResponseDuration, orderResponsePercentile,
+      orderNumRateOnClassification = '-', orderAcceptanceRate, orderMajorIndustryCategory, orderCompleteDuration } = feature
 
     //排名处理
-    const wholeRankCN = `${platformView[platformId]}排行第${nzhcn.encodeS(wholeRank)}`
+    const wholeRankCN = `${platformView[platformId]}排行第${wholeRank}名`
 
     return (
       <div className="head-info">
@@ -48,7 +47,7 @@ class HeadInfo extends Component {
           <div className='info-bottom-three'>
             <div className='base-info'>
               <OneLine title='账号标签' content={
-                classification ? <FatLable backColor='#F3F8FD' color='#78A3CE' list={[classification]} /> : null
+                classification == '-' ? null : <FatLable backColor='#F3F8FD' color='#78A3CE' list={[classification]} />
               } />
               {/* <OneLine title='功能标签' content={
                 <FatLable backColor='#FFEBEA' color='#FE6A60' list={['直播', '直播', '直播']} />
@@ -73,7 +72,7 @@ class HeadInfo extends Component {
               <div className='type-info-row'>
                 <OneType title="历史服务最多分类" content={orderMajorIndustryCategory} />
                 <OneType title="接单率" content={FieldMap.getSegmentByFloat(orderAcceptanceRate)} last={orderAcceptanceRate} />
-                <OneType title="平均订单完结周期" content={orderCompleteDuration} />
+                <OneType title="平均订单完结周期" content={orderCompleteDuration ? numeral(orderCompleteDuration / 3600 / 24).format('0.00') : '-'} last='天' />
               </div>
             </div>
             <div className='release-info'>
