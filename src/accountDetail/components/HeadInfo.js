@@ -48,7 +48,7 @@ class HeadInfo extends Component {
           <div className='info-bottom-three'>
             <div className='base-info'>
               <OneLine title='账号标签' content={
-                <FatLable backColor='#F3F8FD' color='#78A3CE' list={['胖标签', '胖标签']} />
+                classification ? <FatLable backColor='#F3F8FD' color='#78A3CE' list={[classification]} /> : null
               } />
               {/* <OneLine title='功能标签' content={
                 <FatLable backColor='#FFEBEA' color='#FE6A60' list={['直播', '直播', '直播']} />

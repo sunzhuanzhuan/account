@@ -24,7 +24,7 @@ class TabArr extends Component {
           <div
             className={`tab-arr-item ${cheackedNum == one.industryCode ? 'tab-cheacked' : ''}`}
             onClick={() => this.onChangeTab(one.industryCode)}>{one.industryName}</div>
-          {one.industryCode == 0 ? <Divider type="vertical" /> : null}
+          {one.industryCode == 0 && tabArrData.length > 1 ? <Divider type="vertical" /> : null}
         </div>))
         }
 
