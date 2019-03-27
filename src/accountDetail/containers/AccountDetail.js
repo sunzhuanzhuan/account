@@ -22,11 +22,11 @@ class AccountDetail extends Component {
   componentDidMount = async () => {
     const { actions } = this.props
     const { searchParam: { accountId } } = this.state
-    await actions.getBaseInfo({ accountId: accountId })
-    await actions.getAccountIsInCart({ accountId: accountId })
+    await actions.getBaseInfo({ accountId: accountId });
     this.setState({
       isLoading: false
     })
+    await actions.getAccountIsInCart({ accountId: accountId })
   }
 
   //弹窗方法
@@ -52,7 +52,6 @@ class AccountDetail extends Component {
     } else {
       await removeFromCartAD({ staging_ids: [accountId] })
     }
-    getAccountIsInCart({ account_id: accountId })
     message.success('操作成功')
   }
   render() {
