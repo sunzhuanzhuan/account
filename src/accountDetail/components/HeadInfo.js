@@ -21,8 +21,7 @@ class HeadInfo extends Component {
     } = base
     const { classification = '-', wholeRank = 0, orderResponseDuration, orderResponsePercentile,
       orderNumRateOnClassification = '-', orderAcceptanceRate, orderMajorIndustryCategory, orderCompleteDuration,
-      verification_reason,
-      is_verified } = feature
+      isVerified, verificationReason } = feature
 
     //排名处理
     const wholeRankCN = `${platformView[platformId]}排行第${wholeRank}名`
@@ -39,7 +38,7 @@ class HeadInfo extends Component {
           <div className='head-box'>
             <div className='account-info' >
               <PopoverFormat text={<div className='account-name'>{snsName}</div>} content={snsName} />
-              <PopoverFormat text={<img width='14px' style={{ marginLeft: 10, paddingBottom: 4 }} src={require(`./img/certification-${'media'}.png`)} />} content={verification_reason} />
+              {isVerified == 1 ? <PopoverFormat text={<img width='14px' style={{ marginLeft: 10, paddingBottom: 4 }} src={require(`./img/certification-${'other'}.png`)} />} content={verificationReason} /> : null}
               <LookIndex url={url} qrCodeUrl={qrCodeUrl} />
               {/* <a style={{ marginLeft: 20, color: ' #1990FF' }} onClick={() => setShowModal(true, { content: <BloggerInfo />, title: '博主信息', width: 700 })}>
                 <Icon type='user' />查看博主信息</a> */}

@@ -33,7 +33,8 @@ class ContentData extends Component {
       dataBoxProps: { data: [this.dataFormate(data, type, 90), this.dataFormate(data, type, 28)] }
     })
   }
-  dataFormate = (data, type, day) => {
+
+  dataFormate = (data = {}, type, day) => {
     return {
       x: `${day}天总视频`,
       low: data[`media${type}Min${day}d`],
