@@ -33,7 +33,7 @@ class CompositeRadar extends Component {
       }
     });
     const scale = {
-      user: { formatter: d => ({ value: '该账号', avgValue: `${legendType[1]}分类平均值` }[d]) }
+      user: { formatter: d => ({ value: '该账号', avgValue: `${legendType[1]}分类平均值` }[d]) },
     };
     const toopicConfig = [
       "value*avgValue*list",
@@ -50,7 +50,7 @@ class CompositeRadar extends Component {
         <Chart
           height={240}
           data={dv}
-          padding={[50, 10, 20, 20]}
+          padding={[50, 30, 40, 30]}
           scale={scale}
           forceFit
 
@@ -107,7 +107,7 @@ class CompositeRadar extends Component {
               alternateColor: "rgba(0, 0, 0, 0.04)"
             }}
           />
-          <Legend name="user" marker="circle" offset={30} position='top-center' data={['环节一', '环节二']} />
+          <Legend name="user" marker="circle" offset={10} position='top-center' data={['环节一', '环节二']} />
           <Geom type="line"
             position="name*score"
             color={['user', ['#1990FF', '#FACC14']]}
