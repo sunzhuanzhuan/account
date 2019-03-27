@@ -38,8 +38,8 @@ class AccountDetail extends Component {
   }
   //选号车操作
   selectCarEdit = async (isAdd) => {
-    const { searchParam: { accountId, platformId } } = this.state
-    const { actions: { removeFromCartAD, addToCartAD, getAccountIsInCart } } = this.props
+    const { searchParam: { accountId } } = this.state
+    const { actions: { removeFromCartAD, addToCartAD, getAccountIsInCart }, accountDetail: { baseInfo: { base: { platformId } } } } = this.props
     if (isAdd) {
       await addToCartAD({
         accounts: [{ account_id: accountId, platform_id: platformId }],
