@@ -119,7 +119,7 @@ export class BaseInfoForm extends Component {
           this.setState({
             submitLoading: false
           });
-          window.oldSnsUniqueId = values.base.snsUniqueId
+          window.oldSnsUniqueId = values.base.snsUniqueId;
           message.success('更新账号成功');
         }).catch(() => {
           this.setState({
@@ -288,14 +288,25 @@ export class AgentConfigAndPriceForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log(values);
+        const { data: { accountInfo: { accountId, platformId } }, actions } = this.props.params;
+        let trinitySkuInfoVOS = values.trinitySkuInfoVOS.reduce((ary, cur) => {
+          cur.list.forEach(sku => {
+            ary.push({...sku, trinityPlatformCode: cur.trinityPlatformCode})
+          })
+          return ary
+        }, [])
+        actions.addOrUpdateAccountTrinitySkuInfo({
+          ...values,
+          trinitySkuInfoVOS,
+          platformId,
+          itemId: accountId
+        })
       }
     });
   };
 
   render() {
     const { form, params } = this.props;
-    const { data: { accountInfo, priceInfo, trinityPriceInfo } } = params;
     const rightC = <div className='wrap-panel-right-content'>
       <Button size='small' type='primary' onClick={this.submit}>{'保存'}</Button>
     </div>;

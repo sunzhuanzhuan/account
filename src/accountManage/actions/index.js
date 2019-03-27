@@ -68,10 +68,16 @@ export const {
 // 三方相关报价
 // 编辑账号时，获取三方报价项信息
 export const {
-  getTrinitySkuInfoList,
-  getTrinitySkuInfoList_success
-} = createHttpAction('getTrinitySkuInfoList', Interface.getTrinitySkuInfoList, {
+  getAccountTrinitySkuInfo,
+  getAccountTrinitySkuInfo_success
+} = createHttpAction('getAccountTrinitySkuInfo', Interface.getAccountTrinitySkuInfo, {
   method: 'get',
+});
+export const {
+  addOrUpdateAccountTrinitySkuInfo
+} = createHttpAction('addOrUpdateAccountTrinitySkuInfo', Interface.addOrUpdateAccountTrinitySkuInfo, {
+  method: 'post',
+  ignoreToast: true,
 });
 
 

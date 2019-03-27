@@ -65,12 +65,14 @@ export default class UpdateChild extends Component {
 	}
   getTrinitySkuActions = () => {
 		const { params } = this.props
-		const { actions: { getTrinitySkuInfoList }, data: { accountInfo } } = params
+		const { actions: { getAccountTrinitySkuInfo }, data: { accountInfo } } = params
 		const {
 			accountId,
+      platformId
 		} = accountInfo
-		return getTrinitySkuInfoList({
-      itemId: accountId
+		return getAccountTrinitySkuInfo({
+      accountId,
+      platformId
 		})
 	}
 
@@ -81,7 +83,7 @@ export default class UpdateChild extends Component {
 
 	render() {
 		const { params, addQuote, platformDiff } = this.props
-		const { pid, data: { accountInfo, priceInfo }, actions: { updateAccountFans,getAccountOnShelfStatus } } = params;
+		const { pid, data: { accountInfo, priceInfo, trinityPriceInfo: { cooperationPlatformResVOS:vos = [] } }, actions: { updateAccountFans,getAccountOnShelfStatus } } = params;
 		const {
 			priceValidTo
 		} = priceInfo
@@ -129,7 +131,7 @@ export default class UpdateChild extends Component {
 					{!this.state.isLoading ?
 						<div className='price_scroll_container'>
               <AccountPriceForm params={params} diff={price} getSkuActions={this.getSkuActions} />
-              {isFamous == 1 ? <AgentConfigAndPriceForm params={params} diff={price} /> : null}
+              {(isFamous == 1 && vos.length) ? <AgentConfigAndPriceForm params={params} diff={price} /> : null}
             </div> : <Skeleton active />}
 				</TabPane>
 				<TabPane tab="受众画像" key="3">

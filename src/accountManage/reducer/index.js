@@ -13,7 +13,7 @@ import {
 	updateFetchInfo,
 	addFetchInfo,
 	getSkuList_success,
-  getTrinitySkuInfoList_success,
+  getAccountTrinitySkuInfo_success,
 	getSkuTypeList_success,
 	getPrimaryAccountInfo_success,
 	getUploadToken_success,
@@ -141,7 +141,7 @@ export const priceInfo = handleActions({
 }, {})
 
 export const trinityPriceInfo = handleActions({
-	[combineActions(getTrinitySkuInfoList_success)]: (state, action) => {
+	[combineActions(getAccountTrinitySkuInfo_success)]: (state, action) => {
 		return {
 			...state,
 			...action.payload.data
