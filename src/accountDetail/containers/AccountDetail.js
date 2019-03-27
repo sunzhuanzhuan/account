@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { HeadInfo, DataIndicator, HistoricalAD, ContentData, AudienceAttribute, NewVideo, AccountRecommend } from "../components";
 import './AccountDetail.less'
-import { Modal, message } from 'antd';
+import { Modal, message, Spin } from 'antd';
 import LazyLoad from 'react-lazyload';
 import { Route, withRouter } from 'react-router-dom'
 import { bindActionCreators } from "redux";
@@ -16,13 +16,17 @@ class AccountDetail extends Component {
       visible: false,
       showModal: { title: '', content: '' },
       searchParam: qs.parse(this.props.location.search.substring(1)),
+      isLoading: true
     };
   }
-  componentDidMount = () => {
+  componentDidMount = async () => {
     const { actions } = this.props
     const { searchParam: { accountId } } = this.state
-    actions.getBaseInfo({ accountId: accountId })
-    actions.getAccountIsInCart({ accountId: accountId })
+    await actions.getBaseInfo({ accountId: accountId })
+    await actions.getAccountIsInCart({ accountId: accountId })
+    this.setState({
+      isLoading: false
+    })
   }
 
   //弹窗方法
@@ -52,7 +56,7 @@ class AccountDetail extends Component {
     message.success('操作成功')
   }
   render() {
-    const { showModal, visible, searchParam: { accountId } } = this.state
+    const { showModal, visible, searchParam: { accountId }, isLoading } = this.state
     const { actions, accountDetail } = this.props
     const {
       baseInfo,
@@ -77,39 +81,41 @@ class AccountDetail extends Component {
     }
     return (
       <div className="account-view-detail" id='Js-account-view-detail-Id'>
-        {/* 头部基础信息 */}
-        <HeadInfo setShowModal={this.setShowModal} baseInfo={baseInfo} selectCarEdit={this.selectCarEdit} isExistCar={isExistCar} />
-        {/* 数据指标 */}
-        <DataIndicator baseInfo={baseInfo} />
-        {/* 历史案例 */}
-        <LazyLoad once overflow>
-          <HistoricalAD {...historicalADProps} />
-        </LazyLoad>
-        {/*内容数据  */}
-        <LazyLoad once overflow>
-          <ContentData {...contentDataProps} />
-        </LazyLoad>
-        {/* 受众画像 */}
-        {/* <LazyLoad once overflow>
+        <Spin spinning={isLoading}>
+          {/* 头部基础信息 */}
+          <HeadInfo setShowModal={this.setShowModal} baseInfo={baseInfo} selectCarEdit={this.selectCarEdit} isExistCar={isExistCar} />
+          {/* 数据指标 */}
+          <DataIndicator baseInfo={baseInfo} />
+          {/* 历史案例 */}
+          <LazyLoad once overflow>
+            <HistoricalAD {...historicalADProps} />
+          </LazyLoad>
+          {/*内容数据  */}
+          <LazyLoad once overflow>
+            <ContentData {...contentDataProps} />
+          </LazyLoad>
+          {/* 受众画像 */}
+          {/* <LazyLoad once overflow>
           <AudienceAttribute getAudienceAttribute={getAudienceAttribute} audienceAttributeInfo={audienceAttributeInfo} />
         </LazyLoad> */}
-        {/* 最新视频 */}
-        {/* <LazyLoad once overflow>
+          {/* 最新视频 */}
+          {/* <LazyLoad once overflow>
           <NewVideo />
         </LazyLoad> */}
-        {/* 账号推荐
+          {/* 账号推荐
           <AccountRecommend /> 
         */}
-        <Modal
-          title={showModal.title}
-          visible={visible}
-          onOk={() => this.setShowModal(false, null)}
-          onCancel={() => this.setShowModal(false, null)}
-          footer={null}
-          width={showModal.width}
-        >
-          {showModal.content}
-        </Modal>
+          <Modal
+            title={showModal.title}
+            visible={visible}
+            onOk={() => this.setShowModal(false, null)}
+            onCancel={() => this.setShowModal(false, null)}
+            footer={null}
+            width={showModal.width}
+          >
+            {showModal.content}
+          </Modal>
+        </Spin>
       </div>
     );
   }

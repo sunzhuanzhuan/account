@@ -19,6 +19,10 @@ class CompositeRadar extends Component {
   render() {
     const { DataView } = DataSet;
     const { data = [], legendType } = this.props
+    const dataForMap = data.reduce((obj, item) => {
+      obj[item.name] = item.value
+      return obj
+    }, {})
     const dv = new DataView().source(data);
     dv.transform({
       type: "fold",
@@ -50,7 +54,7 @@ class CompositeRadar extends Component {
         <Chart
           height={240}
           data={dv}
-          padding={[50, 30, 40, 30]}
+          padding={[60, 30, 40, 30]}
           scale={scale}
           forceFit
 
@@ -60,6 +64,12 @@ class CompositeRadar extends Component {
             name="name"
             line={null}
             tickLine={null}
+            label={{
+              htmlTemplate(text, item, index) {
+                const value = numeral(dataForMap[text] || 0).format('0')
+                return `<div style='width:100px;text-align:center'>${text}  <span style="color:#333;font-size:14px;font-weight:400;">${value}</span></div>`
+              }
+            }}
             grid={{
               lineStyle: {
                 lineDash: null
@@ -107,7 +117,7 @@ class CompositeRadar extends Component {
               alternateColor: "rgba(0, 0, 0, 0.04)"
             }}
           />
-          <Legend name="user" marker="circle" offset={10} position='top-center' data={['环节一', '环节二']} />
+          <Legend name="user" marker="circle" offsetY={-20} position='top-center' data={['环节一', '环节二']} />
           <Geom type="line"
             position="name*score"
             color={['user', ['#1990FF', '#FACC14']]}
