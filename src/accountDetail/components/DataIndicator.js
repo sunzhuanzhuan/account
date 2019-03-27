@@ -5,7 +5,7 @@ import { PopoverFormat } from "../base/TitleAndDecide";
 import CompositeRadar from "./chart/CompositeRadar";
 import ValueFormat from "../base/ValueFormat";
 import numeral from 'numeral'
-import { Divider } from "antd";
+import { Divider, Empty } from "antd";
 class DataIndicator extends Component {
   constructor(props) {
     super(props);
@@ -64,11 +64,11 @@ class DataIndicator extends Component {
                   <div className='score'>{numeral(wholeIndex).format('0')}</div>
                 </div>
                 <Divider type="vertical" style={{ height: 40, margin: '0px 20px' }} />
-                <div className='lable'>{legend[1]}第{wholeRankOnClassification}名</div>
+                <div className='lable'>{legend[1]}第{wholeRankOnClassification || '-'}名</div>
               </div>
 
               <div>
-                <CompositeRadar data={data} legendType={legend} />
+                {data ? <CompositeRadar data={data} legendType={legend} /> : <Empty style={{ marginTop: '10%' }} />}
               </div>
             </div>
           </div>

@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
 import './ContentData.less'
 import { CharTitle, CurveLine, HistogramLine, DataBox } from "./chart";
-import { Radio, Row, Col } from 'antd';
+import { Radio, Row, Col, Empty } from 'antd';
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 class ContentData extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataBoxProps: {}
+      dataBoxProps: {
+        data: []
+      }
     };
   }
   componentDidMount = () => {

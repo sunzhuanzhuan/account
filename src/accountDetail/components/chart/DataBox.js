@@ -7,6 +7,7 @@ import {
 } from "bizcharts";
 import DataSet from "@antv/data-set";
 import { g2Tooltip, } from "./config";
+import { Empty } from 'antd';
 
 class DataBox extends Component {
   render() {
@@ -36,7 +37,7 @@ class DataBox extends Component {
       // }
     };
     return (
-      <div>
+      <div style={{ height: 400 }}>
         <Chart
           height={400}
           data={dv}
