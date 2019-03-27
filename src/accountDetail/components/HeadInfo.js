@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import LookIndex from "./LookIndex";
 import { PopoverFormat } from "../base/TitleAndDecide";
 import "./HeadInfo.less"
-import { Avatar, Button, Divider } from 'antd';
+import { Avatar, Button, Divider, Empty } from 'antd';
 import MultiClamp from 'react-multi-clamp';
 import { platformView } from "../../accountManage/constants/platform";
 import FieldMap from "../constants/FieldMap";
@@ -78,7 +78,8 @@ class HeadInfo extends Component {
             </div>
             <div className='release-info'>
               <div className='release-info-box'>
-                {skuList.map(one => <OneRelease key={one.skuId} title={one.skuTypeName} content={one.openQuotePrice} last={one.unitPrice} />)}
+                {skuList.length > 0 ? skuList.map(one => <OneRelease key={one.skuId} title={one.skuTypeName} content={one.openQuotePrice} last={one.unitPrice} />) :
+                  <Empty style={{ margin: '0px auto' }} />}
               </div>
               <div style={{ textAlign: 'center' }}>
                 {isExistCar ? <Button className='add-select-car-button' type='primary' onClick={() => selectCarEdit(true)}>加入选号车</Button> :
