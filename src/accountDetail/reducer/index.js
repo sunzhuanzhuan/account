@@ -40,6 +40,12 @@ export const queryOrderCooperationList = handleActions({
 }, {})
 
 export const isExistCar = handleActions({
+  [accountDetail.addToCartAD_success]: (state, action) => {
+    return false
+  },
+  [accountDetail.removeFromCartAD_success]: (state, action) => {
+    return true
+  },
   [accountDetail.getAccountIsInCart_success]: (state, action) => {
     const data = action.payload.data
     return data == 2

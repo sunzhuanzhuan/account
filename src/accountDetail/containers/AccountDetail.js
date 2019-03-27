@@ -52,7 +52,6 @@ class AccountDetail extends Component {
     } else {
       await removeFromCartAD({ staging_ids: [accountId] })
     }
-    getAccountIsInCart({ account_id: accountId })
     message.success('操作成功')
   }
   render() {
