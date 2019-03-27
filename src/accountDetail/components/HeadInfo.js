@@ -20,7 +20,7 @@ class HeadInfo extends Component {
       url, qrCodeUrl,
     } = base
     const { classification = '-', wholeRank = 0, orderResponseDuration, orderResponsePercentile,
-      orderNumRateOnClassification = '-', orderAcceptanceRate, orderMajorIndustryCategory, orderCompleteDuration,
+      orderAcceptanceNum = '-', orderAcceptanceRate, orderMajorIndustryCategory, orderCompleteDuration,
       isVerified, verificationReason } = feature
 
     //排名处理
@@ -67,18 +67,18 @@ class HeadInfo extends Component {
             <div className='type-info'>
               <div className='type-info-row' >
                 <OneType title="内容分类" content={classification} color='#ff4d4b' />
-                <OneType title="接单数" content={orderNumRateOnClassification} />
+                <OneType title="接单数" content={orderAcceptanceNum} />
                 <OneType title="响应时间" content={FieldMap.getSegmentByFloat(orderResponsePercentile)} last={`${orderResponseDuration}s`} />
               </div>
               <div className='type-info-row'>
                 <OneType title="历史服务最多分类" content={orderMajorIndustryCategory} />
-                <OneType title="接单率" content={FieldMap.getSegmentByFloat(orderAcceptanceRate)} last={orderAcceptanceRate} />
+                <OneType title="接单率" content={FieldMap.getSegmentByFloat(orderAcceptanceRate)} last={numeral(orderAcceptanceRate).format('0%')} />
                 <OneType title="平均订单完结周期" content={orderCompleteDuration ? numeral(orderCompleteDuration / 3600 / 24).format('0.00') : '-'} last='天' />
               </div>
             </div>
             <div className='release-info'>
               <div className='release-info-box'>
-                {skuList.map(one => <OneRelease key={one.skuId} title={one.skuTypeName} content={one.quotePrice} last={one.unitPrice} />)}
+                {skuList.map(one => <OneRelease key={one.skuId} title={one.skuTypeName} content={one.openQuotePrice} last={one.unitPrice} />)}
               </div>
               <div style={{ textAlign: 'center' }}>
                 {isExistCar ? <Button className='add-select-car-button' type='primary' onClick={() => selectCarEdit(true)}>加入选号车</Button> :

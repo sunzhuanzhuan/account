@@ -25,25 +25,25 @@ class DataIndicator extends Component {
       mediaInteractionProportionRateOnClassificationPriceTag, //账号粉丝互动率 比 同行业同价位平均粉丝互动率
       mediaInteractionRateOnClassificationPriceTag, //平均互动数
       //点赞
-      mediaLikeAvg30itemOnClassification, // 行业互动点赞
-      mediaLikeAvg30itemRateOnClassificationPriceTag, //30条平均点赞 比同行业其他人多
+      mediaLikeAvg30ItemOnClassification, // 行业互动点赞
+      mediaLikeAvg30ItemRateOnClassificationPriceTag, //30条平均点赞 比同行业其他人多
       mediaLikeAvgRateOnClassificationPriceTag, //总平均点赞 比同行业其他人多
       mediaLikeSumRateOnClassificationPriceTag, //累计点赞比同行业其他人多
 
       //转发
-      mediaRepostAvg30itemOnClassification, //近30条互动转发均值
-      mediaRepostAvg30itemRateOnClassificationPriceTag, //账号近30条平均转发比同行业同价位近30条平均转发
+      mediaRepostAvg30ItemOnClassification, //近30条互动转发均值
+      mediaRepostAvg30ItemRateOnClassificationPriceTag, //账号近30条平均转发比同行业同价位近30条平均转发
       mediaRepostAvgRateOnClassificationPriceTag, // 账号平均转发比同行业同价位平均单视频转发
       mediaRepostSumRateOnClassificationPriceTag, //账号平均转发比同行业同价位平均累计转发
       //评论
-      mediaCommentAvg30itemRateOnClassification, //近30评论平均值
-      mediaCommentAvg30itemRateOnClassificationPriceTag, //账号近30条平均评论/同行业同价位近30条平均评论		 
+      mediaCommentAvg30ItemRateOnClassification, //近30评论平均值
+      mediaCommentAvg30ItemRateOnClassificationPriceTag, //账号近30条平均评论/同行业同价位近30条平均评论		 
       mediaCommentAvgRateOnClassificationPriceTag, //账号平均评论/同行业同价位平均单视频评论		 
       mediaCommentSumRateOnClassificationPriceTag, //账号平均评论/同行业同价位平均累计评论
 
       //播放
       mediaPlayAvg,
-      mediaPlayAvg30itemRateOnClassificationPriceTag, //账号近30条平均播放/同行业同价位近30条平均播放	Float	 
+      mediaPlayAvg30ItemRateOnClassificationPriceTag, //账号近30条平均播放/同行业同价位近30条平均播放	Float	 
       mediaPlayAvgRateOnClassificationPriceTag, //	账号平均播放/同行业同价位平均单视频播放	Float	 
       mediaPlaySumRateOnClassificationPriceTag, //	账号平均播放/同行业同价位平均累计播放
       //     
@@ -93,22 +93,22 @@ class DataIndicator extends Component {
             </div>
             <div className='operate-four'>
               <OperateItem typeText='点赞'
-                numberAvg={mediaLikeAvg30itemOnClassification || 6666} percentAvg={mediaLikeAvg30itemRateOnClassificationPriceTag}
+                numberAvg={mediaLikeAvg30ItemOnClassification} percentAvg={mediaLikeAvg30ItemRateOnClassificationPriceTag}
                 sumAvgNumber={'123'} sumAvgPercent={mediaLikeAvgRateOnClassificationPriceTag}
                 numberSum='123' percentSum={mediaLikeSumRateOnClassificationPriceTag}
                 typeSum="123" />
               <OperateItem typeText='转发'
-                numberAvg={mediaRepostAvg30itemOnClassification} percentAvg={mediaRepostAvg30itemRateOnClassificationPriceTag}
+                numberAvg={mediaRepostAvg30ItemOnClassification} percentAvg={mediaRepostAvg30ItemRateOnClassificationPriceTag}
                 sumAvgNumber='123' sumAvgPercent={mediaRepostAvgRateOnClassificationPriceTag}
                 numberSum='123' percentSum={mediaRepostSumRateOnClassificationPriceTag}
                 typeSum="123" />
               <OperateItem typeText='评论'
-                numberAvg={mediaCommentAvg30itemRateOnClassification} percentAvg={mediaCommentAvg30itemRateOnClassificationPriceTag}
+                numberAvg={mediaCommentAvg30ItemRateOnClassification} percentAvg={mediaCommentAvg30ItemRateOnClassificationPriceTag}
                 sumAvgNumber='123' sumAvgPercent={mediaCommentAvgRateOnClassificationPriceTag}
                 numberSum='123' percentSum={mediaCommentSumRateOnClassificationPriceTag}
                 typeSum="123" />
               <OperateItem typeText='播放'
-                numberAvg={mediaPlayAvg} percentAvg={mediaPlayAvg30itemRateOnClassificationPriceTag}
+                numberAvg={mediaPlayAvg} percentAvg={mediaPlayAvg30ItemRateOnClassificationPriceTag}
                 sumAvgNumber='123' sumAvgPercent={mediaPlayAvgRateOnClassificationPriceTag}
                 numberSum='123' percentSum={mediaPlaySumRateOnClassificationPriceTag}
                 typeSum="123" />
@@ -128,7 +128,7 @@ const HeadBox = ({ title, number, percent, isLeft = false, noLast }) => {
     <div className='head-box-flex'>
       {/* <div className='number'>{number}</div>
       <div className='unit'>{unit}</div> */}
-      <ValueFormat value={number} valueClass='number' unitClass='unit' />
+      <ValueFormat value={number > 0 ? number : 0} valueClass='number' unitClass='unit' />
       {isLeft ? <div style={{ marginTop: 9, marginLeft: 3 }}>{unConfig} </div> : ""}
     </div>
     {isLeft ? "" : unConfig}
