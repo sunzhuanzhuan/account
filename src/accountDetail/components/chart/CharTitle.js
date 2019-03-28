@@ -6,9 +6,9 @@ class CharTitle extends Component {
     this.state = {};
   }
   render() {
-    const { content, title } = this.props
+    const { content, title, color } = this.props
     const titleStyle = {
-      color: '#333333',
+      color: color || '#333333',
       fontSize: 14,
       marginLeft: 20,
       paddingTop: 20
@@ -17,7 +17,7 @@ class CharTitle extends Component {
       {content ? <Popover content={content} title={title} trigger="hover" getPopupContainer={() => document.querySelector('.account-view-detail')}>
         <div style={{ ...titleStyle, float: 'left' }}>
           {title}
-        </div><Icon type="info-circle" theme="outlined" style={{ color: '#999', fontSize: 14,margin:'24px 0px 0px 5px' }} />
+        </div><Icon type="info-circle" theme="outlined" style={{ color: '#999', fontSize: 14, margin: '24px 0px 0px 5px' }} />
       </Popover> : <div style={{ ...titleStyle }}>
           {title}
         </div>}
