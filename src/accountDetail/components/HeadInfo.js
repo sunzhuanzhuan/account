@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import LookIndex from "./LookIndex";
 import { PopoverFormat } from "../base/TitleAndDecide";
 import "./HeadInfo.less"
-import { Avatar, Button, Divider } from 'antd';
+import { Avatar, Button, Divider, Empty } from 'antd';
 import MultiClamp from 'react-multi-clamp';
 import { platformView } from "../../accountManage/constants/platform";
 import FieldMap from "../constants/FieldMap";
@@ -24,8 +24,8 @@ class HeadInfo extends Component {
       isVerified, verificationReason } = feature
 
     //排名处理
-    const wholeRankCN = `${platformView[platformId]}排行第${wholeRank}名`
-
+    const platformName = platformView[platformId] || '-'
+    const wholeRankCN = `${platformName}NO.${wholeRank}`
     return (
       <div className="head-info">
         <div className='head-avatar'>
@@ -68,7 +68,7 @@ class HeadInfo extends Component {
               <div className='type-info-row' >
                 <OneType title="内容分类" content={classification} color='#ff4d4b' />
                 <OneType title="接单数" content={orderAcceptanceNum} />
-                <OneType title="响应时间" content={FieldMap.getSegmentByFloat(orderResponsePercentile)} last={`${orderResponseDuration}s`} />
+                <OneType title="响应时间" content={FieldMap.getSegmentByFloat(orderResponsePercentile)} last={`${orderResponseDuration || '-'}s`} />
               </div>
               <div className='type-info-row'>
                 <OneType title="历史服务最多分类" content={orderMajorIndustryCategory} />
@@ -78,7 +78,8 @@ class HeadInfo extends Component {
             </div>
             <div className='release-info'>
               <div className='release-info-box'>
-                {skuList.map(one => <OneRelease key={one.skuId} title={one.skuTypeName} content={one.openQuotePrice} last={one.unitPrice} />)}
+                {skuList.length > 0 ? skuList.map(one => <OneRelease key={one.skuId} title={one.skuTypeName} content={one.openQuotePrice} last={one.unitPrice} />) :
+                  <Empty style={{ margin: '0px auto' }} />}
               </div>
               <div style={{ textAlign: 'center' }}>
                 {isExistCar ? <Button className='add-select-car-button' type='primary' onClick={() => selectCarEdit(true)}>加入选号车</Button> :
