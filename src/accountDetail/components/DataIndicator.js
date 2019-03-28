@@ -3,6 +3,7 @@ import UpDownPercentage from "../base/UpDownPercentage";
 import './DataIndicator.less'
 import { PopoverFormat } from "../base/TitleAndDecide";
 import CompositeRadar from "./chart/CompositeRadar";
+import CharTitle from "./chart/CharTitle";
 import ValueFormat from "../base/ValueFormat";
 import numeral from 'numeral'
 import { Divider, Empty } from "antd";
@@ -60,7 +61,9 @@ class DataIndicator extends Component {
             <div className='composite-exponent'>
               <div className='head-center'>
                 <div className='left-index'>
-                  <div className='text'>综合指数</div>
+                  <div className='text'>
+                    <CharTitle title='综合指数' color='#999' content='基于互动指数、黑马指数、内容传播指数、服务指数、配合指数、SNBT这6个指标加权计算综合指标。' />
+                  </div>
                   <div className='score'>{numeral(wholeIndex).format('0')}</div>
                 </div>
                 <Divider type="vertical" style={{ height: 40, margin: '0px 20px' }} />

@@ -54,12 +54,12 @@ class CompositeRadar extends Component {
         <Chart
           height={240}
           data={dv}
-          padding={[60, 30, 40, 30]}
+          padding={[70, 30, 40, 30]}
           scale={scale}
           forceFit
 
         >
-          <Coord type="polar" radius={0.9} />
+          <Coord type="polar" />
           <Axis
             name="name"
             line={null}
@@ -117,18 +117,19 @@ class CompositeRadar extends Component {
               alternateColor: "rgba(0, 0, 0, 0.04)"
             }}
           />
-          <Legend name="user" marker="circle" offsetY={-20} position='top-center' data={['环节一', '环节二']} />
+          <Legend name="user" marker="circle" offsetY={-30} position='top-center' data={['环节一', '环节二']} />
           <Geom type="line"
             position="name*score"
+            tooltip={false}
             color={['user', ['#1990FF', '#FACC14']]}
             size={2}
-            tooltip={toopicConfig} />
+          />
           <Geom
             tooltip={toopicConfig}
             type="point"
             position="name*score"
             shape="circle"
-            size={4}
+            size={5}
             color={['user', ['#1990FF', '#FACC14']]}
             style={{
               stroke: "#fff",
