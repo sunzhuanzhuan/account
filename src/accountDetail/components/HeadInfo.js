@@ -24,8 +24,8 @@ class HeadInfo extends Component {
       isVerified, verificationReason } = feature
 
     //排名处理
-    const wholeRankCN = `${platformView[platformId]}排行第${wholeRank}名`
-
+    const platformName = platformView[platformId] || '-'
+    const wholeRankCN = `${platformName}NO.${wholeRank}`
     return (
       <div className="head-info">
         <div className='head-avatar'>
