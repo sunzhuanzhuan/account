@@ -78,7 +78,7 @@ class HeadInfo extends Component {
             </div>
             <div className='release-info'>
               <div className='release-info-box'>
-                {skuList.length > 0 ? skuList.map(one => <OneRelease key={one.skuId} title={one.skuTypeName} content={one.openQuotePrice} last={one.unitPrice} />) :
+                {skuList.length > 0 ? skuList.slice(0, 4).map(one => <OneRelease key={one.skuId} title={one.skuTypeName} content={one.openQuotePrice} last={one.unitPrice} />) :
                   <Empty style={{ margin: '0px auto' }} />}
               </div>
               <div style={{ textAlign: 'center' }}>
