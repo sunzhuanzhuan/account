@@ -1,0 +1,8 @@
+import numeral from "numeral";
+export const formatW = (value) => {
+  if (value >= 10000) {
+    value = numeral(value / 10000).format('0.0') + 'w'
+  }
+
+  return value
+}

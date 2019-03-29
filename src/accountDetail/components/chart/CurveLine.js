@@ -9,6 +9,7 @@ import {
 } from "bizcharts";
 import DataSet from "@antv/data-set";
 
+
 class CurveLine extends Component {
 
   render() {
@@ -35,7 +36,8 @@ class CurveLine extends Component {
       dateRange: {
         range: [0, 1]
       },
-      city: { formatter: d => ({ followerCountFull: '粉丝累计数', mediaLikeSumIncre: '点赞净增数', mediaCountIncre: '发布净增数' }[d]) }
+      city: { formatter: d => ({ followerCountFull: '粉丝累计数', mediaLikeSumIncre: '点赞净增数', mediaCountIncre: '发布净增数' }[d]) },
+
     };
     return (
       <div>

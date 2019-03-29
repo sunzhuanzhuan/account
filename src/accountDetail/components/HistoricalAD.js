@@ -2,7 +2,7 @@
  * @Author: wangxinyue 
  * @Date: 2019-02-28 17:43:12 
  * @Last Modified by: wangxinyue
- * @Last Modified time: 2019-03-26 18:08:16
+ * @Last Modified time: 2019-03-29 14:38:28
  * 历史广告案例
  */
 
@@ -18,7 +18,8 @@ class HistoricalAD extends Component {
       moreLoading: false,
       industryCode: null,
       currentPage: 2,
-      isShowMore: false
+      isShowMore: false,
+      isShowHis: true
     };
   }
   componentDidMount = () => {
@@ -40,11 +41,16 @@ class HistoricalAD extends Component {
         accountId: accountId,
         industryCode: industryCode == 0 ? null : industryCode
       }
-    }).then(() => {
+    }).then(({ data }) => {
       this.setState({
         industryCode: industryCode == 0 ? null : industryCode,
         currentPage: 2,
       })
+      if (!industryCode) {
+        this.setState({
+          isShowHis: data.list.length > 0
+        })
+      }
     })
 
   }
@@ -70,10 +76,10 @@ class HistoricalAD extends Component {
     })
   }
   render() {
-    const { moreLoading } = this.state
+    const { moreLoading, isShowHis } = this.state
     const { queryOrderCooperationList: { list = [], total }, queryIndustryInfoList = [] } = this.props
     return (
-      list.length > 0 ? <div className='historical-advertising'>
+      isShowHis ? <div className='historical-advertising'>
         <div className='title-big'>历史广告案例</div>
         <div className='head-box'>
           <div className='tab-box'>

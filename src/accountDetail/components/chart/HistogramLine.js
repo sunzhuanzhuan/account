@@ -9,7 +9,7 @@ import {
   Legend,
 
 } from "bizcharts";
-
+import { formatW } from "../../util";
 class HistogramLine extends Component {
   componentDidMount() {
 
@@ -28,29 +28,48 @@ class HistogramLine extends Component {
     // ];
     const { data = [], positionConfig, lineText, boxText, positionIntervalConfig } = this.props
     const scale = {
+
       followerCountFull: {
         // min: 0,
-        alias: '粉丝累计数'
+        alias: '粉丝累计数',
+        formatter: val => {
+          return formatW(val);
+        }
       },
       mediaCountIncre: {
         // min: 0,
-        alias: '发布净增数'
+        alias: '发布净增数',
+        formatter: val => {
+          return formatW(val);
+        }
       },
       mediaLikeSumIncre: {
         // min: 0,
-        alias: '点赞净增数'
+        alias: '点赞净增数',
+        formatter: val => {
+          return formatW(val);
+        }
       },
       interactionProportionIncre: {
         // min: 0,
-        alias: '平均互动率'
+        alias: '平均互动率',
+        formatter: val => {
+          return formatW(val);
+        }
       },
       call: {
         // min: 0,
-        alias: 'TGL'
+        alias: 'TGL',
+        formatter: val => {
+          return formatW(val);
+        }
       },
       like: {
         // min: 0,
-        alias: '兴趣爱好'
+        alias: '兴趣爱好',
+        formatter: val => {
+          return formatW(val);
+        }
       },
     };
     let chartIns = null;

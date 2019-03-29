@@ -98,7 +98,7 @@ class CompositeRadar extends Component {
                            <div style="color: ${index == 0 ? '#fff' : '#999'}" class='data-item'>${one.avgValue ? one.avgValue : '-'}</div>
                           ${one.compare ? `<div style="color: ${one.compare > 0 ? '#EF554A' : '#7ED321'}" class='data-item'>
                            <img width='10px' src='${require(one.compare > 0 ? "../img/up-red.png" : "../img/down-green.png")}'/>${numeral(Math.abs(one.compare)).format('0.0%')}
-                            </div>`: "<div class='data-item'style='color:#999'>-</div>"}
+                            </div>`: "<div class='data-item' style='color:#999'>-</div>"}
                         <div/>` ).join('')}
              </div>
       </div>`
