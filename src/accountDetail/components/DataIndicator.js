@@ -19,12 +19,12 @@ class DataIndicator extends Component {
     const {
       wholeIndex, //综合指数
       wholeRankOnClassification, //类型排名
-      videoCount,
+      mediaCount,
       followerCountRateOnClassificationPriceTag, //总粉丝数同别的对比
       mediaInteractionProportion, //粉丝互动率
       mediaInteractionAvg, //平均互动数
-      mediaInteractionProportionRateOnClassificationPriceTag, //账号粉丝互动率 比 同行业同价位平均粉丝互动率
-      mediaInteractionRateOnClassificationPriceTag, //平均互动数
+      mediaInteractionProportion30ItemRateOnClassificationPriceTag, //账号粉丝互动率 比 同行业同价位平均粉丝互动率
+      mediaInteractionAvg30ItemRateOnClassificationPriceTag, //平均互动数
       //点赞
       mediaLikeAvg30ItemOnClassification, // 行业互动点赞
       mediaLikeAvg30ItemRateOnClassificationPriceTag, //30条平均点赞 比同行业其他人多
@@ -48,7 +48,7 @@ class DataIndicator extends Component {
       mediaPlayAvgRateOnClassificationPriceTag, //	账号平均播放/同行业同价位平均单视频播放	Float	 
       mediaPlaySumRateOnClassificationPriceTag, //	账号平均播放/同行业同价位平均累计播放
       //     
-      accountPublishMediaCount90d = '-', //90天发布数	
+      mediaCount90d = '-', //90天发布数	
       followerCountGrowthRate28d, //28天粉丝增长率	
 
     } = feature
@@ -83,14 +83,14 @@ class DataIndicator extends Component {
                   content={`${followerCountRateOnClassificationPriceTag > 0 ? '高' : '低'}于同分类同价格总粉丝数均值`}
                 />
                 <PopoverFormat
-                  text={<div> <ThreeBox title='粉丝互动率' number={mediaInteractionProportion} percent={mediaInteractionProportionRateOnClassificationPriceTag} isBig={true} /> </div>}
+                  text={<div> <ThreeBox title='粉丝互动率' number={numeral(mediaInteractionProportion).format('0.00')} percent={mediaInteractionProportion30ItemRateOnClassificationPriceTag} isBig={true} /> </div>}
                   content='高于同分类同价格粉丝数互动率均值'
                 />
-                <ThreeBox title='粉丝互动数' number={mediaInteractionAvg} percent={mediaInteractionRateOnClassificationPriceTag} isBig={true} />
+                <ThreeBox title='粉丝互动数' number={mediaInteractionAvg} percent={mediaInteractionAvg30ItemRateOnClassificationPriceTag} isBig={true} />
               </div>
               <div className='fan-release-item'>
-                <HeadBox title={'总发布数'} number={videoCount} noLast={true} />
-                <ThreeBox title='90天发布数' number={`${accountPublishMediaCount90d}条`} notPercent={true} />
+                <HeadBox title={'总发布数'} number={mediaCount} noLast={true} />
+                <ThreeBox title='90天发布数' number={`${mediaCount90d}条`} notPercent={true} />
                 <ThreeBox title='28天粉丝增长率' number={numeral(followerCountGrowthRate28d).format('0.0%')} notPercent={true} />
               </div>
             </div>
