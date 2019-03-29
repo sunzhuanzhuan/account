@@ -40,7 +40,7 @@ class CurveLine extends Component {
     return (
       <div>
         <Chart height={400} data={dv} scale={cols}
-          padding={[50, 90]}
+          padding={[50, 160, 50, 40]}
           forceFit>
           <Legend marker='circle' {...legendPosition} />
           <Axis name="dateRange" />

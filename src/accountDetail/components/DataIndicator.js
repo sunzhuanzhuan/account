@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import UpDownPercentage from "../base/UpDownPercentage";
 import './DataIndicator.less'
-import { PopoverFormat } from "../base/TitleAndDecide";
+
 import CompositeRadar from "./chart/CompositeRadar";
 import CharTitle from "./chart/CharTitle";
 import ValueFormat from "../base/ValueFormat";
@@ -12,6 +12,7 @@ class DataIndicator extends Component {
     super(props);
     this.state = {};
   }
+
   render() {
     const { baseInfo = {} } = this.props
     const { feature = {}, base = {}, composite = {} } = baseInfo
@@ -78,20 +79,21 @@ class DataIndicator extends Component {
           <div className='left-indicator'>
             <div className='fan-release'>
               <div className='fan-release-item'>
-                <PopoverFormat
-                  text={<div><HeadBox title={'总粉丝数'} number={followerCount} percent={followerCountRateOnClassificationPriceTag} /></div>}
-                  content={`${followerCountRateOnClassificationPriceTag > 0 ? '高' : '低'}于同分类同价格总粉丝数均值`}
-                />
-                <PopoverFormat
-                  text={<div> <ThreeBox title='粉丝互动率' number={numeral(mediaInteractionProportion).format('0.00')} percent={mediaInteractionProportion30ItemRateOnClassificationPriceTag} isBig={true} /> </div>}
-                  content='高于同分类同价格粉丝数互动率均值'
-                />
-                <ThreeBox title='粉丝互动数' number={mediaInteractionAvg} percent={mediaInteractionAvg30ItemRateOnClassificationPriceTag} isBig={true} />
+                <div>
+                  <HeadBox title={'总粉丝数'} number={followerCount || 21}
+                    percent={followerCountRateOnClassificationPriceTag} typeContent='同分类同价格总粉丝数均值' />
+                </div>
+                <div> <ThreeBox title='粉丝互动率' number={numeral(mediaInteractionProportion).format('0.0')}
+                  percent={mediaInteractionProportion30ItemRateOnClassificationPriceTag} isBig={true}
+                  typeContent='同分类同价格粉丝数互动率均值' /> </div>
+                <ThreeBox title='粉丝互动数' number={mediaInteractionAvg}
+                  percent={mediaInteractionAvg30ItemRateOnClassificationPriceTag} isBig={true}
+                  typeContent='同分类同价格粉丝互动数均值' />
               </div>
               <div className='fan-release-item'>
-                <HeadBox title={'总发布数'} number={mediaCount} noLast={true} />
+                <HeadBox title={'总发布数'} number={mediaCount || 900} noLast={true} />
                 <ThreeBox title='90天发布数' number={`${mediaCount90d}条`} notPercent={true} />
-                <ThreeBox title='28天粉丝增长率' number={numeral(followerCountGrowthRate28d).format('0.0%')} notPercent={true} />
+                <ThreeBox title='28天粉丝增长率' number={followerCountGrowthRate28d ? numeral(followerCountGrowthRate28d).format('0.0%') : '-'} notPercent={true} />
               </div>
             </div>
             <div className='operate-four'>
@@ -123,9 +125,8 @@ class DataIndicator extends Component {
     );
   }
 }
-const HeadBox = ({ title, number, percent, isLeft = false, noLast }) => {
-
-  const unConfig = noLast ? null : <UpDownPercentage percent={percent} isBackColor={true} />
+const HeadBox = ({ title, number, percent, isLeft = false, noLast, typeContent }) => {
+  const unConfig = noLast ? null : <UpDownPercentage percent={percent} isBackColor={true} typeContent={typeContent} />
   return <div className='head-box'>
     <div className={`${isLeft ? 'title-light' : 'title'}`}>{title}</div>
     <div className='head-box-flex'>
@@ -135,29 +136,22 @@ const HeadBox = ({ title, number, percent, isLeft = false, noLast }) => {
       {isLeft ? <div style={{ marginTop: 9, marginLeft: 3 }}>{unConfig} </div> : ""}
     </div>
     {isLeft ? "" : unConfig}
-
   </div>
 }
-const ThreeBox = ({ title, number, percent, isBig = false, notPercent = false }) => {
+const ThreeBox = ({ title, number, percent, isBig = false, notPercent = false, typeContent }) => {
   return <div className='three-avg-box' >
     <div className={notPercent ? 'big-title' : 'title'}>{title}</div>
     <div className={`${isBig ? 'big-number' : 'number'}`}>{number ? number : '-'}</div>
     {notPercent ? null : <div className='down' >
-      <UpDownPercentage percent={percent} />
+      <UpDownPercentage percent={percent} typeContent={typeContent} />
     </div>}
   </div>
 }
 const OperateItem = ({ typeText, numberAvg, percentAvg, sumAvgNumber, sumAvgPercent, numberSum, percentSum }) => {
-  const hoverHead = <HeadBox title='近30条视频均' isLeft={true} number={numberAvg} percent={percentAvg} />
   return <div className='operate-item'>
     <div>{typeText}</div>
     <div className='back-box'>
-      {typeText == '转发' ?
-        <PopoverFormat
-          text={<div>{hoverHead}</div>}
-          content='低于同分类同价格近30条视频转发均值'
-        />
-        : hoverHead}
+      <HeadBox title='近30条视频均' isLeft={true} number={numberAvg} percent={percentAvg} typeContent={`同分类同价格近30条视频${typeText}均值`} />
       {/* <div className='avg-sum-flex'>
         <ThreeBox title='总平均' number={sumAvgNumber} percent={sumAvgPercent} />
         <ThreeBox title='累计' number={numberSum} percent={percentSum} />

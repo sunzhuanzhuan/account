@@ -39,7 +39,7 @@ class HeadInfo extends Component {
             <div className='account-info' >
               <PopoverFormat text={<div className='account-name'>{snsName}</div>} content={snsName} />
               {isVerified == 1 ? <PopoverFormat text={<img width='14px' style={{ marginLeft: 10, paddingBottom: 4 }} src={require(`./img/certification-${'other'}.png`)} />} content={verificationReason} /> : null}
-              <LookIndex url={url} qrCodeUrl={qrCodeUrl} />
+              <LookIndex url={url} qrCodeUrl={qrCodeUrl} platformName={platformName} />
               {/* <a style={{ marginLeft: 20, color: ' #1990FF' }} onClick={() => setShowModal(true, { content: <BloggerInfo />, title: '博主信息', width: 700 })}>
                 <Icon type='user' />查看博主信息</a> */}
             </div>
@@ -54,9 +54,9 @@ class HeadInfo extends Component {
                 <FatLable backColor='#FFEBEA' color='#FE6A60' list={['直播', '直播', '直播']} />
               } /> */}
               <OneLine title='受众信息' content={<div className='content-font'>
-                <span>{isMale == 1 ? '男性' : '女性'}</span> <Divider type="vertical" />
-                <span>消费水平{consumptionLevel == 1 ? '低' : consumptionLevel == 2 ? '中' : '高'}</span> <Divider type="vertical" />
-                <span>{systemType == 1 ? '安卓' : 'IOS'}</span>
+                <span>{isMale ? isMale == 1 ? '男性' : '女性' : '-'}</span> <Divider type="vertical" />
+                <span>{consumptionLevel ? `消费水平${consumptionLevel == 1 ? '低' : consumptionLevel == 2 ? '中' : '高'}` : '-'}</span> <Divider type="vertical" />
+                <span>{systemType ? systemType == 1 ? '安卓' : 'IOS' : '-'}</span>
               </div>} />
               <OneLine title='简介' content={
                 <div className='content-font' style={{ maxWidth: 300 }}>
@@ -72,7 +72,7 @@ class HeadInfo extends Component {
               </div>
               <div className='type-info-row'>
                 <OneType title="历史服务最多分类" content={orderMajorIndustryCategory} />
-                <OneType title="接单率" content={FieldMap.getSegmentByFloat(orderAcceptanceRate)} last={numeral(orderAcceptanceRate).format('0%')} />
+                <OneType title="接单率" content={FieldMap.getSegmentByFloat(orderAcceptanceRate)} last={orderAcceptanceRate ? numeral(orderAcceptanceRate).format('0%') : '-'} />
                 <OneType title="平均订单完结周期" content={orderCompleteDuration ? numeral(orderCompleteDuration / 3600 / 24).format('0.00') : '-'} last='天' />
               </div>
             </div>
