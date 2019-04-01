@@ -71,7 +71,7 @@ class HeadInfo extends Component {
                 <OneType title="响应时间" content={FieldMap.getSegmentByFloat(orderResponsePercentile)} last={`${orderResponseDuration || '-'}s`} />
               </div>
               <div className='type-info-row'>
-                <OneType title="历史服务最多分类" content={orderMajorIndustryCategory} />
+                <OneType title="历史服务最多分类" content={orderMajorIndustryCategory || '-'} />
                 <OneType title="接单率" content={FieldMap.getSegmentByFloat(orderAcceptanceRate)} last={orderAcceptanceRate ? numeral(orderAcceptanceRate).format('0%') : '-'} />
                 <OneType title="平均订单完结周期" content={orderCompleteDuration ? numeral(orderCompleteDuration / 3600 / 24).format('0.00') : '-'} last='天' />
               </div>
