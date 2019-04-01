@@ -44,7 +44,7 @@ class CurveLine extends Component {
         <Chart height={400} data={dv} scale={cols}
           padding={[50, 160, 50, 40]}
           forceFit>
-          <Legend marker='circle' {...legendPosition} />
+          <Legend marker='circle' {...legendPosition} offsetX={140} />
           <Axis name="dateRange" />
           <Axis
             name="temperature"
