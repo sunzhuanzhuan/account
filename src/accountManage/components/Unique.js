@@ -154,7 +154,7 @@ export const AgentConfigAndPrice = (props) => {
   } = trinityPriceInfo;
   let name = cooperationPlatformResVOS.map(item => item.cooperationPlatformName).join('/') || '三方平台';
   return <div>
-    <FormItem {...formItemLayout} label={`是否可在${name}下单`}>
+    <FormItem {...formItemLayout} label={`可在${name}下单`}>
       {getFieldDecorator('trinityIsPreventShielding', {
         initialValue: trinityIsPreventShielding,
         rules: [{ required: true, message: '本项为必选项，请选择！' }]
@@ -178,6 +178,7 @@ export const AgentConfigAndPrice = (props) => {
     </FormItem> : null}
     {
       cooperationPlatformResVOS.map((item, n) => {
+        let { trinitySkuInfoResVOList: priceList = [], trinityTollTypeVOList: otherList = [] } = item;
         return <div key={n}>
           <FormItem {...formItemLayout} label={`${item.cooperationPlatformName}参考报价`}>
             <div className='trinity-reference-table'>
@@ -190,12 +191,12 @@ export const AgentConfigAndPrice = (props) => {
                   <th>更新人</th>
                 </tr>
                 {
-                  item.trinitySkuInfoResVOList.map((sku, i) => {
+                  priceList.map((sku, i) => {
                     return <tr key={sku.trinitySkuKey}>
                       <th>{sku.wbyTypeName}</th>
                       <td style={{ padding: '0 4px' }}>
                         {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].publicCostPrice`, {
-                          initialValue: sku.publicCostPrice
+                          initialValue: sku.publicCostPrice || ''
                         })(<PriceInput isEdit />)}
                       </td>
                       <td>
@@ -206,10 +207,10 @@ export const AgentConfigAndPrice = (props) => {
                       </td>
                       {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].trinitySkuTypeId`, {
                         initialValue: sku.trinitySkuTypeId
-                      })(<input type='hidden'/>)}
+                      })(<input type='hidden' />)}
                       {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].trinitySkuKey`, {
                         initialValue: sku.trinitySkuKey
-                      })(<input type='hidden'/>)}
+                      })(<input type='hidden' />)}
                     </tr>;
                   })
                 }
@@ -217,7 +218,7 @@ export const AgentConfigAndPrice = (props) => {
               </table>
             </div>
           </FormItem>
-          <FormItem {...formItemLayout} label='附加费参考报价'>
+          {otherList.length ? <FormItem {...formItemLayout} label='附加费参考报价'>
             <div className='trinity-reference-table'>
               <table>
                 <tbody>
@@ -228,7 +229,7 @@ export const AgentConfigAndPrice = (props) => {
                   <th>更新人</th>
                 </tr>
                 {
-                  item.trinityTollTypeVOList.map((trinity, i) => {
+                  otherList.map((trinity, i) => {
                     return <tr key={i}>
                       <th>{trinity.tollTypeName}</th>
                       <td>
@@ -240,17 +241,16 @@ export const AgentConfigAndPrice = (props) => {
                       <td>
                         {trinity.modifiedName}
                       </td>
-                    </tr>
+                    </tr>;
                   })
                 }
-
                 </tbody>
               </table>
             </div>
-          </FormItem>
+          </FormItem> : null}
           {getFieldDecorator(`trinitySkuInfoVOS[${n}].trinityPlatformCode`, {
             initialValue: item.cooperationPlatformCode
-          })(<input type='hidden'/>)}
+          })(<input type='hidden' />)}
         </div>;
       })
     }

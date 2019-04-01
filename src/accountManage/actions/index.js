@@ -77,7 +77,6 @@ export const {
   addOrUpdateAccountTrinitySkuInfo
 } = createHttpAction('addOrUpdateAccountTrinitySkuInfo', Interface.addOrUpdateAccountTrinitySkuInfo, {
   method: 'post',
-  ignoreToast: true,
 });
 
 

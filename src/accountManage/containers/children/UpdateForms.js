@@ -291,16 +291,24 @@ export class AgentConfigAndPriceForm extends Component {
         const { data: { accountInfo: { accountId, platformId } }, actions } = this.props.params;
         let trinitySkuInfoVOS = values.trinitySkuInfoVOS.reduce((ary, cur) => {
           cur.list.forEach(sku => {
-            ary.push({...sku, trinityPlatformCode: cur.trinityPlatformCode})
+            ary.push({
+              ...sku,
+              trinityPlatformCode: cur.trinityPlatformCode,
+              publicCostPrice: sku.publicCostPrice || 0
+            })
           })
           return ary
         }, [])
+        let hide = message.loading('保存中...')
         actions.addOrUpdateAccountTrinitySkuInfo({
+          trinityPlaceOrderType: 2,
           ...values,
           trinitySkuInfoVOS,
           platformId,
           itemId: accountId
-        })
+        }).then(() => {
+          message.success('保存成功!');
+        }).finally(hide)
       }
     });
   };

@@ -131,7 +131,7 @@ export default class UpdateChild extends Component {
 					{!this.state.isLoading ?
 						<div className='price_scroll_container'>
               <AccountPriceForm params={params} diff={price} getSkuActions={this.getSkuActions} />
-              {(isFamous == 1 && vos.length) ? <AgentConfigAndPriceForm params={params} diff={price} /> : null}
+              {(isFamous == 1 && vos.length) ? <AgentConfigAndPriceForm reload={this.getTrinitySkuActions} params={params} diff={price} /> : null}
             </div> : <Skeleton active />}
 				</TabPane>
 				<TabPane tab="受众画像" key="3">
