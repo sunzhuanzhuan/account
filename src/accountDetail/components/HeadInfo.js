@@ -83,7 +83,7 @@ class HeadInfo extends Component {
               </div>
               <div style={{ textAlign: 'center' }}>
                 {isExistCar ? <Button className='add-select-car-button' type='primary' onClick={() => selectCarEdit(true)}>加入选号车</Button> :
-                  <Button className='remove-select-car-button' onClick={() => selectCarEdit(false)}>移除选号车</Button>}
+                  <Button className='remove-select-car-button' onClick={() => selectCarEdit(false)}>移出选号车</Button>}
               </div>
               {/* <div style={{ textAlign: "center", marginTop: 12 }}>加入收藏<span className='collect'>（100人已收藏）</span></div> */}
             </div>
