@@ -86,7 +86,9 @@ class DataIndicator extends Component {
                 <div> <ThreeBox title='粉丝互动率' number={numeral(mediaInteractionProportion).format('0.0')}
                   percent={mediaInteractionProportion30ItemRateOnClassificationPriceTag} isBig={true}
                   typeContent='同分类同价格粉丝数互动率均值' /> </div>
-                <ThreeBox title='粉丝互动数' number={mediaInteractionAvg}
+                <ThreeBox title='粉丝互动数' number={
+                  <ValueFormat value={mediaInteractionAvg > 0 ? mediaInteractionAvg : 0} unitClass='unit' />
+                }
                   percent={mediaInteractionAvg30ItemRateOnClassificationPriceTag} isBig={true}
                   typeContent='同分类同价格粉丝互动数均值' />
               </div>
@@ -133,7 +135,7 @@ const HeadBox = ({ title, number, percent, isLeft = false, noLast, typeContent }
       {/* <div className='number'>{number}</div>
       <div className='unit'>{unit}</div> */}
       <ValueFormat value={number > 0 ? number : 0} valueClass='number' unitClass='unit' />
-      {isLeft ? <div style={{ marginTop: 9, marginLeft: 3 }}>{unConfig} </div> : ""}
+      {isLeft ? <div style={{ marginTop: 10, marginLeft: 3 }}>{unConfig} </div> : ""}
     </div>
     {isLeft ? "" : unConfig}
   </div>
@@ -151,7 +153,7 @@ const OperateItem = ({ typeText, numberAvg, percentAvg, sumAvgNumber, sumAvgPerc
   return <div className='operate-item'>
     <div>{typeText}</div>
     <div className='back-box'>
-      <HeadBox title='近30条视频均' isLeft={true} number={numberAvg} percent={percentAvg} typeContent={`同分类同价格近30条视频${typeText}均值`} />
+      <HeadBox title='近30条视频均' number={numberAvg} percent={percentAvg} typeContent={`同分类同价格近30条视频${typeText}均值`} />
       {/* <div className='avg-sum-flex'>
         <ThreeBox title='总平均' number={sumAvgNumber} percent={sumAvgPercent} />
         <ThreeBox title='累计' number={numberSum} percent={percentSum} />

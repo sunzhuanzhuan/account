@@ -10,6 +10,7 @@ import {
 
 } from "bizcharts";
 import { formatW } from "../../util";
+import './HistogramLine.less'
 class HistogramLine extends Component {
   componentDidMount() {
 
@@ -26,7 +27,7 @@ class HistogramLine extends Component {
     //     people: 2
     //   }
     // ];
-    const { data = [], positionConfig, lineText, boxText, positionIntervalConfig } = this.props
+    const { data = [], positionConfig, lineText, boxText, positionIntervalConfig, type = 4 } = this.props
     const scale = {
 
       followerCountFull: {
@@ -76,13 +77,18 @@ class HistogramLine extends Component {
     const {
       height = 400
     } = this.props
+
     return (
 
-      <div>
+      <div className='histogram-line'>
+        <div className='title-line'>
+          <div className='left-title'>{boxText}</div>
+          <div className='right-title'>{lineText}</div>
+        </div>
         <Chart
           height={height}
           scale={scale}
-          padding={[50, 90]}
+          padding={[60, 100, 60, 80]}
           forceFit
           data={data}
           ref={node => this.chart = node}
@@ -94,6 +100,8 @@ class HistogramLine extends Component {
         >
           <Legend
             {...legendPosition}
+            offsetY={-30}
+            offsetX={70}
             custom={true}
             allowAllCanceled={true}
             items={[
