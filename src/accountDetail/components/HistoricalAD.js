@@ -2,7 +2,7 @@
  * @Author: wangxinyue 
  * @Date: 2019-02-28 17:43:12 
  * @Last Modified by: wangxinyue
- * @Last Modified time: 2019-03-29 14:38:28
+ * @Last Modified time: 2019-04-01 11:38:19
  * 历史广告案例
  */
 
@@ -89,7 +89,7 @@ class HistoricalAD extends Component {
           </div>
         </div>
         <div className='historical-ad-case'>
-          {list.map((one, index) => <div className='case-item' key={index}>
+          {list.map((one, index) => <div className='case-item' key={index} onClick={() => window.open(one.executionUrl, "_blank")}>
             <div className='left-img'>
               <img src={one.mediaCoverUrl ? one.mediaCoverUrl : require('./img/deafult-box.png')} onError={(e) => e.target.src = require('./img/deafult-box.png')} />
             </div>
@@ -114,7 +114,7 @@ class HistoricalAD extends Component {
             <Spin spinning={moreLoading} >
             </Spin></a> : null}
         </div>
-      </div> : null
+      </div > : null
     );
   }
 }
