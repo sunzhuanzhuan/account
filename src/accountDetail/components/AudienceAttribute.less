@@ -1,4 +1,5 @@
 @import "../index.less";
+
 .flex1-right-white {
     flex: 1;
     @margin-left-right-10();
@@ -6,65 +7,86 @@
 }
 
 .audience-attribute {
-     
+
     .audience-attribute-charts {
+
         @flex-between();
         flex: 1
     }
+
     .left-three {
         flex: 2;
+
+
         .left-three-two {
             @flex-between();
+            min-width: 600px;
+
             .one-line-item {
                 .flex1-right-white;
             }
         }
+
         .two-line-item {
+            min-width: 580px;
             .flex1-right-white;
             margin-top: 20px;
         }
     }
+
     .right-two {
         flex: 1;
+        min-width: 400px;
+
         .right-two-item {
             .flex1-right-white;
         }
+
         .right-two-equit {
             .flex1-right-white;
             margin-top: 20px;
+            padding-bottom: 14px;
         }
     }
+
     .region-img {
         @margin-left-right-10();
         background: #fff;
         margin-top: 20px;
         @flex-between();
+
         .ranking {
             width: 300px;
             margin-top: 20px;
             padding: 20px;
             margin-left: auto;
         }
+
         .rnking-box {
             @flex-between();
             margin-left: 30px;
             height: 35px;
+
             .number-blue {
-                .circle-box( #57AFFF, #fff);
+                .circle-box(#57AFFF, #fff);
             }
+
             .number-gray {
                 .circle-box;
             }
+
             .city-name {
                 font-size: 14px;
                 color: #000;
             }
+
             .city-name-blod {
                 .city-name;
                 font-weight: 500;
             }
         }
     }
+
     .circle-box(@background: #F0F2F5, @color: #000) {
         width: 20px;
         height: 20px;

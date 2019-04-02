@@ -1,13 +1,24 @@
 @import "../index.less";
+
 .account-recommend {
+
+
     .recommed-box {
+        @margin-left-right-10();
         @flex-between();
         background: #fff;
         height: 220px;
+
         .recommed-item {
-            margin: 28px;
+            padding: 26px;
             text-align: center;
         }
+
+        .recommed-item:hover {
+
+            @hover-shadow();
+        }
+
         .account-name {
             max-width: 100px;
             margin-top: 20px;
@@ -15,6 +26,7 @@
             font-weight: 600;
             @nowrap-hidden-ellipsis();
         }
+
         .account-lable {
             max-width: 100px;
             @nowrap-hidden-ellipsis();
