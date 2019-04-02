@@ -95,15 +95,14 @@ class AccountDetail extends Component {
           </LazyLoad>
           {/* 受众画像 */}
           {/* <LazyLoad once overflow>
-          <AudienceAttribute getAudienceAttribute={getAudienceAttribute} audienceAttributeInfo={audienceAttributeInfo} />
-        </LazyLoad> */}
+            <AudienceAttribute accountId={accountId} getAudienceAttribute={getAudienceAttribute} audienceAttributeInfo={audienceAttributeInfo} />
+          </LazyLoad> */}
           {/* 最新视频 */}
           {/* <LazyLoad once overflow>
-          <NewVideo />
-        </LazyLoad> */}
-          {/* 账号推荐
-          <AccountRecommend /> 
-        */}
+            <NewVideo />
+          </LazyLoad> */}
+          {/* 账号推荐 */}
+          {/* <AccountRecommend /> */}
           <Modal
             title={showModal.title}
             visible={visible}

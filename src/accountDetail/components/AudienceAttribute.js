@@ -8,7 +8,8 @@ class AudienceAttribute extends Component {
   }
   componentDidMount = () => {
     console.log('受众属性数据加载啦啦啦啦')
-    this.props.getAudienceAttribute()
+    const { getAudienceAttribute, accountId } = this.props
+    getAudienceAttribute({ accountId: accountId })
   }
   render() {
     const { audienceAttributeInfo = {} } = this.props
