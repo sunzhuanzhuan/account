@@ -8,7 +8,7 @@ import AudiencePortrait from '../../components/AudiencePortrait';
 import { BaseInfo } from '@/accountManage/components/BaseInfo';
 import {
   AccountDesc,
-  AccountID, AccountIsNameless, ContentCategory,
+  AccountID, AccountIsNameless, AgentConfigAndPrice, ContentCategory,
   OrderStrategy, PriceInclude, QCCodeUpload, ReferencePrice
 } from '@/accountManage/components/Unique';
 import { FamousPrice, NamelessPrice } from '@/accountManage/components/AccountPrice';
@@ -119,7 +119,7 @@ export class BaseInfoForm extends Component {
           this.setState({
             submitLoading: false
           });
-          window.oldSnsUniqueId = values.base.snsUniqueId
+          window.oldSnsUniqueId = values.base.snsUniqueId;
           message.success('更新账号成功');
         }).catch(() => {
           this.setState({
@@ -263,8 +263,6 @@ export class AccountPriceForm extends Component {
       <WrapPanel header='账号报价' right={rightC}>
         {_isFamous ?
           <FamousPrice {...params} {...form} priceKeys={priceKeys}>
-            {diff.referencePrice ? <ReferencePrice  {...params} {...form} /> :
-              <i style={{ display: 'none' }} />}
             {diff.priceInclude ? <PriceInclude  {...params} {...form} /> :
               <i style={{ display: 'none' }} />}
             <OrderStrategy {...params} {...form} />
@@ -276,6 +274,53 @@ export class AccountPriceForm extends Component {
             <OrderStrategy {...params} {...form} />
           </NamelessPrice>
         }
+      </WrapPanel>
+    </Form>;
+  }
+}
+
+/**
+ * 三方平台报价相关
+ */
+@Form.create()
+export class AgentConfigAndPriceForm extends Component {
+  submit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        const { data: { accountInfo: { accountId, platformId } }, actions } = this.props.params;
+        let trinitySkuInfoVOS = values.trinitySkuInfoVOS.reduce((ary, cur) => {
+          cur.list.forEach(sku => {
+            ary.push({
+              ...sku,
+              trinityPlatformCode: cur.trinityPlatformCode,
+              publicCostPrice: sku.publicCostPrice || 0
+            })
+          })
+          return ary
+        }, [])
+        let hide = message.loading('保存中...')
+        actions.addOrUpdateAccountTrinitySkuInfo({
+          trinityPlaceOrderType: 2,
+          ...values,
+          trinitySkuInfoVOS,
+          platformId,
+          itemId: accountId
+        }).then(() => {
+          message.success('保存成功!');
+        }).finally(hide)
+      }
+    });
+  };
+
+  render() {
+    const { form, params } = this.props;
+    const rightC = <div className='wrap-panel-right-content'>
+      <Button size='small' type='primary' onClick={this.submit}>{'保存'}</Button>
+    </div>;
+    return <Form>
+      <WrapPanel header='三方平台报价' right={rightC}>
+        <AgentConfigAndPrice {...params} {...form} />
       </WrapPanel>
     </Form>;
   }
@@ -338,7 +383,7 @@ export class CooperateInfoForm extends Component {
     let { cooperationCases = [] } = values;
     // 设置index
     let n = 1;
-    cooperationCases = cooperationCases.filter(({ isDeleted, cooperationCaseId }) => !isDeleted || cooperationCaseId)
+    cooperationCases = cooperationCases.filter(({ isDeleted, cooperationCaseId }) => !isDeleted || cooperationCaseId);
     cooperationCases.forEach((item) => {
       if (item.isDeleted) delete item.index;
       item.isDeleted = item.isDeleted ? 1 : 2;
