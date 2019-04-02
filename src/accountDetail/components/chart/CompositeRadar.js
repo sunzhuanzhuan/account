@@ -37,7 +37,7 @@ class CompositeRadar extends Component {
       }
     });
     const scale = {
-      user: { formatter: d => ({ value: '该账号', avgValue: `${legendType[1]}分类平均值` }[d]) },
+      user: { formatter: d => ({ value: '该账号', avgValue: `${legendType[1] || '-'}分类平均值` }[d]) },
     };
     const toopicConfig = [
       "value*avgValue*list",
