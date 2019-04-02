@@ -129,7 +129,7 @@ export default class UpdateChild extends Component {
 					<span>报价信息{((isFamous == 1) && hasRedDot(priceValidTo)) ?
 						<Badge dot><b style={{ visibility: 'hidden' }}>_</b></Badge> : null}</span>}>
 					{!this.state.isLoading ?
-						<div className='price_scroll_container'>
+						<div className='price_scroll_container' style={{paddingRight: '10px'}}>
               <AccountPriceForm params={params} diff={price} getSkuActions={this.getSkuActions} />
               {(isFamous == 1 && vos.length) ? <AgentConfigAndPriceForm reload={this.getTrinitySkuActions} params={params} diff={price} /> : null}
             </div> : <Skeleton active />}

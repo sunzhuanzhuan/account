@@ -146,7 +146,17 @@ export const ContentCategory = (props) => {
  * 三方平台报价项及相关设置
  */
 export const AgentConfigAndPrice = (props) => {
-  const { formItemLayout = {}, data: { trinityPriceInfo }, getFieldDecorator, getFieldValue } = props;
+  const formItemLayout = {
+    labelCol: {
+      xs: { span: 24 },
+      sm: { span: 6 },
+    },
+    wrapperCol: {
+      xs: { span: 24 },
+      sm: { span: 18 },
+    }
+  };
+  const { data: { trinityPriceInfo }, getFieldDecorator, getFieldValue } = props;
   const {
     trinityIsPreventShielding,
     trinityPlaceOrderType,
@@ -176,6 +186,25 @@ export const AgentConfigAndPrice = (props) => {
         </RadioGroup>
       )}
     </FormItem> : null}
+    <FormItem {...formItemLayout} label={` `} colon={false}>
+      {getFieldDecorator('trinityIsPreventShielding22', {
+        initialValue: true,
+        valuePropName: 'checked'
+      })(
+        <Checkbox>人工控制可在{name}下单</Checkbox>
+      )}
+    </FormItem>
+    {getFieldValue('trinityIsPreventShielding22') ? <FormItem {...formItemLayout} label={`强制可在${name}下单结果`}>
+      {getFieldDecorator('trinityIsPreventShielding33', {
+        initialValue: 1,
+        rules: [{ required: true, message: '本项为必选项，请选择！' }]
+      })(
+        <RadioGroup>
+          <Radio value={1}>强制可下单</Radio>
+          <Radio value={2}>强制不可下单</Radio>
+        </RadioGroup>
+      )}
+    </FormItem>:null}
     {
       cooperationPlatformResVOS.map((item, n) => {
         let { trinitySkuInfoResVOList: priceList = [], trinityTollTypeVOList: otherList = [] } = item;
