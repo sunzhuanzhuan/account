@@ -197,7 +197,7 @@ export const AgentConfigAndPrice = (props) => {
           </RadioGroup>
         )}
       </FormItem> : null}
-    {(getFieldValue('trinityIsPreventShieldingAutomated') === 1 && getFieldValue('trinityIsPreventShieldingManual') === 0) || getFieldValue('trinityIsPreventShieldingManual') === 1 ?
+    {(getFieldValue('trinityIsPreventShieldingAutomated') === 1 && !getFieldValue('_trinityIsPreventShieldingManual_')) || getFieldValue('trinityIsPreventShieldingManual') === 1 ?
       <FormItem {...formItemLayout} label='下单方'>
         {getFieldDecorator('trinityPlaceOrderType', {
           initialValue: trinityPlaceOrderType,
