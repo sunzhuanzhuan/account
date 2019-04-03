@@ -8,6 +8,7 @@ import {
   Legend,
 } from "bizcharts";
 import DataSet from "@antv/data-set";
+import { formatW } from "../../util";
 
 
 class CurveLine extends Component {
@@ -24,6 +25,7 @@ class CurveLine extends Component {
     const { data = [] } = this.props
     const ds = new DataSet();
     const dv = ds.createView().source(data);
+    const fieldsMap = { followerCountFull: '粉丝累计数', mediaLikeSumIncre: '点赞净增数', mediaCountIncre: '发布净增数' }
     dv.transform({
       type: "fold",
       fields: ["followerCountFull", "mediaLikeSumIncre", 'mediaCountIncre'],
@@ -36,7 +38,7 @@ class CurveLine extends Component {
       dateRange: {
         range: [0, 1]
       },
-      city: { formatter: d => ({ followerCountFull: '粉丝累计数', mediaLikeSumIncre: '点赞净增数', mediaCountIncre: '发布净增数' }[d]) },
+      city: { formatter: d => (fieldsMap[d]) },
 
     };
     return (
@@ -65,6 +67,14 @@ class CurveLine extends Component {
             size={2}
             color={"city"}
             shape={"smooth"}
+            tooltip={[
+              "city*temperature",
+              (city, temperature) => {
+                return {
+                  name: fieldsMap[city],
+                  value: formatW(temperature)
+                }
+              }]}
           />
           {/* <Geom
             type="point"
