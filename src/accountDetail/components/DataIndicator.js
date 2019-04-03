@@ -38,7 +38,7 @@ class DataIndicator extends Component {
       mediaRepostAvgRateOnClassificationPriceTag, // 账号平均转发比同行业同价位平均单视频转发
       mediaRepostSumRateOnClassificationPriceTag, //账号平均转发比同行业同价位平均累计转发
       //评论
-      mediaCommentAvg30ItemRateOnClassification, //近30评论平均值
+      mediaCommentAvg, //近30评论平均值
       mediaCommentAvg30ItemRateOnClassificationPriceTag, //账号近30条平均评论/同行业同价位近30条平均评论		 
       mediaCommentAvgRateOnClassificationPriceTag, //账号平均评论/同行业同价位平均单视频评论		 
       mediaCommentSumRateOnClassificationPriceTag, //账号平均评论/同行业同价位平均累计评论
@@ -110,7 +110,7 @@ class DataIndicator extends Component {
                 numberSum='123' percentSum={mediaRepostSumRateOnClassificationPriceTag}
                 typeSum="123" />
               <OperateItem typeText='评论'
-                numberAvg={mediaCommentAvg30ItemRateOnClassification} percentAvg={mediaCommentAvg30ItemRateOnClassificationPriceTag}
+                numberAvg={mediaCommentAvg} percentAvg={mediaCommentAvg30ItemRateOnClassificationPriceTag}
                 sumAvgNumber='123' sumAvgPercent={mediaCommentAvgRateOnClassificationPriceTag}
                 numberSum='123' percentSum={mediaCommentSumRateOnClassificationPriceTag}
                 typeSum="123" />
