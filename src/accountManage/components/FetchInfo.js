@@ -44,21 +44,24 @@ export class FetchInfo extends React.Component {
 		const { pid, actions: { fetchAccountBaseInfo, fetchAccountBaseInfoByUpdate, updateFetchInfo, addFetchInfo }, form, data: { accountInfo }, isUpdate } = this.props
 		const { value, keys } = this.state
 		this.setState({ isLoading: true })
-		let flag_id = accountInfo.snsUniqueId
+		let flag_id = window.oldSnsUniqueId || accountInfo.snsUniqueId
 		let action = isUpdate ? fetchAccountBaseInfoByUpdate : fetchAccountBaseInfo
 		let params = isUpdate ? {
 			platformId: pid,
 			[keys]: value,
-			is_edit_account_page: 1
+			is_edit_account_page: 1,
+      accountId: accountInfo.accountId
 		} : { platformId: pid, [keys]: value }
 		action(params).then((data = {}) => {
 			this.setState({ isLoading: false })
 			let value = data.data
 			if (isUpdate) {
-				if (value['snsUniqueId'] && (flag_id != value['snsUniqueId'])) {
+        let reg = /^wby_|_old$/
+				if (value['snsUniqueId'] && !reg.test(flag_id) && (flag_id != value['snsUniqueId'])) {
 					value = {}
 					return info()
 				}
+        window.oldSnsUniqueId = flag_id
 				updateFetchInfo(value)
 			} else {
 				addFetchInfo({
