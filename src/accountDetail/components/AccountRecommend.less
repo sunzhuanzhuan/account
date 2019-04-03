@@ -1,0 +1,40 @@
+@import "../index.less";
+
+.account-recommend {
+
+
+    .recommed-box {
+        @margin-left-right-10();
+        @flex-between();
+        background: #fff;
+        height: 220px;
+
+        .recommed-item {
+            padding: 26px;
+            text-align: center;
+        }
+
+        .recommed-item:hover {
+
+            @hover-shadow();
+        }
+
+        .account-name {
+            max-width: 100px;
+            margin-top: 20px;
+            .font-color(#333, 14px);
+            font-weight: 600;
+            @nowrap-hidden-ellipsis();
+        }
+
+        .account-lable {
+            max-width: 100px;
+            @nowrap-hidden-ellipsis();
+            margin-top: 6px;
+            height: 18px;
+            background: #FFF6E8;
+            border: 1px solid #FEBE4C;
+            .font-color(#333, 12px)
+        }
+    }
+}

@@ -1,0 +1,33 @@
+@import '../index.less';
+.floating-base-info {
+    position: sticky;
+    z-index: 9;
+    top: -20px;
+    margin-top: -160px;
+    margin-left: 20px;
+    background: #fff;
+    .floating-base-info-flex {
+        display: flex;
+        height: 100px;
+        align-items: center;
+        margin-left: 10px;
+        .detail {
+            margin-left: 20px;
+        }
+        .account-name {
+            @color333-font16();
+        }
+        .fans {
+            @color999-font12();
+        }
+        .big-circle {
+            margin-left: 20px;
+            height: 100px;
+            text-align: center;
+            padding-top: 40px;
+            border: 1px solid #f00;
+            border-radius: 50%;
+            width: 100px;
+        }
+    }
+}

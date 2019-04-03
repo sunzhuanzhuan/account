@@ -1,0 +1,160 @@
+@import "../index.less";
+
+.back-color {
+    background: #f7f7f7;
+}
+
+.back-padding {
+    .back-color;
+    padding: 25px 20px;
+}
+
+.data-indicator {
+    background: @back-color;
+
+    .content {
+        display: flex;
+        flex: 1;
+
+        .left-indicator {
+            background: #fff;
+            padding: 10px 10px 10px;
+            flex: 5;
+            @margin-left-right-10();
+            padding-top: 40px;
+        }
+
+        .right-composite {
+            @margin-left-right-10();
+            background: #fff;
+            flex: 3;
+            min-width: 320px;
+        }
+    }
+
+    .fan-release {
+        @flex-between();
+        flex: 1;
+
+        .fan-release-item {
+            @flex-between();
+            flex: 1;
+            .back-padding;
+            margin: 2px 6px;
+        }
+    }
+
+    .head-box {
+        .title {
+            @color333-font13();
+        }
+
+        .title-light {
+            @color999-font13();
+        }
+
+        .head-box-flex {
+            display: flex;
+            @color333-font13();
+
+            .number {
+                font-size: 24px;
+            }
+
+
+        }
+    }
+
+    .operate-four {
+        @flex-between();
+        margin: 30px 8px 10px;
+        flex: 1;
+    }
+
+    .operate-item {
+        flex: none;
+        width: calc((100% - 36px)/4);
+        margin-left: 12px;
+
+        .avg-sum-flex {
+            @flex-between();
+            margin-top: 10px;
+        }
+
+        .back-box {
+            margin-top: 4px;
+            display: flex;
+            justify-content: center;
+            .back-padding;
+        }
+    }
+
+    .operate-item:nth-of-type(1) {
+        margin-left: 0px;
+    }
+
+    .three-avg-box {
+        .title {
+            @color999-font13();
+            margin-left: 4px;
+        }
+
+        .big-title {
+            height: 25px;
+        }
+
+        .number {
+            font-size: 16px;
+            margin-left: 4px;
+        }
+
+        .big-number {
+            font-size: 16px;
+            margin-left: 4px;
+            line-height: 40px;
+            height: 36px;
+        }
+
+        .down {
+            margin-top: auto;
+        }
+    }
+
+    .composite-exponent {
+        .text {
+            margin-top: 17px;
+            @color999-font13();
+        }
+
+        .head-center {
+            border-bottom: @border-left-line;
+            text-align: center;
+            height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .left-index {}
+        }
+
+        .score {
+            @color333-font16();
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .lable {
+            font-size: 14px;
+            color: #1990FF;
+            border: 1px solid #1990FF;
+            height: 30px;
+            line-height: 30px;
+            padding: 0px 15px;
+        }
+    }
+
+    .unit {
+        margin-right: 2px;
+        font-size: 12px;
+    }
+}
