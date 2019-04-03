@@ -288,27 +288,32 @@ export class AgentConfigAndPriceForm extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        const { data: { accountInfo: { accountId, platformId } }, actions } = this.props.params;
+        const { data: { accountInfo: { accountId, platformId }, priceInfo: { isPreventShielding } }, actions } = this.props.params;
         let trinitySkuInfoVOS = values.trinitySkuInfoVOS.reduce((ary, cur) => {
           cur.list.forEach(sku => {
             ary.push({
               ...sku,
               trinityPlatformCode: cur.trinityPlatformCode,
               publicCostPrice: sku.publicCostPrice || 0
-            })
-          })
-          return ary
-        }, [])
-        let hide = message.loading('保存中...')
+            });
+          });
+          return ary;
+        }, []);
+        let trinityIsPreventShieldingManual = values.trinityIsPreventShieldingManual || 0
+        let hide = message.loading('保存中...');
         actions.addOrUpdateAccountTrinitySkuInfo({
           trinityPlaceOrderType: 2,
           ...values,
           trinitySkuInfoVOS,
+          trinityIsPreventShieldingManual,
           platformId,
           itemId: accountId
         }).then(() => {
-          message.success('保存成功!');
-        }).finally(hide)
+          const { reload } = this.props;
+          message.success('保存成功!', 1.3, () => {
+            reload();
+          });
+        }).finally(hide);
       }
     });
   };

@@ -146,36 +146,68 @@ export const ContentCategory = (props) => {
  * 三方平台报价项及相关设置
  */
 export const AgentConfigAndPrice = (props) => {
-  const { formItemLayout = {}, data: { trinityPriceInfo }, getFieldDecorator, getFieldValue } = props;
+  const formItemLayout = {
+    labelCol: {
+      xs: { span: 24 },
+      sm: { span: 6 },
+    },
+    wrapperCol: {
+      xs: { span: 24 },
+      sm: { span: 18 },
+    }
+  };
+  const { data: { trinityPriceInfo }, getFieldDecorator, getFieldValue } = props;
   const {
     trinityIsPreventShielding,
+    trinityIsPreventShieldingManual,
+    trinityIsPreventShieldingAutomated,
     trinityPlaceOrderType,
     cooperationPlatformResVOS = []
   } = trinityPriceInfo;
   let name = cooperationPlatformResVOS.map(item => item.cooperationPlatformName).join('/') || '三方平台';
   return <div>
-    <FormItem {...formItemLayout} label={`可在${name}下单`}>
-      {getFieldDecorator('trinityIsPreventShielding', {
-        initialValue: trinityIsPreventShielding,
+    <FormItem {...formItemLayout} label={`可在${name}下单(机维)`}>
+      {getFieldDecorator('trinityIsPreventShieldingAutomated', {
+        initialValue: trinityIsPreventShieldingAutomated,
         rules: [{ required: true, message: '本项为必选项，请选择！' }]
       })(
-        <RadioGroup>
+        <RadioGroup disabled>
           <Radio value={1}>是</Radio>
           <Radio value={2}>否</Radio>
         </RadioGroup>
       )}
     </FormItem>
-    {getFieldValue('trinityIsPreventShielding') === 1 ? <FormItem {...formItemLayout} label='下单方'>
-      {getFieldDecorator('trinityPlaceOrderType', {
-        initialValue: trinityPlaceOrderType,
+    <FormItem {...formItemLayout} label={` `} colon={false}>
+      {getFieldDecorator('_trinityIsPreventShieldingManual_', {
+        initialValue: trinityIsPreventShieldingManual > 0,
+        valuePropName: 'checked'
+      })(
+        <Checkbox>人工控制可在{name}下单</Checkbox>
+      )}
+    </FormItem>
+    {getFieldValue('_trinityIsPreventShieldingManual_') ? <FormItem {...formItemLayout} label={`强制可在${name}下单结果`}>
+      {getFieldDecorator('trinityIsPreventShieldingManual', {
+        initialValue: trinityIsPreventShieldingManual,
         rules: [{ required: true, message: '本项为必选项，请选择！' }]
       })(
         <RadioGroup>
-          <Radio value={1}>微播易代下</Radio>
-          <Radio value={2}>博主代下</Radio>
+          <Radio value={1}>强制可下单</Radio>
+          <Radio value={2}>强制不可下单</Radio>
         </RadioGroup>
       )}
-    </FormItem> : null}
+    </FormItem>:null}
+    {(getFieldValue('trinityIsPreventShieldingAutomated') === 1 && getFieldValue('trinityIsPreventShieldingManual') === 0) || getFieldValue('trinityIsPreventShieldingManual') === 1 ?
+      <FormItem {...formItemLayout} label='下单方'>
+        {getFieldDecorator('trinityPlaceOrderType', {
+          initialValue: trinityPlaceOrderType,
+          rules: [{ required: true, message: '本项为必选项，请选择！' }]
+        })(
+          <RadioGroup>
+            <Radio value={1}>微播易代下</Radio>
+            <Radio value={2}>博主代下</Radio>
+          </RadioGroup>
+        )}
+      </FormItem> : null}
     {
       cooperationPlatformResVOS.map((item, n) => {
         let { trinitySkuInfoResVOList: priceList = [], trinityTollTypeVOList: otherList = [] } = item;
@@ -304,7 +336,7 @@ export const ReferencePrice = (props) => {
  * 微博报价特有项(报价包含)
  */
 export const PriceInclude = (props) => {
-  const { getFieldDecorator, getFieldValue, formItemLayout = {}, data: { priceInfo } } = props;
+  const { getFieldDecorator, formItemLayout = {}, data: { priceInfo } } = props;
   const {
     isSupportTopicAndLink,
     isPreventShielding
@@ -313,9 +345,9 @@ export const PriceInclude = (props) => {
     <FormItem {...formItemLayout} label='报价包含'>
       {getFieldDecorator('isPreventShielding', {
         valuePropName: 'checked',
-        initialValue: getFieldValue('isssssOrderStatus') === 1
+        initialValue: isPreventShielding == 1
       })(
-        <Checkbox disabled>防屏蔽（博主可自行下微任务/接WEIQ订单）</Checkbox>)}
+        <Checkbox>防屏蔽（博主可自行下微任务/接WEIQ订单）</Checkbox>)}
     </FormItem>
     <FormItem style={{ top: '-16px' }}  {...formItemLayout} label=' ' colon={false}>
       {getFieldDecorator('isSupportTopicAndLink', {
