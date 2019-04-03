@@ -1,6 +1,6 @@
 import React from 'react';
 import WBYUploadFile from '@/accountManage/base/NewUpload';
-import { Form, Select, Input, Checkbox, Popover, Radio } from 'antd';
+import { Form, Select, Input, Checkbox, Popover, Radio, Modal, message } from 'antd';
 import SimpleTag from '../base/SimpleTag';
 import moment from 'moment';
 import { platformToDesc } from '../constants/placeholder';
@@ -149,11 +149,11 @@ export const AgentConfigAndPrice = (props) => {
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
-      sm: { span: 6 },
+      sm: { span: 6 }
     },
     wrapperCol: {
       xs: { span: 24 },
-      sm: { span: 18 },
+      sm: { span: 18 }
     }
   };
   const { data: { trinityPriceInfo }, getFieldDecorator, getFieldValue } = props;
@@ -185,17 +185,18 @@ export const AgentConfigAndPrice = (props) => {
         <Checkbox>人工控制可在{name}下单</Checkbox>
       )}
     </FormItem>
-    {getFieldValue('_trinityIsPreventShieldingManual_') ? <FormItem {...formItemLayout} label={`强制可在${name}下单结果`}>
-      {getFieldDecorator('trinityIsPreventShieldingManual', {
-        initialValue: trinityIsPreventShieldingManual,
-        rules: [{ required: true, message: '本项为必选项，请选择！' }]
-      })(
-        <RadioGroup>
-          <Radio value={1}>强制可下单</Radio>
-          <Radio value={2}>强制不可下单</Radio>
-        </RadioGroup>
-      )}
-    </FormItem>:null}
+    {getFieldValue('_trinityIsPreventShieldingManual_') ?
+      <FormItem {...formItemLayout} label={`强制可在${name}下单结果`}>
+        {getFieldDecorator('trinityIsPreventShieldingManual', {
+          initialValue: trinityIsPreventShieldingManual,
+          rules: [{ required: true, message: '本项为必选项，请选择！' }]
+        })(
+          <RadioGroup>
+            <Radio value={1}>强制可下单</Radio>
+            <Radio value={2}>强制不可下单</Radio>
+          </RadioGroup>
+        )}
+      </FormItem> : null}
     {(getFieldValue('trinityIsPreventShieldingAutomated') === 1 && getFieldValue('trinityIsPreventShieldingManual') === 0) || getFieldValue('trinityIsPreventShieldingManual') === 1 ?
       <FormItem {...formItemLayout} label='下单方'>
         {getFieldDecorator('trinityPlaceOrderType', {
@@ -480,3 +481,30 @@ export const OrderStrategy = (props) => {
     </FormItem> : null}
   </div>;
 };
+
+export function TrinityIsPreventShieldingTip(value, callback) {
+  let { accountValue, skuValue, trinityName = "微任务/WEIQ" } = value, diff;
+  console.log("accountValue : " , accountValue, '+++++++', "skuValue : ", skuValue);
+  accountValue = parseInt(accountValue)
+  skuValue = parseInt(skuValue)
+  if (!accountValue || !skuValue || accountValue === skuValue) {
+    let hide = message.loading('保存中...');
+    Promise.resolve(callback(hide)).finally(hide)
+    return
+  }
+  if (accountValue === 1 && skuValue === 2) {
+    diff = true;
+  } else if (accountValue === 2 && skuValue === 1) {
+    diff = false;
+  } else {
+    return console.warn('其他错误:',accountValue, skuValue);
+  }
+  let text = diff ? `当前账号可以在${trinityName}下单，报价项不包含防屏蔽，请修改报价项价格，以免价格过高影响应约造成损失。`:
+    `当前账号不可以在${trinityName}下单，报价项包含防屏蔽，请修改报价项价格，以免价格过低影响应约造成损失。`
+  Modal.confirm({
+    title: text,
+    okText: '不修改,保存',
+    cancelText: '去修改',
+    onOk: callback
+  });
+}

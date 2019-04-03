@@ -9,7 +9,7 @@ import { BaseInfo } from '@/accountManage/components/BaseInfo';
 import {
   AccountDesc,
   AccountID, AccountIsNameless, AgentConfigAndPrice, ContentCategory,
-  OrderStrategy, PriceInclude, QCCodeUpload, ReferencePrice
+  OrderStrategy, PriceInclude, QCCodeUpload, ReferencePrice, TrinityIsPreventShieldingTip
 } from '@/accountManage/components/Unique';
 import { FamousPrice, NamelessPrice } from '@/accountManage/components/AccountPrice';
 import { AccountFeature } from '@/accountManage/components/AccountFeature';
@@ -222,19 +222,25 @@ export class AccountPriceForm extends Component {
     });
   };
   showConfirm = (values) => {
-    const { actions: { saveSku }, data: { accountInfo } } = this.props.params;
+    const { actions: { saveSku }, data: { accountInfo, trinityPriceInfo } } = this.props.params;
     const { getSkuActions } = this.props;
     const { isFamous } = accountInfo;
     confirm({
       title: '提交价格信息?',
       content: (isFamous == 1) ? '提交成功后，下个价格有效期和报价将无法修改' : '',
-      onOk() {
-        return saveSku(values).then(() => {
-          message.success('更新报价信息成功', 1.3, () => {
-            getSkuActions();
-          });
+      onOk(hide) {
+        hide()
+        TrinityIsPreventShieldingTip({
+          accountValue: trinityPriceInfo.trinityIsPreventShielding,
+          skuValue: values.isPreventShielding
+        }, () => {
+          return saveSku(values).then(() => {
+            message.success('更新报价信息成功', 1.3, () => {
+              getSkuActions();
+            });
 
-        });
+          });
+        })
       },
       onCancel() { }
     });
@@ -299,21 +305,27 @@ export class AgentConfigAndPriceForm extends Component {
           });
           return ary;
         }, []);
-        let trinityIsPreventShieldingManual = values.trinityIsPreventShieldingManual || 0
-        let hide = message.loading('保存中...');
-        actions.addOrUpdateAccountTrinitySkuInfo({
-          trinityPlaceOrderType: 2,
-          ...values,
-          trinitySkuInfoVOS,
-          trinityIsPreventShieldingManual,
-          platformId,
-          itemId: accountId
-        }).then(() => {
-          const { reload } = this.props;
-          message.success('保存成功!', 1.3, () => {
-            reload();
+        let trinityIsPreventShieldingManual = values.trinityIsPreventShieldingManual || 0;
+
+        TrinityIsPreventShieldingTip({
+          accountValue: trinityIsPreventShieldingManual > 0 ? trinityIsPreventShieldingManual :
+            values.trinityIsPreventShieldingAutomated,
+          skuValue: isPreventShielding
+        }, () => {
+          return actions.addOrUpdateAccountTrinitySkuInfo({
+            trinityPlaceOrderType: 2,
+            ...values,
+            trinitySkuInfoVOS,
+            trinityIsPreventShieldingManual,
+            platformId,
+            itemId: accountId
+          }).then(() => {
+            const { reload } = this.props;
+            message.success('保存成功!', 1.3, () => {
+              reload();
+            });
           });
-        }).finally(hide);
+        });
       }
     });
   };
