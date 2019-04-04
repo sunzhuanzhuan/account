@@ -8,7 +8,7 @@ export const {
   getBaseInfo_success
 } = createHttpAction('getBaseInfo', Interface.getBaseInfo);
 
-
+//获取内容
 export const {
   getTrend,
   getTrend_success
@@ -64,3 +64,8 @@ export const {
   getAccountIsInCart,
   getAccountIsInCart_success
 } = createHttpAction('getAccountIsInCart', Interface.getAccountIsInCart)
+//获取最新视频
+export const {
+  getNewVideo,
+  getNewVideo_success
+} = createHttpAction('getNewVideo', Interface.getNewVideo)

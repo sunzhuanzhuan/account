@@ -63,8 +63,11 @@ class AccountDetail extends Component {
       audienceAttributeInfo,
       queryOrderCooperationList,
       queryIndustryInfoList,
-      isExistCar } = accountDetail
-    const { getTrend, getAudienceAttribute, getQueryOrderCooperationList, addQueryIndustryInfoList, getQueryIndustryInfoList } = actions
+      isExistCar,
+      newVideoList } = accountDetail
+    const { getTrend, getAudienceAttribute,
+      getQueryOrderCooperationList, addQueryIndustryInfoList,
+      getQueryIndustryInfoList, getNewVideo } = actions
     const contentDataProps = {
       trendInfo,
       getTrend,
@@ -98,9 +101,9 @@ class AccountDetail extends Component {
             <AudienceAttribute accountId={accountId} getAudienceAttribute={getAudienceAttribute} audienceAttributeInfo={audienceAttributeInfo} />
           </LazyLoad> */}
           {/* 最新视频 */}
-          {/* <LazyLoad once overflow>
-            <NewVideo />
-          </LazyLoad> */}
+          <LazyLoad once overflow>
+            <NewVideo getNewVideo={getNewVideo} newVideoList={newVideoList} accountId={accountId} />
+          </LazyLoad>
           {/* 账号推荐 */}
           {/* <AccountRecommend /> */}
           <Modal
