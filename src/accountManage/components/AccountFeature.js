@@ -215,6 +215,7 @@ export class AccountFeature extends React.Component {
 							<Radio value={1}>否</Radio>
 							<Radio value={2}>黄V</Radio>
 							<Radio value={3}>蓝V</Radio>
+							<Radio value={6}>金V</Radio>
 							<Radio value={4}>达人</Radio>
 							<Radio value={5}>其他</Radio>
 						</RadioGroup>
