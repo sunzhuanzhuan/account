@@ -169,7 +169,7 @@ export const AgentConfigAndPrice = (props) => {
     <FormItem {...formItemLayout} label={`可在${name}下单(机维)`}>
       {getFieldDecorator('trinityIsPreventShieldingAutomated', {
         initialValue: trinityIsPreventShieldingAutomated,
-        rules: [{ required: true, message: '本项为必选项，请选择！' }]
+        // rules: [{ required: true, message: '本项为必选项，请选择！' }]
       })(
         <RadioGroup disabled>
           <Radio value={1}>是</Radio>
