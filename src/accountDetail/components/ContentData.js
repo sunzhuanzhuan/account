@@ -86,11 +86,11 @@ class ContentData extends Component {
                 <DataBox {...dataBoxProps} />
               </div>
               <div className='right-decide'>
-                <DecideBox img='up' leftText='程' middleText='上升' middleText2='趋势' rightText='有上升' />
+                <DecideBox img='up' leftText='呈' middleText='上升' middleText2='趋势' rightText='有上升' />
                 <div className='line-middle'></div>
                 <DecideBox img='horiz' leftText='间越' middleText='平缓' middleText2='' rightText='越稳定' />
                 <div className='line-middle'></div>
-                <DecideBox img='down' leftText='程' middleText='下降' middleText2='趋势' rightText='有下降' />
+                <DecideBox img='down' leftText='呈' middleText='下降' middleText2='趋势' rightText='有下降' />
               </div>
             </div>
 

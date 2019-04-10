@@ -83,7 +83,7 @@ class DataIndicator extends Component {
                   <HeadBox title={'总粉丝数'} number={followerCount || 21}
                     percent={followerCountRateOnClassificationPriceTag} typeContent='同分类同价格总粉丝数均值' />
                 </div>
-                <div> <ThreeBox title='粉丝互动率' number={numeral(mediaInteractionProportion).format('0.0')}
+                <div> <ThreeBox title='粉丝互动率' number={numeral(mediaInteractionProportion).format('0.0%')}
                   percent={mediaInteractionProportion30ItemRateOnClassificationPriceTag} isBig={true}
                   typeContent='同分类同价格粉丝数互动率均值' /> </div>
                 <ThreeBox title='粉丝互动数' number={
