@@ -53,6 +53,11 @@ export const isExistCar = handleActions({
 }, false)
 
 
+export const newVideoList = handleActions({
+  [accountDetail.getNewVideo_success]: (state, action) => {
+    return [...action.payload.data]
+  }
+}, [])
 
 export default combineReducers({
   baseInfo,
@@ -60,5 +65,6 @@ export default combineReducers({
   trendInfo,
   queryOrderCooperationList,
   queryIndustryInfoList,
-  isExistCar
+  isExistCar,
+  newVideoList
 })

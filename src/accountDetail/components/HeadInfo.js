@@ -110,11 +110,11 @@ const OneType = ({ title, content, last, color }) => {
 
   </div>
 }
-const OneRelease = ({ title, content, last }) => {
+const OneRelease = ({ title = '-', content, last = '-' }) => {
   return <div className='release-info-three'>
     <div className='title'>{title}</div>
     <div className='two-line-flex'>
-      <div className='content'>¥{numeral(content).format('0,0')}</div>
+      <div className='content'>{`${content ? '¥' + numeral(content).format('0,0') : '-'}`}</div>
       <PopoverFormat text={<div className='last'>{last}元/千粉丝</div>} content='平均每千粉丝单价' />
     </div>
   </div>
