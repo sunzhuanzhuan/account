@@ -22,7 +22,7 @@ class NewVideo extends Component {
               <img src={one.mediaCoverUrl ? one.mediaCoverUrl : require('./img/deafult-box.png')} onError={(e) => e.target.src = require('./img/deafult-box.png')} />
             </div>
             <div className='title'>
-              {one.title}
+              {one.mediaCaption || '-'}
             </div>
             <div className='last-box'>
               <div className='number'>
