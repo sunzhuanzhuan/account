@@ -25,7 +25,7 @@ class AccountDetail extends Component {
     const { actions } = this.props
     const { searchParam: { accountId } } = this.state
     const { data = {} } = await actions.getBaseInfo({ accountId: accountId })
-    await actions.getAccountIsInCart({ accountId: accountId })
+    actions.getAccountIsInCart({ accountId: accountId })
     this.setState({
       isLoading: false
     })
