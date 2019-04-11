@@ -8,6 +8,8 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as action from '../actions/index'
 import * as commonAction from "@/actions";
+import { platformView } from "../../accountManage/constants/platform";
+
 import qs from "qs";
 class AccountDetail extends Component {
   constructor(props) {
@@ -22,11 +24,13 @@ class AccountDetail extends Component {
   componentDidMount = async () => {
     const { actions } = this.props
     const { searchParam: { accountId } } = this.state
-    await actions.getBaseInfo({ accountId: accountId });
+    const { data = {} } = await actions.getBaseInfo({ accountId: accountId })
+    await actions.getAccountIsInCart({ accountId: accountId })
     this.setState({
       isLoading: false
     })
-    await actions.getAccountIsInCart({ accountId: accountId })
+    const { base = {} } = data
+    document.title = `${base.snsName || ''}-${platformView[base.platformId] || ''}平台-微播易`
   }
 
   //弹窗方法
@@ -63,8 +67,11 @@ class AccountDetail extends Component {
       audienceAttributeInfo,
       queryOrderCooperationList,
       queryIndustryInfoList,
-      isExistCar } = accountDetail
-    const { getTrend, getAudienceAttribute, getQueryOrderCooperationList, addQueryIndustryInfoList, getQueryIndustryInfoList } = actions
+      isExistCar,
+      newVideoList } = accountDetail
+    const { getTrend, getAudienceAttribute,
+      getQueryOrderCooperationList, addQueryIndustryInfoList,
+      getQueryIndustryInfoList, getNewVideo } = actions
     const contentDataProps = {
       trendInfo,
       getTrend,
@@ -98,9 +105,9 @@ class AccountDetail extends Component {
             <AudienceAttribute accountId={accountId} getAudienceAttribute={getAudienceAttribute} audienceAttributeInfo={audienceAttributeInfo} />
           </LazyLoad> */}
           {/* 最新视频 */}
-          {/* <LazyLoad once overflow>
-            <NewVideo />
-          </LazyLoad> */}
+          <LazyLoad once overflow>
+            <NewVideo getNewVideo={getNewVideo} newVideoList={newVideoList} accountId={accountId} />
+          </LazyLoad>
           {/* 账号推荐 */}
           {/* <AccountRecommend /> */}
           <Modal
