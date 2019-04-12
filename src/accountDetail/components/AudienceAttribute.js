@@ -8,12 +8,14 @@ class AudienceAttribute extends Component {
   }
   componentDidMount = () => {
     console.log('受众属性数据加载啦啦啦啦')
-    const { getAudienceAttribute, accountId } = this.props
+    const { getAudienceAttribute, accountId, getQueryTgiList } = this.props
     getAudienceAttribute({ accountId: accountId })
+    getQueryTgiList({ accountId: accountId })
   }
   render() {
-    const { audienceAttributeInfo = {} } = this.props
-    const { sex, age, tgl, spendingPower, equipment, area = [] } = audienceAttributeInfo
+    const { audienceAttributeInfo = {}, queryTgiList = {} } = this.props
+    const { spendingPower, equipment, area = [] } = audienceAttributeInfo
+    const { sex, age, tgl, } = queryTgiList
     return (
       <div className='audience-attribute'>
         <div className='title-big'>受众属性</div>
