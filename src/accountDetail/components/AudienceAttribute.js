@@ -14,8 +14,17 @@ class AudienceAttribute extends Component {
   }
   render() {
     const { audienceAttributeInfo = {}, queryTgiList = {} } = this.props
-    const { spendingPower, equipment, area = [] } = audienceAttributeInfo
-    const { sex, age, tgl, } = queryTgiList
+    const {
+      kolVisitorAgeDrawList,//年龄
+      kolVisitorProvinceDrawList = [], //地域
+      kolVisitorInterestDrawList, //兴趣
+      kolVisitorGenderDrawList //性别
+    } = audienceAttributeInfo
+    const {
+      kolVisitorConsumptionDrawList,//消费能力
+      kolVisitorOSDrawList, //设备
+      kolVisitorTgiDrawList//TGL
+    } = queryTgiList
     return (
       <div className='audience-attribute'>
         <div className='title-big'>受众属性</div>
@@ -24,16 +33,16 @@ class AudienceAttribute extends Component {
             <div className='left-three-two'>
               <div className='one-line-item'>
                 <CharTitle title='性别分布' />
-                <PieChart data={sex} />
+                <PieChart data={kolVisitorGenderDrawList} />
               </div>
               <div className='one-line-item' >
                 <CharTitle title='年龄分布' />
-                <Landscape data={age} />
+                <Landscape data={kolVisitorAgeDrawList} />
               </div>
             </div>
             <div className='two-line-item'>
               <CharTitle title='TGL' />
-              <HistogramLine height={300} data={tgl}
+              <HistogramLine height={300} data={kolVisitorInterestDrawList}
                 positionConfig='dateRange*call'
                 positionIntervalConfig='dateRange*like'
                 lineText='TGL'
@@ -44,23 +53,23 @@ class AudienceAttribute extends Component {
           <div className='right-two'>
             <div className='right-two-item' >
               <CharTitle title='消费能力分布' />
-              <PieChart data={spendingPower} isThree={true} />
+              <PieChart data={kolVisitorConsumptionDrawList} isThree={true} />
             </div>
             <div className='right-two-equit'>
               <CharTitle title='设备分布' />
-              <PieChart data={equipment} />
+              <PieChart data={kolVisitorOSDrawList} />
             </div>
           </div>
         </div>
         <div className='region-img'>
           <div className='china-map'>
             <CharTitle title='访问地区分布图' />
-            <ChinaMap area={area} />
+            <ChinaMap area={kolVisitorProvinceDrawList} />
           </div>
           <div className='ranking'>
             <CharTitle title='城市' />
             <div style={{ marginTop: 24 }}>
-              <Rnking list={area.slice(0, 6)} />
+              <Rnking list={kolVisitorProvinceDrawList.slice(0, 6)} />
             </div>
           </div>
         </div>
