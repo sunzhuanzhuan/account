@@ -51,9 +51,9 @@ export default class AffixNav extends Component {
 			} = this.props.accountInfo || {};
       sensors.track('ACCOUNT_MANAGE_UPDATE_SAVE', {
         module: '账号信息',
-        platformId: platformId,
-        accountId: accountId,
-        submitType: '一键保存'
+        platform_id: platformId,
+        account_id: accountId,
+        submit_type: '一键保存'
       })
 			/*let id = parseUrlQuery()['account_id']
 			let updates = updateActions.map((action, index) => action({...data[index],id}))

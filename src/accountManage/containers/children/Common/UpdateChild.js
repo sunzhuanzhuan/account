@@ -45,9 +45,9 @@ export default class UpdateChild extends Component {
     // sensor
     sensors.track('ACCOUNT_MANAGE_UPDATE_SAVE', {
       module: '粉丝信息',
-      platformId: platformId,
-      accountId: accountId,
-      submitType: '保存'
+      platform_id: platformId,
+      account_id: accountId,
+      submit_type: '保存'
     })
 		values['id'] = accountId
 		// values['userId'] = userId
