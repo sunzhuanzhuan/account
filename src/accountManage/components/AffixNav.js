@@ -40,10 +40,10 @@ export default class AffixNav extends Component {
 			this.setState({
 				submitLoading: true
 			})
-			let result = data.reduce((obj, item) => {
+			/*let result = data.reduce((obj, item) => {
 				obj = { ...obj, ...item }
 				return obj
-			}, {})
+			}, {})*/
       // sensor
       const {
         accountId,
@@ -55,7 +55,7 @@ export default class AffixNav extends Component {
         account_id: accountId,
         submit_type: '一键保存'
       })
-			/*let id = parseUrlQuery()['account_id']
+			let id = parseUrlQuery()['account_id']
 			let updates = updateActions.map((action, index) => action({...data[index],id}))
 			Promise.all(updates).then((data) => {
 				this.setState({
@@ -67,7 +67,7 @@ export default class AffixNav extends Component {
 				this.setState({
 					submitLoading: false
 				})
-			})*/
+			})
 		}).catch((err) => {
 			console.error(err);
 			message.error('信息填写不合法, 请重新填写')
