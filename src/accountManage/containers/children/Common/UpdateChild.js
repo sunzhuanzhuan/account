@@ -20,6 +20,7 @@ import AccountState from "../../../components/AccountState";
 import { platformMap, platformView } from '../../../constants/platform'
 import { fansColumnsKeys } from '../../../constants/index'
 import { uploadUrl, date2moment } from '../../../util'
+import { sensors } from "@/util/sensor/sensors";
 
 const TabPane = Tabs.TabPane;
 
@@ -39,7 +40,15 @@ export default class UpdateChild extends Component {
 		const { data: { accountInfo } } = this.props.params;
 		const {
 			accountId,
+      platformId,
 		} = accountInfo
+    // sensor
+    sensors.track('ACCOUNT_MANAGE_UPDATE_SAVE', {
+      module: '粉丝信息',
+      platformId: platformId,
+      accountId: accountId,
+      submitType: '保存'
+    })
 		values['id'] = accountId
 		// values['userId'] = userId
 		values.extend['followerCountScreenshotUrl'] = uploadUrl(values.extend['followerCountScreenshotUrl'])

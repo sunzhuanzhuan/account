@@ -19,6 +19,7 @@ import { OrderTakeStrategy } from '@/accountManage/components/OrderTakeStrategy'
 import { OtherInfo } from '@/accountManage/components/OtherInfo';
 import { FetchInfo } from '@/accountManage/components/FetchInfo';
 import { uploadUrl, checkVal } from '../../util';
+import { sensors } from '@/util/sensor/sensors'
 
 const FetchHead = (<span>信息自动抓取</span>);
 const confirm = Modal.confirm;
@@ -59,7 +60,7 @@ export class AccountInfos extends Component {
         {React.Children.map(this.props.children, child => React.cloneElement(child, { refresh: this.props.refresh }))}
       </div>
       {this.props.sidebarData.length ?
-        <AffixNav scrollNode='.account-info-container' isUpdate={true} actions={actions} current={this.props.navCurrent} dataSource={this.props.sidebarData} onToggle={this.props.toggle} /> : null}
+        <AffixNav scrollNode='.account-info-container' isUpdate={true} actions={actions} current={this.props.navCurrent} dataSource={this.props.sidebarData} accountInfo={accountInfo} onToggle={this.props.toggle} /> : null}
     </div>;
   }
 }
@@ -107,6 +108,18 @@ export class BaseInfoForm extends Component {
     return values;
   };
   submit = (e) => {
+    // sensor
+    const { data: { accountInfo } } = this.props.params;
+    const {
+      accountId,
+      platformId
+    } = accountInfo;
+    sensors.track('ACCOUNT_MANAGE_UPDATE_SAVE', {
+      module: '基础信息',
+      platformId: platformId,
+      accountId: accountId,
+      submitType: '保存'
+    })
     e.preventDefault();
     const { actions: { updateAccountBase } } = this.props.params;
     this.props.form.validateFieldsAndScroll((err, values) => {
@@ -375,6 +388,18 @@ export class AccountFeatureForm extends Component {
   };
 
   onSave(values) {
+    // sensor
+    const { data: { accountInfo } } = this.props.params;
+    const {
+      accountId,
+      platformId
+    } = accountInfo;
+    sensors.track('ACCOUNT_MANAGE_UPDATE_SAVE', {
+      module: '账号特征',
+      platformId: platformId,
+      accountId: accountId,
+      submitType: '保存'
+    })
     return this.webpackExtraFormData(values);
   }
 
@@ -397,6 +422,19 @@ export class CooperateInfoForm extends Component {
   }
 
   onSave = (values) => {
+    // sensor
+    const { data: { accountInfo } } = this.props.params;
+    const {
+      accountId,
+      platformId
+    } = accountInfo;
+    sensors.track('ACCOUNT_MANAGE_UPDATE_SAVE', {
+      module: '合作信息',
+      platformId: platformId,
+      accountId: accountId,
+      submitType: '保存'
+    })
+
     let { cooperationCases = [] } = values;
     // 设置index
     let n = 1;
@@ -433,6 +471,18 @@ export class OnSaleInfoForm extends Component {
   };
 
   onSave(values) {
+    // sensor
+    const { data: { accountInfo } } = this.props.params;
+    const {
+      accountId,
+      platformId
+    } = accountInfo;
+    sensors.track('ACCOUNT_MANAGE_UPDATE_SAVE', {
+      module: '上下架信息',
+      platformId: platformId,
+      accountId: accountId,
+      submitType: '保存'
+    })
     return this.webpackExtraFormData(values);
   }
 
@@ -490,6 +540,18 @@ export class OrderTakeStrategyfoForm extends Component {
   };
 
   onSave(values) {
+    // sensor
+    const { data: { accountInfo } } = this.props.params;
+    const {
+      accountId,
+      platformId
+    } = accountInfo;
+    sensors.track('ACCOUNT_MANAGE_UPDATE_SAVE', {
+      module: '接单策略',
+      platformId: platformId,
+      accountId: accountId,
+      submitType: '保存'
+    })
     values.strategy = this.webpackExtraFormData(values);
     if (!values.isFinite) {
       values.extend = {
@@ -524,6 +586,18 @@ export class OtherInfoForm extends Component {
   }
 
   onSave(values) {
+    // sensor
+    const { data: { accountInfo } } = this.props.params;
+    const {
+      accountId,
+      platformId
+    } = accountInfo;
+    sensors.track('ACCOUNT_MANAGE_UPDATE_SAVE', {
+      module: '其他信息',
+      platformId: platformId,
+      accountId: accountId,
+      submitType: '保存'
+    })
     return values;
   }
 
