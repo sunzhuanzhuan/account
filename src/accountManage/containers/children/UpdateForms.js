@@ -19,6 +19,7 @@ import { OrderTakeStrategy } from '@/accountManage/components/OrderTakeStrategy'
 import { OtherInfo } from '@/accountManage/components/OtherInfo';
 import { FetchInfo } from '@/accountManage/components/FetchInfo';
 import { uploadUrl, checkVal } from '../../util';
+import { sensors } from '@/util/sensor/sensors'
 
 const FetchHead = (<span>信息自动抓取</span>);
 const confirm = Modal.confirm;
