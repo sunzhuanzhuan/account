@@ -116,9 +116,9 @@ export class BaseInfoForm extends Component {
     } = accountInfo;
     sensors.track('ACCOUNT_MANAGE_UPDATE_SAVE', {
       module: '基础信息',
-      platformId: platformId,
-      accountId: accountId,
-      submitType: '保存'
+      platform_id: platformId,
+      account_id: accountId,
+      submit_type: '保存'
     })
     e.preventDefault();
     const { actions: { updateAccountBase } } = this.props.params;
@@ -396,9 +396,9 @@ export class AccountFeatureForm extends Component {
     } = accountInfo;
     sensors.track('ACCOUNT_MANAGE_UPDATE_SAVE', {
       module: '账号特征',
-      platformId: platformId,
-      accountId: accountId,
-      submitType: '保存'
+      platform_id: platformId,
+      account_id: accountId,
+      submit_type: '保存'
     })
     return this.webpackExtraFormData(values);
   }
@@ -430,9 +430,9 @@ export class CooperateInfoForm extends Component {
     } = accountInfo;
     sensors.track('ACCOUNT_MANAGE_UPDATE_SAVE', {
       module: '合作信息',
-      platformId: platformId,
-      accountId: accountId,
-      submitType: '保存'
+      platform_id: platformId,
+      account_id: accountId,
+      submit_type: '保存'
     })
 
     let { cooperationCases = [] } = values;
@@ -479,9 +479,9 @@ export class OnSaleInfoForm extends Component {
     } = accountInfo;
     sensors.track('ACCOUNT_MANAGE_UPDATE_SAVE', {
       module: '上下架信息',
-      platformId: platformId,
-      accountId: accountId,
-      submitType: '保存'
+      platform_id: platformId,
+      account_id: accountId,
+      submit_type: '保存'
     })
     return this.webpackExtraFormData(values);
   }
@@ -548,9 +548,9 @@ export class OrderTakeStrategyfoForm extends Component {
     } = accountInfo;
     sensors.track('ACCOUNT_MANAGE_UPDATE_SAVE', {
       module: '接单策略',
-      platformId: platformId,
-      accountId: accountId,
-      submitType: '保存'
+      platform_id: platformId,
+      account_id: accountId,
+      submit_type: '保存'
     })
     values.strategy = this.webpackExtraFormData(values);
     if (!values.isFinite) {
@@ -594,9 +594,9 @@ export class OtherInfoForm extends Component {
     } = accountInfo;
     sensors.track('ACCOUNT_MANAGE_UPDATE_SAVE', {
       module: '其他信息',
-      platformId: platformId,
-      accountId: accountId,
-      submitType: '保存'
+      platform_id: platformId,
+      account_id: accountId,
+      submit_type: '保存'
     })
     return values;
   }
