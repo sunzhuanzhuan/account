@@ -18,9 +18,10 @@ class NewVideo extends Component {
       <div className='new-video' >
         <div className='title-big' >最新视频</div>
         <div className='video-list'>
-          {newVideoList.length > 0 ? newVideoList.slice(0, 4).map((one, index) => <div className='video-item' key={index} onClick={window.open(one.mediaUrl, "_blank")}>
+          {newVideoList.length > 0 ? newVideoList.slice(0, 5).map((one, index) => <div className='video-item' key={index} onClick={window.open(one.mediaUrl, "_blank")}>
             <div className='img'>
               <img src={one.mediaCoverUrl ? one.mediaCoverUrl : require('./img/deafult-box.png')} onError={(e) => e.target.src = require('./img/deafult-box.png')} />
+              <div className='date-time'>{moment(one.mediaCreatedTime.split('-')).fromNow()}</div>
             </div>
             <div className='title'>
               {one.mediaCaption || '-'}
@@ -32,7 +33,6 @@ class NewVideo extends Component {
                   { icon: 'comment-gray', number: one.mediaCommentNum },
                   { icon: 'share', number: one.mediaRepostNum }]} />
               </div>
-              <div className='date-time'>{moment(one.mediaCreatedTime.split('-')).fromNow()}</div>
             </div>
           </div>) : <Empty style={{ padding: "30px", margin: '0px auto' }} />}
         </div>
