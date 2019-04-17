@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import DividerArr from "../base/DividerArr";
+import HoverImg from "../base/HoverImg";
 import './NewVideo.less'
 import moment from "moment";
 import { Empty } from 'antd';
@@ -20,7 +21,9 @@ class NewVideo extends Component {
         <div className='video-list'>
           {newVideoList.length > 0 ? newVideoList.slice(0, 5).map((one, index) => <div className='video-item' key={index} onClick={() => { window.open(one.mediaUrl, "_blank") }}>
             <div className='img'>
-              <img src={one.mediaCoverUrl ? one.mediaCoverUrl : require('./img/deafult-box.png')} onError={(e) => e.target.src = require('./img/deafult-box.png')} />
+              <HoverImg img={
+                <img src={one.mediaCoverUrl ? one.mediaCoverUrl : require('./img/deafult-box.png')} onError={(e) => e.target.src = require('./img/deafult-box.png')} />
+              } />
               <div className='date-time'>{moment(one.mediaCreatedTime.split('-')).fromNow()}</div>
             </div>
             <div className='title'>
