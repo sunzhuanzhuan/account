@@ -7,6 +7,7 @@ import {
 import numeral from 'numeral'
 
 import DataSet from "@antv/data-set";
+import { Empty } from 'antd';
 const constructGeoJSON = (features) => {
   if (!features) return false;
   if (Array.isArray(features)) {

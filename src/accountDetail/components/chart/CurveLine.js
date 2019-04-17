@@ -9,86 +9,81 @@ import {
 } from "bizcharts";
 import DataSet from "@antv/data-set";
 import { formatW } from "../../util";
+import { Empty } from 'antd';
 
 
 class CurveLine extends Component {
 
   render() {
-    // const data = [
-    //   {
-    //     month: "10.15-10.21",
-    //     followerCountFull: 7.0,
-    //     mediaCountIncre: 1.2,
-    //     mediaLikeSumIncre: 3.9
-    //   },
-    // ];
+    // mediaCountIncre: '发布净增数' 
+    // followerCountFull: '粉丝累计数', 
+    // mediaLikeSumIncre: '点赞净增数',
     const { data = [] } = this.props
     const ds = new DataSet();
     const dv = ds.createView().source(data);
-    const fieldsMap = { followerCountFull: '粉丝累计数', mediaLikeSumIncre: '点赞净增数', mediaCountIncre: '发布净增数' }
-    dv.transform({
-      type: "fold",
-      fields: ["followerCountFull", "mediaLikeSumIncre", 'mediaCountIncre'],
-      // 展开字段集
-      name: "city",
-      // key字段
-      value: "temperature" // value字段
-    });
-    const cols = {
-      dateRange: {
-        range: [0, 1]
-      },
-      city: { formatter: d => (fieldsMap[d]) },
+    const fieldsMap = {
 
+    }
+    const cols = {
+      followerCountFull: {
+        // min: 0,
+        alias: '粉丝累计数',
+        formatter: val => {
+          return formatW(val);
+        }
+      },
+      mediaLikeSumIncre: {
+        // min: 0,
+        alias: '点赞净增数',
+        formatter: val => {
+          return formatW(val)
+        }
+      }
     };
     return (
-      <div>
-        <Chart height={400} data={dv} scale={cols}
-          padding={[50, 160, 50, 40]}
+      data.length > 0 ? <div>
+        <Chart height={300} data={data} scale={cols}
+          padding={[50, 160, 50, 80]}
           forceFit>
-          <Legend marker='circle' {...legendPosition} offsetX={140} />
-          <Axis name="dateRange" />
-          <Axis
-            name="temperature"
-            visible={false}
-          // label={{
-          //   formatter: val => `${val}°C`
-          // }}
+          <Legend marker='circle' {...legendPosition}
+            offsetX={140}
+            items={[
+              {
+                value: '粉丝累计数',
+                marker: {
+                  symbol: "circle",
+                  fill: "#39a0ff",
+                  radius: 5
+                }
+              },
+              {
+                value: '点赞净增数',
+                marker: {
+                  symbol: "circle",
+                  fill: "#29c056",
+                  radius: 5,
+                }
+              }
+            ]}
           />
-          <Tooltip
-            g2-tooltip={g2Tooltip}
-            crosshairs={{
-              type: "y",//rect: 矩形框,x: 水平辅助线,y: 垂直辅助线,cross: 十字辅助线。
-            }}
+          <Axis name="number" />
+          <Tooltip name='d' g2-tooltip={g2Tooltip} />
+          <Geom
+            type="line"
+            position="dateRange*followerCountFull"
+            size={2}
+            color="#39a0ff"
+            shape={"smooth"}
           />
           <Geom
             type="line"
-            position="dateRange*temperature"
+            position="dateRange*mediaLikeSumIncre"
             size={2}
-            color={"city"}
+            color="#29c056"
             shape={"smooth"}
-            tooltip={[
-              "city*temperature",
-              (city, temperature) => {
-                return {
-                  name: fieldsMap[city],
-                  value: formatW(temperature)
-                }
-              }]}
           />
-          {/* <Geom
-            type="point"
-            position="month*temperature"
-            size={4}
-            shape={"circle"}
-            color={"city"}
-            style={{
-              stroke: "#fff",
-              lineWidth: 1
-            }}
-          /> */}
         </Chart>
-      </div>
+      </div> : <Empty style={{ height: 418, paddingTop: 80 }} />
     );
   }
 }
