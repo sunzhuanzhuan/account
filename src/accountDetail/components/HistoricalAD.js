@@ -2,7 +2,7 @@
  * @Author: wangxinyue 
  * @Date: 2019-02-28 17:43:12 
  * @Last Modified by: wangxinyue
- * @Last Modified time: 2019-04-17 16:41:16
+ * @Last Modified time: 2019-04-17 17:32:45
  * 历史广告案例
  */
 
@@ -35,7 +35,7 @@ class HistoricalAD extends Component {
     this.props.getQueryOrderCooperationList({
       page: {
         currentPage: 1,//当前页
-        pageSize: 4, //每页条数
+        pageSize: 6, //每页条数
       },
       form: {
         accountId: accountId,
@@ -63,7 +63,7 @@ class HistoricalAD extends Component {
     await this.props.addQueryIndustryInfoList({
       page: {
         currentPage: currentPage,//当前页
-        pageSize: 4, //每页条数
+        pageSize: 6, //每页条数
       },
       form: {
         accountId: accountId,
