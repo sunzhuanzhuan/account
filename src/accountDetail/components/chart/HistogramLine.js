@@ -13,6 +13,7 @@ import numeral from 'numeral'
 
 import { formatW } from "../../util";
 import './HistogramLine.less'
+import { Empty } from 'antd';
 class HistogramLine extends Component {
   componentDidMount() {
 
@@ -81,8 +82,7 @@ class HistogramLine extends Component {
     } = this.props
 
     return (
-
-      <div className='histogram-line'>
+      data.length > 0 ? <div className='histogram-line'>
         <div className='title-line'>
           <div className='left-title'>{boxText}</div>
           <div className='right-title'>{lineText}</div>
@@ -169,7 +169,7 @@ class HistogramLine extends Component {
             shape="circle"
           />
         </Chart>
-      </div>
+      </div> : <Empty style={{ height: height + 18, paddingTop: 80 }} />
     );
   }
 }

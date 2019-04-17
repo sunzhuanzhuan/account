@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import DividerArr from "../base/DividerArr";
 import './NewVideo.less'
 import moment from "moment";
+import { Empty } from 'antd';
 class NewVideo extends Component {
   constructor(props) {
     super(props);
@@ -14,12 +15,13 @@ class NewVideo extends Component {
   render() {
     const { newVideoList } = this.props
     return (
-      newVideoList.length > 0 ? <div className='new-video'>
+      <div className='new-video' >
         <div className='title-big' >最新视频</div>
         <div className='video-list'>
-          {newVideoList.slice(0, 4).map((one, index) => <div className='video-item' key={index} onClick={window.open(one.mediaUrl, "_blank")}>
+          {newVideoList.length > 0 ? newVideoList.slice(0, 5).map((one, index) => <div className='video-item' key={index} onClick={window.open(one.mediaUrl, "_blank")}>
             <div className='img'>
               <img src={one.mediaCoverUrl ? one.mediaCoverUrl : require('./img/deafult-box.png')} onError={(e) => e.target.src = require('./img/deafult-box.png')} />
+              <div className='date-time'>{moment(one.mediaCreatedTime.split('-')).fromNow()}</div>
             </div>
             <div className='title'>
               {one.mediaCaption || '-'}
@@ -31,12 +33,10 @@ class NewVideo extends Component {
                   { icon: 'comment-gray', number: one.mediaCommentNum },
                   { icon: 'share', number: one.mediaRepostNum }]} />
               </div>
-              <div className='date-time'>{moment(one.mediaCreatedTime.split('-')).fromNow()}</div>
             </div>
-          </div>)}
-
+          </div>) : <Empty style={{ padding: "30px", margin: '0px auto' }} />}
         </div>
-      </div> : null
+      </div>
     );
   }
 }

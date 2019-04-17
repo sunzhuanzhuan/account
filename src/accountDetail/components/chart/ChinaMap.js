@@ -7,6 +7,7 @@ import {
 import numeral from 'numeral'
 
 import DataSet from "@antv/data-set";
+import { Empty } from 'antd';
 const constructGeoJSON = (features) => {
   if (!features) return false;
   if (Array.isArray(features)) {
@@ -106,24 +107,30 @@ class MapChart extends Component {
     };
 
     return (
-      <Chart height={500} width={645} scale={scale} data={data} padding={[0, 0, 0, 90]}>
-        <Geom type="polygon" position="longitude*latitude"
-          style={{ lineWidth: 1, stroke: "white" }}
-          // color={['value', ['#31c5f8', '#61d3f8', '#89dcfd', '#b0e8f8', '#d8f3ff']]}
-          color={['value', ['#d9f4ff', '#33c5f6']]}
-          tooltip={['name*value', (name, value) => {
-            return {
-              name: name,
-              value: numeral(value || 0).format('0.0%')
-            }
-          }]}
-        >
-          <Label content="" offset={0} />
-          <Tooltip showTitle={false} />
-          <Legend position='left-bottom'
-            offsetY={-50} />
-        </Geom>
-      </Chart>);
+      <div >
+        <Chart height={500} width={645} scale={scale} data={data} padding={[0, 0, 0, 90]}>
+          <Geom type="polygon" position="longitude*latitude"
+            style={{ lineWidth: 1, stroke: "white" }}
+            // color={['value', ['#31c5f8', '#61d3f8', '#89dcfd', '#b0e8f8', '#d8f3ff']]}
+            color={['value', ['#d9f4ff', '#33c5f6']]}
+            tooltip={['name*value', (name, value) => {
+              return {
+                name: name,
+                value: numeral(value || 0).format('0.0%')
+              }
+            }]}
+          >
+            <Label content="" offset={0} />
+            <Tooltip showTitle={false} />
+            <Legend position='bottom-left'
+              offsetY={-150}
+              slidable={false} />
+          </Geom>
+
+        </Chart>
+
+      </div>
+    );
   }
 }
 

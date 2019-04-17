@@ -54,24 +54,24 @@ class ContentData extends Component {
       <div className='content-data'>
         <div className='title-big' >内容数据服务</div>
         <div className='content-char-box'>
-          {contentSum.length > 0 ? <div className='content-char'>
+          <div className='content-char'>
             <CharTitle title='内容累计趋势图' content='可观察最近90天账号基础数据趋势表现' />
             <CurveLine data={contentSum} />
-          </div> : null}
-          {like.length > 0 ? <div className='content-char'>
+          </div>
+          <div className='content-char'>
             <CharTitle title='粉丝点赞趋势图' content='可观察最近90天内粉丝质量变化趋势' />
             <HistogramLine data={like}
               positionIntervalConfig='dateRange*followerCountFull'
               positionConfig='dateRange*mediaLikeSumIncre'
               lineText='点赞净增数' boxText='粉丝累计数' />
-          </div> : null}
-          {interactive.length > 0 ? <div className='content-char'>
+          </div>
+          <div className='content-char'>
             <CharTitle title='粉丝互动率趋势图' content='可观察最近90天内内容质量变化趋势' />
             <HistogramLine data={interactive}
               positionIntervalConfig='dateRange*mediaCountIncre'
               positionConfig='dateRange*interactionProportionIncre'
               lineText='平均互动率' boxText='发布净增数' />
-          </div> : null}
+          </div>
           <div className='content-char'>
             <CharTitle title='内容数据箱线图' />
             <div className='last-box-decide'>
