@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './AudienceAttribute.less'
 import { CharTitle, PieChart, Landscape, HistogramLine, ChinaMap } from "./chart";
+import numeral from 'numeral'
 class AudienceAttribute extends Component {
   constructor(props) {
     super(props);
@@ -81,7 +82,7 @@ const Rnking = ({ list = [] }) => {
   return list.map((one, index) => <div className='rnking-box' key={index}>
     <div className={index < 3 ? 'number-blue' : 'number-gray'}>{index + 1}</div>
     <div className={index < 3 ? 'city-name-blod' : 'city-name'}>{one.name}</div>
-    <div className={index < 3 ? 'city-name-blod' : 'city-name'}>{one.value}</div>
+    <div className={index < 3 ? 'city-name-blod' : 'city-name'}>{numeral(one.value || 0).format('0.0%')}</div>
   </div>)
 }
 export default AudienceAttribute;
