@@ -13,11 +13,16 @@ export const {
   getTrend,
   getTrend_success
 } = createHttpAction('getTrend', Interface.getTrend);
-//获取受众属性（性别，年龄，消费能力、tgl、设备分布）
+//获取受众属性（设备分布）
 export const {
   getAudienceAttribute,
   getAudienceAttribute_success
 } = createHttpAction('getAudienceAttribute', Interface.getAudienceAttribute);
+//获取受众属性（性别，年龄，消费能力、tgl)
+export const {
+  getQueryTgiList,
+  getQueryTgiList_success
+} = createHttpAction('getQueryTgiList', Interface.getQueryTgiList);
 
 //获取广告案例类型
 export const {

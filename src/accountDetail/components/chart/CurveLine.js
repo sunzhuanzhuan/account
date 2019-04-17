@@ -30,7 +30,7 @@ class CurveLine extends Component {
       type: "fold",
       fields: ["followerCountFull", "mediaLikeSumIncre", 'mediaCountIncre'],
       // 展开字段集
-      key: "city",
+      name: "city",
       // key字段
       value: "temperature" // value字段
     });

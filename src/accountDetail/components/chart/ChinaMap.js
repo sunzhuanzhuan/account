@@ -4,6 +4,8 @@ const { AMap, AMapUI } = window;
 import {
   Chart, Axis, View, Geom, Tooltip, Label, Legend
 } from "bizcharts";
+import numeral from 'numeral'
+
 import DataSet from "@antv/data-set";
 const constructGeoJSON = (features) => {
   if (!features) return false;
@@ -71,7 +73,7 @@ class MapChart extends Component {
     features.map((one) => {
       const name = one.properties.name
       dataValue.map((item) => {
-        if (name.includes(item.key)) {
+        if (name.includes(item.name)) {
           one.value = item.value
         }
       })
@@ -112,7 +114,7 @@ class MapChart extends Component {
           tooltip={['name*value', (name, value) => {
             return {
               name: name,
-              value: value
+              value: numeral(value || 0).format('0.0%')
             }
           }]}
         >
