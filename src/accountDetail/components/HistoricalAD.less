@@ -1,4 +1,5 @@
 @import '../index.less';
+@import '../../indexNbTheme.less';
 
 .historical-advertising {
     background: @back-color;
@@ -52,8 +53,12 @@
             @flex-between-column();
 
             .title {
-                @color333-font16();
+                @color333-font14();
                 @nowrap-hidden-ellipsis();
+            }
+
+            .title:hover {
+                color: @primary-color;
             }
 
             .info-type-flex {
@@ -64,7 +69,7 @@
                 }
 
                 .value {
-                    @color333-font16();
+                    @color333-font14();
                 }
             }
         }

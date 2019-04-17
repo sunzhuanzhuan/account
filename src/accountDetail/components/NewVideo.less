@@ -1,4 +1,5 @@
 @import '../index.less';
+@import '../../indexNbTheme.less';
 
 .new-video {
 
@@ -11,17 +12,18 @@
             padding: 30px 15px 10px;
             flex: 1;
             min-width: 200px;
+            max-width: calc(100% / 5);
 
             .img {
                 text-align: center;
                 margin: 0px auto;
                 position: relative;
-            }
+                width: 120px;
 
-            .img,
-            .img>img {
-                height: 160px;
-                max-width: 120px;
+                img {
+                    height: 160px;
+                    width: 120px;
+                }
             }
 
             .date-time {
@@ -38,6 +40,11 @@
                 @nowrap-hidden-ellipsis();
                 @color333-font16();
                 font-size: 14px;
+                text-align: center;
+            }
+
+            .title:hover {
+                color: @primary-color;
             }
 
             .last-box {
