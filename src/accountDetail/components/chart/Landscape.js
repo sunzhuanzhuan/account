@@ -18,10 +18,6 @@ class Landscape extends React.Component {
     const dv = ds.createView().source(data);
     dv.source(data).transform({
       type: "sort",
-      callback(a, b) {
-        // 排序依据，和原生js的排序callback一致
-        return a.value - b.value > 0;
-      }
     });
     const cols = {
       percent: {
@@ -32,7 +28,7 @@ class Landscape extends React.Component {
     };
     return (
       <div>
-        <Chart height={300} data={dv} forceFit scale={cols}>
+        <Chart height={300} data={dv} forceFit scale={cols} padding={[10, 60]}>
           <Coord transpose />
           <Axis
             name="name"
