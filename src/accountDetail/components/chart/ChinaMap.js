@@ -71,7 +71,7 @@ class MapChart extends Component {
     features.map((one) => {
       const name = one.properties.name
       dataValue.map((item) => {
-        if (name.includes(item.key)) {
+        if (name.includes(item.name)) {
           one.value = item.value
         }
       })

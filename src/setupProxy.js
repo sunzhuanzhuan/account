@@ -7,13 +7,13 @@ module.exports = function (app) {
     { target: 'http://weiboyi-toolbox-gateway-test.192.168.100.203.nip.io', changeOrigin: true }
   ));
   app.use(proxy('/api/operator-gateway/accountDetail/v1/',
-    { target: 'http://47.93.10.229:17071', changeOrigin: true }
+    { target: 'http://nb.dev-weiboyi.com', changeOrigin: true }
   ));
   app.use(proxy('/api/operator-gateway/',
     { target: 'http://weiboyi-operator-gateway-test.192.168.100.203.nip.io', changeOrigin: true }
   ));
 
   app.use(proxy('/api',
-    { target: 'http://nb.tst-weiboyi.com', changeOrigin: true }
+    { target: 'http://nb.dev-weiboyi.com', changeOrigin: true }
   ));
 }

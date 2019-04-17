@@ -17,14 +17,14 @@ class AudienceAttribute extends Component {
     const {
       kolVisitorAgeDrawList,//年龄
       kolVisitorProvinceDrawList = [], //地域
-      kolVisitorInterestDrawList, //兴趣
       kolVisitorGenderDrawList //性别
     } = audienceAttributeInfo
     const {
       kolVisitorConsumptionDrawList,//消费能力
       kolVisitorOSDrawList, //设备
-      kolVisitorTgiDrawList//TGL
+      kolVisitorInterestDrawList, //兴趣
     } = queryTgiList
+
     return (
       <div className='audience-attribute'>
         <div className='title-big'>受众属性</div>
@@ -43,8 +43,8 @@ class AudienceAttribute extends Component {
             <div className='two-line-item'>
               <CharTitle title='TGL' />
               <HistogramLine height={300} data={kolVisitorInterestDrawList}
-                positionConfig='dateRange*call'
-                positionIntervalConfig='dateRange*like'
+                positionConfig='name*tgiValue'
+                positionIntervalConfig='name*value'
                 lineText='TGL'
                 boxText='兴趣爱好' />
             </div>
@@ -80,7 +80,7 @@ class AudienceAttribute extends Component {
 const Rnking = ({ list = [] }) => {
   return list.map((one, index) => <div className='rnking-box' key={index}>
     <div className={index < 3 ? 'number-blue' : 'number-gray'}>{index + 1}</div>
-    <div className={index < 3 ? 'city-name-blod' : 'city-name'}>{one.key}</div>
+    <div className={index < 3 ? 'city-name-blod' : 'city-name'}>{one.name}</div>
     <div className={index < 3 ? 'city-name-blod' : 'city-name'}>{one.value}</div>
   </div>)
 }

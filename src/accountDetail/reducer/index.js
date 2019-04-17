@@ -71,5 +71,6 @@ export default combineReducers({
   queryOrderCooperationList,
   queryIndustryInfoList,
   isExistCar,
-  newVideoList
+  newVideoList,
+  queryTgiList
 })

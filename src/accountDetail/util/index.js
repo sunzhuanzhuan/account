@@ -4,5 +4,5 @@ export const formatW = (value) => {
     value = numeral(value / 10000).format('0.0') + 'w'
   }
 
-  return value
+  return numeral(value || 0).format('0.0')
 }
