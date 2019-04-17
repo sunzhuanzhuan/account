@@ -20,6 +20,11 @@ export const audienceAttributeInfo = handleActions({
     return { ...action.payload.data }
   }
 }, {})
+export const queryTgiList = handleActions({
+  [accountDetail.getQueryTgiList_success]: (state, action) => {
+    return { ...action.payload.data }
+  }
+}, {})
 
 
 export const queryIndustryInfoList = handleActions({
@@ -66,5 +71,6 @@ export default combineReducers({
   queryOrderCooperationList,
   queryIndustryInfoList,
   isExistCar,
-  newVideoList
+  newVideoList,
+  queryTgiList
 })

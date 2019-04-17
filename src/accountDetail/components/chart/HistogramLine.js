@@ -9,6 +9,8 @@ import {
   Legend,
 
 } from "bizcharts";
+import numeral from 'numeral'
+
 import { formatW } from "../../util";
 import './HistogramLine.less'
 class HistogramLine extends Component {
@@ -58,18 +60,18 @@ class HistogramLine extends Component {
           return formatW(val);
         }
       },
-      call: {
+      tgiValue: {
         // min: 0,
         alias: 'TGL',
         formatter: val => {
           return formatW(val);
         }
       },
-      like: {
+      value: {
         // min: 0,
         alias: '兴趣爱好',
         formatter: val => {
-          return formatW(val);
+          return numeral(val || 0).format('0.0%')
         }
       },
     };
