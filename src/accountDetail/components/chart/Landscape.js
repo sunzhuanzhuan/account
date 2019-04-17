@@ -5,6 +5,7 @@ import {
   Axis,
   Tooltip,
   Coord,
+  Label
 } from "bizcharts";
 import DataSet from "@antv/data-set";
 import { g2Tooltip, l } from "./config";
@@ -52,7 +53,11 @@ class Landscape extends React.Component {
                 };
               }
             ]}
-          />
+          >
+            <Label content={["name*value", (name, value) => {
+              return numeral(value || 0).format('0.0%');
+            }]} />
+          </Geom>
         </Chart>
       </div>
     );
