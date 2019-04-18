@@ -24,7 +24,7 @@ class NewVideo extends Component {
               <HoverImg img={
                 <img src={one.mediaCoverUrl ? one.mediaCoverUrl : require('./img/deafult-box.png')} onError={(e) => e.target.src = require('./img/deafult-box.png')} />
               } />
-              <div className='date-time'>{moment(one.mediaCreatedTime.split('-')).fromNow()}</div>
+              <div className='date-time'>{moment(one.mediaCreatedTime, 'YYYY-MM-DD hh:mm:ss').fromNow()}</div>
             </div>
             <div className='title'>
               {one.mediaCaption || '-'}
