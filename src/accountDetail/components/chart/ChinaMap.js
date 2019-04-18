@@ -2,12 +2,11 @@ import React, { Component } from 'react'
 const { AMap, AMapUI } = window;
 
 import {
-  Chart, Axis, View, Geom, Tooltip, Label, Legend
+  Chart, Geom, Tooltip, Legend, Guide
 } from "bizcharts";
 import numeral from 'numeral'
 
 import DataSet from "@antv/data-set";
-import { Empty } from 'antd';
 const constructGeoJSON = (features) => {
   if (!features) return false;
   if (Array.isArray(features)) {
@@ -109,9 +108,9 @@ class MapChart extends Component {
         }
       },
     };
-
+    const { Image } = Guide;
     return (
-      <div >
+      <div style={{ position: "relative" }}>
         <Chart height={500} width={645} scale={scale} data={data} padding={[0, 0, 0, 90]}>
           <Geom type="polygon" position="longitude*latitude"
             style={{ lineWidth: 1, stroke: "white" }}
@@ -127,13 +126,18 @@ class MapChart extends Component {
             <Tooltip showTitle={false} />
             <Legend position='bottom-left'
               offsetY={-130}
+              offsetX={-60}
               slidable={false}
               width={320}
             />
+
           </Geom>
 
         </Chart>
-
+        <div style={{ position: "absolute", bottom: 100, right: 0 }}>
+          <img height='58' width='42'
+            src={require('../img/map-line.png')} />
+        </div>
       </div>
     );
   }
