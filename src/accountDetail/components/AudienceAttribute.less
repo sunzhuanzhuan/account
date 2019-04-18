@@ -64,7 +64,6 @@
         }
 
         .rnking-box {
-            @flex-between();
             margin-left: 30px;
             height: 35px;
 
@@ -77,6 +76,9 @@
             }
 
             .city-name {
+                display: inline-block;
+                width: 100px;
+                padding-left: 60px;
                 font-size: 14px;
                 color: #000;
             }
@@ -89,6 +91,7 @@
     }
 
     .circle-box(@background: #F0F2F5, @color: #000) {
+        display: inline-block;
         width: 20px;
         height: 20px;
         background: @background;
