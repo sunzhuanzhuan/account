@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { message, Button, Anchor } from 'antd'
 import { parseUrlQuery } from "@/util/parseUrl";
+import { sensors } from "@/util/sensor/sensors";
 
 const position = {
 	top: 20,
@@ -39,11 +40,22 @@ export default class AffixNav extends Component {
 			this.setState({
 				submitLoading: true
 			})
-			/*let result = data.reduce((obj, item) => {
+			let result = data.reduce((obj, item) => {
 				obj = { ...obj, ...item }
 				return obj
-			}, {})*/
-			let id = parseUrlQuery()['account_id']
+			}, {})
+      // sensor
+      const {
+        accountId,
+        platformId
+			} = this.props.accountInfo || {};
+      sensors.track('ACCOUNT_MANAGE_UPDATE_SAVE', {
+        module: '账号信息',
+        platform_id: platformId,
+        account_id: accountId,
+        submit_type: '一键保存'
+      })
+			/*let id = parseUrlQuery()['account_id']
 			let updates = updateActions.map((action, index) => action({...data[index],id}))
 			Promise.all(updates).then((data) => {
 				this.setState({
@@ -55,7 +67,7 @@ export default class AffixNav extends Component {
 				this.setState({
 					submitLoading: false
 				})
-			})
+			})*/
 		}).catch((err) => {
 			console.error(err);
 			message.error('信息填写不合法, 请重新填写')
