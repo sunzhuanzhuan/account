@@ -94,7 +94,6 @@ class MapChart extends Component {
     }
 
     const data = this.processGeoData(chinaGeo, area);
-
     const scale = {
       latitude: {
         sync: true,
@@ -103,6 +102,11 @@ class MapChart extends Component {
       longitude: {
         sync: true,
         nice: false,
+      },
+      value: {
+        formatter: val => {
+          return numeral(val || 0).format('0.0%')
+        }
       },
     };
 
@@ -120,11 +124,12 @@ class MapChart extends Component {
               }
             }]}
           >
-            <Label content="" offset={0} />
             <Tooltip showTitle={false} />
             <Legend position='bottom-left'
-              offsetY={-150}
-              slidable={false} />
+              offsetY={-130}
+              slidable={false}
+              width={320}
+            />
           </Geom>
 
         </Chart>
