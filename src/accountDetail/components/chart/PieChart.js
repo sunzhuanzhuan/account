@@ -10,6 +10,8 @@ import {
 } from "bizcharts";
 import DataSet from "@antv/data-set";
 import { g2Tooltip, legendPosition } from "./config";
+import numeral from 'numeral'
+import { Empty } from 'antd';
 
 class PieChart extends Component {
   render() {
@@ -19,32 +21,29 @@ class PieChart extends Component {
     dv.source(data).transform({
       type: "percent",
       field: "value",
-      dimension: "key",
+      dimension: "name",
       as: "percent"
     });
     const cols = {
       percent: {
         formatter: val => {
-          val = val * 100 + "%";
-          return val;
+          return numeral(val || 0).format('0.0%')
         }
       },
     };
     const colorArr = isThree ? ['#3AA1FF', '#F4655B', '#FCD435'] : ['#3AA1FF', '#F4655B']
     return (
       <div>
-        <Chart
+        {data.length > 0 ? <Chart
           height={300}
           data={dv}
           scale={cols}
-          padding={[30]}
+          padding={[50]}
           forceFit
         >
-          <Coord type="theta" radius={0.8} />
+          <Coord type="theta" radius={0.9} />
           <Axis name="percent" />
-          <Legend position='right'
-            offsetY={-window.innerHeight / 2 + 120}
-            offsetX={-70} />
+          <Legend position='right-top' offsetX={-40} />
           <Tooltip
             g2-tooltip={g2Tooltip}
             showTitle={false}
@@ -53,14 +52,13 @@ class PieChart extends Component {
           <Geom
             type="intervalStack"
             position="percent"
-            color={['key', colorArr]}
+            color={['name', colorArr]}
             tooltip={[
-              "key*percent",
-              (key, percent) => {
-                percent = percent * 100 + "%";
+              "name*percent",
+              (name, percent) => {
                 return {
-                  name: key,
-                  value: percent
+                  name: name,
+                  value: numeral(percent || 0).format('0.0%')
                 };
               }
             ]}
@@ -76,11 +74,12 @@ class PieChart extends Component {
                 rotate: 0,
                 textAlign: "center",
                 shadowBlur: 2,
-                shadowColor: "rgba(0, 0, 0, .45)"
+                shadowColor: "rgba(0, 0, 0, .45)",
+                fill: '#fff', // 文本的颜色
               }}
             />
           </Geom>
-        </Chart>
+        </Chart> : <Empty style={{ height: 304, paddingTop: 80 }} />}
       </div>
     );
   }

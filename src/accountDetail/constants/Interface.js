@@ -5,6 +5,9 @@ export default {
   getTrend: oldPreFix + 'getTrend',
   getQueryOrderCooperationList: oldPreFix + 'queryOrderCooperationList',
   getQueryIndustryInfoList: oldPreFix + 'getUserBaseInfoWithAdmin',
+  getNewVideo: oldPreFix + 'getNewVideo',
+  //消费能力
+  getQueryTgiList: oldPreFix + 'getQueryTgiList',
   //删除购物车数据
   removeFromCartAD: "/export/account/removeFromCart",
   //添加购物车数据

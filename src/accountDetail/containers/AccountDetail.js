@@ -25,7 +25,7 @@ class AccountDetail extends Component {
     const { actions } = this.props
     const { searchParam: { accountId } } = this.state
     const { data = {} } = await actions.getBaseInfo({ accountId: accountId })
-    await actions.getAccountIsInCart({ accountId: accountId })
+    actions.getAccountIsInCart({ accountId: accountId })
     this.setState({
       isLoading: false
     })
@@ -67,8 +67,11 @@ class AccountDetail extends Component {
       audienceAttributeInfo,
       queryOrderCooperationList,
       queryIndustryInfoList,
-      isExistCar } = accountDetail
-    const { getTrend, getAudienceAttribute, getQueryOrderCooperationList, addQueryIndustryInfoList, getQueryIndustryInfoList } = actions
+      isExistCar, queryTgiList,
+      newVideoList } = accountDetail
+    const { getTrend, getAudienceAttribute,
+      getQueryOrderCooperationList, addQueryIndustryInfoList,
+      getQueryIndustryInfoList, getNewVideo, getQueryTgiList } = actions
     const contentDataProps = {
       trendInfo,
       getTrend,
@@ -98,13 +101,17 @@ class AccountDetail extends Component {
             <ContentData {...contentDataProps} />
           </LazyLoad>
           {/* 受众画像 */}
-          {/* <LazyLoad once overflow>
-            <AudienceAttribute accountId={accountId} getAudienceAttribute={getAudienceAttribute} audienceAttributeInfo={audienceAttributeInfo} />
-          </LazyLoad> */}
+          <LazyLoad once overflow>
+            <AudienceAttribute accountId={accountId}
+              getAudienceAttribute={getAudienceAttribute}
+              audienceAttributeInfo={audienceAttributeInfo}
+              queryTgiList={queryTgiList}
+              getQueryTgiList={getQueryTgiList} />
+          </LazyLoad>
           {/* 最新视频 */}
-          {/* <LazyLoad once overflow>
-            <NewVideo />
-          </LazyLoad> */}
+          <LazyLoad once overflow>
+            <NewVideo getNewVideo={getNewVideo} newVideoList={newVideoList} accountId={accountId} />
+          </LazyLoad>
           {/* 账号推荐 */}
           {/* <AccountRecommend /> */}
           <Modal

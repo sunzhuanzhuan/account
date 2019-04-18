@@ -20,6 +20,11 @@ export const audienceAttributeInfo = handleActions({
     return { ...action.payload.data }
   }
 }, {})
+export const queryTgiList = handleActions({
+  [accountDetail.getQueryTgiList_success]: (state, action) => {
+    return { ...action.payload.data }
+  }
+}, {})
 
 
 export const queryIndustryInfoList = handleActions({
@@ -53,6 +58,11 @@ export const isExistCar = handleActions({
 }, false)
 
 
+export const newVideoList = handleActions({
+  [accountDetail.getNewVideo_success]: (state, action) => {
+    return [...action.payload.data]
+  }
+}, [])
 
 export default combineReducers({
   baseInfo,
@@ -60,5 +70,7 @@ export default combineReducers({
   trendInfo,
   queryOrderCooperationList,
   queryIndustryInfoList,
-  isExistCar
+  isExistCar,
+  newVideoList,
+  queryTgiList
 })

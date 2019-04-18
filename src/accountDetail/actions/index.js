@@ -8,16 +8,21 @@ export const {
   getBaseInfo_success
 } = createHttpAction('getBaseInfo', Interface.getBaseInfo);
 
-
+//获取内容
 export const {
   getTrend,
   getTrend_success
 } = createHttpAction('getTrend', Interface.getTrend);
-//获取受众属性（性别，年龄，消费能力、tgl、设备分布）
+//获取受众属性（设备分布）
 export const {
   getAudienceAttribute,
   getAudienceAttribute_success
 } = createHttpAction('getAudienceAttribute', Interface.getAudienceAttribute);
+//获取受众属性（性别，年龄，消费能力、tgl)
+export const {
+  getQueryTgiList,
+  getQueryTgiList_success
+} = createHttpAction('getQueryTgiList', Interface.getQueryTgiList);
 
 //获取广告案例类型
 export const {
@@ -64,3 +69,8 @@ export const {
   getAccountIsInCart,
   getAccountIsInCart_success
 } = createHttpAction('getAccountIsInCart', Interface.getAccountIsInCart)
+//获取最新视频
+export const {
+  getNewVideo,
+  getNewVideo_success
+} = createHttpAction('getNewVideo', Interface.getNewVideo)

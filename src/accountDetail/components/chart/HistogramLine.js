@@ -9,8 +9,11 @@ import {
   Legend,
 
 } from "bizcharts";
+import numeral from 'numeral'
+
 import { formatW } from "../../util";
 import './HistogramLine.less'
+import { Empty } from 'antd';
 class HistogramLine extends Component {
   componentDidMount() {
 
@@ -58,18 +61,18 @@ class HistogramLine extends Component {
           return formatW(val);
         }
       },
-      call: {
+      tgiValue: {
         // min: 0,
         alias: 'TGL',
         formatter: val => {
           return formatW(val);
         }
       },
-      like: {
+      value: {
         // min: 0,
         alias: '兴趣爱好',
         formatter: val => {
-          return formatW(val);
+          return numeral(val || 0).format('0.0%')
         }
       },
     };
@@ -79,8 +82,7 @@ class HistogramLine extends Component {
     } = this.props
 
     return (
-
-      <div className='histogram-line'>
+      data.length > 0 ? <div className='histogram-line'>
         <div className='title-line'>
           <div className='left-title'>{boxText}</div>
           <div className='right-title'>{lineText}</div>
@@ -167,7 +169,7 @@ class HistogramLine extends Component {
             shape="circle"
           />
         </Chart>
-      </div>
+      </div> : <Empty style={{ height: height + 18, paddingTop: 80 }} />
     );
   }
 }

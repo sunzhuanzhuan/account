@@ -2,7 +2,7 @@
  * @Author: wangxinyue 
  * @Date: 2019-02-28 17:43:12 
  * @Last Modified by: wangxinyue
- * @Last Modified time: 2019-04-01 11:38:19
+ * @Last Modified time: 2019-04-17 18:46:46
  * 历史广告案例
  */
 
@@ -10,6 +10,7 @@ import React, { Component } from 'react'
 import TabArr from "../base/TabArr";
 import "./HistoricalAD.less"
 import DividerArr from "../base/DividerArr";
+import HoverImg from "../base/HoverImg";
 import { Spin, Icon } from 'antd';
 class HistoricalAD extends Component {
   constructor(props) {
@@ -35,7 +36,7 @@ class HistoricalAD extends Component {
     this.props.getQueryOrderCooperationList({
       page: {
         currentPage: 1,//当前页
-        pageSize: 4, //每页条数
+        pageSize: 6, //每页条数
       },
       form: {
         accountId: accountId,
@@ -63,7 +64,7 @@ class HistoricalAD extends Component {
     await this.props.addQueryIndustryInfoList({
       page: {
         currentPage: currentPage,//当前页
-        pageSize: 4, //每页条数
+        pageSize: 6, //每页条数
       },
       form: {
         accountId: accountId,
@@ -91,7 +92,10 @@ class HistoricalAD extends Component {
         <div className='historical-ad-case'>
           {list.map((one, index) => <div className='case-item' key={index} onClick={() => window.open(one.executionUrl, "_blank")}>
             <div className='left-img'>
-              <img src={one.mediaCoverUrl ? one.mediaCoverUrl : require('./img/deafult-box.png')} onError={(e) => e.target.src = require('./img/deafult-box.png')} />
+              <HoverImg img={
+                <img src={one.mediaCoverUrl ? one.mediaCoverUrl : require('./img/deafult-box.png')} onError={(e) => e.target.src = require('./img/deafult-box.png')} />
+              } />
+
             </div>
             <div className='right-info'>
               <div>
