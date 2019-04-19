@@ -56,7 +56,7 @@ class HeadInfo extends Component {
               <OneLine title='受众信息' content={<div className='content-font'>
                 <span>{isMale ? isMale == 1 ? '男性' : '女性' : <PopoverFormat content='性别' text='-' />}</span> <Divider type="vertical" />
                 <span>{consumptionLevel ? `消费水平${consumptionLevel == 1 ? '低' : consumptionLevel == 2 ? '中' : '高'}` : <PopoverFormat content='消费水平' text='-' />}</span> <Divider type="vertical" />
-                <span>{systemType ? systemType == 1 ? '安卓' : 'IOS' : <span style={{ color: '#999' }}>浏览端</span>}</span>
+                <span>{systemType ? systemType == 1 ? '安卓' : 'IOS' : <PopoverFormat content='浏览端' text='-' />}</span>
               </div>} />
               <OneLine title='简介' content={
                 <div className='content-font' style={{ maxWidth: 300 }}>
