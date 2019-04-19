@@ -21,6 +21,15 @@ class HistogramLine extends Component {
       window.dispatchEvent(new Event('resize'))
     })
   }
+  getMinNumber = (key) => {
+    const { data = [] } = this.props
+    const min = Math.min.apply(Math, data.map(function (item) { return item[key] }))
+    return min - min / 100
+  }
+  getMaxNumber = (key) => {
+    const { data = [] } = this.props
+    return Math.max.apply(Math, data.map(function (item) { return item[key] }))
+  }
   render() {
     // const data = [
     //   {
@@ -30,25 +39,26 @@ class HistogramLine extends Component {
     //     people: 2
     //   }
     // ];
-    const { data = [], positionConfig, lineText, boxText, positionIntervalConfig, type = 4 } = this.props
-    const scale = {
+    const { data = [], positionConfig, lineText, boxText, positionIntervalConfig, type = 4, } = this.props
 
+    const scale = {
       followerCountFull: {
-        // min: 0,
+        min: this.getMinNumber('followerCountFull'),
+        max: this.getMaxNumber('followerCountFull'),
         alias: '粉丝累计数',
         formatter: val => {
           return formatW(val);
         }
       },
       mediaCountIncre: {
-        // min: 0,
+        min: this.getMinNumber('mediaCountIncre'),
+        max: this.getMaxNumber('mediaCountIncre'),
         alias: '发布净增数',
         formatter: val => {
           return formatW(val);
         }
       },
       mediaLikeSumIncre: {
-        // min: 0,
         alias: '点赞净增数',
         formatter: val => {
           return formatW(val);
@@ -63,7 +73,7 @@ class HistogramLine extends Component {
       },
       tgiValue: {
         // min: 0,
-        alias: 'TGL',
+        alias: 'TGI',
         formatter: val => {
           return formatW(val);
         }

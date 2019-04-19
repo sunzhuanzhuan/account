@@ -7,6 +7,7 @@ import MultiClamp from 'react-multi-clamp';
 import { platformView } from "../../accountManage/constants/platform";
 import FieldMap from "../constants/FieldMap";
 import numeral from "numeral";
+import { WBYPlatformIcon } from "wbyui"
 class HeadInfo extends Component {
   constructor(props) {
     super(props);
@@ -37,6 +38,10 @@ class HeadInfo extends Component {
         <div className="info-right-box">
           <div className='head-box'>
             <div className='account-info' >
+              {platformId ? <span style={{ padding: '0px 8px 2px 0px' }}> <WBYPlatformIcon
+                weibo_type={platformId}
+                widthSize={16}
+              /> </span> : null}
               <PopoverFormat text={<div className='account-name'>{snsName}</div>} content={snsName} />
               {isVerified == 1 ? <PopoverFormat text={<img width='14px' style={{ marginLeft: 10, paddingBottom: 4 }} src={require(`./img/certification-${'other'}.png`)} />} content={verificationReason} /> : null}
               <LookIndex url={url} qrCodeUrl={qrCodeUrl} platformName={platformName} />
