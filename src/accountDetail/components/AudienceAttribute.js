@@ -43,11 +43,11 @@ class AudienceAttribute extends Component {
               </div>
             </div>
             <div className='two-line-item'>
-              <CharTitle title='TGL' />
+              <CharTitle title='TGI' />
               <HistogramLine height={300} data={kolVisitorInterestDrawList}
                 positionConfig='name*tgiValue'
                 positionIntervalConfig='name*value'
-                lineText='TGL'
+                lineText='TGI'
                 boxText='兴趣爱好' />
             </div>
 
