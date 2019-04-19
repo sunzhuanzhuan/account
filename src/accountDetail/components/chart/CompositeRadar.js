@@ -37,6 +37,10 @@ class CompositeRadar extends Component {
       }
     });
     const scale = {
+      score: {
+        min: 0,
+        max: 100
+      },
       user: { formatter: d => ({ value: '该账号', avgValue: `${legendType[1] || '-'}分类平均值` }[d]) },
     };
     const toopicConfig = [
@@ -129,7 +133,7 @@ class CompositeRadar extends Component {
             type="point"
             position="name*score"
             shape="circle"
-            size={5}
+            size={4}
             color={['user', ['#1990FF', '#FACC14']]}
             style={{
               stroke: "#fff",
