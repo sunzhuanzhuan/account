@@ -54,9 +54,9 @@ class HeadInfo extends Component {
                 <FatLable backColor='#FFEBEA' color='#FE6A60' list={['直播', '直播', '直播']} />
               } /> */}
               <OneLine title='受众信息' content={<div className='content-font'>
-                <span>{isMale ? isMale == 1 ? '男性' : '女性' : '-'}</span> <Divider type="vertical" />
-                <span>{consumptionLevel ? `消费水平${consumptionLevel == 1 ? '低' : consumptionLevel == 2 ? '中' : '高'}` : '-'}</span> <Divider type="vertical" />
-                <span>{systemType ? systemType == 1 ? '安卓' : 'IOS' : '-'}</span>
+                <span>{isMale ? isMale == 1 ? '男性' : '女性' : <PopoverFormat content='性别' text='-' />}</span> <Divider type="vertical" />
+                <span>{consumptionLevel ? `消费水平${consumptionLevel == 1 ? '低' : consumptionLevel == 2 ? '中' : '高'}` : <PopoverFormat content='消费水平' text='-' />}</span> <Divider type="vertical" />
+                <span>{systemType ? systemType == 1 ? '安卓' : 'IOS' : <span style={{ color: '#999' }}>浏览端</span>}</span>
               </div>} />
               <OneLine title='简介' content={
                 <div className='content-font' style={{ maxWidth: 300 }}>
@@ -68,7 +68,7 @@ class HeadInfo extends Component {
               <div className='type-info-row' >
                 <OneType title="内容分类" content={classification} color='#ff4d4b' />
                 <OneType title="接单数" content={orderAcceptanceNum} />
-                <OneType title="响应时间" content={FieldMap.getSegmentByFloat(orderResponsePercentile)} last={`${orderResponseDuration || '-'}s`} />
+                <OneType title="响应时间" content={FieldMap.getSegmentByFloat(orderResponsePercentile)} last={`${orderResponseDuration ? FieldMap.getTime(orderResponseDuration) : '-'}`} />
               </div>
               <div className='type-info-row'>
                 <OneType title="历史服务最多分类" content={orderMajorIndustryCategory || '-'} />
