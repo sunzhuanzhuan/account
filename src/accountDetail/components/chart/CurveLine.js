@@ -66,7 +66,15 @@ class CurveLine extends Component {
               }
             ]}
           />
-          <Axis name="number" />
+
+          <Axis
+            name='followerCountFull'
+            grid={null}
+          />
+          <Axis
+            name='mediaLikeSumIncre'
+            grid={null}
+          />
           <Tooltip name='d' g2-tooltip={g2Tooltip} />
           <Geom
             type="line"

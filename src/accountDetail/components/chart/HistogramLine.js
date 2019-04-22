@@ -155,13 +155,12 @@ class HistogramLine extends Component {
             }}
           />
           <Axis
-            name="people"
+            name={`${positionIntervalConfig.split('*')[1]}`}
             grid={null}
-            label={{
-              textStyle: {
-                fill: "#29c056"
-              }
-            }}
+          />
+          <Axis
+            name={`${positionConfig.split('*')[1]}`}
+            grid={null}
           />
           <Tooltip name='' g2-tooltip={g2Tooltip} />
           <Geom type="interval" position={positionIntervalConfig} color="#39a0ff" />
