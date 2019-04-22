@@ -296,7 +296,7 @@ export class AgentConfigAndPriceForm extends Component {
       if (!err) {
         const { data: { accountInfo: { accountId, platformId }, priceInfo: { isPreventShielding } }, actions } = this.props.params;
         let trinitySkuInfoVOS = values.trinitySkuInfoVOS.reduce((ary, cur) => {
-          cur.list.forEach(sku => {
+          (cur.list || []).forEach(sku => {
             ary.push({
               ...sku,
               trinityPlatformCode: cur.trinityPlatformCode,

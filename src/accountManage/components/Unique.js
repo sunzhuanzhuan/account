@@ -213,7 +213,7 @@ export const AgentConfigAndPrice = (props) => {
       cooperationPlatformResVOS.map((item, n) => {
         let { trinitySkuInfoResVOList: priceList = [], trinityTollTypeVOList: otherList = [] } = item;
         return <div key={n}>
-          <FormItem {...formItemLayout} label={`${item.cooperationPlatformName}参考报价`}>
+          {priceList.length ? <FormItem {...formItemLayout} label={`${item.cooperationPlatformName}参考报价`}>
             <div className='trinity-reference-table'>
               <table>
                 <tbody>
@@ -250,7 +250,7 @@ export const AgentConfigAndPrice = (props) => {
                 </tbody>
               </table>
             </div>
-          </FormItem>
+          </FormItem> : null}
           {otherList.length ? <FormItem {...formItemLayout} label='附加费参考报价'>
             <div className='trinity-reference-table'>
               <table>
