@@ -39,7 +39,7 @@ class HistogramLine extends Component {
     //     people: 2
     //   }
     // ];
-    const { data = [], positionConfig, lineText, boxText, positionIntervalConfig, type = 4, } = this.props
+    const { data = [], positionConfig, lineText, boxText, positionIntervalConfig, type = 4, boxLeft, boxRight } = this.props
 
     const scale = {
       followerCountFull: {
@@ -94,8 +94,8 @@ class HistogramLine extends Component {
     return (
       data.length > 0 ? <div className='histogram-line'>
         <div className='title-line'>
-          <div className='left-title'>{boxText}</div>
-          <div className='right-title'>{lineText}</div>
+          <div className='left-title' style={{ left: boxLeft }}>{boxText}</div>
+          <div className='right-title' style={{ right: boxRight }}>{lineText}</div>
         </div>
         <Chart
           height={height}

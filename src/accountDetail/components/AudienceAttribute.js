@@ -48,7 +48,9 @@ class AudienceAttribute extends Component {
                 positionConfig='name*tgiValue'
                 positionIntervalConfig='name*value'
                 lineText='TGI'
-                boxText='兴趣爱好' />
+                boxText='兴趣爱好'
+                boxLeft={30}
+                boxRight={70} />
             </div>
 
           </div>
