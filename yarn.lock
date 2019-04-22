@@ -9960,6 +9960,12 @@ react-error-overlay@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-5.1.0.tgz#c516995a5652e7bfbed8b497910d5280df74a7e8"
 
+react-infinite-scroller@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/react-infinite-scroller/-/react-infinite-scroller-1.2.4.tgz#f67eaec4940a4ce6417bebdd6e3433bfc38826e9"
+  dependencies:
+    prop-types "^15.5.8"
+
 react-is@^16.3.2, react-is@^16.6.0:
   version "16.6.3"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.6.3.tgz#d2d7462fcfcbe6ec0da56ad69047e47e56e7eac0"
@@ -10609,7 +10615,6 @@ rxjs@^6.1.0:
 sa-sdk-javascript@^1.13.2:
   version "1.13.2"
   resolved "https://registry.yarnpkg.com/sa-sdk-javascript/-/sa-sdk-javascript-1.13.2.tgz#947f1c49ceec15d638cc7a58ed845adc4a302568"
-  integrity sha512-mmQpgak8/hEIQX6BvzW31XnJkQmkX19pGpDhSkq6v9yAXrdgu5sWI8IRaoM/ApH2M70Cuvi4kUknWiort3qzzg==
 
 safe-buffer@5.1.2, safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@^5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.2"
