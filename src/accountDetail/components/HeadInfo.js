@@ -8,22 +8,22 @@ import { platformView } from "../../accountManage/constants/platform";
 import FieldMap from "../constants/FieldMap";
 import numeral from "numeral";
 import { WBYPlatformIcon } from "wbyui"
+import RecentPrice from "./RecentPrice";
 class HeadInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
   render() {
-    const { setShowModal, isExistCar, baseInfo = {}, selectCarEdit } = this.props
+    const { setShowModal, isExistCar, baseInfo = {}, selectCarEdit, actions, accountDetail } = this.props
     const { base = {}, feature = {}, skuList = [] } = baseInfo
     const { isMale, consumptionLevel, systemType, avatarUrl,
       snsName, snsId, followerCount, introduction, platformId = 0,
-      url, qrCodeUrl,
+      url, qrCodeUrl, cooperationTips
     } = base
     const { classification = '-', wholeRank = 0, orderResponseDuration, orderResponsePercentile,
       orderAcceptanceNum = '-', orderAcceptanceRate, orderMajorIndustryCategory, orderCompleteDuration,
       isVerified, verificationReason } = feature
-
     //排名处理
     const platformName = platformView[platformId] || '-'
     const wholeRankCN = `${platformName}NO.${wholeRank}`
@@ -89,6 +89,11 @@ class HeadInfo extends Component {
               <div style={{ textAlign: 'center' }}>
                 {isExistCar ? <Button className='add-select-car-button' type='primary' onClick={() => selectCarEdit(true)}>加入选号车</Button> :
                   <Button className='remove-select-car-button' onClick={() => selectCarEdit(false)}>移出选号车</Button>}
+                <a onClick={() => setShowModal(true, {
+                  content: <RecentPrice cooperationTips={cooperationTips} />, title: `${accountDetail.historyPriceCount}近期应约价`, width: 700
+                })}>
+                  近期应约价（{accountDetail.historyPriceCount}）
+                </a>
               </div>
               {/* <div style={{ textAlign: "center", marginTop: 12 }}>加入收藏<span className='collect'>（100人已收藏）</span></div> */}
             </div>

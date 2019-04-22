@@ -29,6 +29,7 @@ class AccountDetail extends Component {
     this.setState({
       isLoading: false
     })
+    actions.getHistoryPriceCount({ account_id: accountId })
     const { base = {} } = data
     document.title = `${base.snsName || ''}-${platformView[base.platformId] || ''}平台-微播易`
   }
@@ -69,6 +70,7 @@ class AccountDetail extends Component {
       queryIndustryInfoList,
       isExistCar, queryTgiList,
       newVideoList } = accountDetail
+
     const { getTrend, getAudienceAttribute,
       getQueryOrderCooperationList, addQueryIndustryInfoList,
       getQueryIndustryInfoList, getNewVideo, getQueryTgiList } = actions
@@ -89,7 +91,7 @@ class AccountDetail extends Component {
       <div className="account-view-detail" id='Js-account-view-detail-Id'>
         <Spin spinning={isLoading}>
           {/* 头部基础信息 */}
-          <HeadInfo setShowModal={this.setShowModal} baseInfo={baseInfo} selectCarEdit={this.selectCarEdit} isExistCar={isExistCar} />
+          <HeadInfo setShowModal={this.setShowModal} baseInfo={baseInfo} selectCarEdit={this.selectCarEdit} isExistCar={isExistCar} accountDetail={accountDetail} actions={actions} />
           {/* 数据指标 */}
           <DataIndicator baseInfo={baseInfo} />
           {/* 历史案例 */}

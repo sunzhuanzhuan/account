@@ -74,3 +74,18 @@ export const {
   getNewVideo,
   getNewVideo_success
 } = createHttpAction('getNewVideo', Interface.getNewVideo)
+//账号详情---最近应约价数量
+export const {
+  getHistoryPriceCount,
+  getHistoryPriceCount_success
+} = createHttpAction('getHistoryPriceCount', Interface.getHistoryPriceCount)
+//账号详情---最近应约价
+export const {
+  getRecentReservationOrderPriceList,
+  getRecentReservationOrderPriceList_success
+} = createHttpAction('getRecentReservationOrderPriceList', Interface.getRecentReservationOrderPriceList)
+//账号详情---最近应约价--滚动条
+export const {
+  AddGetPriceList,
+  AddGetPriceList_success
+} = createHttpAction('AddGetPriceList', Interface.getRecentReservationOrderPriceList)
