@@ -27,13 +27,13 @@ class DataIndicator extends Component {
       mediaInteractionProportion30ItemRateOnClassificationPriceTag, //账号粉丝互动率 比 同行业同价位平均粉丝互动率
       mediaInteractionAvg30ItemRateOnClassificationPriceTag, //平均互动数
       //点赞
-      mediaLikeAvg30ItemOnClassification, // 行业互动点赞
+      mediaLikeAvg, // 行业互动点赞
       mediaLikeAvg30ItemRateOnClassificationPriceTag, //30条平均点赞 比同行业其他人多
       mediaLikeAvgRateOnClassificationPriceTag, //总平均点赞 比同行业其他人多
       mediaLikeSumRateOnClassificationPriceTag, //累计点赞比同行业其他人多
 
       //转发
-      mediaRepostAvg30ItemOnClassification, //近30条互动转发均值
+      mediaRepostAvg, //近30条互动转发均值
       mediaRepostAvg30ItemRateOnClassificationPriceTag, //账号近30条平均转发比同行业同价位近30条平均转发
       mediaRepostAvgRateOnClassificationPriceTag, // 账号平均转发比同行业同价位平均单视频转发
       mediaRepostSumRateOnClassificationPriceTag, //账号平均转发比同行业同价位平均累计转发
@@ -100,12 +100,12 @@ class DataIndicator extends Component {
             </div>
             <div className='operate-four'>
               <OperateItem typeText='点赞'
-                numberAvg={mediaLikeAvg30ItemOnClassification} percentAvg={mediaLikeAvg30ItemRateOnClassificationPriceTag}
+                numberAvg={mediaLikeAvg} percentAvg={mediaLikeAvg30ItemRateOnClassificationPriceTag}
                 sumAvgNumber={'123'} sumAvgPercent={mediaLikeAvgRateOnClassificationPriceTag}
                 numberSum='123' percentSum={mediaLikeSumRateOnClassificationPriceTag}
                 typeSum="123" />
               <OperateItem typeText='转发'
-                numberAvg={mediaRepostAvg30ItemOnClassification} percentAvg={mediaRepostAvg30ItemRateOnClassificationPriceTag}
+                numberAvg={mediaRepostAvg} percentAvg={mediaRepostAvg30ItemRateOnClassificationPriceTag}
                 sumAvgNumber='123' sumAvgPercent={mediaRepostAvgRateOnClassificationPriceTag}
                 numberSum='123' percentSum={mediaRepostSumRateOnClassificationPriceTag}
                 typeSum="123" />

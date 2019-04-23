@@ -7,22 +7,23 @@ import MultiClamp from 'react-multi-clamp';
 import { platformView } from "../../accountManage/constants/platform";
 import FieldMap from "../constants/FieldMap";
 import numeral from "numeral";
+import { WBYPlatformIcon } from "wbyui"
+import RecentPrice from "./RecentPrice";
 class HeadInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
   render() {
-    const { setShowModal, isExistCar, baseInfo = {}, selectCarEdit } = this.props
+    const { setShowModal, isExistCar, baseInfo = {}, selectCarEdit, actions, accountDetail } = this.props
     const { base = {}, feature = {}, skuList = [] } = baseInfo
     const { isMale, consumptionLevel, systemType, avatarUrl,
       snsName, snsId, followerCount, introduction, platformId = 0,
-      url, qrCodeUrl,
+      url, qrCodeUrl, cooperationTips
     } = base
     const { classification = '-', wholeRank = 0, orderResponseDuration, orderResponsePercentile,
       orderAcceptanceNum = '-', orderAcceptanceRate, orderMajorIndustryCategory, orderCompleteDuration,
       isVerified, verificationReason } = feature
-
     //排名处理
     const platformName = platformView[platformId] || '-'
     const wholeRankCN = `${platformName}NO.${wholeRank}`
@@ -37,6 +38,10 @@ class HeadInfo extends Component {
         <div className="info-right-box">
           <div className='head-box'>
             <div className='account-info' >
+              {platformId ? <span style={{ padding: '0px 8px 2px 0px' }}> <WBYPlatformIcon
+                weibo_type={platformId}
+                widthSize={16}
+              /> </span> : null}
               <PopoverFormat text={<div className='account-name'>{snsName}</div>} content={snsName} />
               {isVerified == 1 ? <PopoverFormat text={<img width='14px' style={{ marginLeft: 10, paddingBottom: 4 }} src={require(`./img/certification-${'other'}.png`)} />} content={verificationReason} /> : null}
               <LookIndex url={url} qrCodeUrl={qrCodeUrl} platformName={platformName} />
@@ -54,9 +59,9 @@ class HeadInfo extends Component {
                 <FatLable backColor='#FFEBEA' color='#FE6A60' list={['直播', '直播', '直播']} />
               } /> */}
               <OneLine title='受众信息' content={<div className='content-font'>
-                <span>{isMale ? isMale == 1 ? '男性' : '女性' : '-'}</span> <Divider type="vertical" />
-                <span>{consumptionLevel ? `消费水平${consumptionLevel == 1 ? '低' : consumptionLevel == 2 ? '中' : '高'}` : '-'}</span> <Divider type="vertical" />
-                <span>{systemType ? systemType == 1 ? '安卓' : 'IOS' : '-'}</span>
+                <span>{isMale ? isMale == 1 ? '男性' : '女性' : <PopoverFormat content='性别' text='-' />}</span> <Divider type="vertical" />
+                <span>{consumptionLevel ? `消费水平${consumptionLevel == 1 ? '低' : consumptionLevel == 2 ? '中' : '高'}` : <PopoverFormat content='消费水平' text='-' />}</span> <Divider type="vertical" />
+                <span>{systemType ? systemType == 1 ? '安卓' : 'IOS' : <PopoverFormat content='浏览端' text='-' />}</span>
               </div>} />
               <OneLine title='简介' content={
                 <div className='content-font' style={{ maxWidth: 300 }}>
@@ -68,7 +73,7 @@ class HeadInfo extends Component {
               <div className='type-info-row' >
                 <OneType title="内容分类" content={classification} color='#ff4d4b' />
                 <OneType title="接单数" content={orderAcceptanceNum} />
-                <OneType title="响应时间" content={FieldMap.getSegmentByFloat(orderResponsePercentile)} last={`${orderResponseDuration || '-'}s`} />
+                <OneType title="响应时间" content={FieldMap.getSegmentByFloat(orderResponsePercentile)} last={`${orderResponseDuration ? FieldMap.getTime(orderResponseDuration) : '-'}`} />
               </div>
               <div className='type-info-row'>
                 <OneType title="历史服务最多分类" content={orderMajorIndustryCategory || '-'} />
@@ -84,6 +89,11 @@ class HeadInfo extends Component {
               <div style={{ textAlign: 'center' }}>
                 {isExistCar ? <Button className='add-select-car-button' type='primary' onClick={() => selectCarEdit(true)}>加入选号车</Button> :
                   <Button className='remove-select-car-button' onClick={() => selectCarEdit(false)}>移出选号车</Button>}
+                <a onClick={() => setShowModal(true, {
+                  content: <RecentPrice cooperationTips={cooperationTips} />, title: `近期应约价（${accountDetail.historyPriceCount}）`, width: 700
+                })}>
+                  近期应约价（{accountDetail.historyPriceCount}）
+                </a>
               </div>
               {/* <div style={{ textAlign: "center", marginTop: 12 }}>加入收藏<span className='collect'>（100人已收藏）</span></div> */}
             </div>

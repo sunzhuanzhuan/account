@@ -11,7 +11,7 @@ const getFormatValue = (value) => {
       unit = "亿"
       valueTransform = value / (10000 * 10000)
     }
-    valueTransform = valueTransform.toFixed((valueTransform < 10 && unit == "万") ? 1 : 0).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
+    valueTransform = valueTransform.toFixed(0).replace(/(\d)(?=(\d{3})+\.)/g, '$1,')
     if ((valueTransform.split(".")[1]) == 0) {
       valueTransform = valueTransform.split(".")[0]
     }
