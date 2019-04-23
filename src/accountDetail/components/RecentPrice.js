@@ -59,7 +59,7 @@ class RecentPrice extends Component {
       <div className="recent-price-wxy">
         <div>
           <span style={{ color: '#999', paddingLeft: 30 }}>
-            应约须知：
+            合作须知：
           </span>
           {cooperationTips}
         </div>
