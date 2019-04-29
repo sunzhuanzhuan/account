@@ -53,16 +53,10 @@ class RecentPrice extends Component {
   }
   render() {
     const { visable, bigLoading, warnMessage } = this.state
-    const { accountDetail: { recentReservationOrderPriceList }, cooperationTips } = this.props
+    const { accountDetail: { recentReservationOrderPriceList } } = this.props
 
     return (
       <div className="recent-price-wxy">
-        <div>
-          <span style={{ color: '#999', paddingLeft: 30 }}>
-            合作须知：
-          </span>
-          {cooperationTips}
-        </div>
         {visable ? <Alert message="说明:本页展示该账号最近半年在微播易平台的应约时间,价格名称,应约价" type="warning" showIcon closable afterClose={this.handleClose} style={{ marginTop: 20 }} /> : null}
         <div style={{ marginTop: 20 }}>
           <div>
