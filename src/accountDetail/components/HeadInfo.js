@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import LookIndex from "./LookIndex";
 import { PopoverFormat } from "../base/TitleAndDecide";
 import "./HeadInfo.less"
-import { Avatar, Button, Divider, Empty } from 'antd';
+import { Avatar, Button, Divider, Empty, Icon } from 'antd';
 import MultiClamp from 'react-multi-clamp';
 import { platformView } from "../../accountManage/constants/platform";
 import FieldMap from "../constants/FieldMap";
@@ -47,6 +47,12 @@ class HeadInfo extends Component {
               <LookIndex url={url} qrCodeUrl={qrCodeUrl} platformName={platformName} />
               {/* <a style={{ marginLeft: 20, color: ' #1990FF' }} onClick={() => setShowModal(true, { content: <BloggerInfo />, title: '博主信息', width: 700 })}>
                 <Icon type='user' />查看博主信息</a> */}
+              <div className='cooperation-tips' onClick={() => setShowModal(true, {
+                content: <div>{cooperationTips || '暂无数据'}</div>, title: '合作须知', width: 500
+              })}>
+                <Icon type="exclamation-circle" style={{ color: '#FAAD14', marginRight: 4 }} theme="filled" />
+                合作须知
+               </div>
             </div>
             <div className='account-code'>{platformView[platformId]}号：{snsId}</div>
           </div>
@@ -82,6 +88,7 @@ class HeadInfo extends Component {
               </div>
             </div>
             <div className='release-info'>
+
               <div className='release-info-box'>
                 {skuList.length > 0 ? skuList.slice(0, 4).map(one => <OneRelease key={one.skuId} title={one.skuTypeName} content={one.openQuotePrice} last={one.unitPrice} />) :
                   <Empty style={{ margin: '0px auto' }} />}
@@ -90,7 +97,7 @@ class HeadInfo extends Component {
                 {isExistCar ? <Button className='add-select-car-button' type='primary' onClick={() => selectCarEdit(true)}>加入选号车</Button> :
                   <Button className='remove-select-car-button' onClick={() => selectCarEdit(false)}>移出选号车</Button>}
                 <a onClick={() => setShowModal(true, {
-                  content: <RecentPrice cooperationTips={cooperationTips} />, title: `近期应约价（${accountDetail.historyPriceCount}）`, width: 700
+                  content: <RecentPrice />, title: `近期应约价（${accountDetail.historyPriceCount}）`, width: 700
                 })}>
                   近期应约价（{accountDetail.historyPriceCount}）
                 </a>
