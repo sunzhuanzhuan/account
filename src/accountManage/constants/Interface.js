@@ -25,5 +25,8 @@ export default {
 		accountStrategy: '/operator-gateway/account/v1/updateStrategy',
 		accountOther: '/operator-gateway/account/v1/updateOtherInfo',
 		accountAudiencePortrait: '/operator-gateway/account/v1/updateAudiencePortrait',
-	}
+	},
+  package: {
+    test: '/accountPackage/test',
+  }
 }
