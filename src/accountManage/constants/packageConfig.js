@@ -1,15 +1,20 @@
+import { Owner, Fetch } from "../components/packageComponents";
+
 export const modules = {
   'owner': {
     anchorId: "owner",
-    title: "主账号信息"
+    title: "主账号信息",
+    component: Owner
   },
   'fetch': {
     anchorId: "fetch",
-    title: "信息自动抓取"
+    title: "信息自动抓取",
+    component: Fetch
   },
   'main': {
     anchorId: "main",
     title: "账号基本信息",
+    component: Owner,
     children: {
       'base': {
         anchorId: "base",
@@ -19,19 +24,23 @@ export const modules = {
   },
   'cooperation': {
     anchorId: "cooperation",
-    title: "合作相关"
+    title: "合作相关",
+    component: Owner
   },
   'strategy': {
     anchorId: "strategy",
-    title: "策略信息"
+    title: "策略信息",
+    component: Owner
   },
   'content': {
     anchorId: "content",
-    title: "内容相关"
+    title: "内容相关",
+    component: Owner
   },
   'other': {
     anchorId: "other",
-    title: "其他信息"
+    title: "其他信息",
+    component: Owner
   }
 }
 

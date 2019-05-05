@@ -1,12 +1,13 @@
 import React, { Component } from "react"
 import { bindActionCreators } from "redux";
-import { message, Skeleton, Tabs, Anchor } from 'antd'
+import { message, Skeleton, Tabs, Anchor, Button } from 'antd'
 import { connect } from "react-redux";
 import * as action from '../actions/index'
 import * as commonAction from '@/actions/index'
 import * as packageAction from '../actions/package'
 import { parseUrlQuery } from "@/util/parseUrl";
-import { tabs, modules } from '../constants/packageConf'
+import { tabs, modules } from '../constants/packageConfig'
+import Module from "@/accountManage/components/common/Module";
 
 const { TabPane } = Tabs;
 const { Link } = Anchor;
@@ -36,7 +37,7 @@ class UpdatePageForPackage extends Component {
   constructor(props) {
     super(props);
     const { account_id, active } = parseUrlQuery(props.location.search)
-    const { platform } = props.match.param
+    const { platform } = props.match.params || {}
     this.state = {
       active: active || '1',
       accountId: account_id,
@@ -68,7 +69,8 @@ class UpdatePageForPackage extends Component {
         style={{
           position: 'sticky',
           top: "-20px",
-          background: '#fff'
+          background: '#fff',
+          zIndex: 1,
         }}
         onChange={(active) => {
           this.setState({ active }, () => {
@@ -77,30 +79,46 @@ class UpdatePageForPackage extends Component {
         }}
       >
         {
-          tabs.map(pane => <TabPane tab={pane.title} key={pane.index} />)
+          tabs.map(pane => <TabPane tab={
+            <div className='tab-bar-item-wrapper'>
+              <span>{pane.title}</span>
+              {pane.title.endsWith('统计') && <b>(未完善)</b>}
+            </div>
+          } key={pane.index} />)
         }
       </Tabs>
-      {
-        activeModules.length > 1 ? <div style={{ float: 'right' }}>
-          <Anchor
-            onClick={e => e.preventDefault()}
-            offsetTop={60}
-            getContainer={() => document.querySelector('#app-content-children-id')}
-          >
-            {
-              activeModules.map(({ anchorId: key, title }) =>
-                <Link key={key} href={"#navLink-" + key} title={title} />)
-            }
-          </Anchor>
-        </div> : null
-      }
-      {
-        activeModules.map(({ anchorId: key, title }) => {
-          return <div key={key} id={"navLink-" + key} style={{ height: "600px" }}>
-            {title}
-          </div>
-        })
-      }
+      <div className='tab-pane-common-box'>
+        <div className='tab-pane-modules'>
+          {
+            activeModules.map((module) => {
+              return <Module key={module.anchorId} data={module}/>
+            })
+          }
+        </div>
+        {
+          activeModules.length > 1 ? <div style={{ float: 'right' }}>
+            <Anchor
+              onClick={e => e.preventDefault()}
+              offsetTop={60}
+              showInkInFixed={true}
+              getContainer={() => document.querySelector('#app-content-children-id')}
+            >
+              {
+                activeModules.map(({ anchorId: key, title }) =>
+                  <Link key={key} href={"#navLink-" + key} title={
+                    <div className='nav-link-item-wrapper'>
+                      <span>{title}</span>
+                      {title.length === 5 && <b>未完善</b>}
+                    </div>
+                  } />)
+              }
+              <div className='nav-box-footer'>
+                <Button type='primary' block>一键提交</Button>
+              </div>
+            </Anchor>
+          </div> : null
+        }
+      </div>
     </div>
   }
 }
