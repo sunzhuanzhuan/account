@@ -11,7 +11,24 @@
   //border-top: 1px solid #f8f8f8;
   position: relative;
 
+  .subclass-head {
+    .header-wrap .content();
+    padding-left: 11px;
+    .text {
+      font-weight: normal;
+    }
+    .line{
+      .header-wrap .content .line();
+      opacity: 1;
+      //border-top-style: solid;
+    }
+  }
   .header-wrap {
+    padding-left: 25px;
+    line-height: 32px;
+    border-bottom: 1px solid #e8e8e8;
+    padding-bottom: 2px;
+
     .right {
       font-size: 13px;
       display: inline-block;
@@ -62,6 +79,7 @@
       }
 
       .line {
+        opacity: 0;
         display: table-cell;
         position: relative;
         top: 50%;
@@ -70,9 +88,6 @@
         transform: translateY(50%);
       }
     }
-
-    padding-left: 25px;
-    line-height: 32px;
 
     &:before {
       content: " ";

@@ -1,2 +1,7 @@
 export { default as Owner } from './Owner'
 export { default as Fetch } from './Fetch'
+export { default as Main } from './Main'
+export { default as Cooperation } from './Cooperation'
+export { default as Strategy } from './Strategy'
+export { default as Content } from './Content'
+export { default as Other } from './Other'

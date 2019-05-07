@@ -7,6 +7,7 @@ import {
 import { platformToFetch } from '../../constants/placeholder'
 import { parseUrlQuery } from '@/util/parseUrl'
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
+import { platformToType } from "@/accountManage/constants/packageConfig";
 
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
@@ -27,10 +28,12 @@ const rules = {
 }
 
 export default class Fetch extends React.Component {
+  static defaultProps = {
+    pid: '1'
+  }
   state = {
     isLoading: false
   }
-
   constructor(props) {
     super(props)
     // 处理拓号入库跳转抓取
@@ -40,11 +43,11 @@ export default class Fetch extends React.Component {
     // TODO: 逻辑重写
     this.platformType = {
       [this.props.pid]: {
-        defaultKeys: this.props.defaultKeys || 'url',
+        defaultKeys: platformToType[this.props.pid].diff.fetch.defaultKeys || 'url',
         types: [
           {
             title: '抓取信息',
-            field: this.props.defaultKeys || 'url',
+            field: platformToType[this.props.pid].diff.fetch.defaultKeys || 'url',
             placeholder: platformToFetch[this.props.pid] || '请输入主页链接'
           }
         ]

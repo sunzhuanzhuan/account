@@ -1,4 +1,12 @@
-import { Owner, Fetch } from "../components/packageComponents";
+import {
+  Owner,
+  Fetch,
+  Main,
+  Cooperation,
+  Strategy,
+  Content,
+  Other
+} from "../components/packageComponents";
 
 export const modules = {
   'owner': {
@@ -14,7 +22,7 @@ export const modules = {
   'main': {
     anchorId: "main",
     title: "账号基本信息",
-    component: Owner,
+    component: Main,
     children: {
       'base': {
         anchorId: "base",
@@ -25,22 +33,22 @@ export const modules = {
   'cooperation': {
     anchorId: "cooperation",
     title: "合作相关",
-    component: Owner
+    component: Cooperation
   },
   'strategy': {
     anchorId: "strategy",
     title: "策略信息",
-    component: Owner
+    component: Strategy
   },
   'content': {
     anchorId: "content",
     title: "内容相关",
-    component: Owner
+    component: Content
   },
   'other': {
     anchorId: "other",
     title: "其他信息",
-    component: Owner
+    component: Other
   }
 }
 
@@ -48,7 +56,7 @@ export const modules = {
 function handleDiff(keys = []) {
   return (platform) => {
     // 获取该平台的差异性配置
-    let { diff } = platformToType[platform] || viewTypeForPlatform.normal
+    let { diff } = platformToType[platform] || diffByTypes.normal
     // 过滤配置的模块
     return keys.filter(key => {
       if (key in diff) {
@@ -98,13 +106,24 @@ export const tabs = [
 ]
 
 // 平台差异性
-export const viewTypeForPlatform = {
+export const diffByTypes = {
   "default": {
     platforms: [115, 24, 103, 120, 111, 119, 118, 116, 30, 29, 110, 100, 101, 102, 114],
-    diff: {
-      fetch: {
-        defaultKeys: ''
+    visibility: {
+      fields: {
+        qcCode: false,
+        snsUniqueId: false,
+        url: false,
+        fansNumberImg: false,
+        referencePrice: true,
+        priceInclude: true,
+      },
+      modules: {
+        fetch: false
       }
+    },
+    configure: {
+      fetchDefaultKeys: ''
     }
   },
   "sina": {
@@ -112,6 +131,9 @@ export const viewTypeForPlatform = {
     diff: {
       fetch: {
         defaultKeys: ''
+      },
+      main: {
+
       },
       price: {
         referencePrice: true,
@@ -196,7 +218,7 @@ export const viewTypeForPlatform = {
   }
 }
 // 平台对应模块码表
-export const platformToType = Object.entries(viewTypeForPlatform).reduce((obj, [key, item]) => {
+export const platformToType = Object.entries(diffByTypes).reduce((obj, [key, item]) => {
   item['platforms'].forEach(i => {
     obj[i] = {
       key,
