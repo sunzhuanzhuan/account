@@ -7,8 +7,10 @@ import {
   Content,
   Other
 } from "../components/packageComponents";
+import intersection from 'lodash/intersection'
+import update from 'immutability-helper'
 
-export const modules = {
+export const modulesMap = {
   'owner': {
     anchorId: "owner",
     title: "主账号信息",
@@ -52,26 +54,19 @@ export const modules = {
   }
 }
 
-// 处理差异性模块展示
-function handleDiff(keys = []) {
-  return (platform) => {
-    // 获取该平台的差异性配置
-    let { diff } = platformToType[platform] || diffByTypes.normal
-    // 过滤配置的模块
-    return keys.filter(key => {
-      if (key in diff) {
-        return diff[key]
-      }
-      return true
-    })
-      .map(key => modules[key] || {})
-  }
+// 处理模块差异性并注入配置数据
+export function platformToModules(platformId, filterSource) {
+  filterSource = filterSource || Object.keys(modulesMap)
+  let platformData = platformToType[platformId] || diffByTypes.normal
+  // 获取该平台的差异性配置
+  let _modules = intersection(filterSource, platformData.visibility.modules).map(key => modulesMap[key])
+  return update(platformData, { visibility: { modules: { $set: _modules } } })
 }
 export const tabs = [
   {
     index: '1',
     title: '账号信息',
-    warp: handleDiff([
+    warp: [
       "owner",
       "fetch",
       "main",
@@ -79,141 +74,370 @@ export const tabs = [
       "strategy",
       "content",
       "other"
-    ])
+    ]
   }, {
     index: '2',
     title: '报价信息',
-    warp: handleDiff([
+    warp: [
       "owner",
       "fetch",
       "other"
-    ])
+    ]
   }, {
     index: '3',
     title: '数据统计',
-    warp: handleDiff([
+    warp: [
       "content"
-    ])
+    ]
   }, {
     index: '4',
     title: '博主信息',
-    warp: handleDiff([
+    warp: [
       "strategy",
       "content",
       "other"
-    ])
+    ]
   }
 ]
 
+// TODO: 交集重构
 // 平台差异性
 export const diffByTypes = {
   "default": {
-    platforms: [115, 24, 103, 120, 111, 119, 118, 116, 30, 29, 110, 100, 101, 102, 114],
+    platforms: [115, 24, 103, 120, 111, 119, 118, 116, 30, 29, 110, 100, 101, 102],
+    visibility: {
+      fields: {},
+      modules: [
+        "owner",
+        "fetch",
+        "main",
+        "cooperation",
+        "strategy",
+        "content",
+        "other"
+      ]
+    },
+    configure: {
+      fetchDefaultKeys: '',
+      fetchTypes: [
+        {
+          title: '抓取信息',
+          field: 'url',
+          placeholder: '请输入主页链接'
+        }
+      ]
+    }
+  },
+  "panda": {
+    platforms: [114],
+    visibility: {
+      fields: {},
+      modules: [
+        "owner",
+        "fetch",
+        "main",
+        "cooperation",
+        "strategy",
+        "content",
+        "other"
+      ]
+    },
+    configure: {
+      fetchDefaultKeys: 'url',
+      fetchTypes: [
+        {
+          title: '抓取信息',
+          field: 'url',
+          placeholder: '请输入直播间URL'
+        }
+      ]
+    }
+  },
+  "sina": {
+    platforms: [1],
     visibility: {
       fields: {
-        qcCode: false,
-        snsUniqueId: false,
-        url: false,
-        fansNumberImg: false,
         referencePrice: true,
-        priceInclude: true,
+        priceInclude: true
       },
-      modules: {
-        fetch: false
-      }
+      modules: [
+        "owner",
+        "fetch",
+        "main",
+        "cooperation",
+        "strategy",
+        "content",
+        "other"
+      ]
+    },
+    configure: {
+      fetchDefaultKeys: (isID) => isID ? 'snsId' : 'snsName',
+      fetchTypes: [
+        {
+          title: '账号名称',
+          field: 'snsName',
+          placeholder: '请输入账号名称'
+        }, {
+          title: '账号ID',
+          field: 'snsId',
+          placeholder: '请输入账号ID'
+        }
+      ]
+    }
+  },
+  "weChat": {
+    platforms: [9],
+    visibility: {
+      fields: {
+        qcCode: true,
+        isFansNumberImg: true
+      },
+      modules: [
+        "owner",
+        "fetch",
+        "main",
+        "cooperation",
+        "strategy",
+        "content",
+        "other"
+      ]
+    },
+    configure: {
+      fetchDefaultKeys: 'url',
+      fetchTypes: [
+        {
+          title: '历史图文消息(URL)',
+          field: 'url',
+          placeholder: '请输入历史图文链接'
+        }, {
+          title: '微信号',
+          field: 'snsId',
+          placeholder: '请输入微信号'
+        }
+      ]
+    }
+  },
+  "friends": {
+    platforms: [23],
+    visibility: {
+      fields: {
+        qcCode: true,
+        hideUniqueId: true,
+        hideLink: true,
+        isFansNumberImg: true
+      },
+      modules: [
+        "owner",
+        "main",
+        "cooperation",
+        "strategy",
+        "content",
+        "other"
+      ]
+    },
+    configure: {
+      fetchDefaultKeys: '',
+      fetchTypes: [
+        {
+          title: '抓取信息',
+          field: 'url',
+          placeholder: '请输入主页链接'
+        }
+      ]
+    }
+  },
+  "normal": {
+    platforms: [33, 28, 32, 27, 31, 2, 5, 19, 117],
+    visibility: {
+      fields: {
+        hideUniqueId: true
+      },
+      modules: [
+        "owner",
+        "main",
+        "cooperation",
+        "strategy",
+        "content",
+        "other"
+      ]
     },
     configure: {
       fetchDefaultKeys: ''
     }
   },
-  "sina": {
-    platforms: [1],
-    diff: {
-      fetch: {
-        defaultKeys: ''
-      },
-      main: {
-
-      },
-      price: {
-        referencePrice: true,
-        priceInclude: true
-      }
-    }
-  },
-  "weChat": {
-    platforms: [9],
-    diff: {
-      fetch: {
-        defaultKeys: ''
-      },
-      base: {
-        qcCode: true,
-        isFansNumberImg: true
-      }
-    }
-
-  },
-  "friends": {
-    platforms: [23],
-    diff: {
-      fetch: false,
-      base: {
-        qcCode: true,
-        hideUniqueId: true,
-        hideLink: true,
-        isFansNumberImg: true
-      }
-    }
-
-  },
-  "normal": {
-    platforms: [33, 28, 32, 27, 31, 2, 5, 19, 117],
-    diff: {
-      fetch: false,
-      base: {
-        hideUniqueId: true
-      }
-    }
-  },
   "readBook": {
     platforms: [93],
-    diff: {
-      fetch: {
-        defaultKeys: ''
-      }
+    visibility: {
+      fields: {},
+      modules: [
+        "owner",
+        "fetch",
+        "main",
+        "cooperation",
+        "strategy",
+        "content",
+        "other"
+      ]
+    },
+    configure: {
+      fetchDefaultKeys: 'url',
+      fetchTypes: [
+        {
+          title: '抓取信息',
+          field: 'url',
+          placeholder: '请输入主页链接'
+        }
+      ]
     }
   },
   "headline": {
     platforms: [26],
-    diff: {
-      fetch: {
-        defaultKeys: 'snsId'
-      }
+    visibility: {
+      fields: {},
+      modules: [
+        "owner",
+        "fetch",
+        "main",
+        "cooperation",
+        "strategy",
+        "content",
+        "other"
+      ]
+    },
+    configure: {
+      fetchDefaultKeys: 'snsId',
+      fetchTypes: [
+        {
+          title: '抓取信息',
+          field: 'snsId',
+          placeholder: '请输入主页链接'
+        }
+      ]
     }
   },
   "beautyPat": {
     platforms: [25],
-    diff: {
-      fetch: {
-        defaultKeys: 'snsId'
-      }
+    visibility: {
+      fields: {},
+      modules: [
+        "owner",
+        "fetch",
+        "main",
+        "cooperation",
+        "strategy",
+        "content",
+        "other"
+      ]
+    },
+    configure: {
+      fetchDefaultKeys: 'snsId',
+      fetchTypes: [
+        {
+          title: '抓取信息',
+          field: 'snsId',
+          placeholder: '请输入账号ID'
+        }
+      ]
     }
   },
   "yy": {
-    platforms: [109, 106, 108, 105, 104, 113, 112, 107],
-    diff: {
-      fetch: {
-        defaultKeys: 'snsId'
-      }
+    platforms: [104, 113],
+    visibility: {
+      fields: {},
+      modules: [
+        "owner",
+        "fetch",
+        "main",
+        "cooperation",
+        "strategy",
+        "content",
+        "other"
+      ]
+    },
+    configure: {
+      fetchDefaultKeys: 'snsId',
+      fetchTypes: [
+        {
+          title: '抓取信息',
+          field: 'snsId',
+          placeholder: '请输入YY号'
+        }
+      ]
+    }
+  },
+  "videos": {
+    platforms: [109, 106, 108, 105, 112],
+    visibility: {
+      fields: {},
+      modules: [
+        "owner",
+        "fetch",
+        "main",
+        "cooperation",
+        "strategy",
+        "content",
+        "other"
+      ]
+    },
+    configure: {
+      fetchDefaultKeys: 'snsId',
+      fetchTypes: [
+        {
+          title: '抓取信息',
+          field: 'snsId',
+          placeholder: '请输入账号ID'
+        }
+      ]
+    }
+  },
+  "douyu": {
+    platforms: [107],
+    visibility: {
+      fields: {},
+      modules: [
+        "owner",
+        "fetch",
+        "main",
+        "cooperation",
+        "strategy",
+        "content",
+        "other"
+      ]
+    },
+    configure: {
+      fetchDefaultKeys: 'snsId',
+      fetchTypes: [
+        {
+          title: '抓取信息',
+          field: 'snsId',
+          placeholder: '请输入房间号'
+        }
+      ]
     }
   },
   "zhanQi": {
     platforms: [112],
-    diff: {
-      fetch: {
-        defaultKeys: ''
-      }
+    visibility: {
+      fields: {},
+      modules: [
+        "owner",
+        "fetch",
+        "main",
+        "cooperation",
+        "strategy",
+        "content",
+        "other"
+      ]
+    },
+    configure: {
+      fetchDefaultKeys: '',
+      fetchTypes: [
+        {
+          title: '抓取信息',
+          field: 'url',
+          placeholder: '请输入主页链接'
+        }
+      ]
     }
   }
 }

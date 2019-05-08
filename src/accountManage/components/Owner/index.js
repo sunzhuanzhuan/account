@@ -9,6 +9,7 @@ export default class Owner extends Component {
   render() {
     const { auth = {}, data: { accountInfo } = {}, actions } = this.props.params || {};
     const { babysitter_host = {} } = window.bentleyConfig || {};
+    const {  module: configureModule, platform: configurePlatform } = this.props
 
     const {
       identityName,
@@ -28,7 +29,7 @@ export default class Owner extends Component {
       <a target={'_blank'} href={href}>更换主账号</a>
     </div>;
     return <div className='module-item-container'>
-      <ModuleHeader title={this.props.data.title} right={rightC} />
+      <ModuleHeader title={configureModule.title} right={rightC} />
       <section className='content-wrap'>
         <Row>
           <Col span={6}>主账号名称：<a target={'_blank'} href={`${babysitterHost}/user/update/user_id/${userId}`}>{identityName}</a></Col>

@@ -35,10 +35,9 @@ const halfWrapCol = {
  */
 export default class Module extends Component {
   render() {
-    const { anchorId: key, component: C } = this.props.data
-
+    const { anchorId: key, component: C } = this.props.module
     return <article id={"navLink-" + key} className='module-item-wrap'>
-      {C && <C {...this.props} layout={{ full: formItemLayout, half: halfWrapCol }}/>}
+      {C && <C {...this.props} layout={{ full: formItemLayout, half: halfWrapCol }} data={{}}/>}
     </article>
   }
 }

@@ -6,42 +6,22 @@ import * as action from '../actions/index'
 import * as commonAction from '@/actions/index'
 import * as packageAction from '../actions/package'
 import { parseUrlQuery } from "@/util/parseUrl";
-import { tabs, modules } from '../constants/packageConfig'
+import { tabs, modules, platformToModules } from '../constants/packageConfig'
 import Module from "@/accountManage/components/common/Module";
 
 const { TabPane } = Tabs;
 const { Link } = Anchor;
 
-const formItemLayout = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 6 },
-    md: { span: 4 },
-    lg: { span: 3 }
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 18 },
-    md: { span: 20 },
-    lg: { span: 21 }
-  }
-};
-const halfWrapCol = {
-  xs: { span: 12 },
-  sm: { span: 9 },
-  md: { span: 10 },
-  lg: { span: 10 }
-}
 
 class UpdatePageForPackage extends Component {
   constructor(props) {
     super(props);
     const { account_id, active } = parseUrlQuery(props.location.search)
-    const { platform } = props.match.params || {}
+    const { platformId } = props.match.params || {}
     this.state = {
       active: active || '1',
       accountId: account_id,
-      platform: platform || '1',
+      platformId: platformId || '1',
       fullLoading: true,
       isError: false // { info: 'ssss' }
     }
@@ -53,14 +33,16 @@ class UpdatePageForPackage extends Component {
     // 根据account_id获取账号信息, 错误error, 平台不对修改平台
     const { actions } = this.props
     actions.test({ accountId: this.state.accountId }).then(data => {
-      console.log(data, '======>');
+      // console.log(data, '======>');
     })
   }
 
   render() {
-    const { accountId, active, platform } = this.state
-    const activeData = tabs[active - 1] || {}
-    const activeModules = activeData.warp(platform || 1) || []
+    const { accountId, active, platformId } = this.state
+    const activeTab = tabs[active - 1] || {}
+    const platform = platformToModules(platformId, activeTab.warp || [])
+    const modulesList = platform.visibility.modules
+    console.log(platform, '====>');
     return <div className='update-package-page-container'>
       <h2>账号维护</h2>
       <Tabs
@@ -70,7 +52,7 @@ class UpdatePageForPackage extends Component {
           position: 'sticky',
           top: "-20px",
           background: '#fff',
-          zIndex: 1,
+          zIndex: 1
         }}
         onChange={(active) => {
           this.setState({ active }, () => {
@@ -90,13 +72,13 @@ class UpdatePageForPackage extends Component {
       <div className='tab-pane-common-box'>
         <div className='tab-pane-modules'>
           {
-            activeModules.map((module) => {
-              return <Module key={module.anchorId} data={module}/>
+            modulesList.map((module) => {
+              return <Module key={module.anchorId} module={module} platform={platform} />
             })
           }
         </div>
         {
-          activeModules.length > 1 ? <div style={{ float: 'right' }}>
+          modulesList.length > 1 ? <div style={{ float: 'right' }}>
             <Anchor
               onClick={e => e.preventDefault()}
               offsetTop={60}
@@ -104,7 +86,7 @@ class UpdatePageForPackage extends Component {
               getContainer={() => document.querySelector('#app-content-children-id')}
             >
               {
-                activeModules.map(({ anchorId: key, title }) =>
+                modulesList.map(({ anchorId: key, title }) =>
                   <Link key={key} href={"#navLink-" + key} title={
                     <div className='nav-link-item-wrapper'>
                       <span>{title}</span>

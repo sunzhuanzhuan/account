@@ -46,6 +46,8 @@ export default class Main extends Component {
       hideLink,
       actions
     } = this.props
+    const {  module: configureModule, platform: configurePlatform } = this.props
+
     const {
       getFieldDecorator,
     } = this.props.form
@@ -81,7 +83,7 @@ export default class Main extends Component {
     </div>;
 
     return <Form className='module-item-container'>
-      <ModuleHeader title={this.props.data.title} left={left} right={right} />
+      <ModuleHeader title={configureModule.title} left={left} right={right} />
       <ul className='content-wrap'>
         <li className='subclass-item-wrap'>
           <h4 className='subclass-head'>

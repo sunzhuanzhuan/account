@@ -6,9 +6,10 @@ import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
 
 export default class Cooperation extends Component {
   render() {
+    const {  module: configureModule, platform: configurePlatform } = this.props
 
     return <div className='module-item-container'>
-      <ModuleHeader title={this.props.data.title} />
+      <ModuleHeader title={configureModule.title} />
       <section className='content-wrap'>
         合作信息
       </section>

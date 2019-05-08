@@ -4,10 +4,8 @@ import {
   Input, Button,
   Row, Col, Radio, message, Modal
 } from 'antd';
-import { platformToFetch } from '../../constants/placeholder'
 import { parseUrlQuery } from '@/util/parseUrl'
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
-import { platformToType } from "@/accountManage/constants/packageConfig";
 
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
@@ -34,54 +32,23 @@ export default class Fetch extends React.Component {
   state = {
     isLoading: false
   }
+
   constructor(props) {
     super(props)
     // 处理拓号入库跳转抓取
     let urlParams = parseUrlQuery()
     this.isAutoFetch = urlParams['fetch_info'] && decodeURIComponent(urlParams['fetch_info'])
     let isID = /^\d+$/.test(this.isAutoFetch)
+    const { platform: configurePlatform, pid } = this.props
     // TODO: 逻辑重写
-    this.platformType = {
-      [this.props.pid]: {
-        defaultKeys: platformToType[this.props.pid].diff.fetch.defaultKeys || 'url',
-        types: [
-          {
-            title: '抓取信息',
-            field: platformToType[this.props.pid].diff.fetch.defaultKeys || 'url',
-            placeholder: platformToFetch[this.props.pid] || '请输入主页链接'
-          }
-        ]
-      },
-      '1': {
-        defaultKeys: isID ? 'snsId' : 'snsName',
-        types: [
-          {
-            title: '账号名称',
-            field: 'snsName',
-            placeholder: '请输入账号名称'
-          }, {
-            title: '账号ID',
-            field: 'snsId',
-            placeholder: '请输入账号ID'
-          }
-        ]
-      },
-      '9': {
-        defaultKeys: 'url',
-        types: [
-          {
-            title: '历史图文消息(URL)',
-            field: 'url',
-            placeholder: '请输入历史图文链接'
-          }, {
-            title: '微信号',
-            field: 'snsId',
-            placeholder: '请输入微信号'
-          }
-        ]
-      }
+    let keys = configurePlatform.configure.fetchDefaultKeys
+    if(typeof keys === "function"){
+      keys = keys(isID)
     }
-    this.type = this.platformType[this.props.pid]
+    this.type = {
+      defaultKeys: keys,
+      types: configurePlatform.configure.fetchTypes
+    }
     this.state = {
       disabled: !this.isAutoFetch,
       value: this.isAutoFetch || '',
@@ -166,6 +133,8 @@ export default class Fetch extends React.Component {
 
   render() {
     const { layout, pid = 0 } = this.props
+    const { module: configureModule, platform: configurePlatform } = this.props
+
     const { disabled, value = '', isLoading, placeholder, keys } = this.state
     let isSuccess = !value || !rules[keys] || rules[keys].test(value)
     let valida = isSuccess ? {
@@ -175,7 +144,7 @@ export default class Fetch extends React.Component {
       help: '请输入正确的抓取格式!'
     }
     return <div className='module-item-container'>
-      <ModuleHeader title={this.props.data.title} />
+      <ModuleHeader title={configureModule.title} />
       <FormItem {...layout.full} label={this.type.types.length > 1 ? '抓取项' : '抓取信息'} {...valida}>
         <Row gutter={20}>
           {
@@ -183,13 +152,14 @@ export default class Fetch extends React.Component {
               <Col span={24}>
                 <RadioGroup onChange={this.changeKeys} defaultValue={keys}>
                   {
-                    this.type.types.map(radio => <Radio key={radio.field} value={radio.field}>{radio.title}</Radio>)
+                    this.type.types.map(radio =>
+                      <Radio key={radio.field} value={radio.field}>{radio.title}</Radio>)
                   }
                 </RadioGroup>
               </Col> : null
           }
           <Col span={20}>
-            <Input placeholder={ placeholder || "填写抓取信息"} onChange={this.handleChange} value={value} />
+            <Input placeholder={placeholder || "填写抓取信息"} onChange={this.handleChange} value={value} />
           </Col>
           <Col span={4}>
             <Button block onClick={this.handleFetch}
