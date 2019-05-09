@@ -132,7 +132,7 @@ export default class Fetch extends React.Component {
   }
 
   render() {
-    const { layout, pid = 0 } = this.props
+    const { layout } = this.props
     const { module: configureModule, platform: configurePlatform } = this.props
 
     const { disabled, value = '', isLoading, placeholder, keys } = this.state
@@ -145,30 +145,32 @@ export default class Fetch extends React.Component {
     }
     return <div className='module-item-container'>
       <ModuleHeader title={configureModule.title} />
-      <FormItem {...layout.full} label={this.type.types.length > 1 ? '抓取项' : '抓取信息'} {...valida}>
-        <Row gutter={20}>
-          {
-            this.type.types.length > 1 ?
-              <Col span={24}>
-                <RadioGroup onChange={this.changeKeys} defaultValue={keys}>
-                  {
-                    this.type.types.map(radio =>
-                      <Radio key={radio.field} value={radio.field}>{radio.title}</Radio>)
-                  }
-                </RadioGroup>
-              </Col> : null
-          }
-          <Col span={20}>
-            <Input placeholder={placeholder || "填写抓取信息"} onChange={this.handleChange} value={value} />
-          </Col>
-          <Col span={4}>
-            <Button block onClick={this.handleFetch}
-              loading={isLoading}
-              disabled={disabled || !isSuccess}
-              type='primary'>{isLoading ? '抓取中...' : '一键抓取'}</Button>
-          </Col>
-        </Row>
-      </FormItem>
+      <section className='content-wrap'>
+        <FormItem {...layout.full} label={this.type.types.length > 1 ? '抓取项' : '抓取信息'} {...valida}>
+          <Row gutter={20}>
+            {
+              this.type.types.length > 1 ?
+                <Col span={24}>
+                  <RadioGroup onChange={this.changeKeys} defaultValue={keys}>
+                    {
+                      this.type.types.map(radio =>
+                        <Radio key={radio.field} value={radio.field}>{radio.title}</Radio>)
+                    }
+                  </RadioGroup>
+                </Col> : null
+            }
+            <Col span={20}>
+              <Input placeholder={placeholder || "填写抓取信息"} onChange={this.handleChange} value={value} />
+            </Col>
+            <Col span={4}>
+              <Button block onClick={this.handleFetch}
+                loading={isLoading}
+                disabled={disabled || !isSuccess}
+                type='primary'>{isLoading ? '抓取中...' : '一键抓取'}</Button>
+            </Col>
+          </Row>
+        </FormItem>
+      </section>
     </div>
   }
 

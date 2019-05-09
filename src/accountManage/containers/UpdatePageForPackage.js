@@ -31,6 +31,9 @@ class UpdatePageForPackage extends Component {
     // 获取account_id参数, 参数错误error
     // TODO: addQuote 参数判断是否是否直接进入报价编辑
     // 根据account_id获取账号信息, 错误error, 平台不对修改平台
+    setTimeout(() => {
+      // window.location.replace('/account/manage/package/' + 9 + '?account_id=' + this.state.accountId)
+    }, 2000);
     const { actions } = this.props
     actions.test({ accountId: this.state.accountId }).then(data => {
       // console.log(data, '======>');
@@ -42,7 +45,6 @@ class UpdatePageForPackage extends Component {
     const activeTab = tabs[active - 1] || {}
     const platform = platformToModules(platformId, activeTab.warp || [])
     const modulesList = platform.visibility.modules
-    console.log(platform, '====>');
     return <div className='update-package-page-container'>
       <h2>账号维护</h2>
       <Tabs
@@ -73,7 +75,7 @@ class UpdatePageForPackage extends Component {
         <div className='tab-pane-modules'>
           {
             modulesList.map((module) => {
-              return <Module key={module.anchorId} module={module} platform={platform} />
+              return <Module key={module.anchorId} module={module} platform={platform} actions={this.props.actions} data={this.props.accountManage} />
             })
           }
         </div>
