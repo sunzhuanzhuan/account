@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Layout, Button, Icon } from 'antd';
+import { Layout, Button, Icon, message } from 'antd';
 import SiderMenu from '../components/SiderMenu'
 import { getUserLoginInfo, getUserConfigKey } from '../login/actions'
 import { resetSiderAuth, getAuthorizations } from '../actions'
@@ -35,9 +35,18 @@ class App extends Component {
 		//重新获取页面尺寸，以防继承前一浏览页面的滚动条
 		window.onresize = null
     NProgress.start()
-		await this.props.actions.getAuthorizations();
+    try {
+      await this.props.actions.getAuthorizations();
+    }catch (e) {
+      message('权限接口错误!')
+    }
     NProgress.inc()
-		let Info = await this.props.actions.getUserLoginInfo();
+		let Info;
+		try {
+      Info = await this.props.actions.getUserLoginInfo();
+    }catch (e) {
+      message('获取用户信息错误!')
+    }
 		let userInfoId = Info.data.user_info.user_id
 		//神策的代码不应该阻塞，去掉await, 使用then的成功回调。
 		this.props.actions.getUserConfigKey({ keys: 'shence_base_url_for_b,babysitter_host' }).then((res) => {
