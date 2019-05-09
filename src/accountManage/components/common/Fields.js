@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Select, Input, Checkbox, Popover, Radio } from 'antd';
+import { Form, Select, Input, Checkbox, Popover, Radio, InputNumber } from 'antd';
 import { OssUpload } from 'wbyui';
 import SimpleTag from '../../base/SimpleTag';
 import moment from 'moment';
@@ -239,6 +239,8 @@ export const QrCodeUrl = (props) => {
             url: qrCodeUrl,
             filepath: qrCodeUrl
           }] : [],
+          valuePropName: 'fileList',
+          getValueFromEvent: e => e.fileList,
           rules: [{ required: true, message: '二维码不能为空' }]
         })(
           <OssUpload
@@ -374,6 +376,94 @@ export const ContentCategory = (props) => {
           <a>分类错误?</a>
         </div>
         : '暂无分类'}
+    </FormItem>
+  </div>
+};
+
+/**
+ * followerCount - 粉丝数
+ */
+export const FollowerCount = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    data: { accountInfo }
+  } = props;
+  const {
+    disabled,
+    followerCount,
+    followerCountFrom,
+    followerCountMaintainedTime
+  } = accountInfo;
+  const max = Math.pow(10, 10) - 1;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.half} label='粉丝数'>
+      {getFieldDecorator('base.followerCount', {
+        initialValue: followerCount,
+        rules: [{ required: true, message: '粉丝数不能为空' }, {
+          pattern: /^\d{0,9}$/,
+          message: '只能输入不超过9位数的数字'
+        }]
+      })(
+        <InputNumber
+          style={{ width: '100%' }}
+          max={max}
+          disabled={disabled || followerCountFrom === 2}
+          placeholder="粉丝数"
+        />
+      )}
+    </FormItem>
+    {getFieldDecorator('base.followerCountFrom', { initialValue: followerCountFrom })(
+      <input type="hidden" />)}
+    {getFieldDecorator('base.followerCountMaintainedTime', { initialValue: followerCountMaintainedTime })(
+      <input type="hidden" />)}
+  </div>
+};
+
+/**
+ * followerCountScreenshotUrl - 粉丝数截图
+ */
+export const FollowerCountScreenshotUrl = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    data: { accountInfo },
+    authToken,
+  } = props;
+  const {
+    disabled,
+    followerCountScreenshotUrl
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.full} label='粉丝截图'>
+      <div className='clearfix'>
+        {getFieldDecorator('extend.followerCountScreenshotUrl', {
+          initialValue: followerCountScreenshotUrl ? [{
+            name: followerCountScreenshotUrl,
+            url: followerCountScreenshotUrl,
+            filepath:followerCountScreenshotUrl
+          }] : [],
+          valuePropName: 'fileList',
+          getValueFromEvent: e => e.fileList,
+          rules: [{ required: true, message: '请上传粉丝截图' }]
+        })(
+          <OssUpload
+            authToken={authToken}
+            rule={{
+              bizzCode: 'F_IMG_0001',
+              max: 5,
+              suffix: 'bmp,jpg,gif,jpeg'
+            }}
+            showUploadList={{
+              showPreviewIcon: true,
+              showRemoveIcon: !(disabled === 2)
+            }}
+            disabled={disabled === 2}
+            len={1}
+            listType='picture-card'
+          />
+        )}
+      </div>
     </FormItem>
   </div>
 };

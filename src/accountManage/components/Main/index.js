@@ -14,11 +14,16 @@ import {
   AvatarUrl,
   MicroFlashPost,
   ContentCategory,
+  FollowerCount,
+  FollowerCountScreenshotUrl,
   QCCodeUpload,
   AccountId,
   Name, QrCodeUrl, WeiboUrl
 } from "../common/Fields";
 import { BaseInfo } from "@/accountManage/components/BaseInfo";
+import { platformMap } from "@/accountManage/constants/platform";
+import { FansCount } from "@/accountManage/components/FansCount";
+import { Fans } from "@/accountManage/components/Fans";
 
 const FormItem = Form.Item;
 
@@ -93,11 +98,20 @@ export default class Main extends Component {
             {configurePlatform.visibility.fields.qcCode &&
             <QrCodeUrl {...fieldProps} authToken={this.state.authToken} />}
             <Introduction {...fieldProps} placeholder={configurePlatform.configure.introductionPlaceholder} />
-            {configurePlatform.visibility.fields.weiboUrl && <WeiboUrl {...fieldProps}  />}
+            {configurePlatform.visibility.fields.weiboUrl && <WeiboUrl {...fieldProps} />}
             <MicroFlashPost {...fieldProps} />
             <Divider dashed />
             <ContentCategory {...fieldProps} />
-            {/* 隐藏域提交 */}
+          </div>
+        </li>
+        <li className='subclass-item-wrap'>
+          <h4 className='subclass-head'>
+            <span className='text'>数据信息</span>
+            <small className='line' />
+          </h4>
+          <div className='subclass-content'>
+            <FollowerCount {...fieldProps} disabled={configurePlatform.configure.disabledFollowersCount} />
+            <FollowerCountScreenshotUrl {...fieldProps} authToken={this.state.authToken}/>
           </div>
         </li>
       </ul>
