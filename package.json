@@ -52,6 +52,7 @@
     "less-loader": "^4.1.0",
     "lodash": "^4.17.5",
     "mini-css-extract-plugin": "0.4.3",
+    "nprogress": "^0.2.0",
     "numeral": "^2.0.6",
     "nzh": "^1.0.4",
     "optimize-css-assets-webpack-plugin": "5.0.1",

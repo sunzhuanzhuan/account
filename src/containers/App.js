@@ -9,6 +9,8 @@ import SiderMenu from '../components/SiderMenu'
 import { getUserLoginInfo, getUserConfigKey } from '../login/actions'
 import { resetSiderAuth, getAuthorizations } from '../actions'
 import { sensors } from '@/util/sensor/sensors'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 const { Header, Content } = Layout;
 const Cookies = require('js-cookie');
 window.Cookies = Cookies;
@@ -32,7 +34,9 @@ class App extends Component {
 		window.myHistory = this.props.history
 		//重新获取页面尺寸，以防继承前一浏览页面的滚动条
 		window.onresize = null
+    NProgress.start()
 		await this.props.actions.getAuthorizations();
+    NProgress.inc()
 		let Info = await this.props.actions.getUserLoginInfo();
 		let userInfoId = Info.data.user_info.user_id
 		//神策的代码不应该阻塞，去掉await, 使用then的成功回调。
@@ -44,7 +48,7 @@ class App extends Component {
 
 		this.setState({
 			isLoaded: true
-		})
+		},NProgress.done)
 		window.addEventListener('resize', this.setHeight);
 	}
 	setHeight = () => {
