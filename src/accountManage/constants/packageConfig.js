@@ -289,7 +289,7 @@ export const diffByTypes = {
       introductionPlaceholder: ''
     }
   },
-  "readBook": {
+  "redBook": {
     platforms: [93],
     visibility: {
       fields: {
@@ -316,7 +316,19 @@ export const diffByTypes = {
           placeholder: '请输入主页链接'
         }
       ],
-      introductionPlaceholder: ''
+      introductionPlaceholder: '',
+      levelText: {
+        1: "尿布薯",
+        2: "奶瓶薯",
+        3: "困困薯",
+        4: "泡泡薯",
+        5: "甜筒薯",
+        6: "小马薯",
+        7: "文化薯",
+        8: "铜冠薯",
+        9: "银冠薯",
+        10: "金冠薯"
+      }
     }
   },
   "headline": {

@@ -16,9 +16,10 @@ import {
   ContentCategory,
   FollowerCount,
   FollowerCountScreenshotUrl,
+  FollowerCountVerificationStatus,
   QCCodeUpload,
   AccountId,
-  Name, QrCodeUrl, WeiboUrl
+  Name, QrCodeUrl, WeiboUrl, Level, MediaType
 } from "../common/Fields";
 import { BaseInfo } from "@/accountManage/components/BaseInfo";
 import { platformMap } from "@/accountManage/constants/platform";
@@ -43,11 +44,12 @@ export default class Main extends Component {
   submit = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, fieldsValue) => {
+      console.log('Received values of form: ', fieldsValue);
       if (err) {
         return;
       }
 
-      console.log('Received values of form: ', fieldsValue);
+
     });
   }
 
@@ -112,11 +114,30 @@ export default class Main extends Component {
           <div className='subclass-content'>
             <FollowerCount {...fieldProps} disabled={configurePlatform.configure.disabledFollowersCount} />
             <FollowerCountScreenshotUrl {...fieldProps} authToken={this.state.authToken}/>
+            <FollowerCountVerificationStatus {...fieldProps}/>
+            <Divider dashed />
+            <Level {...fieldProps} options={configurePlatform.configure.levelText}/>
+          </div>
+        </li>
+        <li className='subclass-item-wrap'>
+          <h4 className='subclass-head'>
+            <span className='text'>账号类属</span>
+            <small className='line' />
+          </h4>
+          <div className='subclass-content'>
+            <MediaType {...fieldProps}/>
+          </div>
+        </li>
+        <li className='subclass-item-wrap'>
+          <h4 className='subclass-head'>
+            <span className='text'>账号特权</span>
+            <small className='line' />
+          </h4>
+          <div className='subclass-content'>
+            ss
           </div>
         </li>
       </ul>
-      {/*<section className='custom-infos'>
-			</section>*/}
     </Form>
   }
 }

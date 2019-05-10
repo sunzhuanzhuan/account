@@ -195,8 +195,8 @@ export const AvatarUrl = (props) => {
           authToken={authToken}
           rule={{
             bizzCode: 'F_IMG_0001',
-            max: 5,
-            suffix: 'bmp,jpg,gif,jpeg'
+            max: 50,
+            suffix: 'bmp,jpg,png,tif,gif,pcx,tga,exif,fpx,svg,cdr,pcd,dxf,ufo,eps,raw,wmf,webp,flic,ico'
           }}
           showUploadList={{
             showPreviewIcon: true,
@@ -247,8 +247,8 @@ export const QrCodeUrl = (props) => {
             authToken={authToken}
             rule={{
               bizzCode: 'F_IMG_0001',
-              max: 5,
-              suffix: 'bmp,jpg,gif,jpeg'
+              max: 50,
+              suffix: 'bmp,jpg,png,tif,gif,pcx,tga,exif,fpx,svg,cdr,pcd,dxf,ufo,eps,raw,wmf,webp,flic,ico'
             }}
             showUploadList={{
               showPreviewIcon: true,
@@ -342,7 +342,7 @@ export const MicroFlashPost = (props) => {
   const style = isFamous === 1 ? { display: 'none' } : {};
   return <div className='field-wrap-item'>
     <FormItem style={style} {...layout.full} label='是否微闪投账号'>
-      {getFieldDecorator('extend.microFlashPost', {
+      {getFieldDecorator('base.microFlashPost', {
         initialValue: isFamous === 1 ? 2 : (microFlashPost || 2)
       })(
         <RadioGroup>
@@ -429,42 +429,176 @@ export const FollowerCountScreenshotUrl = (props) => {
     layout,
     data: { accountInfo },
     authToken,
+    disabled
   } = props;
   const {
-    disabled,
-    followerCountScreenshotUrl
+    followerCountScreenshotUrl: url
   } = accountInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='粉丝截图'>
-      <div className='clearfix'>
-        {getFieldDecorator('extend.followerCountScreenshotUrl', {
-          initialValue: followerCountScreenshotUrl ? [{
-            name: followerCountScreenshotUrl,
-            url: followerCountScreenshotUrl,
-            filepath:followerCountScreenshotUrl
-          }] : [],
-          valuePropName: 'fileList',
-          getValueFromEvent: e => e.fileList,
-          rules: [{ required: true, message: '请上传粉丝截图' }]
-        })(
-          <OssUpload
-            authToken={authToken}
-            rule={{
-              bizzCode: 'F_IMG_0001',
-              max: 5,
-              suffix: 'bmp,jpg,gif,jpeg'
-            }}
-            showUploadList={{
-              showPreviewIcon: true,
-              showRemoveIcon: !(disabled === 2)
-            }}
-            disabled={disabled === 2}
-            len={1}
-            listType='picture-card'
-          />
-        )}
-      </div>
+      {getFieldDecorator('base.followerCountScreenshotUrl', {
+        initialValue: url ? [{
+          name: url,
+          url: url,
+          filepath: url
+        }] : [],
+        valuePropName: 'fileList',
+        getValueFromEvent: e => e.fileList,
+        rules: [{ required: true, message: '请上传粉丝截图' }]
+      })(
+        <OssUpload
+          authToken={authToken}
+          rule={{
+            bizzCode: 'F_IMG_0001',
+            max: 50,
+            suffix: 'bmp,jpg,png,tif,gif,pcx,tga,exif,fpx,svg,cdr,pcd,dxf,ufo,eps,raw,wmf,webp,flic,ico'
+          }}
+          showUploadList={{
+            showPreviewIcon: true,
+            showRemoveIcon: !(disabled === 2)
+          }}
+          disabled={disabled === 2}
+          len={1}
+          listType='picture-card'
+        />
+      )}
     </FormItem>
+  </div>
+};
+
+/**
+ * followerCountVerificationStatus - 粉丝数认证
+ */
+export const FollowerCountVerificationStatus = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    data: { accountInfo },
+    disabled
+  } = props;
+  const {
+    followerCountVerificationStatus: status
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.full} label='粉丝数目认证'>
+      {getFieldDecorator('base.followerCountVerificationStatus', {
+        initialValue: status || 1,
+        rules: [{ required: false, message: '粉丝数目认证必填' }]
+      })(
+        <RadioGroup disabled={disabled}>
+          <Radio value={1}>是</Radio>
+          <Radio value={2}>否</Radio>
+          <Radio value={100}>拒绝认证</Radio>
+        </RadioGroup>
+      )}
+    </FormItem>
+  </div>
+};
+
+/**
+ * level - 平台等级
+ */
+export const Level = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    data: { accountInfo },
+    options
+  } = props;
+  const {
+    level,
+    levelFrom,
+    levelMaintainedTime
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.half} label='平台等级:'>
+      {getFieldDecorator('base.level', {
+        rules: [{ required: false }],
+        initialValue: level
+      })(
+        options ?
+          <Select style={{ width: "100%" }} placeholder='请选择'>
+            {
+              Object.entries(options).map(([key, text]) =>
+                <Option key={key} value={parseInt(key)}>{text}</Option>)
+            }
+          </Select> :
+          <InputNumber placeholder='请输入' style={{ width: "100%" }} min={0} max={300} disabled={levelFrom === 2} />
+      )}
+    </FormItem>
+    {getFieldDecorator('base.levelFrom', { initialValue: levelFrom })(
+      <input type="hidden" />)}
+    {getFieldDecorator('base.levelMaintainedTime', { initialValue: levelMaintainedTime })(
+      <input type="hidden" />)}
+  </div>
+};
+
+/**
+ * mediaType - 账号类属
+ */
+export const MediaType = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    data: { accountInfo }
+  } = props;
+  const {
+    mediaType
+  } = accountInfo;
+  return <div className='field-wrap-item base-media-type'>
+    <FormItem {...layout.full} label=' ' colon={false}>
+      {getFieldDecorator('base.mediaType', {
+        initialValue: mediaType || 1
+      })(
+        <RadioGroup style={{ width: '100%' }}>
+          <Radio value={2}>个人号-具有个人的属性特征<b className='gray-text'>（如papi酱，谷阿莫等）</b></Radio>
+          <br />
+          <Radio value={3}>企业号-社会上的企业或官方注册<b className='gray-text'>（如央视新闻，红十字会等）</b></Radio>
+          <br />
+          <Radio value={4}>内容号-不具有人的属性特征、仅以内容存在<b className='gray-text'>（如精选搞笑排行榜、娱闻少女等）</b></Radio>
+        </RadioGroup>
+      )}
+    </FormItem>
+  </div>
+};
+
+/**
+ * isVerified,verifiedStatus - 认证
+ */
+export const Verified = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    data: { accountInfo }
+  } = props;
+  const {
+    isVerified,
+    verifiedStatus
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.full} label='是否认证'>
+      {getFieldDecorator('base.isVerified', {
+        initialValue: isVerified || 1
+      })(
+        <RadioGroup>
+          <Radio value={1}>已认证</Radio>
+          <Radio value={2}>未认证</Radio>
+        </RadioGroup>
+      )}
+    </FormItem>
+    {getFieldDecorator('base.verifiedStatus', {
+      rules: [{ required: false }],
+      initialValue: verifiedStatus
+    })(
+      <RadioGroup>
+        <Radio value={1}>否</Radio>
+        <Radio value={2}>黄V</Radio>
+        <Radio value={3}>蓝V</Radio>
+        <Radio value={6}>金V</Radio>
+        <Radio value={4}>达人</Radio>
+        <Radio value={5}>其他</Radio>
+      </RadioGroup>
+    )}
   </div>
 };
 
