@@ -16,8 +16,12 @@
 
   }
 
+  .content-wrap .subclass-item-wrap:last-child {
+    margin-bottom: 0;
+  }
+
   .field-wrap-item.base-media-type {
-    .gray-text{
+    .gray-text {
       font-size: 12px;
       color: #999;
       font-weight: normal;
@@ -120,4 +124,77 @@
   .content-wrap {
     padding: 14px;
   }
+
+  .view-fields-container {
+    padding: 11px;
+
+    .right-wrap {
+      padding-left: 140px;
+    }
+  }
+
+  .main-base-info {
+    .left-wrap {
+      float: left;
+
+      & > div {
+        width: 100px;
+        height: 100px;
+        border-radius: 4px;
+        overflow: hidden;
+        margin-top: 8px;
+        background: #f1f1f1;
+
+        img {
+          display: block;
+          width: 100%
+        }
+      }
+    }
+  }
+
+  .mini-fields-header {
+    & > div {
+      float: right;
+
+      & > span {
+        color: #999;
+        cursor: pointer;
+        padding: 6px 0 6px 20px;
+
+        .anticon {
+          margin-right: 6px;
+        }
+      }
+    }
+  }
+
+  .mini-fields-content {
+    .left-wrap {
+      .main-base-info .left-wrap();
+
+      & > div {
+        margin: 0;
+      }
+    }
+
+    .right-wrap {
+      .mini-infos {
+        margin-bottom: 10px;
+        .gray-text {
+          color: #999;
+        }
+      }
+
+      margin-left: 120px;
+
+      .mini-sns-name {
+        font-size: 20px;
+        vertical-align: middle;
+        color: #333;
+        margin-right: 20px;
+      }
+    }
+  }
+
 }

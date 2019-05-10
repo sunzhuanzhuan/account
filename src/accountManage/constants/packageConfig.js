@@ -10,6 +10,8 @@ import {
 import intersection from 'lodash/intersection'
 import update from 'immutability-helper'
 import { platformView } from "@/accountManage/constants/platform";
+import { Radio } from "antd";
+import React from "react";
 
 export const modulesMap = {
   'owner': {
@@ -122,7 +124,7 @@ export const diffByTypes = {
       ]
     },
     configure: {
-      fetchDefaultKeys: '',
+      fetchDefaultKeys: 'url',
       fetchTypes: [
         {
           title: '抓取信息',
@@ -130,7 +132,7 @@ export const diffByTypes = {
           placeholder: '请输入主页链接'
         }
       ],
-      introductionPlaceholder: '搞笑视频达人，视频风格犀利独到，容易引起话题性传播；曾创作过“xxxx”系列节目，取得xxx万播放量。在XXX等多个视频平台均可发布若您不接受原创合作，可写：帐号支持发布客户的指定视频，支持多平台发布等'
+      introductionPlaceholder: '搞笑视频达人，视频风格犀利独到，容易引起话题性传播；曾创作过“xxxx”系列节目，取得xxx万播放量。在XXX等多个视频平台均可发布若您不接受原创合作，可写：帐号支持发布客户的指定视频，支持多平台发布等',
     }
   },
   "panda": {
@@ -160,7 +162,11 @@ export const diffByTypes = {
           placeholder: '请输入直播间URL'
         }
       ],
-      introductionPlaceholder: '美女主播，自带90后美女coser属性，微博月流量百万金v用户。善于表达，接地气打破传统女神形象，多才多艺满足粉丝的多重胃口，知识+正能量打破以往的美女花瓶界限；拥有微博，直播，QQ粉丝群，粉丝粘滞性互动性强； 参加过XXX等品牌的线下发布活动，直播平台专题直播策划活动等。可支持直播活动前在微博上进行预热。'
+      introductionPlaceholder: '美女主播，自带90后美女coser属性，微博月流量百万金v用户。善于表达，接地气打破传统女神形象，多才多艺满足粉丝的多重胃口，知识+正能量打破以往的美女花瓶界限；拥有微博，直播，QQ粉丝群，粉丝粘滞性互动性强； 参加过XXX等品牌的线下发布活动，直播平台专题直播策划活动等。可支持直播活动前在微博上进行预热。',
+      verifiedType: {
+        2: "达人认证",
+        3: "企业认证"
+      }
     }
   },
   "sina": {
@@ -196,7 +202,13 @@ export const diffByTypes = {
           placeholder: '请输入账号ID'
         }
       ],
-      introductionPlaceholder: '微博知名段子手/大V/星座达人，致力于网络新起事物、热点事件、热门电影等相关的创作，内容有自己的独特视角；出版作品《xxxx》等。若您不接受原创合作，可写：帐号支持转发，可支持下微任务防屏蔽，可购买粉丝头条等'
+      introductionPlaceholder: '微博知名段子手/大V/星座达人，致力于网络新起事物、热点事件、热门电影等相关的创作，内容有自己的独特视角；出版作品《xxxx》等。若您不接受原创合作，可写：帐号支持转发，可支持下微任务防屏蔽，可购买粉丝头条等',
+      verifiedType: {
+        2: "黄V",
+        3: "蓝V",
+        6: "金V",
+        4: "达人"
+      }
     }
   },
   "weChat": {
@@ -256,7 +268,7 @@ export const diffByTypes = {
       ]
     },
     configure: {
-      fetchDefaultKeys: '',
+      fetchDefaultKeys: 'url',
       fetchTypes: [
         {
           title: '抓取信息',
@@ -264,7 +276,7 @@ export const diffByTypes = {
           placeholder: '请输入主页链接'
         }
       ],
-      introductionPlaceholder: ''
+      introductionPlaceholder: '请输入账号简介'
     }
   },
   "normal": {
@@ -285,8 +297,7 @@ export const diffByTypes = {
       ]
     },
     configure: {
-      fetchDefaultKeys: '',
-      introductionPlaceholder: ''
+      introductionPlaceholder: '请输入账号简介'
     }
   },
   "redBook": {
@@ -316,7 +327,7 @@ export const diffByTypes = {
           placeholder: '请输入主页链接'
         }
       ],
-      introductionPlaceholder: '',
+      introductionPlaceholder: '请输入账号简介',
       levelText: {
         1: "尿布薯",
         2: "奶瓶薯",
@@ -358,7 +369,7 @@ export const diffByTypes = {
           placeholder: '请输入主页链接'
         }
       ],
-      introductionPlaceholder: ''
+      introductionPlaceholder: '请输入账号简介'
     }
   },
   "beautyPat": {
@@ -500,7 +511,7 @@ export const diffByTypes = {
       ]
     },
     configure: {
-      fetchDefaultKeys: '',
+      fetchDefaultKeys: 'url',
       fetchTypes: [
         {
           title: '抓取信息',

@@ -3,7 +3,6 @@ import { Form, Select, Input, Checkbox, Popover, Radio, InputNumber } from 'antd
 import { OssUpload } from 'wbyui';
 import SimpleTag from '../../base/SimpleTag';
 import moment from 'moment';
-import WBYUploadFile from "@/accountManage/base/NewUpload";
 import InputCount from "@/accountManage/base/InputCount";
 
 const Option = Select.Option;
@@ -23,7 +22,7 @@ const checkForSensitiveWord = action => (rule, value, callback) => {
   });
 };
 
-// 基础信息
+// base - 账号基本信息
 /**
  * snsUniqueId - 唯一标识
  */
@@ -169,7 +168,7 @@ export const Url = (props) => {
 };
 
 /**
- * AvatarUrl - 头像
+ * avatarUrl - 头像
  */
 export const AvatarUrl = (props) => {
   const {
@@ -198,6 +197,7 @@ export const AvatarUrl = (props) => {
             max: 50,
             suffix: 'bmp,jpg,png,tif,gif,pcx,tga,exif,fpx,svg,cdr,pcd,dxf,ufo,eps,raw,wmf,webp,flic,ico'
           }}
+          tipContent='请上传50M以内的图片'
           showUploadList={{
             showPreviewIcon: true,
             showRemoveIcon: !(avatarUrlFrom === 2)
@@ -250,6 +250,7 @@ export const QrCodeUrl = (props) => {
               max: 50,
               suffix: 'bmp,jpg,png,tif,gif,pcx,tga,exif,fpx,svg,cdr,pcd,dxf,ufo,eps,raw,wmf,webp,flic,ico'
             }}
+            tipContent='请上传50M以内的图片'
             showUploadList={{
               showPreviewIcon: true,
               showRemoveIcon: !(qrCodeUrlFrom === 2)
@@ -293,7 +294,7 @@ export const Introduction = (props) => {
           message: '账号简介不能超过1000字'
         }, { validator: checkForSensitiveWord(sensitiveWordsFilter) }]
       })(
-        <TextArea placeholder={placeholder} autosize={{ minRows: 2, maxRows: 4 }} />
+        <TextArea placeholder={placeholder || '请输入账号简介'} autosize={{ minRows: 2, maxRows: 4 }} />
       )}
     </FormItem>
   </div>
@@ -453,6 +454,7 @@ export const FollowerCountScreenshotUrl = (props) => {
             max: 50,
             suffix: 'bmp,jpg,png,tif,gif,pcx,tga,exif,fpx,svg,cdr,pcd,dxf,ufo,eps,raw,wmf,webp,flic,ico'
           }}
+          tipContent='请上传50M以内的图片'
           showUploadList={{
             showPreviewIcon: true,
             showRemoveIcon: !(disabled === 2)
@@ -567,40 +569,145 @@ export const MediaType = (props) => {
  */
 export const Verified = (props) => {
   const {
-    form: { getFieldDecorator },
+    form: { getFieldDecorator, getFieldValue },
+    actions: { sensitiveWordsFilter },
     layout,
     data: { accountInfo }
   } = props;
   const {
     isVerified,
-    verifiedStatus
+    isVerifiedFrom,
+    isVerifiedMaintainedTime,
+    verifiedStatus,
+    verifiedStatusFrom,
+    verifiedStatusMaintainedTime,
+    verificationInfo,
+    verificationInfoFrom,
+    verificationInfoMaintainedTime
   } = accountInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='是否认证'>
       {getFieldDecorator('base.isVerified', {
-        initialValue: isVerified || 1
+        initialValue: isVerified
       })(
-        <RadioGroup>
+        <RadioGroup disabled={isVerifiedFrom === 2}>
           <Radio value={1}>已认证</Radio>
           <Radio value={2}>未认证</Radio>
         </RadioGroup>
       )}
     </FormItem>
-    {getFieldDecorator('base.verifiedStatus', {
-      rules: [{ required: false }],
-      initialValue: verifiedStatus
-    })(
-      <RadioGroup>
-        <Radio value={1}>否</Radio>
-        <Radio value={2}>黄V</Radio>
-        <Radio value={3}>蓝V</Radio>
-        <Radio value={6}>金V</Radio>
-        <Radio value={4}>达人</Radio>
-        <Radio value={5}>其他</Radio>
-      </RadioGroup>
-    )}
+    {getFieldValue('base.isVerified') === 1 && <div>
+      <FormItem {...layout.full} label='认证类型'>
+        {getFieldDecorator('base.verifiedStatus', {
+          rules: [{ required: false }],
+          initialValue: verifiedStatus || 2
+        })(
+          <RadioGroup  disabled={verifiedStatusFrom === 2}>
+            <Radio value={2}>黄V</Radio>
+            <Radio value={3}>蓝V</Radio>
+            <Radio value={6}>金V</Radio>
+            <Radio value={4}>达人</Radio>
+          </RadioGroup>
+        )}
+      </FormItem>
+      <FormItem {...layout.half} label='认证说明'>
+        {getFieldDecorator('base.verificationInfo', {
+          first: true,
+          rules: [
+            { required: true, message: '请填写认证说明' },
+            { pattern: /.{2,40}/, message: '请输入2~40字的认证原因' },
+            { validator: checkForSensitiveWord(sensitiveWordsFilter) }
+            ],
+          initialValue: verificationInfo
+        })(
+          <TextArea
+            disabled={verificationInfoFrom === 2}
+            autosize={{ minRows: 2, maxRows: 2 }}
+            placeholder='请填写账号所属平台的认证说明，比如：知名情感博主、原创漫画家'
+          />
+        )}
+      </FormItem>
+    </div>}
+    {getFieldDecorator('base.isVerifiedFrom', { initialValue: isVerifiedFrom })(
+      <input type="hidden" />)}
+    {getFieldDecorator('base.isVerifiedMaintainedTime', { initialValue: isVerifiedMaintainedTime })(
+      <input type="hidden" />)}
+    {getFieldDecorator('base.verifiedStatusFrom', { initialValue: verifiedStatusFrom })(
+      <input type="hidden" />)}
+    {getFieldDecorator('base.verifiedStatusMaintainedTime', { initialValue: verifiedStatusMaintainedTime })(
+      <input type="hidden" />)}
+    {getFieldDecorator('base.verificationInfoFrom', { initialValue: verificationInfoFrom })(
+      <input type="hidden" />)}
+    {getFieldDecorator('base.verificationInfoMaintainedTime', { initialValue: verificationInfoMaintainedTime })(
+      <input type="hidden" />)}
   </div>
 };
+
+/**
+ * isOpenStore - 橱窗/店铺
+ */
+export const OpenStore = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    data: { accountInfo }
+  } = props;
+  const {
+    isOpenStore,
+    isOpenStoreFrom,
+    isOpenStoreMaintainedTime,
+  } = accountInfo;
+  return <div className='field-wrap-item base-media-type'>
+    <FormItem {...layout.full} label='橱窗/店铺'>
+      {getFieldDecorator('base.mediaType', {
+        initialValue: isOpenStore
+      })(
+        <RadioGroup style={{ width: '100%' }}>
+          <Radio value={1}>已开通</Radio>
+          <Radio value={2}>未开通</Radio>
+        </RadioGroup>
+      )}
+    </FormItem>
+    {getFieldDecorator('base.isOpenStoreFrom', { initialValue: isOpenStoreFrom })(
+      <input type="hidden" />)}
+    {getFieldDecorator('base.isOpenStoreMaintainedTime', { initialValue: isOpenStoreMaintainedTime })(
+      <input type="hidden" />)}
+  </div>
+};
+
+/**
+ * isOpenLiveProgram - 直播
+ */
+export const OpenLiveProgram = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    data: { accountInfo }
+  } = props;
+  const {
+    isOpenLiveProgram,
+    isOpenLiveProgramFrom,
+    isOpenLiveProgramMaintainedTime,
+  } = accountInfo;
+  return <div className='field-wrap-item base-media-type'>
+    <FormItem {...layout.full} label='直播'>
+      {getFieldDecorator('base.isOpenLiveProgram', {
+        initialValue: isOpenLiveProgram
+      })(
+        <RadioGroup style={{ width: '100%' }}>
+          <Radio value={1}>已开通</Radio>
+          <Radio value={2}>未开通</Radio>
+        </RadioGroup>
+      )}
+    </FormItem>
+    {getFieldDecorator('base.isOpenLiveProgramFrom', { initialValue: isOpenLiveProgramFrom })(
+      <input type="hidden" />)}
+    {getFieldDecorator('base.isOpenLiveProgramMaintainedTime', { initialValue: isOpenLiveProgramMaintainedTime })(
+      <input type="hidden" />)}
+  </div>
+};
+
+// cooperation - 合作相关
 
 
 /**
