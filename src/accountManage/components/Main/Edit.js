@@ -2,7 +2,7 @@
  * 账号基本信息 - 编辑态
  */
 import React, { Component } from "react"
-import { Button, Divider, Form } from 'antd'
+import { Button, Divider, Form, Modal } from 'antd'
 import { WBYPlatformIcon } from 'wbyui'
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
 import {
@@ -19,6 +19,8 @@ import {
   AccountId,
   Name, QrCodeUrl, WeiboUrl, Level, MediaType, Verified, OpenStore, OpenLiveProgram
 } from "../common/Fields";
+import { Fetch } from "@/accountManage/components/packageComponents";
+import { modulesMap } from "@/accountManage/constants/packageConfig";
 
 const FormItem = Form.Item;
 
@@ -28,9 +30,10 @@ export default class MainEdit extends Component {
     super(props)
     this.state = {
       authToken: '',
+      fetchModal: false,
       asyncVisibility: {
         isOpenLiveProgram: true,
-        isOpenStore: true,
+        isOpenStore: true
       }
     }
     props.actions.getNewToken().then(({ data: authToken }) => {
@@ -46,11 +49,8 @@ export default class MainEdit extends Component {
       if (err) {
         return;
       }
-
-
     });
   }
-
 
   render() {
     const {
@@ -82,6 +82,11 @@ export default class MainEdit extends Component {
     </div>;
     const right = <div className='wrap-panel-right-content'>
       <span className='gray-text'>最近更新于: {baseModifiedAt || '--'}</span>
+      {
+        process.env.REACT_APP_CLIENT === 'NC' &&
+        <Button style={{ marginRight: '10px' }} type='primary' ghost
+          onClick={() => this.setState({ fetchModal: true })}>抓取</Button>
+      }
       <Button htmlType='submit' type='primary'>保存</Button>
     </div>;
 
@@ -144,6 +149,14 @@ export default class MainEdit extends Component {
           </div>
         </li>
       </ul>
+      {
+        process.env.REACT_APP_CLIENT === 'NC' &&
+        <Modal visible={this.state.fetchModal} width={800} footer={null} onCancel={() => this.setState({ fetchModal: false })}>
+          <div className='modal-fetch-wrapper'>
+            <Fetch {...this.props} module={modulesMap['fetch']} />
+          </div>
+        </Modal>
+      }
     </Form>
   }
 }

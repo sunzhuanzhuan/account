@@ -1,6 +1,32 @@
 @import "../../../indexNbTheme.less";
 
+.improve-statistics-wrapper {
+  min-width: 200px;
+  padding: 0 12px 10px 10px;
+  border-bottom: 1px solid #e8e8e8;
+  margin-bottom: 10px;
+  .header-title{
+    font-size: 12px;
+    font-weight: normal;
+    color: #999;
+  }
+  .tips-text {
+    font-size: 12px;
+    padding: 6px 0;
+    color: #666;
+  }
+}
+
 .module-item-wrap {
+}
+
+.modal-fetch-wrapper {
+  padding-bottom: 10px;
+
+  .module-item-container {
+    overflow: initial;
+    margin-bottom: auto;
+  }
 }
 
 .module-item-container {
@@ -122,7 +148,7 @@
   }
 
   .content-wrap {
-    padding: 14px;
+    padding: 14px 14px 0;
   }
 
   .view-fields-container {
@@ -153,7 +179,7 @@
     }
   }
 
-  .mini-fields-header {
+  .mini-fields-header, .mini-fields-footer {
     & > div {
       float: right;
 
@@ -169,6 +195,12 @@
     }
   }
 
+  .mini-fields-footer {
+    .anticon {
+      margin-left: 6px;
+    }
+  }
+
   .mini-fields-content {
     .left-wrap {
       .main-base-info .left-wrap();
@@ -181,6 +213,7 @@
     .right-wrap {
       .mini-infos {
         margin-bottom: 10px;
+
         .gray-text {
           color: #999;
         }

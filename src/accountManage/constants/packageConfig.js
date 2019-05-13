@@ -10,8 +10,6 @@ import {
 import intersection from 'lodash/intersection'
 import update from 'immutability-helper'
 import { platformView } from "@/accountManage/constants/platform";
-import { Radio } from "antd";
-import React from "react";
 
 export const modulesMap = {
   'owner': {

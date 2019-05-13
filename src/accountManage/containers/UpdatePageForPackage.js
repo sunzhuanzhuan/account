@@ -8,6 +8,7 @@ import * as packageAction from '../actions/package'
 import { parseUrlQuery } from "@/util/parseUrl";
 import { tabs, modules, platformToModules } from '../constants/packageConfig'
 import Module from "@/accountManage/components/common/Module";
+import ImproveStatistics from "@/accountManage/components/common/ImproveStatistics";
 
 const { TabPane } = Tabs;
 const { Link } = Anchor;
@@ -87,6 +88,7 @@ class UpdatePageForPackage extends Component {
               showInkInFixed={true}
               getContainer={() => document.querySelector('#app-content-children-id')}
             >
+              <ImproveStatistics/>
               {
                 modulesList.map(({ anchorId: key, title }) =>
                   <Link key={key} href={"#navLink-" + key} title={

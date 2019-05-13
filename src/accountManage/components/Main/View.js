@@ -97,7 +97,7 @@ export default class MainView extends Component {
                 <FieldView title="微博链接" value={weiboUrl} />}
                 {configurePlatform.visibility.fields.qcCode && <FieldView title="二维码" value={
                   <Popover placement="bottomLeft" arrowPointAtCenter trigger="hover" content={
-                    <img src={qrCodeUrl} width={120} height={120} />
+                    <img alt='二维码' src={qrCodeUrl} width={120} height={120} />
                   }>
                     <Icon style={{ fontSize: '16px' }} type="qrcode" />
                   </Popover>}
@@ -118,7 +118,7 @@ export default class MainView extends Component {
                 <FieldView title="粉丝数" value={followerCount} />
                 <FieldView title="粉丝数截图" value={
                   followerCountScreenshotUrl ?
-                    <img src={followerCountScreenshotUrl} width={100} height={100} /> : '暂无截图'
+                    <img alt='粉丝数截图' src={followerCountScreenshotUrl} width={100} height={100} /> : '暂无截图'
                 } />
                 <FieldView title="平台等级" value={level === 0 ? '' : level} />
               </div>
@@ -190,6 +190,13 @@ export default class MainView extends Component {
           </div>
         </li>
       </ul>
+      <footer className='mini-fields-footer clearfix'>
+        <div>
+          <span onClick={() => onModuleStatusChange('mini')}>
+            收起更多 <Icon type="double-left" rotate={90}/>
+          </span>
+        </div>
+      </footer>
     </div>
   }
 }

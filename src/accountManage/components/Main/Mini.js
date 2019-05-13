@@ -47,7 +47,7 @@ export default class MainMini extends Component {
       followerCountScreenshotUrl,
       level,
       mediaType,
-      classificationList = [{ name: '美食' }],
+      classificationList = [],
       isVerified,
       verifiedStatus,
       verificationInfo,
@@ -80,7 +80,7 @@ export default class MainMini extends Component {
           </span>
         </div>
       </header>
-      <div className='content-wrap mini-fields-content'>
+      <main className='content-wrap mini-fields-content'>
         <div className='left-wrap'>
           <div>
             <img src={avatarUrl} alt="头像" />
@@ -88,7 +88,7 @@ export default class MainMini extends Component {
         </div>
         <div className='right-wrap'>
           <div className='mini-infos'>
-            <span className='mini-sns-name'>{snsName || "姨太少女心"}</span>
+            <span className='mini-sns-name'>{snsName || "--"}</span>
             {
               classificationList.map(({ name }) =>
                 <SimpleTag key={name}>{name}</SimpleTag>)
@@ -118,7 +118,14 @@ export default class MainMini extends Component {
             未上架: 原因
           </div>
         </div>
-      </div>
+      </main>
+      <footer className='mini-fields-footer clearfix'>
+        <div>
+          <span onClick={() => onModuleStatusChange('view')}>
+            展开更多 <Icon type="double-right" rotate={90}/>
+          </span>
+        </div>
+      </footer>
     </div>
   }
 }
