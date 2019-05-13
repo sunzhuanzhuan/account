@@ -1,7 +1,10 @@
+/**
+ * 账号基本信息
+ */
 import React, { Component } from "react"
-import MainEdit from "../../components/Main/Edit";
-import MainView from "../../components/Main/View";
-import MainMini from "../../components/Main/Mini";
+import MainEdit from "./Edit";
+import MainView from "./View";
+import MainMini from "./Mini";
 
 const statusComponent = (status) => {
   const _map = {

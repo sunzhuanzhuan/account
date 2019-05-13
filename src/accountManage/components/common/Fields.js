@@ -708,6 +708,36 @@ export const OpenLiveProgram = (props) => {
 };
 
 // cooperation - 合作相关
+/**
+ * isDirectAd, isAcceptProductUse - 拒绝项
+ */
+export const DirectItems = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    data: { accountInfo }
+  } = props;
+  const {
+    isDirectAd = 1,
+    isAcceptProductUse = 2,
+  } = accountInfo;
+  return <div className='field-wrap-item base-media-type'>
+    <FormItem {...layout.full} label='拒绝项'>
+      {getFieldDecorator('cooperation.isDirectAd', {
+        initialValue: isDirectAd === 2,
+        valuePropName: 'checked',
+        getValueFromEvent: e => {
+          console.log(e,  '======');
+          return e.target.checked ? 2 : 1
+        }
+      })(
+        <Checkbox>不接受硬广</Checkbox>
+      )}
+
+    </FormItem>
+  </div>
+};
+
 
 
 /**

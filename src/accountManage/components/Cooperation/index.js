@@ -2,19 +2,33 @@
  * 合作信息
  */
 import React, { Component } from "react"
-import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
+import CooperationEdit from "./Edit";
+import CooperationView from "./View";
+
+const statusComponent = (status) => {
+  const _map = {
+    'edit': CooperationEdit,
+    'view': CooperationView,
+  }
+  return _map[status] || <div>基础信息错误</div>
+}
 
 export default class Cooperation extends Component {
-  render() {
-    const {  module: configureModule, platform: configurePlatform } = this.props
+  constructor(props) {
+    super(props);
+    this.state = {
+      moduleStatus: props.moduleStatus || 'edit'
+    }
+  }
 
-    return <div className='module-item-container'>
-      <ModuleHeader title={configureModule.title} />
-      <section className='content-wrap'>
-        合作信息
-      </section>
-      {/*<section className='custom-infos'>
-			</section>*/}
-    </div>
+  handleChange = (moduleStatus) => {
+    this.setState({
+      moduleStatus
+    })
+  }
+
+  render() {
+    const Component = statusComponent(this.state.moduleStatus)
+    return <Component {...this.props} onModuleStatusChange={this.handleChange} />
   }
 }
