@@ -38,14 +38,14 @@ class App extends Component {
     try {
       await this.props.actions.getAuthorizations();
     }catch (e) {
-      message('权限接口错误!')
+      message.error('权限接口错误!')
     }
     NProgress.inc()
 		let Info;
 		try {
       Info = await this.props.actions.getUserLoginInfo();
     }catch (e) {
-      message('获取用户信息错误!')
+      message.error('获取用户信息错误!')
     }
 		let userInfoId = Info.data.user_info.user_id
 		//神策的代码不应该阻塞，去掉await, 使用then的成功回调。
@@ -71,6 +71,7 @@ class App extends Component {
 	}
 	render() {
 		const height = this.state.heightLayout
+		const isLoaded = this.state.isLoaded
 		let layStyle = {
 			height: height,
 			minWidth: 1200
@@ -98,7 +99,7 @@ class App extends Component {
 
 		const { loginReducer: { userLoginInfo, UserConfigKey }, siderMenuAuth = [] } = this.props;
     const { babysitter_host = {} } = UserConfigKey;
-		return userLoginInfo['X-Access-Token'] ? <Layout style={layStyle}>
+		return isLoaded && userLoginInfo['X-Access-Token'] ? <Layout style={layStyle}>
 			<Header style={headerStyle}>
 				<span>NB</span>
 				<div className="user-name">
