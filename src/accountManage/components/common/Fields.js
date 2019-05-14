@@ -4,6 +4,8 @@ import { OssUpload } from 'wbyui';
 import SimpleTag from '../../base/SimpleTag';
 import moment from 'moment';
 import InputCount from "@/accountManage/base/InputCount";
+import CheckedWrap from "./CheckedWrap";
+import WordList from "@/accountManage/components/common/WordList";
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -657,7 +659,7 @@ export const OpenStore = (props) => {
     isOpenStoreFrom,
     isOpenStoreMaintainedTime,
   } = accountInfo;
-  return <div className='field-wrap-item base-media-type'>
+  return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='橱窗/店铺'>
       {getFieldDecorator('base.mediaType', {
         initialValue: isOpenStore
@@ -689,7 +691,7 @@ export const OpenLiveProgram = (props) => {
     isOpenLiveProgramFrom,
     isOpenLiveProgramMaintainedTime,
   } = accountInfo;
-  return <div className='field-wrap-item base-media-type'>
+  return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='直播'>
       {getFieldDecorator('base.isOpenLiveProgram', {
         initialValue: isOpenLiveProgram
@@ -709,7 +711,7 @@ export const OpenLiveProgram = (props) => {
 
 // cooperation - 合作相关
 /**
- * isDirectAd, isAcceptProductUse - 拒绝项
+ * isAcceptHardAd, isAcceptProductUse - 拒绝项
  */
 export const DirectItems = (props) => {
   const {
@@ -718,22 +720,52 @@ export const DirectItems = (props) => {
     data: { accountInfo }
   } = props;
   const {
-    isDirectAd = 1,
-    isAcceptProductUse = 2,
+    isAcceptHardAd,
+    isAcceptProductUse,
   } = accountInfo;
-  return <div className='field-wrap-item base-media-type'>
+  return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='拒绝项'>
-      {getFieldDecorator('cooperation.isDirectAd', {
-        initialValue: isDirectAd === 2,
+      {getFieldDecorator('cooperation.isAcceptHardAd', {
+        initialValue: isAcceptHardAd,
         valuePropName: 'checked',
         getValueFromEvent: e => {
-          console.log(e,  '======');
           return e.target.checked ? 2 : 1
         }
       })(
-        <Checkbox>不接受硬广</Checkbox>
+        <CheckedWrap>不接受硬广</CheckedWrap>
       )}
+      {getFieldDecorator('cooperation.isAcceptProductUse', {
+        initialValue: isAcceptProductUse,
+        valuePropName: 'checked',
+        getValueFromEvent: e => {
+          return e.target.checked ? 2 : 1
+        }
+      })(
+        <CheckedWrap>不接受产品试用</CheckedWrap>
+      )}
+    </FormItem>
+  </div>
+};
 
+/**
+ * refuseBrands - 不接受的品牌
+ */
+export const RefuseBrands = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    data: { accountInfo }
+  } = props;
+  const {
+    refuseBrands,
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.full} label='不接受的品牌'>
+      {getFieldDecorator('cooperation.refuseBrands', {
+        initialValue: refuseBrands || ['品牌一', '品牌二']
+      })(
+        <WordList placeholder='请输入2~20字的品牌名称' />
+      )}
     </FormItem>
   </div>
 };

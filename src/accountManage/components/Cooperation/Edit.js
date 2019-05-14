@@ -3,7 +3,7 @@
  */
 import React, { Component } from "react"
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
-import { DirectItems } from "@/accountManage/components/common/Fields";
+import { DirectItems, RefuseBrands } from "@/accountManage/components/common/Fields";
 import { Button, Form } from "antd";
 
 @Form.create()
@@ -46,6 +46,7 @@ export default class CooperationEdit extends Component {
           </h4>
           <div className='subclass-content'>
             <DirectItems {...fieldProps}/>
+            <RefuseBrands {...fieldProps}/>
           </div>
         </li>
       </ul>
