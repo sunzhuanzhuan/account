@@ -1,4 +1,5 @@
 @import "../../indexNbTheme";
+
 .simple-tag {
   vertical-align: baseline;
   font-variant: tabular-nums;
@@ -18,8 +19,20 @@
   background: fadeout(@primary-color, 90%);
   //border: 1px solid fadeout(@primary-color, 40%);
   border-radius: 2px;
+
+  .anticon {
+    display: none
+  }
+
+  &:hover {
+    .anticon {
+      display: inline-block;
+      margin-right: -5px;
+    }
+  }
 }
-.has-error .right-fix-btn{
-  border-left-color: red!important;
+
+.has-error .right-fix-btn {
+  border-left-color: red !important;
 }
 

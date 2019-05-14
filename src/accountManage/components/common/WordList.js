@@ -47,11 +47,13 @@ export default class WordList extends Component {
   }
 
   validate = (value) => {
+    const { validator, message = '输入错误' } = this.props
     value = value || this.state.word
-    if (value.length < 2 || value.length > 20) {
+    let result = validator ? validator(value) : true
+    if (!result) {
       this.setState({
         validateStatus: 'error',
-        help: '请输入2~20字的品牌名称'
+        help: message
       })
       return false
     }
@@ -71,16 +73,16 @@ export default class WordList extends Component {
   }
 
   render() {
-    const { value = [] } = this.props
+    const { value = [], placeholder, label = '添加项' } = this.props
     const { validateStatus, help, word, visible } = this.state
     const content = <div style={{ marginLeft: '-21px', minWidth: "220px" }}>
       <Form.Item
         validateStatus={validateStatus}
         help={help}
-        label='添加品牌'
+        label={label}
         colon={false}
       >
-        <Input placeholder='请输入2~20字的品牌名称' value={word} onChange={this.wordChange} />
+        <Input placeholder={placeholder} value={word} onChange={this.wordChange} />
       </Form.Item>
     </div>
     return <div>
@@ -117,7 +119,7 @@ export default class WordList extends Component {
           }
         }}
       >
-        <a className='no-select-text' onClick={() => this.setState({ visible: true })}>+ 添加品牌</a>
+        <a className='no-select-text' onClick={() => this.setState({ visible: true })}>+ {label}</a>
       </Popconfirm>}
     </div>
   }

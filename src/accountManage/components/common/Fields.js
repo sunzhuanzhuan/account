@@ -6,6 +6,7 @@ import moment from 'moment';
 import InputCount from "@/accountManage/base/InputCount";
 import CheckedWrap from "./CheckedWrap";
 import WordList from "@/accountManage/components/common/WordList";
+import debounce from 'lodash/debounce'
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -614,7 +615,7 @@ export const Verified = (props) => {
       </FormItem>
       <FormItem {...layout.half} label='认证说明'>
         {getFieldDecorator('base.verificationInfo', {
-          first: true,
+          validateFirst: true,
           rules: [
             { required: true, message: '请填写认证说明' },
             { pattern: /.{2,40}/, message: '请输入2~40字的认证原因' },
@@ -764,7 +765,13 @@ export const RefuseBrands = (props) => {
       {getFieldDecorator('cooperation.refuseBrands', {
         initialValue: refuseBrands || ['品牌一', '品牌二']
       })(
-        <WordList placeholder='请输入2~20字的品牌名称' />
+        <WordList
+          placeholder='请输入2~20字的品牌名称'
+          message='请输入2~20字的品牌名称'
+          label='添加品牌'
+          validator={value => {
+          return !(value.length < 2 || value.length > 20)
+        }}/>
       )}
     </FormItem>
   </div>
