@@ -1,9 +1,14 @@
 import React from 'react';
 import WBYUploadFile from '@/accountManage/base/NewUpload';
-import { Form, Select, Input, Checkbox, Popover, Radio } from 'antd';
+import { Form, Select, Input, Checkbox, Popover, Radio, Modal } from 'antd';
 import SimpleTag from '../base/SimpleTag';
 import moment from 'moment';
 import { platformToDesc } from '../constants/placeholder';
+import {
+  FeedbackCreate,
+  FeedbackDetail,
+  FeedbackMini
+} from "@/accountManage/components/CategoryFeedbackModal";
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -130,16 +135,53 @@ export const AccountDesc = (props) => {
 /**
  * 内容分类
  */
-export const ContentCategory = (props) => {
-  const { formItemLayout = {}, data: { accountInfo } } = props;
-  let {
-    classificationList: category = []
-  } = accountInfo;
-  return <FormItem {...formItemLayout} label='内容分类'>
-    {category.length ? <div>{category.map(({ name }) =>
-      <SimpleTag key={name}>{name}</SimpleTag>)}</div> : '暂无分类'}
-  </FormItem>;
-};
+export class ContentCategory extends React.Component {
+  state = {
+    feedback: 'detail'
+  }
+
+  componentDidMount() {
+
+  }
+
+  setModal = type => {
+    this.setState({ feedback: type })
+  }
+
+  render() {
+    const { formItemLayout = {}, data: { accountInfo } } = this.props;
+    let {
+      classificationList: category = []
+    } = accountInfo;
+    return <FormItem {...formItemLayout} label='内容分类'>
+      {
+        category.length ? <div>
+          {
+            category.map(({ name }) => <SimpleTag key={name}>{name}</SimpleTag>)
+          }
+        </div> : '暂无分类'
+      }
+      <a
+        className='category-feedback-btn'
+        onClick={() => this.setModal('create')}
+      >
+        分类错误?
+      </a>
+      <a
+        className='category-feedback-btn'
+        onClick={() => this.setModal('detail')}
+      >
+        查看反馈进度
+      </a>
+      {this.state.feedback === 'create' &&
+      <FeedbackCreate setModal={this.setModal} />}
+      {this.state.feedback === 'detail' &&
+      <FeedbackDetail setModal={this.setModal} />}
+      {this.state.feedback === 'mini' &&
+      <FeedbackMini setModal={this.setModal} />}
+    </FormItem>;
+  }
+}
 
 /**
  * 微博报价特有项(参考报价)
