@@ -25,5 +25,11 @@ export default {
 		accountStrategy: '/operator-gateway/account/v1/updateStrategy',
 		accountOther: '/operator-gateway/account/v1/updateOtherInfo',
 		accountAudiencePortrait: '/operator-gateway/account/v1/updateAudiencePortrait',
+	},
+  classify: {
+    isExistClassify: '/operator-gateway/classifyaudit/v1/isExistClassify',
+    getAuditDialogInfo: '/operator-gateway/classifyaudit/v1/selectAuditDialogInfo',
+    addClassifyAuditInfo: '/operator-gateway/classifyaudit/v1/addClassifyAuditInfo',
+    getAllClassifyInfos : '/operator-gateway/common/v1/getAllClassifyInfos',
 	}
 }

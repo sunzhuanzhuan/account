@@ -1,23 +1,43 @@
 import React, { Component } from "react"
-import { Button, Form, Input, Radio, Select } from 'antd'
+import { Button, Form, Input, Radio, Select, Spin } from 'antd'
 import { Modal, message } from "antd";
 import SimpleTag from "@/accountManage/base/SimpleTag";
 
 @Form.create()
 export class FeedbackCreate extends Component {
+  state = { data: [] }
+
   submit = () => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
-        message.info('我们将在5个工作日内给您反馈，请您耐心等待', 1.5)
-        this.props.setModal()
+        this.props.actions.addClassifyAuditInfo(values).then(() => {
+          message.success('我们将在5个工作日内给您反馈，请您耐心等待', 1.5, () => {
+            this.props.setModal()
+          })
+        })
       }
     });
   };
 
+  componentDidMount() {
+    const { actions } = this.props
+    actions.getAllClassifyInfos().then(({ data }) => {
+      this.setState({
+        data
+      })
+    })
+  }
+
   render() {
-    const { form, hasReason } = this.props
+    const { form, hasReason, accountInfo } = this.props
     const { getFieldDecorator } = form
+    const {
+      accountId,
+      snsName,
+      platformId,
+      url,
+      classificationList
+    } = accountInfo
     return <Modal
       visible
       title='分类错误反馈'
@@ -27,36 +47,43 @@ export class FeedbackCreate extends Component {
       }}
       maskClosable={false}
     >
-      <Form style={{ position: 'relative' }} colon={false}>
-        <Form.Item label='请选择你期望的分类'>
+      <Form style={{ position: 'relative' }}>
+        <Form.Item label='请选择你期望的分类' colon={false}>
           {
-            getFieldDecorator('create', {
+            getFieldDecorator('newClassifyKey', {
               rules: [
                 { required: true, message: '请选择分类' }
               ]
             })(
-              <Select placeholder='请选择分类' />
+              <Select placeholder='请选择分类'>
+                {
+                  (this.state.data || []).map(o =>
+                    <Select.Option key={o.classifyKey} value={o.classifyKey}>{o.classifyName}</Select.Option>)
+                }
+              </Select>
             )
           }
         </Form.Item>
-        {hasReason && <Form.Item label='请选择错误原因'>
+        {hasReason ? <Form.Item label='请选择错误原因' colon={false}>
+            {
+              getFieldDecorator('wrongReasonType', {
+                rules: [
+                  { required: true, message: '请选择错误原因' }
+                ]
+              })(
+                <Radio.Group>
+                  <Radio value={1}>与现有业务/受众不一致</Radio>
+                  <br />
+                  <Radio value={2}>业务/受众变更</Radio>
+                </Radio.Group>
+              )
+            }
+          </Form.Item> :
+          getFieldDecorator('wrongReasonType', { initialValue: 0 })(<input type="hidden" />)
+        }
+        <Form.Item label='请填写您的原因' colon={false}>
           {
-            getFieldDecorator('create2', {
-              rules: [
-                { required: true, message: '请选择错误原因' }
-              ]
-            })(
-              <Radio.Group>
-                <Radio value={1}>与现有业务/受众不一致</Radio>
-                <br />
-                <Radio value={2}>业务/受众变更</Radio>
-              </Radio.Group>
-            )
-          }
-        </Form.Item>}
-        <Form.Item label='请填写您的原因'>
-          {
-            getFieldDecorator('create3', {
+            getFieldDecorator('description', {
               rules: [
                 { max: 100, message: '最多可输入100个字哦~' }
               ]
@@ -74,6 +101,12 @@ export class FeedbackCreate extends Component {
         >
           未找到分类名称?
         </a>
+        {getFieldDecorator('accountId', { initialValue: accountId })(<input type="hidden" />)}
+        {getFieldDecorator('snsName', { initialValue: snsName })(<input type="hidden" />)}
+        {getFieldDecorator('platformId', { initialValue: platformId })(<input type="hidden" />)}
+        {getFieldDecorator('url', { initialValue: url })(<input type="hidden" />)}
+        {getFieldDecorator('originClassifyKey', { initialValue: classificationList[0].id })(
+          <input type="hidden" />)}
       </Form>
     </Modal>
   }
@@ -123,7 +156,7 @@ export class FeedbackMini extends Component {
   }
 }
 
-const status = {
+const auditTypeMap = {
   '1': {
     code: 1,
     text: '待处理',
@@ -142,77 +175,110 @@ const status = {
 }
 
 export class FeedbackDetail extends Component {
+  state = {
+    loading: true
+  }
+
   showContact = () => {
     Modal.info({
       title: '直接添加客服QQ号',
       content: '3460666273'
     })
   }
+
+  componentDidMount() {
+    const { actions, classifyAuditInfoId } = this.props
+    actions.getAuditDialogInfo({ classifyAuditInfoId }).then(({ data }) => {
+      this.setState({
+        ...data,
+        loading: false
+      })
+    })
+  }
+
   render() {
+    const {
+      loading,
+      wrongReasonType,
+      newClassifyKey,
+      auditType = 1,
+      classifyAuditDialogLogList = []
+    } = this.state
     return <Modal
       visible
       title='反馈进度'
       onCancel={() => this.props.setModal()}
-      onOk={() => {
-
-      }}
+      footer={null}
       maskClosable={false}
     >
-      <div className='category-feedback-detail-wrapper'>
-        <header>
-          当前反馈状态: 待处理
-        </header>
-        <div className='category-content'>
-          期望分类: <SimpleTag>美食</SimpleTag>
-        </div>
-        <div className='category-desc'>
-          如您对反馈处理结果不满意，您可联系客服
-          <a onClick={this.showContact} style={{marginLeft: '6px'}}>联系客服</a>
-        </div>
-        <main>
-          <header>协商历史</header>
-          <div className='category-history-item'>
-            <div className='image-wrapper'>
-              <img src="" alt="" />
-            </div>
-            <div className='content-wrapper'>
-              <div className='info name'>
-                系统
-                <b>2019-04-26 17:05:47</b>
-              </div>
-              <div className='info'>
-                审核失败
-              </div>
-              <div className='info'>
-                失败原因: 业务/受众变更
-              </div>
-              <div className='info'>
-                内容分类更新为【美食】
-              </div>
-            </div>
-          </div><
-          div className='category-history-item'>
-            <div className='image-wrapper'>
-              <img src="" alt="" />
-            </div>
-            <div className='content-wrapper'>
-              <div className='info name'>
-                夫人爱吃鱼
-                <b>2019-04-26 17:05:47</b>
-              </div>
-              <div className='info'>
-                错误原因: 业务/受众变更
-              </div>
-              <div className='info'>
-                期望分类: 服饰
-              </div>
-              <div className='info'>
-                原因: 我主要经营服饰..
-              </div>
-            </div>
+      <Spin spinning={loading}>
+        <div className='category-feedback-detail-wrapper'>
+          <header>
+            当前反馈状态: {auditTypeMap[auditType].text}
+          </header>
+          <div className='category-content'>
+            期望分类: <SimpleTag>{newClassifyKey}</SimpleTag>
           </div>
-        </main>
-      </div>
+          <div className='category-desc'>
+            {auditTypeMap[auditType].desc}
+            {auditType === 3 &&
+            <a onClick={this.showContact} style={{ marginLeft: '6px' }}>联系客服</a>}
+          </div>
+          <main>
+            <header>协商历史</header>
+            {
+              classifyAuditDialogLogList.map((data, n) => {
+                return data.sourceType === 2 ? <div className='category-history-item' key={n}>
+                    <div className='image-wrapper'>
+                      <img src="" alt="" />
+                    </div>
+                    <div className='content-wrapper'>
+                      <div className='info name'>
+                        系统
+                        <b>{data.createdAt}</b>
+                      </div>
+                      {
+                        auditType === 2 && <div className='info'>
+                          内容分类更新为【{newClassifyKey}】
+                        </div>
+                      }
+                      {
+                        auditType === 3 && <div className='info'>
+                          审核失败
+                        </div>
+                      }
+                      {
+                        auditType === 3 && <div className='info'>
+                          审核失败原因: {data.description}
+                        </div>
+                      }
+                    </div>
+                  </div> :
+                  <div className='category-history-item'>
+                    <div className='image-wrapper'>
+                      <img src="" alt="" />
+                    </div>
+                    <div className='content-wrapper'>
+                      <div className='info name'>
+                        博主
+                        <b>{data.createdAt}</b>
+                      </div>
+                      <div className='info'>
+                        错误原因: {wrongReasonType === 1 ? "与现有业务/受众不一致" : wrongReasonType === 2 ? "业务/受众变更" : '--'}
+                      </div>
+                      <div className='info'>
+                        期望分类: {newClassifyKey}
+                      </div>
+                      <div className='info'>
+                        原因: {data.description}
+                      </div>
+                    </div>
+                  </div>
+              })
+            }
+          </main>
+        </div>
+      </Spin>
     </Modal>
   }
 }

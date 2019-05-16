@@ -137,11 +137,17 @@ export const AccountDesc = (props) => {
  */
 export class ContentCategory extends React.Component {
   state = {
-    feedback: 'detail'
+    feedback: ''
   }
 
   componentDidMount() {
-
+    const { actions, data: { accountInfo } } = this.props
+    actions.isExistClassify({ accountId: accountInfo.accountId }).then(({ data }) => {
+      this.setState({
+        classifyAuditInfoId: data.classifyAuditInfoId,
+        hasRecord: data.count
+      })
+    })
   }
 
   setModal = type => {
@@ -149,7 +155,8 @@ export class ContentCategory extends React.Component {
   }
 
   render() {
-    const { formItemLayout = {}, data: { accountInfo } } = this.props;
+    const { formItemLayout = {}, data: { accountInfo }, actions } = this.props;
+    const { classifyAuditInfoId, hasRecord } = this.state;
     let {
       classificationList: category = []
     } = accountInfo;
@@ -159,26 +166,27 @@ export class ContentCategory extends React.Component {
           {
             category.map(({ name }) => <SimpleTag key={name}>{name}</SimpleTag>)
           }
-          <a
-            className='category-feedback-btn'
-            onClick={() => this.setModal('create')}
-          >
-            分类错误?
-          </a>
-          <a
-            className='category-feedback-btn'
-            onClick={() => this.setModal('detail')}
-          >
-            查看反馈进度
-          </a>
+          {
+            hasRecord ? <a
+              className='category-feedback-btn'
+              onClick={() => this.setModal('detail')}
+            >
+              查看反馈进度
+            </a> : <a
+              className='category-feedback-btn'
+              onClick={() => this.setModal('create')}
+            >
+              分类错误?
+            </a>
+          }
         </div> : '暂无分类'
       }
       {this.state.feedback === 'create' &&
-      <FeedbackCreate setModal={this.setModal} accountId={111}/>}
+      <FeedbackCreate setModal={this.setModal} hasReason accountInfo={accountInfo} actions={actions}/>}
       {this.state.feedback === 'detail' &&
-      <FeedbackDetail setModal={this.setModal} />}
+      <FeedbackDetail setModal={this.setModal} actions={actions} classifyAuditInfoId={classifyAuditInfoId}/>}
       {this.state.feedback === 'mini' &&
-      <FeedbackMini setModal={this.setModal} />}
+      <FeedbackMini setModal={this.setModal} actions={actions}/>}
     </FormItem>;
   }
 }
