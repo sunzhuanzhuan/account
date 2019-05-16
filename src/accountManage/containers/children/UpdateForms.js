@@ -237,7 +237,7 @@ export class AccountPriceForm extends Component {
   showConfirm = (values) => {
     const { actions: { saveSku }, data: { accountInfo, trinityPriceInfo } } = this.props.params;
     const { getSkuActions } = this.props;
-    const { isFamous } = accountInfo;
+    const { isFamous,platformId } = accountInfo;
     confirm({
       title: '提交价格信息?',
       content: (isFamous == 1) ? '提交成功后，下个价格有效期和报价将无法修改' : '',
@@ -245,7 +245,8 @@ export class AccountPriceForm extends Component {
         hide()
         TrinityIsPreventShieldingTip({
           accountValue: trinityPriceInfo.trinityIsPreventShielding,
-          skuValue: values.isPreventShielding
+          skuValue: values.isPreventShielding,
+          platformId: platformId
         }, () => {
           return saveSku(values).then(() => {
             message.success('更新报价信息成功', 1.3, () => {
@@ -323,7 +324,8 @@ export class AgentConfigAndPriceForm extends Component {
         TrinityIsPreventShieldingTip({
           accountValue: trinityIsPreventShieldingManual > 0 ? trinityIsPreventShieldingManual :
             values.trinityIsPreventShieldingAutomated,
-          skuValue: isPreventShielding
+          skuValue: isPreventShielding,
+          platformId: platformId
         }, () => {
           return actions.addOrUpdateAccountTrinitySkuInfo({
             trinityPlaceOrderType: 2,

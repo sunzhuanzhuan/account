@@ -184,6 +184,9 @@ export const AgentConfigAndPrice = (props) => {
       })(
         <Checkbox>人工控制可在{name}下单</Checkbox>
       )}
+      <div style={{color: 'red'}}>
+        注：如果勾选此处，将以人工控制结果为准，若要恢复机维请取消勾选！
+      </div>
     </FormItem>
     {getFieldValue('_trinityIsPreventShieldingManual_') ?
       <FormItem {...formItemLayout} label={`强制可在${name}下单结果`}>
@@ -204,8 +207,8 @@ export const AgentConfigAndPrice = (props) => {
           rules: [{ required: true, message: '本项为必选项，请选择！' }]
         })(
           <RadioGroup>
-            <Radio value={1}>微播易代下</Radio>
-            <Radio value={2}>博主代下</Radio>
+            <Radio value={2}>博主自行下单</Radio>
+            <Radio value={1}>微播易代下单</Radio>
           </RadioGroup>
         )}
       </FormItem> : null}
@@ -483,10 +486,10 @@ export const OrderStrategy = (props) => {
 };
 
 export function TrinityIsPreventShieldingTip(value, callback) {
-  let { accountValue, skuValue, trinityName = "微任务/WEIQ" } = value, diff;
+  let { accountValue, skuValue, trinityName = "微任务/WEIQ", platformId } = value, diff;
   accountValue = parseInt(accountValue)
   skuValue = parseInt(skuValue)
-  if (!accountValue || !skuValue || accountValue === skuValue) {
+  if (platformId !== 1 || !accountValue || !skuValue || accountValue === skuValue) {
     let hide = message.loading('保存中...');
     Promise.resolve(callback(hide)).finally(hide)
     return
