@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Form, Input, Radio, Select } from 'antd'
+import { Button, Form, Input, Radio, Select } from 'antd'
 import { Modal, message } from "antd";
 import SimpleTag from "@/accountManage/base/SimpleTag";
 
@@ -137,18 +137,24 @@ const status = {
   '3': {
     code: 3,
     text: '已驳回',
-    desc: '如您对反馈处理结果不满意，您可联系客服'
+    desc: '如您对反馈处理结果不满意，您可'
   }
 }
 
 export class FeedbackDetail extends Component {
+  showContact = () => {
+    Modal.info({
+      title: '直接添加客服QQ号',
+      content: '3460666273'
+    })
+  }
   render() {
     return <Modal
       visible
       title='反馈进度'
       onCancel={() => this.props.setModal()}
       onOk={() => {
-        this.submit()
+
       }}
       maskClosable={false}
     >
@@ -161,6 +167,7 @@ export class FeedbackDetail extends Component {
         </div>
         <div className='category-desc'>
           如您对反馈处理结果不满意，您可联系客服
+          <a onClick={this.showContact} style={{marginLeft: '6px'}}>联系客服</a>
         </div>
         <main>
           <header>协商历史</header>
@@ -174,7 +181,13 @@ export class FeedbackDetail extends Component {
                 <b>2019-04-26 17:05:47</b>
               </div>
               <div className='info'>
-                内容分类更新为[美食]
+                审核失败
+              </div>
+              <div className='info'>
+                失败原因: 业务/受众变更
+              </div>
+              <div className='info'>
+                内容分类更新为【美食】
               </div>
             </div>
           </div><

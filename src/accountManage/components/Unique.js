@@ -159,22 +159,22 @@ export class ContentCategory extends React.Component {
           {
             category.map(({ name }) => <SimpleTag key={name}>{name}</SimpleTag>)
           }
+          <a
+            className='category-feedback-btn'
+            onClick={() => this.setModal('create')}
+          >
+            分类错误?
+          </a>
+          <a
+            className='category-feedback-btn'
+            onClick={() => this.setModal('detail')}
+          >
+            查看反馈进度
+          </a>
         </div> : '暂无分类'
       }
-      <a
-        className='category-feedback-btn'
-        onClick={() => this.setModal('create')}
-      >
-        分类错误?
-      </a>
-      <a
-        className='category-feedback-btn'
-        onClick={() => this.setModal('detail')}
-      >
-        查看反馈进度
-      </a>
       {this.state.feedback === 'create' &&
-      <FeedbackCreate setModal={this.setModal} />}
+      <FeedbackCreate setModal={this.setModal} accountId={111}/>}
       {this.state.feedback === 'detail' &&
       <FeedbackDetail setModal={this.setModal} />}
       {this.state.feedback === 'mini' &&
