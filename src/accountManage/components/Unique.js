@@ -484,7 +484,6 @@ export const OrderStrategy = (props) => {
 
 export function TrinityIsPreventShieldingTip(value, callback) {
   let { accountValue, skuValue, trinityName = "微任务/WEIQ" } = value, diff;
-  console.log("accountValue : " , accountValue, '+++++++', "skuValue : ", skuValue);
   accountValue = parseInt(accountValue)
   skuValue = parseInt(skuValue)
   if (!accountValue || !skuValue || accountValue === skuValue) {
