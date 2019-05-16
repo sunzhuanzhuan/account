@@ -10,6 +10,7 @@ import {
 import DataSet from "@antv/data-set";
 import { g2Tooltip, l } from "./config";
 import numeral from 'numeral'
+import { Empty } from "antd";
 
 class Landscape extends React.Component {
   render() {
@@ -27,9 +28,9 @@ class Landscape extends React.Component {
       },
     };
     return (
-      <div>
+      data.length > 0 ? <div>
         <Chart height={300} data={dv} forceFit scale={cols} padding={[10, 60]}>
-          <Coord transpose />
+          <Coord transpose reflect='y' />
           <Axis
             name="name"
             label={{
@@ -55,7 +56,7 @@ class Landscape extends React.Component {
             }]} />
           </Geom>
         </Chart>
-      </div>
+      </div> : <Empty style={{ height: 304, paddingTop: 80 }} />
     );
   }
 }

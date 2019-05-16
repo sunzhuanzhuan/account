@@ -1,4 +1,5 @@
 @import '../index.less';
+@import '../../indexNbTheme.less';
 
 .historical-advertising {
     background: @back-color;
@@ -24,7 +25,7 @@
 
         .case-item {
             padding: 12px 15px;
-            width: calc(50% - 20px);
+            width: calc(33% - 20px);
             display: flex;
             margin: 14px 10px 0px;
             @img-box-radius();
@@ -35,26 +36,29 @@
         }
 
         .left-img {
-            width: 50%;
+            width: 108px;
             background: @back-color;
             text-align: center;
-            border: 1px solid #efefef;
 
             img {
                 max-width: 100%;
                 margin: 0px auto;
-                height: 135px;
+                height: 144px;
             }
         }
 
         .right-info {
-            width: 50%;
+            width: calc(100% - 108px);
             padding: 5px 34px 1px 15px;
             @flex-between-column();
 
             .title {
-                @color333-font16();
+                @color333-font14();
                 @nowrap-hidden-ellipsis();
+            }
+
+            .title:hover {
+                color: @primary-color;
             }
 
             .info-type-flex {
@@ -65,7 +69,7 @@
                 }
 
                 .value {
-                    @color333-font16();
+                    @color333-font14();
                 }
             }
         }

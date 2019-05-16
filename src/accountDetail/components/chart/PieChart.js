@@ -74,7 +74,8 @@ class PieChart extends Component {
                 rotate: 0,
                 textAlign: "center",
                 shadowBlur: 2,
-                shadowColor: "rgba(0, 0, 0, .45)"
+                shadowColor: "rgba(0, 0, 0, .45)",
+                fill: '#fff', // 文本的颜色
               }}
             />
           </Geom>

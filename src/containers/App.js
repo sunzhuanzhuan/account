@@ -8,6 +8,7 @@ import { Layout, Button, Icon } from 'antd';
 import SiderMenu from '../components/SiderMenu'
 import { getUserLoginInfo, getUserConfigKey } from '../login/actions'
 import { resetSiderAuth, getAuthorizations } from '../actions'
+import { sensors } from '@/util/sensor/sensors'
 const { Header, Content } = Layout;
 const Cookies = require('js-cookie');
 window.Cookies = Cookies;
@@ -38,6 +39,7 @@ class App extends Component {
 		this.props.actions.getUserConfigKey({ keys: 'shence_base_url_for_b,babysitter_host' }).then((res) => {
 			let userResult = res.data.shence_base_url_for_b
 			window.bentleyConfig = res.data || {}
+      sensors(userInfoId, userResult.value, 101)
 		});
 
 		this.setState({

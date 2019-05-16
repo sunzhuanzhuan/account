@@ -13,12 +13,22 @@ import numeral from 'numeral'
 
 import { formatW } from "../../util";
 import './HistogramLine.less'
+import { Empty } from 'antd';
 class HistogramLine extends Component {
   componentDidMount() {
 
     events.on('message', (value) => {
       window.dispatchEvent(new Event('resize'))
     })
+  }
+  getMinNumber = (key) => {
+    const { data = [] } = this.props
+    const min = Math.min.apply(Math, data.map(function (item) { return item[key] }))
+    return min - min / 100
+  }
+  getMaxNumber = (key) => {
+    const { data = [] } = this.props
+    return Math.max.apply(Math, data.map(function (item) { return item[key] }))
   }
   render() {
     // const data = [
@@ -29,25 +39,26 @@ class HistogramLine extends Component {
     //     people: 2
     //   }
     // ];
-    const { data = [], positionConfig, lineText, boxText, positionIntervalConfig, type = 4 } = this.props
-    const scale = {
+    const { data = [], positionConfig, lineText, boxText, positionIntervalConfig, type = 4, boxLeft, boxRight } = this.props
 
+    const scale = {
       followerCountFull: {
-        // min: 0,
+        min: this.getMinNumber('followerCountFull'),
+        max: this.getMaxNumber('followerCountFull'),
         alias: '粉丝累计数',
         formatter: val => {
           return formatW(val);
         }
       },
       mediaCountIncre: {
-        // min: 0,
+        min: this.getMinNumber('mediaCountIncre'),
+        max: this.getMaxNumber('mediaCountIncre'),
         alias: '发布净增数',
         formatter: val => {
           return formatW(val);
         }
       },
       mediaLikeSumIncre: {
-        // min: 0,
         alias: '点赞净增数',
         formatter: val => {
           return formatW(val);
@@ -62,7 +73,7 @@ class HistogramLine extends Component {
       },
       tgiValue: {
         // min: 0,
-        alias: 'TGL',
+        alias: 'TGI',
         formatter: val => {
           return formatW(val);
         }
@@ -81,11 +92,10 @@ class HistogramLine extends Component {
     } = this.props
 
     return (
-
-      <div className='histogram-line'>
+      data.length > 0 ? <div className='histogram-line'>
         <div className='title-line'>
-          <div className='left-title'>{boxText}</div>
-          <div className='right-title'>{lineText}</div>
+          <div className='left-title' style={{ left: boxLeft }}>{boxText}</div>
+          <div className='right-title' style={{ right: boxRight }}>{lineText}</div>
         </div>
         <Chart
           height={height}
@@ -145,13 +155,12 @@ class HistogramLine extends Component {
             }}
           />
           <Axis
-            name="people"
+            name={`${positionIntervalConfig.split('*')[1]}`}
             grid={null}
-            label={{
-              textStyle: {
-                fill: "#29c056"
-              }
-            }}
+          />
+          <Axis
+            name={`${positionConfig.split('*')[1]}`}
+            grid={null}
           />
           <Tooltip name='' g2-tooltip={g2Tooltip} />
           <Geom type="interval" position={positionIntervalConfig} color="#39a0ff" />
@@ -169,7 +178,7 @@ class HistogramLine extends Component {
             shape="circle"
           />
         </Chart>
-      </div>
+      </div> : <Empty style={{ height: height + 18, paddingTop: 80 }} />
     );
   }
 }

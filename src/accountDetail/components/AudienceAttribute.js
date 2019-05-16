@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import './AudienceAttribute.less'
 import { CharTitle, PieChart, Landscape, HistogramLine, ChinaMap } from "./chart";
 import numeral from 'numeral'
+import { Empty } from 'antd';
 class AudienceAttribute extends Component {
   constructor(props) {
     super(props);
@@ -28,7 +29,7 @@ class AudienceAttribute extends Component {
 
     return (
       <div className='audience-attribute'>
-        <div className='title-big'>受众属性</div>
+        <div className='title-big'>受众属性<span style={{ fontSize: 13, color: '#999',fontWeight:'none' }}>（数据取活跃粉丝分布数据）</span></div>
         <div className='audience-attribute-charts'>
           <div className='left-three'>
             <div className='left-three-two'>
@@ -42,12 +43,14 @@ class AudienceAttribute extends Component {
               </div>
             </div>
             <div className='two-line-item'>
-              <CharTitle title='TGL' />
+              <CharTitle title='TGI' />
               <HistogramLine height={300} data={kolVisitorInterestDrawList}
                 positionConfig='name*tgiValue'
                 positionIntervalConfig='name*value'
-                lineText='TGL'
-                boxText='兴趣爱好' />
+                lineText='TGI'
+                boxText='兴趣爱好'
+                boxLeft={30}
+                boxRight={70} />
             </div>
 
           </div>
@@ -62,7 +65,8 @@ class AudienceAttribute extends Component {
             </div>
           </div>
         </div>
-        <div className='region-img'>
+        {kolVisitorProvinceDrawList.length > 0 ? <div className='region-img'>
+
           <div className='china-map'>
             <CharTitle title='访问地区分布图' />
             <ChinaMap area={kolVisitorProvinceDrawList} />
@@ -73,7 +77,10 @@ class AudienceAttribute extends Component {
               <Rnking list={kolVisitorProvinceDrawList.slice(0, 6)} />
             </div>
           </div>
-        </div>
+        </div> : <div className='region-img' style={{ display: 'block' }}>
+            <CharTitle title='访问地区分布图' />
+            <Empty style={{ height: 500, paddingTop: '20%' }} />
+          </div>}
       </div >
     );
   }

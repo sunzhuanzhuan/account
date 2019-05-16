@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 const { AMap, AMapUI } = window;
 
 import {
-  Chart, Axis, View, Geom, Tooltip, Label, Legend
+  Chart, Geom, Tooltip, Legend, Guide
 } from "bizcharts";
 import numeral from 'numeral'
 
@@ -93,7 +93,6 @@ class MapChart extends Component {
     }
 
     const data = this.processGeoData(chinaGeo, area);
-
     const scale = {
       latitude: {
         sync: true,
@@ -103,27 +102,44 @@ class MapChart extends Component {
         sync: true,
         nice: false,
       },
+      value: {
+        formatter: val => {
+          return numeral(val || 0).format('0.0%')
+        }
+      },
     };
-
+    const { Image } = Guide;
     return (
-      <Chart height={500} width={645} scale={scale} data={data} padding={[0, 0, 0, 90]}>
-        <Geom type="polygon" position="longitude*latitude"
-          style={{ lineWidth: 1, stroke: "white" }}
-          // color={['value', ['#31c5f8', '#61d3f8', '#89dcfd', '#b0e8f8', '#d8f3ff']]}
-          color={['value', ['#d9f4ff', '#33c5f6']]}
-          tooltip={['name*value', (name, value) => {
-            return {
-              name: name,
-              value: numeral(value || 0).format('0.0%')
-            }
-          }]}
-        >
-          <Label content="" offset={0} />
-          <Tooltip showTitle={false} />
-          <Legend position='left-bottom'
-            offsetY={-50} />
-        </Geom>
-      </Chart>);
+      <div style={{ position: "relative" }}>
+        <Chart height={500} width={645} scale={scale} data={data} padding={[0, 0, 0, 90]}>
+          <Geom type="polygon" position="longitude*latitude"
+            style={{ lineWidth: 1, stroke: "white" }}
+            // color={['value', ['#31c5f8', '#61d3f8', '#89dcfd', '#b0e8f8', '#d8f3ff']]}
+            color={['value', ['#d9f4ff', '#33c5f6']]}
+            tooltip={['name*value', (name, value) => {
+              return {
+                name: name,
+                value: numeral(value || 0).format('0.0%')
+              }
+            }]}
+          >
+            <Tooltip showTitle={false} />
+            <Legend position='bottom-left'
+              offsetY={-130}
+              offsetX={-60}
+              slidable={false}
+              width={320}
+            />
+
+          </Geom>
+
+        </Chart>
+        <div style={{ position: "absolute", bottom: 100, right: 0 }}>
+          <img height='58' width='42'
+            src={require('../img/map-line.png')} />
+        </div>
+      </div>
+    );
   }
 }
 

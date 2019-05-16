@@ -8,9 +8,6 @@ class ShowFloating extends Component {
   }
   componentDidMount = () => {
     document.getElementById('app-content-children-id').onscroll = () => {
-      console.log('====================================');
-      console.log(111);
-      console.log('====================================');
     }
   }
   componentWillUnmount = () => {
