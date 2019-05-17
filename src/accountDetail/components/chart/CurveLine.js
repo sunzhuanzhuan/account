@@ -115,7 +115,7 @@ class CurveLine extends Component {
             shape={"smooth"}
           />
         </Chart>
-      </div> : <Empty style={{ height: 418, paddingTop: 80 }} />
+      </div> : <Empty style={{ height: height, paddingTop: 80 }} />
     );
   }
 }
