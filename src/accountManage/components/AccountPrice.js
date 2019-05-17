@@ -198,7 +198,7 @@ export class NamelessPrice extends Component {
     skuList && skuList.forEach(({ skuTypeId, costPriceRaw }) => {
       val[skuTypeId] = costPriceRaw;
     });
-    return <div className=''>
+    return <div className='price_scroll_container'>
       <FormItem {...formItemLayout} label='账号报价'>
         {getFieldDecorator('price_now', {
           initialValue: val,
@@ -353,7 +353,7 @@ export class FamousPrice extends Component {
     });
     const { isAllow, orderStatus, forcedOrder, orderStatusReason } = this.state;
     const viewStatus = (isAllow == 1 && (orderStatus || forcedOrder)) ? '销售AB端可下单' : '销售AB端不可下单';
-    return <div className=''>
+    return <div className='price_scroll_container'>
       <FormItem {...formItemLayout} label='本期有效期'>
         <span>{nowStar.format('YYYY-MM-DD')}</span><span className='m10-e'>至</span>
         <span>{nowEnd.format('YYYY-MM-DD')}</span>
