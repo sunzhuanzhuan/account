@@ -20,7 +20,8 @@ class CurveLine extends Component {
     // mediaLikeSumIncre: '点赞净增数',
     const { data = [],
       GreenlineName, GreenlineText,
-      BluelineText, BluelineName, boxLeft, boxRight, height = 300 } = this.props
+      BluelineText, BluelineName, boxLeft, boxRight, height = 300,
+    } = this.props
     const cols = {
       followerCountFull: {
         alias: '粉丝累计数',
@@ -82,11 +83,11 @@ class CurveLine extends Component {
               },
               {
                 value: GreenlineText,
-                marker: {
+                marker: GreenlineText ? {
                   symbol: "circle",
                   fill: greenColor,
                   radius: 5,
-                }
+                } : {}
               }
             ]}
           />
@@ -113,8 +114,6 @@ class CurveLine extends Component {
             color={greenColor}
             shape={"smooth"}
           />
-
-
         </Chart>
       </div> : <Empty style={{ height: 418, paddingTop: 80 }} />
     );
