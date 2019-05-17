@@ -18,7 +18,7 @@ class CurveLine extends Component {
     // mediaCountIncre: '发布净增数' 
     // followerCountFull: '粉丝累计数', 
     // mediaLikeSumIncre: '点赞净增数',
-    const { data = [] } = this.props
+    const { data = [], GreenlineName, GreenlineText, BluelineText, BluelineName, boxLeft, boxRight, height = 300 } = this.props
     const ds = new DataSet();
     const dv = ds.createView().source(data);
     const fieldsMap = {
@@ -26,30 +26,33 @@ class CurveLine extends Component {
     }
     const cols = {
       followerCountFull: {
-        // min: 0,
-        alias: '粉丝累计数',
+        alias: BluelineText,
         formatter: val => {
           return formatW(val);
         }
       },
       mediaLikeSumIncre: {
-        // min: 0,
-        alias: '点赞净增数',
+        alias: GreenlineText,
         formatter: val => {
           return formatW(val)
         }
       }
     };
     return (
-      data.length > 0 ? <div>
-        <Chart height={300} data={data} scale={cols}
-          padding={[50, 160, 50, 80]}
+      data.length > 0 ? <div className='histogram-line'>
+        <div className='title-line'>
+          <div className='left-title' style={{ left: boxLeft }}>{BluelineText}</div>
+          <div className='right-title' style={{ right: boxRight }}>{GreenlineText}</div>
+        </div>
+        <Chart height={height} data={data} scale={cols}
+          padding={[60, 100, 60, 80]}
           forceFit>
           <Legend marker='circle' {...legendPosition}
-            offsetX={140}
+            offsetX={70}
+            offsetY={-30}
             items={[
               {
-                value: '粉丝累计数',
+                value: BluelineText,
                 marker: {
                   symbol: "circle",
                   fill: "#39a0ff",
@@ -57,7 +60,7 @@ class CurveLine extends Component {
                 }
               },
               {
-                value: '点赞净增数',
+                value: GreenlineText,
                 marker: {
                   symbol: "circle",
                   fill: "#29c056",
@@ -78,16 +81,16 @@ class CurveLine extends Component {
           <Tooltip name='d' g2-tooltip={g2Tooltip} />
           <Geom
             type="line"
-            position="dateRange*followerCountFull"
+            position={`dateRange*${BluelineName}`}
             size={2}
-            color="#39a0ff"
+            color="#29c056"
             shape={"smooth"}
           />
           <Geom
             type="line"
-            position="dateRange*mediaLikeSumIncre"
+            position={`dateRange*${GreenlineName}`}
             size={2}
-            color="#29c056"
+            color="#39a0ff"
             shape={"smooth"}
           />
         </Chart>
