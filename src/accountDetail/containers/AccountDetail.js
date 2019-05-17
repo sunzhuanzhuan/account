@@ -77,7 +77,8 @@ class AccountDetail extends Component {
     const contentDataProps = {
       trendInfo,
       getTrend,
-      accountId
+      accountId,
+      baseInfo
     }
     const historicalADProps = {
       getQueryOrderCooperationList,
