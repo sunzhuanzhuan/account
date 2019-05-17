@@ -9,3 +9,5 @@ export const legendPosition = {
   offsetX: 0,
   offsetY: -10
 }
+export const blueColor = '#39a0ff'
+export const greenColor = '#29c056'
