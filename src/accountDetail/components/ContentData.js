@@ -56,7 +56,7 @@ class ContentData extends Component {
         <div className='content-char-box'>
           {/* 粉丝累计数+粉丝净增数 */}
           <div className='content-char'>
-            <CharTitle title='粉丝点赞趋势图' content='可观察最近90天账号基础数据趋势表现' />
+            <CharTitle title='粉丝数趋势图' content='可观察最近90天账号基础数据趋势表现' />
             <CurveLine data={contentSum}
               BluelineText='粉丝累计数'
               BluelineName='followerCountFull'

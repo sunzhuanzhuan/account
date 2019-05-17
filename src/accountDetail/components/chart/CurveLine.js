@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { g2Tooltip, legendPosition } from "./config";
+import { g2Tooltip, legendPosition, blueColor, greenColor } from "./config";
 import {
   Chart,
   Geom,
@@ -18,7 +18,9 @@ class CurveLine extends Component {
     // mediaCountIncre: '发布净增数' 
     // followerCountFull: '粉丝累计数', 
     // mediaLikeSumIncre: '点赞净增数',
-    const { data = [], GreenlineName, GreenlineText, BluelineText, BluelineName, boxLeft, boxRight, height = 300 } = this.props
+    const { data = [],
+      GreenlineName, GreenlineText,
+      BluelineText, BluelineName, boxLeft, boxRight, height = 300 } = this.props
     const ds = new DataSet();
     const dv = ds.createView().source(data);
     const fieldsMap = {
@@ -26,17 +28,41 @@ class CurveLine extends Component {
     }
     const cols = {
       followerCountFull: {
-        alias: BluelineText,
+        alias: '粉丝累计数',
+        formatter: val => {
+          return formatW(val)
+        }
+      },
+      followerCountIncre: {
+        alias: '粉丝净增数',
         formatter: val => {
           return formatW(val);
         }
       },
-      mediaLikeSumIncre: {
-        alias: GreenlineText,
+      mediaLikeAvgFull: {
+        alias: '平均点赞数',
+        formatter: val => {
+          return formatW(val);
+        }
+      },
+      mediaCountIncre: {
+        alias: '视频发布数',
         formatter: val => {
           return formatW(val)
         }
-      }
+      },
+      mediaInteractionAvgFull: {
+        alias: '平均互动数',
+        formatter: val => {
+          return formatW(val);
+        }
+      },
+      interactionProportionIncre: {
+        alias: '平均互动率',
+        formatter: val => {
+          return formatW(val)
+        }
+      },
     };
     return (
       data.length > 0 ? <div className='histogram-line'>
@@ -55,7 +81,7 @@ class CurveLine extends Component {
                 value: BluelineText,
                 marker: {
                   symbol: "circle",
-                  fill: "#39a0ff",
+                  fill: blueColor,
                   radius: 5
                 }
               },
@@ -63,36 +89,37 @@ class CurveLine extends Component {
                 value: GreenlineText,
                 marker: {
                   symbol: "circle",
-                  fill: "#29c056",
+                  fill: greenColor,
                   radius: 5,
                 }
               }
             ]}
           />
-
+          <Tooltip name='' g2-tooltip={g2Tooltip} />
           <Axis
-            name='followerCountFull'
+            name={BluelineName}
             grid={null}
           />
-          <Axis
-            name='mediaLikeSumIncre'
-            grid={null}
-          />
-          <Tooltip name='d' g2-tooltip={g2Tooltip} />
           <Geom
             type="line"
             position={`dateRange*${BluelineName}`}
             size={2}
-            color="#29c056"
+            color={blueColor}
             shape={"smooth"}
+          />
+          <Axis
+            name={GreenlineName}
+            grid={null}
           />
           <Geom
             type="line"
             position={`dateRange*${GreenlineName}`}
             size={2}
-            color="#39a0ff"
+            color={greenColor}
             shape={"smooth"}
           />
+
+
         </Chart>
       </div> : <Empty style={{ height: 418, paddingTop: 80 }} />
     );
