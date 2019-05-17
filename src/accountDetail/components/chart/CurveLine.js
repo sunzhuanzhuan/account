@@ -21,11 +21,6 @@ class CurveLine extends Component {
     const { data = [],
       GreenlineName, GreenlineText,
       BluelineText, BluelineName, boxLeft, boxRight, height = 300 } = this.props
-    const ds = new DataSet();
-    const dv = ds.createView().source(data);
-    const fieldsMap = {
-
-    }
     const cols = {
       followerCountFull: {
         alias: '粉丝累计数',
