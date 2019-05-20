@@ -48,7 +48,8 @@ class ContentData extends Component {
   }
   render() {
     const { trendInfo = {}, baseInfo = {} } = this.props
-    const { base } = baseInfo
+    const { base = {} } = baseInfo
+    const { platformId } = base
     const { dataBoxProps } = this.state
     const { contentSum = [], like = [], interactive = [] } = trendInfo
     return (
@@ -81,8 +82,8 @@ class ContentData extends Component {
             <CurveLine data={interactive}
               BluelineText='平均互动数'
               BluelineName='mediaInteractionAvgFull'
-              GreenlineText={base.platformId && base.platformId == 115 ? '' : '平均互动率'}
-              GreenlineName={base.platformId && base.platformId == 115 ? '' : 'interactionProportionIncre'}
+              GreenlineText={platformId == 115 ? '' : '平均互动率'}
+              GreenlineName={platformId == 115 ? '' : 'interactionProportionIncre'}
             />
           </div>
           <div className='content-char'>
