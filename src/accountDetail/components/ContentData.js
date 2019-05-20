@@ -47,7 +47,8 @@ class ContentData extends Component {
     }
   }
   render() {
-    const { trendInfo = {}, baseInfo: { base: { platformId } } } = this.props
+    const { trendInfo = {}, baseInfo = {} } = this.props
+    const { base } = baseInfo
     const { dataBoxProps } = this.state
     const { contentSum = [], like = [], interactive = [] } = trendInfo
     return (
@@ -56,7 +57,7 @@ class ContentData extends Component {
         <div className='content-char-box'>
           {/* 粉丝累计数+粉丝净增数 */}
           <div className='content-char'>
-            <CharTitle title='粉丝累计和净增趋势图' content='可观察最近90天账号粉丝累计和净增趋势表现' />
+            <CharTitle title='粉丝累计和净增趋势图' content='可观察最近90天账号粉丝累计和净增变化趋势' />
             <CurveLine data={contentSum}
               BluelineText='粉丝累计数'
               BluelineName='followerCountFull'
@@ -80,8 +81,8 @@ class ContentData extends Component {
             <CurveLine data={interactive}
               BluelineText='平均互动数'
               BluelineName='mediaInteractionAvgFull'
-              GreenlineText={platformId == 115 ? '' : '平均互动率'}
-              GreenlineName={platformId == 115 ? '' : 'interactionProportionIncre'}
+              GreenlineText={base.platformId && base.platformId == 115 ? '' : '平均互动率'}
+              GreenlineName={base.platformId && base.platformId == 115 ? '' : 'interactionProportionIncre'}
             />
           </div>
           <div className='content-char'>
