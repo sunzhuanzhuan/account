@@ -10,7 +10,9 @@ export class FeedbackCreate extends Component {
   submit = () => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        let hide = message.loading('处理中...')
         this.props.actions.addClassifyAuditInfo(values).then(() => {
+          hide()
           message.success('我们将在5个工作日内给您反馈，请您耐心等待', 1.5, () => {
             this.props.setModal()
           })
@@ -117,9 +119,14 @@ export class FeedbackMini extends Component {
   submit = () => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
-        message.info('反馈成功，我们将尽快处理', 1.5)
-        this.props.setModal()
+        let hide = message.loading('处理中...')
+        const { actions } = this.props
+        actions.addCustomClassify(values).then(() => {
+          hide()
+          message.info('反馈成功，我们将尽快处理', 1.5, () => {
+            this.props.setModal()
+          })
+        })
       }
     });
   };

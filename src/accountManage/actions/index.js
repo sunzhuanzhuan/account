@@ -218,3 +218,9 @@ export const {
 } = createHttpAction('addClassifyAuditInfo', Interface.classify.addClassifyAuditInfo, {
   method: 'post'
 })
+// 提交自定义分类
+export const {
+  addCustomClassify
+} = createHttpAction('addCustomClassify', Interface.classify.addCustomClassify, {
+  method: 'post'
+})
