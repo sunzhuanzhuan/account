@@ -132,8 +132,14 @@ export class FeedbackMini extends Component {
   };
 
   render() {
-    const { form } = this.props
+    const { form, accountInfo } = this.props
     const { getFieldDecorator } = form
+    const {
+      accountId,
+      snsName,
+      platformId,
+      url
+    } = accountInfo
     return <Modal
       visible
       title='没有找到你内容分类？填写告诉我们'
@@ -146,7 +152,7 @@ export class FeedbackMini extends Component {
       <Form colon={false}>
         <Form.Item>
           {
-            getFieldDecorator('create4', {
+            getFieldDecorator('classifyName', {
               validateFirst: true,
               rules: [
                 { pattern: /^[\u4e00-\u9fa5a-zA-Z]+$/, message: '请填写中英文分类名称' },
@@ -158,6 +164,14 @@ export class FeedbackMini extends Component {
             )
           }
         </Form.Item>
+        {getFieldDecorator('accountId', { initialValue: accountId })(
+          <input type="hidden" />)}
+        {getFieldDecorator('snsName', { initialValue: snsName })(
+          <input type="hidden" />)}
+        {getFieldDecorator('platformId', { initialValue: platformId })(
+          <input type="hidden" />)}
+        {getFieldDecorator('url', { initialValue: url })(
+          <input type="hidden" />)}
       </Form>
     </Modal>
   }

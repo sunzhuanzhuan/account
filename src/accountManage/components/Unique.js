@@ -186,7 +186,7 @@ export class ContentCategory extends React.Component {
       {this.state.feedback === 'detail' &&
       <FeedbackDetail setModal={this.setModal} actions={actions} classifyAuditInfoId={classifyAuditInfoId}/>}
       {this.state.feedback === 'mini' &&
-      <FeedbackMini setModal={this.setModal} actions={actions}/>}
+      <FeedbackMini setModal={this.setModal} accountInfo={accountInfo} actions={actions}/>}
     </FormItem>;
   }
 }
