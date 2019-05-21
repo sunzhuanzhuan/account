@@ -1,6 +1,6 @@
 import React from 'react';
 import WBYUploadFile from '@/accountManage/base/NewUpload';
-import { Form, Select, Input, Checkbox, Popover, Radio, Modal } from 'antd';
+import { Form, Select, Input, Checkbox, Popover, Radio } from 'antd';
 import SimpleTag from '../base/SimpleTag';
 import moment from 'moment';
 import { platformToDesc } from '../constants/placeholder';
