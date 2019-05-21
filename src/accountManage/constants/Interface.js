@@ -30,7 +30,6 @@ export default {
     isExistClassify: '/operator-gateway/classifyaudit/v1/isExistClassify',
     getAuditDialogInfo: '/operator-gateway/classifyaudit/v1/selectAuditDialogInfo',
     addClassifyAuditInfo: '/operator-gateway/classifyaudit/v1/addClassifyAuditInfo',
-    getAllClassifyInfos : '/operator-gateway/common/v1/getAllClassifyInfos',
     addCustomClassify: '/operator-gateway/classifyaudit/v1/addCustomClassify'
 	}
 }

@@ -202,10 +202,6 @@ export const {
 export const {
   isExistClassify
 } = createHttpAction('isExistClassify', Interface.classify.isExistClassify)
-// 分类列表
-export const {
-  getAllClassifyInfos
-} = createHttpAction('getAllClassifyInfos', Interface.classify.getAllClassifyInfos)
 
 // 查看分类反馈进度
 export const {

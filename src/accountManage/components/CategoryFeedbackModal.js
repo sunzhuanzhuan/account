@@ -261,7 +261,7 @@ export class FeedbackDetail extends Component {
                       }
                     </div>
                   </div> :
-                  <div className='category-history-item'>
+                  <div className='category-history-item' key={n}>
                     <div className='image-wrapper'>
                       <img src="" alt="" />
                     </div>
