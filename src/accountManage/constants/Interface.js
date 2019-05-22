@@ -29,7 +29,7 @@ export default {
 	},
   classify: {
     isExistClassify: prefix + '/classifyAudit/v1/isExistClassify',
-    getAuditDialogInfo: prefix + '/classifyAudit/v1/selectAuditDialogInfo',
+    getAuditDialogInfo: prefix + '/classifyAudit/v1/selectClassifyAuditInfo',
     addClassifyAuditInfo: prefix + '/classifyAudit/v1/addClassifyAuditInfo',
     addCustomClassify: prefix + '/classifyAudit/v1/addCustomClassify'
 	}
