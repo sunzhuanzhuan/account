@@ -30,9 +30,9 @@ export default {
 		accountAudiencePortrait: prefix + '/account/v1/updateAudiencePortrait',
 	},
   classify: {
-    isExistClassify: prefix + '/classifyaudit/v1/isExistClassify',
-    getAuditDialogInfo: prefix + '/classifyaudit/v1/selectAuditDialogInfo',
-    addClassifyAuditInfo: prefix + '/classifyaudit/v1/addClassifyAuditInfo',
-    addCustomClassify: prefix + '/classifyaudit/v1/addCustomClassify'
+    isExistClassify: prefix + '/classifyAudit/v1/isExistClassify',
+    getAuditDialogInfo: prefix + '/classifyAudit/v1/selectAuditDialogInfo',
+    addClassifyAuditInfo: prefix + '/classifyAudit/v1/addClassifyAuditInfo',
+    addCustomClassify: prefix + '/classifyAudit/v1/addCustomClassify'
 	}
 }
