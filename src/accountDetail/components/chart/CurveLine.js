@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { g2Tooltip, legendPosition } from "./config";
+import { g2Tooltip, legendPosition, blueColor, greenColor } from "./config";
 import {
   Chart,
   Geom,
@@ -18,80 +18,104 @@ class CurveLine extends Component {
     // mediaCountIncre: '发布净增数' 
     // followerCountFull: '粉丝累计数', 
     // mediaLikeSumIncre: '点赞净增数',
-    const { data = [] } = this.props
-    const ds = new DataSet();
-    const dv = ds.createView().source(data);
-    const fieldsMap = {
-
-    }
+    const { data = [],
+      GreenlineName, GreenlineText,
+      BluelineText, BluelineName, boxLeft, boxRight, height = 300,
+    } = this.props
     const cols = {
       followerCountFull: {
-        // min: 0,
         alias: '粉丝累计数',
+        formatter: val => {
+          return formatW(val)
+        }
+      },
+      followerCountIncre: {
+        alias: '粉丝净增数',
         formatter: val => {
           return formatW(val);
         }
       },
-      mediaLikeSumIncre: {
-        // min: 0,
-        alias: '点赞净增数',
+      mediaLikeAvgFull: {
+        alias: '平均点赞数',
+        formatter: val => {
+          return formatW(val);
+        }
+      },
+      mediaCountIncre: {
+        alias: '视频发布数',
         formatter: val => {
           return formatW(val)
         }
-      }
+      },
+      mediaInteractionAvgFull: {
+        alias: '平均互动数',
+        formatter: val => {
+          return formatW(val);
+        }
+      },
+      interactionProportionIncre: {
+        alias: '平均互动率',
+        formatter: val => {
+          return formatW(val)
+        }
+      },
     };
     return (
-      data.length > 0 ? <div>
-        <Chart height={300} data={data} scale={cols}
-          padding={[50, 160, 50, 80]}
+      data.length > 0 ? <div className='histogram-line'>
+        <div className='title-line'>
+          <div className='left-title' style={{ left: boxLeft }}>{BluelineText}</div>
+          <div className='right-title' style={{ right: boxRight }}>{GreenlineText}</div>
+        </div>
+        <Chart height={height} data={data} scale={cols}
+          padding={[60, 100, 60, 80]}
           forceFit>
           <Legend marker='circle' {...legendPosition}
-            offsetX={140}
+            offsetX={70}
+            offsetY={-30}
             items={[
               {
-                value: '粉丝累计数',
+                value: BluelineText,
                 marker: {
                   symbol: "circle",
-                  fill: "#39a0ff",
+                  fill: blueColor,
                   radius: 5
                 }
               },
               {
-                value: '点赞净增数',
-                marker: {
+                value: GreenlineText,
+                marker: GreenlineText ? {
                   symbol: "circle",
-                  fill: "#29c056",
+                  fill: greenColor,
                   radius: 5,
-                }
+                } : {}
               }
             ]}
           />
-
+          <Tooltip name='' g2-tooltip={g2Tooltip} />
           <Axis
-            name='followerCountFull'
+            name={BluelineName}
             grid={null}
           />
-          <Axis
-            name='mediaLikeSumIncre'
-            grid={null}
-          />
-          <Tooltip name='d' g2-tooltip={g2Tooltip} />
           <Geom
             type="line"
-            position="dateRange*followerCountFull"
+            position={`dateRange*${BluelineName}`}
             size={2}
-            color="#39a0ff"
+            color={blueColor}
             shape={"smooth"}
           />
+          <Axis
+            name={GreenlineName}
+            grid={null}
+          />
           <Geom
             type="line"
-            position="dateRange*mediaLikeSumIncre"
+            position={`dateRange*${GreenlineName}`}
             size={2}
-            color="#29c056"
+            color={greenColor}
             shape={"smooth"}
           />
         </Chart>
-      </div> : <Empty style={{ height: 418, paddingTop: 80 }} />
+      </div> : <Empty style={{ height: height, paddingTop: 80 }} />
     );
   }
 }
