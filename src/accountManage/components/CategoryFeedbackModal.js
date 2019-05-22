@@ -221,9 +221,9 @@ export class FeedbackDetail extends Component {
     const {
       loading,
       wrongReasonType,
-      newClassifyKey,
+      newClassifyName,
       auditType = 1,
-      classifyAuditDialogLogList = []
+      classifyAuditDialogList = []
     } = this.state
     return <Modal
       visible
@@ -238,7 +238,7 @@ export class FeedbackDetail extends Component {
             当前反馈状态: {auditTypeMap[auditType].text}
           </header>
           <div className='category-content'>
-            期望分类: <SimpleTag>{newClassifyKey}</SimpleTag>
+            期望分类: <SimpleTag>{newClassifyName}</SimpleTag>
           </div>
           <div className='category-desc'>
             {auditTypeMap[auditType].desc}
@@ -248,7 +248,7 @@ export class FeedbackDetail extends Component {
           <main>
             <header>协商历史</header>
             {
-              classifyAuditDialogLogList.map((data, n) => {
+              classifyAuditDialogList.map((data, n) => {
                 return data.sourceType === 2 ? <div className='category-history-item' key={n}>
                     <div className='image-wrapper'>
                       <img src="" alt="" />
@@ -260,7 +260,7 @@ export class FeedbackDetail extends Component {
                       </div>
                       {
                         auditType === 2 && <div className='info'>
-                          内容分类更新为【{newClassifyKey}】
+                          内容分类更新为【{newClassifyName}】
                         </div>
                       }
                       {
@@ -288,7 +288,7 @@ export class FeedbackDetail extends Component {
                         错误原因: {wrongReasonType === 1 ? "与现有业务/受众不一致" : wrongReasonType === 2 ? "业务/受众变更" : '--'}
                       </div>
                       <div className='info'>
-                        期望分类: {newClassifyKey}
+                        期望分类: {newClassifyName}
                       </div>
                       <div className='info'>
                         原因: {data.description}
