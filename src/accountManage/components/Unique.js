@@ -5,6 +5,11 @@ import SimpleTag from '../base/SimpleTag';
 import moment from 'moment';
 import { platformToDesc } from '../constants/placeholder';
 import PriceInput from '@/accountManage/base/PriceInput';
+import {
+  FeedbackCreate,
+  FeedbackDetail,
+  FeedbackMini
+} from "@/accountManage/components/CategoryFeedbackModal";
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -131,16 +136,61 @@ export const AccountDesc = (props) => {
 /**
  * 内容分类
  */
-export const ContentCategory = (props) => {
-  const { formItemLayout = {}, data: { accountInfo } } = props;
-  let {
-    classificationList: category = []
-  } = accountInfo;
-  return <FormItem {...formItemLayout} label='内容分类'>
-    {category.length ? <div>{category.map(({ name }) =>
-      <SimpleTag key={name}>{name}</SimpleTag>)}</div> : '暂无分类'}
-  </FormItem>;
-};
+export class ContentCategory extends React.Component {
+  state = {
+    feedback: ''
+  }
+
+  componentDidMount() {
+    const { actions, data: { accountInfo } } = this.props
+    actions.isExistClassify({ accountId: accountInfo.accountId }).then(({ data }) => {
+      this.setState({
+        classifyAuditInfoId: data.classifyAuditInfoId,
+        hasRecord: data.count
+      })
+    })
+  }
+
+  setModal = type => {
+    this.setState({ feedback: type })
+  }
+
+  render() {
+    const { formItemLayout = {}, data: { accountInfo }, actions } = this.props;
+    const { classifyAuditInfoId, hasRecord } = this.state;
+    let {
+      classificationList: category = []
+    } = accountInfo;
+    return <FormItem {...formItemLayout} label='内容分类'>
+      {
+        category.length ? <div>
+          {
+            category.map(({ name }) => <SimpleTag key={name}>{name}</SimpleTag>)
+          }
+          {
+            hasRecord ? <a
+              className='category-feedback-btn'
+              onClick={() => this.setModal('detail')}
+            >
+              查看反馈进度
+            </a> : <a
+                className='category-feedback-btn'
+                onClick={() => this.setModal('create')}
+              >
+                分类错误?
+            </a>
+          }
+        </div> : '暂无分类'
+      }
+      {this.state.feedback === 'create' &&
+        <FeedbackCreate setModal={this.setModal} hasReason accountInfo={accountInfo} actions={actions} />}
+      {this.state.feedback === 'detail' &&
+        <FeedbackDetail setModal={this.setModal} actions={actions} classifyAuditInfoId={classifyAuditInfoId} />}
+      {this.state.feedback === 'mini' &&
+        <FeedbackMini setModal={this.setModal} accountInfo={accountInfo} actions={actions} />}
+    </FormItem>;
+  }
+}
 
 /**
  * 三方平台报价项及相关设置
@@ -184,7 +234,7 @@ export const AgentConfigAndPrice = (props) => {
       })(
         <Checkbox>人工控制可在{name}下单</Checkbox>
       )}
-      <div style={{color: 'red'}}>
+      <div style={{ color: 'red' }}>
         注：如果勾选此处，将以人工控制结果为准，若要恢复机维请取消勾选！
       </div>
     </FormItem>
@@ -220,36 +270,36 @@ export const AgentConfigAndPrice = (props) => {
             <div className='trinity-reference-table'>
               <table>
                 <tbody>
-                <tr>
-                  <th>报价项名称</th>
-                  <th>报价</th>
-                  <th>更新时间</th>
-                  <th>更新人</th>
-                </tr>
-                {
-                  priceList.map((sku, i) => {
-                    return <tr key={sku.trinitySkuKey}>
-                      <th>{sku.wbyTypeName}</th>
-                      <td style={{ padding: '0 4px' }}>
-                        {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].publicCostPrice`, {
-                          initialValue: sku.publicCostPrice || ''
-                        })(<PriceInput isEdit />)}
-                      </td>
-                      <td>
-                        {sku.publicCostPriceMaintainedTime || '--'}
-                      </td>
-                      <td>
-                        {sku.publicCostPriceFrom === 2 ? '系统' : sku.modifiedName}
-                      </td>
-                      {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].trinitySkuTypeId`, {
-                        initialValue: sku.trinitySkuTypeId
-                      })(<input type='hidden' />)}
-                      {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].trinitySkuKey`, {
-                        initialValue: sku.trinitySkuKey
-                      })(<input type='hidden' />)}
-                    </tr>;
-                  })
-                }
+                  <tr>
+                    <th>报价项名称</th>
+                    <th>报价</th>
+                    <th>更新时间</th>
+                    <th>更新人</th>
+                  </tr>
+                  {
+                    priceList.map((sku, i) => {
+                      return <tr key={sku.trinitySkuKey}>
+                        <th>{sku.wbyTypeName}</th>
+                        <td style={{ padding: '0 4px' }}>
+                          {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].publicCostPrice`, {
+                            initialValue: sku.publicCostPrice || ''
+                          })(<PriceInput isEdit />)}
+                        </td>
+                        <td>
+                          {sku.publicCostPriceMaintainedTime || '--'}
+                        </td>
+                        <td>
+                          {sku.publicCostPriceFrom === 2 ? '系统' : sku.modifiedName}
+                        </td>
+                        {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].trinitySkuTypeId`, {
+                          initialValue: sku.trinitySkuTypeId
+                        })(<input type='hidden' />)}
+                        {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].trinitySkuKey`, {
+                          initialValue: sku.trinitySkuKey
+                        })(<input type='hidden' />)}
+                      </tr>;
+                    })
+                  }
                 </tbody>
               </table>
             </div>
@@ -258,28 +308,28 @@ export const AgentConfigAndPrice = (props) => {
             <div className='trinity-reference-table'>
               <table>
                 <tbody>
-                <tr>
-                  <th>附加费名称</th>
-                  <th>比例</th>
-                  <th>更新时间</th>
-                  <th>更新人</th>
-                </tr>
-                {
-                  otherList.map((trinity, i) => {
-                    return <tr key={i}>
-                      <th>{trinity.tollTypeName}</th>
-                      <td>
-                        {trinity.serviceRatio} %
+                  <tr>
+                    <th>附加费名称</th>
+                    <th>比例</th>
+                    <th>更新时间</th>
+                    <th>更新人</th>
+                  </tr>
+                  {
+                    otherList.map((trinity, i) => {
+                      return <tr key={i}>
+                        <th>{trinity.tollTypeName}</th>
+                        <td>
+                          {trinity.serviceRatio} %
                       </td>
-                      <td>
-                        {trinity.modifiedAt || '--'}
-                      </td>
-                      <td>
-                        {trinity.modifiedName}
-                      </td>
-                    </tr>;
-                  })
-                }
+                        <td>
+                          {trinity.modifiedAt || '--'}
+                        </td>
+                        <td>
+                          {trinity.modifiedName}
+                        </td>
+                      </tr>;
+                    })
+                  }
                 </tbody>
               </table>
             </div>
@@ -310,22 +360,22 @@ export const ReferencePrice = (props) => {
       <div className='sina-reference-table'>
         <table>
           <tbody>
-          <tr>
-            <th>微任务原发价</th>
-            <td>{priceMicroTaskTweet || '--'}</td>
-          </tr>
-          <tr>
-            <th>微任务转发价</th>
-            <td>{priceMicroTaskRetweet || '--'}</td>
-          </tr>
-          <tr>
-            <th>WEIQ原发价</th>
-            <td>{priceWeiqTweet || '--'}</td>
-          </tr>
-          <tr>
-            <th>WEIQ转发价</th>
-            <td>{priceWeiqRetweet || '--'}</td>
-          </tr>
+            <tr>
+              <th>微任务原发价</th>
+              <td>{priceMicroTaskTweet || '--'}</td>
+            </tr>
+            <tr>
+              <th>微任务转发价</th>
+              <td>{priceMicroTaskRetweet || '--'}</td>
+            </tr>
+            <tr>
+              <th>WEIQ原发价</th>
+              <td>{priceWeiqTweet || '--'}</td>
+            </tr>
+            <tr>
+              <th>WEIQ转发价</th>
+              <td>{priceWeiqRetweet || '--'}</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -499,9 +549,9 @@ export function TrinityIsPreventShieldingTip(value, callback) {
   } else if (accountValue === 2 && skuValue === 1) {
     diff = false;
   } else {
-    return console.warn('其他错误:',accountValue, skuValue);
+    return console.warn('其他错误:', accountValue, skuValue);
   }
-  let text = diff ? `当前账号可以在${trinityName}下单，报价项不包含防屏蔽，请修改报价项价格，以免价格过高影响应约造成损失。`:
+  let text = diff ? `当前账号可以在${trinityName}下单，报价项不包含防屏蔽，请修改报价项价格，以免价格过高影响应约造成损失。` :
     `当前账号不可以在${trinityName}下单，报价项包含防屏蔽，请修改报价项价格，以免价格过低影响应约造成损失。`
   Modal.confirm({
     title: text,

@@ -209,3 +209,29 @@ export const {
 } = createHttpAction('updateAccountAudiencePortrait', Interface.update.accountAudiencePortrait, {
 	method: 'post'
 });
+
+/**
+ * 内容分类反馈
+ */
+// 判断当前账号是否有内容分类反馈信息
+export const {
+  isExistClassify
+} = createHttpAction('isExistClassify', Interface.classify.isExistClassify)
+
+// 查看分类反馈进度
+export const {
+  getAuditDialogInfo
+} = createHttpAction('getAuditDialogInfo', Interface.classify.getAuditDialogInfo)
+
+// 提交内容分类反馈
+export const {
+  addClassifyAuditInfo
+} = createHttpAction('addClassifyAuditInfo', Interface.classify.addClassifyAuditInfo, {
+  method: 'post'
+})
+// 提交自定义分类
+export const {
+  addCustomClassify
+} = createHttpAction('addCustomClassify', Interface.classify.addCustomClassify, {
+  method: 'post'
+})
