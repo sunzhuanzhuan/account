@@ -142,6 +142,10 @@ export class ContentCategory extends React.Component {
   }
 
   componentDidMount() {
+    this.reload()
+  }
+
+  reload = () => {
     const { actions, data: { accountInfo } } = this.props
     actions.isExistClassify({ accountId: accountInfo.accountId }).then(({ data }) => {
       this.setState({
@@ -174,20 +178,20 @@ export class ContentCategory extends React.Component {
             >
               查看反馈进度
             </a> : <a
-                className='category-feedback-btn'
-                onClick={() => this.setModal('create')}
-              >
-                分类错误?
+              className='category-feedback-btn'
+              onClick={() => this.setModal('create')}
+            >
+              分类错误?
             </a>
           }
         </div> : '暂无分类'
       }
       {this.state.feedback === 'create' &&
-        <FeedbackCreate setModal={this.setModal} hasReason accountInfo={accountInfo} actions={actions} />}
+      <FeedbackCreate setModal={this.setModal} reload={this.reload} hasReason accountInfo={accountInfo} actions={actions} />}
       {this.state.feedback === 'detail' &&
-        <FeedbackDetail setModal={this.setModal} actions={actions} classifyAuditInfoId={classifyAuditInfoId} />}
+      <FeedbackDetail setModal={this.setModal} actions={actions} classifyAuditInfoId={classifyAuditInfoId} />}
       {this.state.feedback === 'mini' &&
-        <FeedbackMini setModal={this.setModal} accountInfo={accountInfo} actions={actions} />}
+      <FeedbackMini setModal={this.setModal} accountInfo={accountInfo} actions={actions} />}
     </FormItem>;
   }
 }
@@ -218,7 +222,7 @@ export const AgentConfigAndPrice = (props) => {
   return <div>
     <FormItem {...formItemLayout} label={`可在${name}下单(机维)`}>
       {getFieldDecorator('trinityIsPreventShieldingAutomated', {
-        initialValue: trinityIsPreventShieldingAutomated,
+        initialValue: trinityIsPreventShieldingAutomated
         // rules: [{ required: true, message: '本项为必选项，请选择！' }]
       })(
         <RadioGroup disabled>
@@ -266,10 +270,11 @@ export const AgentConfigAndPrice = (props) => {
       cooperationPlatformResVOS.map((item, n) => {
         let { trinitySkuInfoResVOList: priceList = [], trinityTollTypeVOList: otherList = [] } = item;
         return <div key={n}>
-          {priceList.length ? <FormItem {...formItemLayout} label={`${item.cooperationPlatformName}参考报价`}>
-            <div className='trinity-reference-table'>
-              <table>
-                <tbody>
+          {priceList.length ?
+            <FormItem {...formItemLayout} label={`${item.cooperationPlatformName}参考报价`}>
+              <div className='trinity-reference-table'>
+                <table>
+                  <tbody>
                   <tr>
                     <th>报价项名称</th>
                     <th>报价</th>
@@ -300,36 +305,36 @@ export const AgentConfigAndPrice = (props) => {
                       </tr>;
                     })
                   }
-                </tbody>
-              </table>
-            </div>
-          </FormItem> : null}
+                  </tbody>
+                </table>
+              </div>
+            </FormItem> : null}
           {otherList.length ? <FormItem {...formItemLayout} label='附加费参考报价'>
             <div className='trinity-reference-table'>
               <table>
                 <tbody>
-                  <tr>
-                    <th>附加费名称</th>
-                    <th>比例</th>
-                    <th>更新时间</th>
-                    <th>更新人</th>
-                  </tr>
-                  {
-                    otherList.map((trinity, i) => {
-                      return <tr key={i}>
-                        <th>{trinity.tollTypeName}</th>
-                        <td>
-                          {trinity.serviceRatio} %
+                <tr>
+                  <th>附加费名称</th>
+                  <th>比例</th>
+                  <th>更新时间</th>
+                  <th>更新人</th>
+                </tr>
+                {
+                  otherList.map((trinity, i) => {
+                    return <tr key={i}>
+                      <th>{trinity.tollTypeName}</th>
+                      <td>
+                        {trinity.serviceRatio} %
                       </td>
-                        <td>
-                          {trinity.modifiedAt || '--'}
-                        </td>
-                        <td>
-                          {trinity.modifiedName}
-                        </td>
-                      </tr>;
-                    })
-                  }
+                      <td>
+                        {trinity.modifiedAt || '--'}
+                      </td>
+                      <td>
+                        {trinity.modifiedName}
+                      </td>
+                    </tr>;
+                  })
+                }
                 </tbody>
               </table>
             </div>
@@ -360,22 +365,22 @@ export const ReferencePrice = (props) => {
       <div className='sina-reference-table'>
         <table>
           <tbody>
-            <tr>
-              <th>微任务原发价</th>
-              <td>{priceMicroTaskTweet || '--'}</td>
-            </tr>
-            <tr>
-              <th>微任务转发价</th>
-              <td>{priceMicroTaskRetweet || '--'}</td>
-            </tr>
-            <tr>
-              <th>WEIQ原发价</th>
-              <td>{priceWeiqTweet || '--'}</td>
-            </tr>
-            <tr>
-              <th>WEIQ转发价</th>
-              <td>{priceWeiqRetweet || '--'}</td>
-            </tr>
+          <tr>
+            <th>微任务原发价</th>
+            <td>{priceMicroTaskTweet || '--'}</td>
+          </tr>
+          <tr>
+            <th>微任务转发价</th>
+            <td>{priceMicroTaskRetweet || '--'}</td>
+          </tr>
+          <tr>
+            <th>WEIQ原发价</th>
+            <td>{priceWeiqTweet || '--'}</td>
+          </tr>
+          <tr>
+            <th>WEIQ转发价</th>
+            <td>{priceWeiqRetweet || '--'}</td>
+          </tr>
           </tbody>
         </table>
       </div>

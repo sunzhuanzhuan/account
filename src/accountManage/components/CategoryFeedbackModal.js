@@ -13,8 +13,9 @@ export class FeedbackCreate extends Component {
         let hide = message.loading('处理中...')
         this.props.actions.addClassifyAuditInfo(values).then(() => {
           hide()
+          this.props.setModal()
           message.success('我们将在5个工作日内给您反馈，请您耐心等待', 1.5, () => {
-            this.props.setModal()
+            this.props.reload()
           })
         })
       }
