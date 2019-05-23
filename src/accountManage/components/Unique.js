@@ -141,6 +141,10 @@ export class ContentCategory extends React.Component {
   }
 
   componentDidMount() {
+    this.reload()
+  }
+
+  reload = () => {
     const { actions, data: { accountInfo } } = this.props
     actions.isExistClassify({ accountId: accountInfo.accountId }).then(({ data }) => {
       this.setState({
@@ -182,11 +186,11 @@ export class ContentCategory extends React.Component {
         </div> : '暂无分类'
       }
       {this.state.feedback === 'create' &&
-      <FeedbackCreate setModal={this.setModal} hasReason accountInfo={accountInfo} actions={actions}/>}
+      <FeedbackCreate setModal={this.setModal} reload={this.reload} hasReason accountInfo={accountInfo} actions={actions} />}
       {this.state.feedback === 'detail' &&
-      <FeedbackDetail setModal={this.setModal} actions={actions} classifyAuditInfoId={classifyAuditInfoId}/>}
+      <FeedbackDetail setModal={this.setModal} actions={actions} classifyAuditInfoId={classifyAuditInfoId} />}
       {this.state.feedback === 'mini' &&
-      <FeedbackMini setModal={this.setModal} accountInfo={accountInfo} actions={actions}/>}
+      <FeedbackMini setModal={this.setModal} accountInfo={accountInfo} actions={actions} />}
     </FormItem>;
   }
 }
