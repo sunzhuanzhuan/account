@@ -204,7 +204,7 @@ export class FeedbackDetail extends Component {
   showContact = () => {
     Modal.info({
       title: '直接添加客服QQ号',
-      content: '3460666273'
+      content: this.state.customerQq || '3460666273'
     })
   }
 
@@ -224,7 +224,7 @@ export class FeedbackDetail extends Component {
       wrongReasonType,
       newClassifyName,
       auditType = 1,
-      classifyAuditDialogList = []
+      classifyAuditDialogList = [],
     } = this.state
     return <Modal
       visible
@@ -251,12 +251,10 @@ export class FeedbackDetail extends Component {
             {
               classifyAuditDialogList.map((data, n) => {
                 return data.sourceType === 2 ? <div className='category-history-item' key={n}>
-                    <div className='image-wrapper'>
-                      <img src="" alt="" />
-                    </div>
+
                     <div className='content-wrapper'>
                       <div className='info name'>
-                        系统
+                        {data.adminRealName}
                         <b>{data.createdAt}</b>
                       </div>
                       {
@@ -277,9 +275,7 @@ export class FeedbackDetail extends Component {
                     </div>
                   </div> :
                   <div className='category-history-item' key={n}>
-                    <div className='image-wrapper'>
-                      <img src="" alt="" />
-                    </div>
+
                     <div className='content-wrapper'>
                       <div className='info name'>
                         博主
