@@ -251,7 +251,9 @@ export class FeedbackDetail extends Component {
             {
               classifyAuditDialogList.map((data, n) => {
                 return data.sourceType === 2 ? <div className='category-history-item' key={n}>
-
+                    <div className='image-wrapper'>
+                      <img src="" alt="" />
+                    </div>
                     <div className='content-wrapper'>
                       <div className='info name'>
                         {data.adminRealName}
@@ -275,7 +277,9 @@ export class FeedbackDetail extends Component {
                     </div>
                   </div> :
                   <div className='category-history-item' key={n}>
-
+                    <div className='image-wrapper'>
+                      <img src="" alt="" />
+                    </div>
                     <div className='content-wrapper'>
                       <div className='info name'>
                         博主
