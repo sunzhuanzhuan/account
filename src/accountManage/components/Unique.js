@@ -4,6 +4,11 @@ import { Form, Select, Input, Checkbox, Popover, Radio } from 'antd';
 import SimpleTag from '../base/SimpleTag';
 import moment from 'moment';
 import { platformToDesc } from '../constants/placeholder';
+import {
+  FeedbackCreate,
+  FeedbackDetail,
+  FeedbackMini
+} from "@/accountManage/components/CategoryFeedbackModal";
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -130,16 +135,65 @@ export const AccountDesc = (props) => {
 /**
  * 内容分类
  */
-export const ContentCategory = (props) => {
-  const { formItemLayout = {}, data: { accountInfo } } = props;
-  let {
-    classificationList: category = []
-  } = accountInfo;
-  return <FormItem {...formItemLayout} label='内容分类'>
-    {category.length ? <div>{category.map(({ name }) =>
-      <SimpleTag key={name}>{name}</SimpleTag>)}</div> : '暂无分类'}
-  </FormItem>;
-};
+export class ContentCategory extends React.Component {
+  state = {
+    feedback: ''
+  }
+
+  componentDidMount() {
+    this.reload()
+  }
+
+  reload = () => {
+    const { actions, data: { accountInfo } } = this.props
+    actions.isExistClassify({ accountId: accountInfo.accountId }).then(({ data }) => {
+      this.setState({
+        classifyAuditInfoId: data.classifyAuditInfoId,
+        hasRecord: data.count
+      })
+    })
+  }
+
+  setModal = type => {
+    this.setState({ feedback: type })
+  }
+
+  render() {
+    const { formItemLayout = {}, data: { accountInfo }, actions } = this.props;
+    const { classifyAuditInfoId, hasRecord } = this.state;
+    let {
+      classificationList: category = []
+    } = accountInfo;
+    return <FormItem {...formItemLayout} label='内容分类'>
+      {
+        category.length ? <div>
+          {
+            category.map(({ name }) => <SimpleTag key={name}>{name}</SimpleTag>)
+          }
+          {
+            hasRecord ? <a
+              className='category-feedback-btn'
+              onClick={() => this.setModal('detail')}
+            >
+              查看反馈进度
+            </a> : <a
+              className='category-feedback-btn'
+              onClick={() => this.setModal('create')}
+            >
+              分类错误?
+            </a>
+          }
+        </div> : '暂无分类'
+      }
+      {this.state.feedback === 'create' &&
+      <FeedbackCreate setModal={this.setModal} reload={this.reload} hasReason accountInfo={accountInfo} actions={actions} />}
+      {this.state.feedback === 'detail' &&
+      <FeedbackDetail setModal={this.setModal} actions={actions} classifyAuditInfoId={classifyAuditInfoId} />}
+      {this.state.feedback === 'mini' &&
+      <FeedbackMini setModal={this.setModal} accountInfo={accountInfo} actions={actions} />}
+    </FormItem>;
+  }
+}
 
 /**
  * 微博报价特有项(参考报价)
