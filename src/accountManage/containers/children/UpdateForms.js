@@ -38,7 +38,7 @@ export class AccountInfos extends Component {
     const { auth, data: { accountInfo }, actions } = this.props.params;
     const { babysitter_host = {} } = window.bentleyConfig || {};
     const {
-      babysitterHost = babysitter_host.value || 'http://toufang.weiboyi.com',
+      babysitterHost = babysitter_host.value || 'http://toufang.tst-weiboyi.com',
       accountId,
       modifiedAt,
       platformId
