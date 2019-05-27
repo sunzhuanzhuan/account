@@ -10,7 +10,7 @@ import {
 import DataSet from "@antv/data-set";
 import { formatW } from "../../util";
 import { Empty } from 'antd';
-
+import numeral from 'numeral'
 
 class CurveLine extends Component {
 
@@ -56,7 +56,7 @@ class CurveLine extends Component {
       interactionProportionIncre: {
         alias: '平均互动率',
         formatter: val => {
-          return formatW(val)
+          return numeral(val || 0).format('0.0%')
         }
       },
     };
