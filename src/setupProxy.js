@@ -1,7 +1,5 @@
 const proxy = require('http-proxy-middleware');
 module.exports = function (app) {
-<<<<<<< HEAD
-=======
   app.use(proxy('/api/common-file/',
     { target: 'http://weiboyi-files-service-test.192.168.100.203.nip.io', changeOrigin: true }
   ));
@@ -15,7 +13,6 @@ module.exports = function (app) {
     { target: 'http://weiboyi-operator-gateway-test.192.168.100.203.nip.io', changeOrigin: true }
   ));
 
->>>>>>> feature/accountDetailChart
   app.use(proxy('/api',
     { target: 'http://nb.tst-weiboyi.com', changeOrigin: true }
   ));
