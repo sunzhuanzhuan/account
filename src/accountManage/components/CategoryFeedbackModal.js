@@ -282,7 +282,7 @@ export class FeedbackDetail extends Component {
                     </div>
                     <div className='content-wrapper'>
                       <div className='info name'>
-                        博主
+                        {data.createdFrom === 1 ? data.adminRealName : '博主'}
                         <b>{data.createdAt}</b>
                       </div>
                       <div className='info'>
