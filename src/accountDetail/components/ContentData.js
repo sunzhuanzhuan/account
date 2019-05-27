@@ -47,30 +47,44 @@ class ContentData extends Component {
     }
   }
   render() {
-    const { trendInfo = {} } = this.props
+    const { trendInfo = {}, baseInfo = {} } = this.props
+    const { base = {} } = baseInfo
+    const { platformId } = base
     const { dataBoxProps } = this.state
     const { contentSum = [], like = [], interactive = [] } = trendInfo
     return (
       <div className='content-data'>
         <div className='title-big' >内容数据服务</div>
         <div className='content-char-box'>
+          {/* 粉丝累计数+粉丝净增数 */}
           <div className='content-char'>
-            <CharTitle title='内容累计趋势图' content='可观察最近90天账号基础数据趋势表现' />
-            <CurveLine data={contentSum} />
+            <CharTitle title='粉丝累计和净增趋势图' content='可观察最近90天账号粉丝累计和净增变化趋势' />
+            <CurveLine data={contentSum}
+              BluelineText='粉丝累计数'
+              BluelineName='followerCountFull'
+              GreenlineText='粉丝净增数'
+              GreenlineName='followerCountIncre'
+            />
           </div>
+          {/* 平均点赞数+视频发布数 */}
           <div className='content-char'>
-            <CharTitle title='粉丝点赞趋势图' content='可观察最近90天内粉丝质量变化趋势' />
-            <HistogramLine data={like}
-              positionIntervalConfig='dateRange*followerCountFull'
-              positionConfig='dateRange*mediaLikeSumIncre'
-              lineText='点赞净增数' boxText='粉丝累计数' />
+            <CharTitle title='平均点赞数和发布数趋势图' content='可观察最近90天内平均点赞数和发布数变化趋势' />
+            <CurveLine data={like}
+              BluelineText='平均点赞数'
+              BluelineName='mediaLikeAvgFull'
+              GreenlineText='视频发布数'
+              GreenlineName='mediaCountIncre'
+            />
           </div>
+          {/* 平均互动数+当周平均互动率 */}
           <div className='content-char'>
-            <CharTitle title='粉丝互动率趋势图' content='可观察最近90天内内容质量变化趋势' />
-            <HistogramLine data={interactive}
-              positionIntervalConfig='dateRange*mediaCountIncre'
-              positionConfig='dateRange*interactionProportionIncre'
-              lineText='平均互动率' boxText='发布净增数' />
+            <CharTitle title='平均互动数和互动率趋势图' content='可观察最近90天内平均互动数和互动率变化趋势' />
+            <CurveLine data={interactive}
+              BluelineText='平均互动数'
+              BluelineName='mediaInteractionAvgFull'
+              GreenlineText={platformId == 115 ? '' : '平均互动率'}
+              GreenlineName={platformId == 115 ? '' : 'interactionProportionIncre'}
+            />
           </div>
           <div className='content-char'>
             <CharTitle title='内容数据箱线图' />
