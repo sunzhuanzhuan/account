@@ -285,11 +285,23 @@ export const AgentConfigAndPrice = (props) => {
                     priceList.map((sku, i) => {
                       return <tr key={sku.trinitySkuKey}>
                         <th>{sku.wbyTypeName}</th>
-                        <td style={{ padding: '0 4px' }}>
-                          {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].publicCostPrice`, {
-                            initialValue: sku.publicCostPrice === 0 ? '0' : sku.publicCostPrice
-                          })(
-                            <InputNumber placeholder="请输入价格" min={0} precision={2} max={999999999} style={{ width: '100%' }} />)}
+                        <td style={{ padding: '0 4px', textAlign: 'left' }}>
+                          <FormItem>
+                            {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].publicCostPrice`, {
+                              initialValue: sku.publicCostPrice,
+                              rules: [{
+                                required: (sku.publicCostPrice === 0 || sku.publicCostPrice),
+                                message: '请输入大于等于0的数'
+                              }]
+                            })(
+                              <InputNumber
+                                placeholder="报价保留两位小数"
+                                min={0}
+                                precision={2}
+                                max={999999999}
+                                style={{ width: '100%' }}
+                              />)}
+                          </FormItem>
                         </td>
                         <td>
                           {sku.publicCostPriceMaintainedTime || '--'}
