@@ -216,44 +216,58 @@ export const AgentConfigAndPrice = (props) => {
       cooperationPlatformResVOS.map((item, n) => {
         let { trinitySkuInfoResVOList: priceList = [], trinityTollTypeVOList: otherList = [] } = item;
         return <div key={n}>
-          {priceList.length ? <FormItem {...formItemLayout} label={`${item.cooperationPlatformName}参考报价`}>
-            <div className='trinity-reference-table'>
-              <table>
-                <tbody>
-                <tr>
-                  <th>报价项名称</th>
-                  <th>报价</th>
-                  <th>更新时间</th>
-                  <th>更新人</th>
-                </tr>
-                {
-                  priceList.map((sku, i) => {
-                    return <tr key={sku.trinitySkuKey}>
-                      <th>{sku.wbyTypeName}</th>
-                      <td style={{ padding: '0 4px' }}>
-                        {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].publicCostPrice`, {
-                          initialValue: sku.publicCostPrice === 0 ? '0' : sku.publicCostPrice
-                        })(<InputNumber placeholder="请输入价格" min={0} precision={2} max={999999999} style={{width: '100%'}}/>)}
-                      </td>
-                      <td>
-                        {sku.publicCostPriceMaintainedTime || '--'}
-                      </td>
-                      <td>
-                        {sku.publicCostPriceFrom === 2 ? '系统' : sku.modifiedName}
-                      </td>
-                      {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].trinitySkuTypeId`, {
-                        initialValue: sku.trinitySkuTypeId
-                      })(<input type='hidden' />)}
-                      {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].trinitySkuKey`, {
-                        initialValue: sku.trinitySkuKey
-                      })(<input type='hidden' />)}
-                    </tr>;
-                  })
-                }
-                </tbody>
-              </table>
-            </div>
-          </FormItem> : null}
+          {priceList.length ?
+            <FormItem {...formItemLayout} label={`${item.cooperationPlatformName}参考报价`}>
+              <div className='trinity-reference-table'>
+                <table>
+                  <tbody>
+                  <tr>
+                    <th>报价项名称</th>
+                    <th>报价</th>
+                    <th>更新时间</th>
+                    <th>更新人</th>
+                  </tr>
+                  {
+                    priceList.map((sku, i) => {
+                      return <tr key={sku.trinitySkuKey}>
+                        <th>{sku.wbyTypeName}</th>
+                        <td style={{ padding: '0 4px', textAlign: 'left' }}>
+                          <FormItem>
+                            {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].publicCostPrice`, {
+                              initialValue: sku.publicCostPrice,
+                              rules: [{
+                                required: (sku.publicCostPrice === 0 || sku.publicCostPrice),
+                                message: '请输入大于等于0的数'
+                              }]
+                            })(
+                              <InputNumber
+                                placeholder="报价保留两位小数"
+                                min={0}
+                                precision={2}
+                                max={999999999}
+                                style={{ width: '100%' }}
+                              />)}
+                          </FormItem>
+                        </td>
+                        <td>
+                          {sku.publicCostPriceMaintainedTime || '--'}
+                        </td>
+                        <td>
+                          {sku.publicCostPriceFrom === 2 ? '系统' : sku.modifiedName}
+                        </td>
+                        {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].trinitySkuTypeId`, {
+                          initialValue: sku.trinitySkuTypeId
+                        })(<input type='hidden' />)}
+                        {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].trinitySkuKey`, {
+                          initialValue: sku.trinitySkuKey
+                        })(<input type='hidden' />)}
+                      </tr>;
+                    })
+                  }
+                  </tbody>
+                </table>
+              </div>
+            </FormItem> : null}
           {otherList.length ? <FormItem {...formItemLayout} label='附加费参考报价'>
             <div className='trinity-reference-table'>
               <table>

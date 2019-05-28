@@ -237,7 +237,7 @@ export class AccountPriceForm extends Component {
   showConfirm = (values) => {
     const { actions: { saveSku }, data: { accountInfo, trinityPriceInfo } } = this.props.params;
     const { getSkuActions } = this.props;
-    const { isFamous,platformId } = accountInfo;
+    const { isFamous, platformId } = accountInfo;
     confirm({
       title: '提交价格信息?',
       content: (isFamous == 1) ? '提交成功后，下个价格有效期和报价将无法修改' : '',
@@ -305,22 +305,21 @@ export class AccountPriceForm extends Component {
 @Form.create()
 export class AgentConfigAndPriceForm extends Component {
   submit = (e) => {
-    e.preventDefault();
+    e && e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const { data: { accountInfo: { accountId, platformId }, priceInfo: { isPreventShielding } }, actions } = this.props.params;
         let trinitySkuInfoVOS = values.trinitySkuInfoVOS.reduce((ary, cur) => {
           (cur.list || []).forEach(sku => {
-            ary.push({
+            (sku.publicCostPrice === 0 || sku.publicCostPrice) && ary.push({
               ...sku,
               trinityPlatformCode: cur.trinityPlatformCode,
-              publicCostPrice: sku.publicCostPrice || 0
+              publicCostPrice: sku.publicCostPrice
             });
           });
           return ary;
         }, []);
         let trinityIsPreventShieldingManual = values.trinityIsPreventShieldingManual || 0;
-
         TrinityIsPreventShieldingTip({
           accountValue: trinityIsPreventShieldingManual > 0 ? trinityIsPreventShieldingManual :
             values.trinityIsPreventShieldingAutomated,
