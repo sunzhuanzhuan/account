@@ -1,6 +1,6 @@
 import React from 'react';
 import WBYUploadFile from '@/accountManage/base/NewUpload';
-import { Form, Select, Input, Checkbox, Popover, Radio, Modal, message } from 'antd';
+import { Form, Select, Input, Checkbox, Popover, Radio, Modal, message, InputNumber } from 'antd';
 import SimpleTag from '../base/SimpleTag';
 import moment from 'moment';
 import { platformToDesc } from '../constants/placeholder';
@@ -232,8 +232,8 @@ export const AgentConfigAndPrice = (props) => {
                       <th>{sku.wbyTypeName}</th>
                       <td style={{ padding: '0 4px' }}>
                         {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].publicCostPrice`, {
-                          initialValue: sku.publicCostPrice || ''
-                        })(<PriceInput isEdit />)}
+                          initialValue: sku.publicCostPrice === 0 ? '0' : sku.publicCostPrice
+                        })(<InputNumber placeholder="请输入价格" min={0} precision={2} max={999999999} style={{width: '100%'}}/>)}
                       </td>
                       <td>
                         {sku.publicCostPriceMaintainedTime || '--'}
@@ -501,8 +501,8 @@ export function TrinityIsPreventShieldingTip(value, callback) {
   } else {
     return console.warn('其他错误:',accountValue, skuValue);
   }
-  let text = diff ? `当前账号可以在${trinityName}下单，报价项不包含防屏蔽，请修改报价项价格，以免价格过高影响应约造成损失。`:
-    `当前账号不可以在${trinityName}下单，报价项包含防屏蔽，请修改报价项价格，以免价格过低影响应约造成损失。`
+  let text = diff ? `当前账号可以在${trinityName}下单，报价包含防屏蔽未勾选，请修改报价项价格，以免影响应约造成损失。`:
+    `当前账号不可以在${trinityName}下单，报价包含防屏蔽已勾选，请修改报价项价格，以免影响应约造成损失。`
   Modal.confirm({
     title: text,
     okText: '不修改,保存',
