@@ -575,7 +575,8 @@ export const Verified = (props) => {
     form: { getFieldDecorator, getFieldValue },
     actions: { sensitiveWordsFilter },
     layout,
-    data: { accountInfo }
+    data: { accountInfo },
+    verifiedOptional
   } = props;
   const {
     isVerified,
@@ -606,10 +607,9 @@ export const Verified = (props) => {
           initialValue: verifiedStatus || 2
         })(
           <RadioGroup  disabled={verifiedStatusFrom === 2}>
-            <Radio value={2}>黄V</Radio>
-            <Radio value={3}>蓝V</Radio>
-            <Radio value={6}>金V</Radio>
-            <Radio value={4}>达人</Radio>
+            {
+              verifiedOptional.map(opt => <Radio key={opt.id} value={opt.id}>{opt.name}</Radio>)
+            }
           </RadioGroup>
         )}
       </FormItem>

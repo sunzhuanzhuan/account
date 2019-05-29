@@ -32,14 +32,37 @@ export default class MainEdit extends Component {
       authToken: '',
       fetchModal: false,
       asyncVisibility: {
-        isOpenLiveProgram: true,
-        isOpenStore: true
-      }
+        isOpenLiveProgram: true, // 直播
+        isOpenStore: true // 橱窗/店铺
+      },
+      verifiedOptional: [
+        {
+          id: 2,
+          name: '黄V'
+        }, {
+          id: 3,
+          name: '蓝V'
+        }, {
+          id: 6,
+          name: '金V'
+        }, {
+          id: 4,
+          name: '达人'
+        }
+      ]
     }
-    props.actions.getNewToken().then(({ data: authToken }) => {
+  }
+
+  componentDidMount() {
+    // 获取上传图片token
+    this.props.actions.getNewToken().then(({ data: authToken }) => {
       this.setState({ authToken })
     })
+    // 获取配置项 - 账号特权
+    // isOpenLiveProgram, // 直播
+    // isOpenStore // 橱窗/店铺
 
+    // 获取配置项 - 认证类型
   }
 
   submit = (e) => {
@@ -68,7 +91,8 @@ export default class MainEdit extends Component {
     } = data.accountInfo || {}
     const {
       authToken,
-      asyncVisibility
+      asyncVisibility,
+      verifiedOptional
     } = this.state
     const left = <div className='wrap-panel-left-content'>
       <span style={{
@@ -142,7 +166,7 @@ export default class MainEdit extends Component {
             <small className='line' />
           </h4>
           <div className='subclass-content'>
-            <Verified {...fieldProps} />
+            <Verified {...fieldProps} verifiedOptional={verifiedOptional}/>
             {/* 以下字段需要判断可见性 */}
             {asyncVisibility.isOpenStore && <OpenStore {...fieldProps} />}
             {asyncVisibility.isOpenLiveProgram && <OpenLiveProgram {...fieldProps} />}
