@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { List, message, Spin, Row, Col, Alert, Skeleton } from 'antd';
+import { List, Icon, Spin, Row, Col, Alert, Skeleton } from 'antd';
 import InfiniteScroll from 'react-infinite-scroller';
 import "./RecentPrice.less"
 import qs from "qs";
@@ -10,6 +10,7 @@ import * as action from '../actions/index'
 import * as commonAction from "@/actions";
 import { executionMap, executionList } from "../constants/executionData";
 import { getWeixinAvg, getOtherAllAvg } from "../util";
+import { PopoverFormat } from "../base/TitleAndDecide";
 class RecentPrice extends Component {
   constructor(props) {
     super(props);
@@ -66,7 +67,9 @@ class RecentPrice extends Component {
               <Col span={5}>应约时间</Col>
               <Col span={5}>价格名称</Col>
               <Col span={4}>应约价(元)</Col>
-              <Col span={5}>执行数据</Col>
+              <Col span={5}>执行数据
+              <PopoverFormat content={<div style={{ width: 200 }}>展示的是订单执行后的表现稳定性数据，一般为发布时间后72小时的数据；若为-则是因为该订单未最终执行或未抓取到数据。</div>}
+                  text={<Icon style={{ marginLeft: 2 }} type="question-circle" theme="outlined" />} /></Col>
               <Col span={5}>发布时间</Col>
             </Row>
           </div>
