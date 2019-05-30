@@ -131,6 +131,7 @@ export const diffByTypes = {
         }
       ],
       introductionPlaceholder: '搞笑视频达人，视频风格犀利独到，容易引起话题性传播；曾创作过“xxxx”系列节目，取得xxx万播放量。在XXX等多个视频平台均可发布若您不接受原创合作，可写：帐号支持发布客户的指定视频，支持多平台发布等',
+      cooperateContentPlaceHolder: '1.播放量100w，点赞量3w，转发量1w、观看量3W等等；\n2.以关爱女性为主题，搭配浪漫温馨风格，完美植入了XX产品或进行了xx主题视频发布；\n	3.促进了产品销售，达到了推广效果，登上平台热门推荐，取得良好效果。'
     }
   },
   "panda": {
@@ -161,10 +162,7 @@ export const diffByTypes = {
         }
       ],
       introductionPlaceholder: '美女主播，自带90后美女coser属性，微博月流量百万金v用户。善于表达，接地气打破传统女神形象，多才多艺满足粉丝的多重胃口，知识+正能量打破以往的美女花瓶界限；拥有微博，直播，QQ粉丝群，粉丝粘滞性互动性强； 参加过XXX等品牌的线下发布活动，直播平台专题直播策划活动等。可支持直播活动前在微博上进行预热。',
-      verifiedType: {
-        2: "达人认证",
-        3: "企业认证"
-      }
+      cooperateContentPlaceHolder: '1.播放量100w，点赞量3w，转发量1w、观看量3W等等；\n2.以关爱女性为主题，搭配浪漫温馨风格，完美植入了XX产品或进行了xx主题视频发布；\n	3.促进了产品销售，达到了推广效果，登上平台热门推荐，取得良好效果。'
     }
   },
   "sina": {
@@ -201,12 +199,7 @@ export const diffByTypes = {
         }
       ],
       introductionPlaceholder: '微博知名段子手/大V/星座达人，致力于网络新起事物、热点事件、热门电影等相关的创作，内容有自己的独特视角；出版作品《xxxx》等。若您不接受原创合作，可写：帐号支持转发，可支持下微任务防屏蔽，可购买粉丝头条等',
-      verifiedType: {
-        2: "黄V",
-        3: "蓝V",
-        6: "金V",
-        4: "达人"
-      }
+    cooperateContentPlaceHolder: '在微博活跃的时间段，通过抽奖的形式进行微博图文直发，使xxx剃须刀曝光在广大男性用户的视野中，通过网页链接，直接跳转到京东店铺购买。阅读量100W+，点赞量3W+，评论量1000W+等；'
     }
   },
   "weChat": {
@@ -243,7 +236,8 @@ export const diffByTypes = {
         }
       ],
       introductionPlaceholder: '知名微信公众号媒体，“学最好的穿搭，做最好的女人”。专注时尚穿搭，拥有XX万粉丝，粉丝多为高黏性的女性白领群体，具有较高的商业转化价值；合作过多个时尚美妆品牌，紧抓客户要点，撰稿经验丰富。若您不接受原创合作，可写：帐号支持客户给稿直发，可添加二维码、原文链接等',
-      disabledFollowersCount: true
+      disabledFollowersCount: true,
+      cooperateContentPlaceHolder: '如：原创多图文第一条发布，按照帐号一贯的专业风格，围绕xx产品的促销活动进行创作和发布。因为帐号调性匹配，精准针对目标用户，推广效果良好。阅读量100W+，点赞量3W+，评论量1000W+等；'
     }
   },
   "friends": {
@@ -274,7 +268,8 @@ export const diffByTypes = {
           placeholder: '请输入主页链接'
         }
       ],
-      introductionPlaceholder: '请输入账号简介'
+      introductionPlaceholder: '请输入账号简介',
+      cooperateContentPlaceHolder: '1.播放量100w，点赞量3w，转发量1w、观看量3W等等；\n2.以关爱女性为主题，搭配浪漫温馨风格，完美植入了XX产品或进行了xx主题视频发布；\n	3.促进了产品销售，达到了推广效果，登上平台热门推荐，取得良好效果。'
     }
   },
   "normal": {
@@ -295,7 +290,8 @@ export const diffByTypes = {
       ]
     },
     configure: {
-      introductionPlaceholder: '请输入账号简介'
+      introductionPlaceholder: '请输入账号简介',
+      cooperateContentPlaceHolder: '1.播放量100w，点赞量3w，转发量1w、观看量3W等等；\n2.以关爱女性为主题，搭配浪漫温馨风格，完美植入了XX产品或进行了xx主题视频发布；\n	3.促进了产品销售，达到了推广效果，登上平台热门推荐，取得良好效果。'
     }
   },
   "redBook": {
@@ -337,7 +333,8 @@ export const diffByTypes = {
         8: "铜冠薯",
         9: "银冠薯",
         10: "金冠薯"
-      }
+      },
+      cooperateContentPlaceHolder: '1.播放量100w，点赞量3w，转发量1w、观看量3W等等；\n2.以关爱女性为主题，搭配浪漫温馨风格，完美植入了XX产品或进行了xx主题视频发布；\n	3.促进了产品销售，达到了推广效果，登上平台热门推荐，取得良好效果。'
     }
   },
   "headline": {
@@ -367,7 +364,8 @@ export const diffByTypes = {
           placeholder: '请输入主页链接'
         }
       ],
-      introductionPlaceholder: '请输入账号简介'
+      introductionPlaceholder: '请输入账号简介',
+      cooperateContentPlaceHolder: '请填写合作案例的数据情况或案例亮点'
     }
   },
   "beautyPat": {
@@ -397,7 +395,8 @@ export const diffByTypes = {
           placeholder: '请输入账号ID'
         }
       ],
-      introductionPlaceholder: '搞笑视频达人，视频风格犀利独到，容易引起话题性传播；曾创作过“xxxx”系列节目，取得xxx万播放量。在XXX等多个视频平台均可发布若您不接受原创合作，可写：帐号支持发布客户的指定视频，支持多平台发布等'
+      introductionPlaceholder: '搞笑视频达人，视频风格犀利独到，容易引起话题性传播；曾创作过“xxxx”系列节目，取得xxx万播放量。在XXX等多个视频平台均可发布若您不接受原创合作，可写：帐号支持发布客户的指定视频，支持多平台发布等',
+      cooperateContentPlaceHolder: '1.播放量100w，点赞量3w，转发量1w、观看量3W等等；\n2.以关爱女性为主题，搭配浪漫温馨风格，完美植入了XX产品或进行了xx主题视频发布；\n	3.促进了产品销售，达到了推广效果，登上平台热门推荐，取得良好效果。'
     }
   },
   "yy": {
@@ -427,7 +426,8 @@ export const diffByTypes = {
           placeholder: '请输入YY号'
         }
       ],
-      introductionPlaceholder: '美女主播，自带90后美女coser属性，微博月流量百万金v用户。善于表达，接地气打破传统女神形象，多才多艺满足粉丝的多重胃口，知识+正能量打破以往的美女花瓶界限；拥有微博，直播，QQ粉丝群，粉丝粘滞性互动性强； 参加过XXX等品牌的线下发布活动，直播平台专题直播策划活动等。可支持直播活动前在微博上进行预热。'
+      introductionPlaceholder: '美女主播，自带90后美女coser属性，微博月流量百万金v用户。善于表达，接地气打破传统女神形象，多才多艺满足粉丝的多重胃口，知识+正能量打破以往的美女花瓶界限；拥有微博，直播，QQ粉丝群，粉丝粘滞性互动性强； 参加过XXX等品牌的线下发布活动，直播平台专题直播策划活动等。可支持直播活动前在微博上进行预热。',
+      cooperateContentPlaceHolder: '1.播放量100w，点赞量3w，转发量1w、观看量3W等等；\n2.以关爱女性为主题，搭配浪漫温馨风格，完美植入了XX产品或进行了xx主题视频发布；\n	3.促进了产品销售，达到了推广效果，登上平台热门推荐，取得良好效果。'
     }
   },
   "videos": {
@@ -457,7 +457,8 @@ export const diffByTypes = {
           placeholder: '请输入账号ID'
         }
       ],
-      introductionPlaceholder: '美女主播，自带90后美女coser属性，微博月流量百万金v用户。善于表达，接地气打破传统女神形象，多才多艺满足粉丝的多重胃口，知识+正能量打破以往的美女花瓶界限；拥有微博，直播，QQ粉丝群，粉丝粘滞性互动性强； 参加过XXX等品牌的线下发布活动，直播平台专题直播策划活动等。可支持直播活动前在微博上进行预热。'
+      introductionPlaceholder: '美女主播，自带90后美女coser属性，微博月流量百万金v用户。善于表达，接地气打破传统女神形象，多才多艺满足粉丝的多重胃口，知识+正能量打破以往的美女花瓶界限；拥有微博，直播，QQ粉丝群，粉丝粘滞性互动性强； 参加过XXX等品牌的线下发布活动，直播平台专题直播策划活动等。可支持直播活动前在微博上进行预热。',
+      cooperateContentPlaceHolder: '1.播放量100w，点赞量3w，转发量1w、观看量3W等等；\n2.以关爱女性为主题，搭配浪漫温馨风格，完美植入了XX产品或进行了xx主题视频发布；\n	3.促进了产品销售，达到了推广效果，登上平台热门推荐，取得良好效果。'
     }
   },
   "douyu": {
@@ -487,7 +488,8 @@ export const diffByTypes = {
           placeholder: '请输入房间号'
         }
       ],
-      introductionPlaceholder: '美女主播，自带90后美女coser属性，微博月流量百万金v用户。善于表达，接地气打破传统女神形象，多才多艺满足粉丝的多重胃口，知识+正能量打破以往的美女花瓶界限；拥有微博，直播，QQ粉丝群，粉丝粘滞性互动性强； 参加过XXX等品牌的线下发布活动，直播平台专题直播策划活动等。可支持直播活动前在微博上进行预热。'
+      introductionPlaceholder: '美女主播，自带90后美女coser属性，微博月流量百万金v用户。善于表达，接地气打破传统女神形象，多才多艺满足粉丝的多重胃口，知识+正能量打破以往的美女花瓶界限；拥有微博，直播，QQ粉丝群，粉丝粘滞性互动性强； 参加过XXX等品牌的线下发布活动，直播平台专题直播策划活动等。可支持直播活动前在微博上进行预热。',
+      cooperateContentPlaceHolder: '1.播放量100w，点赞量3w，转发量1w、观看量3W等等；\n2.以关爱女性为主题，搭配浪漫温馨风格，完美植入了XX产品或进行了xx主题视频发布；\n	3.促进了产品销售，达到了推广效果，登上平台热门推荐，取得良好效果。'
     }
   },
   "zhanQi": {
@@ -517,7 +519,8 @@ export const diffByTypes = {
           placeholder: '请输入主页链接'
         }
       ],
-      introductionPlaceholder: '美女主播，自带90后美女coser属性，微博月流量百万金v用户。善于表达，接地气打破传统女神形象，多才多艺满足粉丝的多重胃口，知识+正能量打破以往的美女花瓶界限；拥有微博，直播，QQ粉丝群，粉丝粘滞性互动性强； 参加过XXX等品牌的线下发布活动，直播平台专题直播策划活动等。可支持直播活动前在微博上进行预热。'
+      introductionPlaceholder: '美女主播，自带90后美女coser属性，微博月流量百万金v用户。善于表达，接地气打破传统女神形象，多才多艺满足粉丝的多重胃口，知识+正能量打破以往的美女花瓶界限；拥有微博，直播，QQ粉丝群，粉丝粘滞性互动性强； 参加过XXX等品牌的线下发布活动，直播平台专题直播策划活动等。可支持直播活动前在微博上进行预热。',
+      cooperateContentPlaceHolder: '1.播放量100w，点赞量3w，转发量1w、观看量3W等等；\n2.以关爱女性为主题，搭配浪漫温馨风格，完美植入了XX产品或进行了xx主题视频发布；\n	3.促进了产品销售，达到了推广效果，登上平台热门推荐，取得良好效果。'
     }
   }
 }

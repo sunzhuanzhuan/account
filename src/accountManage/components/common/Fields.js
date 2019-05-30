@@ -7,6 +7,7 @@ import InputCount from "@/accountManage/base/InputCount";
 import CheckedWrap from "./CheckedWrap";
 import WordList from "@/accountManage/components/common/WordList";
 import AreasTreeSelect from "@/accountManage/components/common/AreasTreeSelect";
+import CooperationCasesCore from "@/accountManage/components/common/CooperationCasesCore";
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -15,6 +16,7 @@ const { TextArea } = Input;
 
 // 数据校验
 const checkForSensitiveWord = action => (rule, value, callback) => {
+  if(!value) return callback()
   action({ string: value }).then(result => {
     let is_sensitive_words = result.data && result.data.is_sensitive_words;
     if (is_sensitive_words === 1) {
@@ -857,7 +859,7 @@ export const LiveArea = (props) => {
     liveAreas
   } = accountInfo;
   return <div className='field-wrap-item'>
-    <FormItem {...layout.full} label='视频拍摄地点'>
+    <FormItem {...layout.full} label='直播形式'>
       {getFieldDecorator('cooperation.liveAreaType', {
         initialValue: liveAreaType || 1
       })(
@@ -877,6 +879,71 @@ export const LiveArea = (props) => {
           )}
         </FormItem>
       </div>}
+    </FormItem>
+
+  </div>
+};
+
+/**
+ * cooperationTips - 合作案例备注
+ */
+export const CooperationTips = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    actions: { sensitiveWordsFilter },
+    data: { accountInfo }
+  } = props;
+  const {
+    cooperationTips
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.half} label='备注'>
+      {getFieldDecorator('cooperation.cooperationTips', {
+        validateFirst: true,
+        validateTrigger: 'onBlur',
+        rules: [
+          { pattern: /^[\u4e00-\u9fa5a-zA-Z]{0,1000}$/, message: '合作须知备注请输入中英文, 最多可输入1000个字' },
+          { validator: checkForSensitiveWord(sensitiveWordsFilter) }
+        ],
+        initialValue: cooperationTips
+      })(
+        <TextArea
+          placeholder='您可添加更多附加合作内容'
+          autosize={{ minRows: 2, maxRows: 6 }}
+        />
+      )}
+    </FormItem>
+
+  </div>
+};
+
+/**
+ * cooperationCases - 合作案例
+ */
+export const CooperationCases = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    actions: { sensitiveWordsFilter },
+    data: { accountInfo }
+  } = props;
+  const {
+    cooperationCases
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.full} label=' '>
+      {getFieldDecorator('cooperation.cooperationCases', {
+        initialValue: cooperationCases || [{
+          "cooperationCaseId": 11, // int 合作案例ID
+          "brand": "sss", // String 品牌
+          "link": "http://", // String 链接
+          "content": "ddd", // String 合作效果
+          "sort": 1, // int 排序索引
+        }]
+      })(
+        <CooperationCasesCore getFieldDecorator={getFieldDecorator}/>
+      )}
     </FormItem>
 
   </div>

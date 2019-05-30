@@ -8,9 +8,9 @@ import {
   RefuseBrands,
   ManuscriptModificationLimit,
   VideoShotArea,
-  LiveArea
+  LiveArea, CooperationTips, CooperationCases
 } from "@/accountManage/components/common/Fields";
-import { Button, Form } from "antd";
+import { Button, Divider, Form } from "antd";
 
 @Form.create()
 export default class CooperationEdit extends Component {
@@ -72,7 +72,17 @@ export default class CooperationEdit extends Component {
             <ManuscriptModificationLimit {...fieldProps} />}
             <VideoShotArea {...fieldProps}/>
             <LiveArea {...fieldProps}/>
-
+            <Divider dashed />
+            <CooperationTips {...fieldProps}/>
+          </div>
+        </li>
+        <li className='subclass-item-wrap'>
+          <h4 className='subclass-head'>
+            <span className='text'>合作案例</span>
+            <small className='line' />
+          </h4>
+          <div className='subclass-content'>
+            <CooperationCases {...fieldProps} />
           </div>
         </li>
       </ul>
