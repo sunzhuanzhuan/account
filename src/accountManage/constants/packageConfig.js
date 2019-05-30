@@ -58,7 +58,7 @@ export const modulesMap = {
 // 处理模块差异性并注入配置数据
 export function platformToModules(platformId, filterSource) {
   filterSource = filterSource || Object.keys(modulesMap)
-  let platformData = platformToType[platformId] || diffByTypes.normal
+  let platformData = platformToType[platformId] || platformToType["-1"]
   // 获取该平台的差异性配置
   let _modules = intersection(filterSource, platformData.visibility.modules).map(key => modulesMap[key])
   return update(platformData, { visibility: { modules: { $set: _modules } } })
@@ -70,7 +70,7 @@ export const tabs = [
     warp: [
       // "owner",
       // "fetch",
-      "main",
+      // "main",
       "cooperation",
       "strategy",
       "content",
@@ -532,5 +532,13 @@ export const platformToType = Object.entries(diffByTypes).reduce((obj, [key, ite
     }
     delete obj[i].platforms
   })
+  // 添加一个未知平台
+  obj["-1"] = {
+    key: '-1',
+    platformId: -1,
+    platformName: '未知平台',
+    ...diffByTypes.normal
+  }
+  delete obj["-1"].platforms
   return obj
 }, {})

@@ -114,7 +114,7 @@ export default class MainEdit extends Component {
       <Button htmlType='submit' type='primary'>保存</Button>
     </div>;
 
-    return <Form className='module-item-container' onSubmit={this.submit}>
+    return <Form className='module-item-container' onSubmit={this.submit} colon={false}>
       <ModuleHeader title={configureModule.title} left={left} right={right} />
       <ul className='content-wrap'>
         <li className='subclass-item-wrap'>

@@ -6,7 +6,7 @@ import moment from 'moment';
 import InputCount from "@/accountManage/base/InputCount";
 import CheckedWrap from "./CheckedWrap";
 import WordList from "@/accountManage/components/common/WordList";
-import debounce from 'lodash/debounce'
+import AreasTreeSelect from "@/accountManage/components/common/AreasTreeSelect";
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -763,7 +763,7 @@ export const RefuseBrands = (props) => {
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='不接受的品牌'>
       {getFieldDecorator('cooperation.refuseBrands', {
-        initialValue: refuseBrands || ['品牌一', '品牌二']
+        initialValue: refuseBrands
       })(
         <WordList
           placeholder='请输入2~20字的品牌名称'
@@ -774,6 +774,111 @@ export const RefuseBrands = (props) => {
         }}/>
       )}
     </FormItem>
+  </div>
+};
+
+/**
+ * manuscriptModificationLimit - 视频/稿件/大纲修改次数
+ */
+export const ManuscriptModificationLimit = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    data: { accountInfo }
+  } = props;
+  const {
+    manuscriptModificationLimit,
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.half} label='稿件/大纲修改次数'>
+      {getFieldDecorator('cooperation.manuscriptModificationLimit', {
+        initialValue: manuscriptModificationLimit || -1
+      })(
+        <Select style={{ width: '100%' }}>
+          <Option value={-1}>不限</Option>
+          {
+            [1,2,3,4,5,6,7,8,9,10].map(n => <Option key={n} value={n}>{n}</Option>)
+          }
+        </Select>
+      )}
+    </FormItem>
+  </div>
+};
+
+/**
+ * videoShotArea - 视频拍摄地点类型
+ */
+export const VideoShotArea = (props) => {
+  const {
+    form: { getFieldDecorator, getFieldValue },
+    layout,
+    data: { accountInfo }
+  } = props;
+  const {
+    videoShotAreaType,
+    videoShotAreas
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.full} label='视频拍摄地点'>
+      {getFieldDecorator('cooperation.videoShotAreaType', {
+        initialValue: videoShotAreaType || 1
+      })(
+        <RadioGroup>
+          <Radio value={1}>不限地点</Radio>
+          <Radio value={2}>部分地区</Radio>
+        </RadioGroup>
+      )}
+      {getFieldValue('cooperation.videoShotAreaType') === 2 && <div>
+        <FormItem {...layout.full}>
+          {getFieldDecorator('cooperation.videoShotAreas', {
+            rules: [{ required: true, message: '请选择视频拍摄地点' }],
+            initialValue: videoShotAreas
+          })(
+            <AreasTreeSelect/>
+          )}
+        </FormItem>
+      </div>}
+    </FormItem>
+
+  </div>
+};
+
+/**
+ * liveArea - 直播形式
+ */
+export const LiveArea = (props) => {
+  const {
+    form: { getFieldDecorator, getFieldValue },
+    layout,
+    data: { accountInfo }
+  } = props;
+  const {
+    liveAreaType,
+    liveAreas
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.full} label='视频拍摄地点'>
+      {getFieldDecorator('cooperation.liveAreaType', {
+        initialValue: liveAreaType || 1
+      })(
+        <RadioGroup>
+          <Radio value={1}>不限地点</Radio>
+          <Radio value={2}>线上直播间</Radio>
+          <Radio value={3}>线下指定地点</Radio>
+        </RadioGroup>
+      )}
+      {getFieldValue('cooperation.liveAreaType') === 3 && <div>
+        <FormItem {...layout.full}>
+          {getFieldDecorator('cooperation.liveAreas', {
+            rules: [{ required: true, message: '请选择视频拍摄地点' }],
+            initialValue: liveAreas
+          })(
+            <AreasTreeSelect/>
+          )}
+        </FormItem>
+      </div>}
+    </FormItem>
+
   </div>
 };
 

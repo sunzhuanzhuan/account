@@ -1,9 +1,9 @@
-@import "../../indexNbTheme";
+@import "../../../indexNbTheme";
 
-.simple-tag {
+.check-tag {
   vertical-align: baseline;
   font-variant: tabular-nums;
-  color: @primary-color;
+  color: #666;
   box-sizing: border-box;
   margin: 0 20px 0 0;
   list-style: none;
@@ -16,10 +16,27 @@
   opacity: 1;
   cursor: pointer;
   white-space: nowrap;
-  background: fadeout(@primary-color, 90%);
-  //border: 1px solid fadeout(@primary-color, 40%);
+  background: #f1f1f1;
   border-radius: 2px;
+
+  &.checked {
+    color: @primary-color;
+    background: fadeout(@primary-color, 90%);
+    &:hover {
+      .anticon {
+        display: inline-block;
+        margin-right: -5px;
+      }
+    }
+  }
+
+  .anticon {
+    display: none
+  }
+
+
 }
+
 .has-error .right-fix-btn {
   border-left-color: red !important;
 }

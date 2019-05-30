@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { Icon, Input, Popconfirm, Form } from 'antd'
-import SimpleTag from "@/accountManage/base/SimpleTag";
+import CheckTag from "@/accountManage/base/CheckTag";
 
 export default class WordList extends Component {
   constructor(props) {
@@ -19,7 +19,7 @@ export default class WordList extends Component {
   static getDerivedStateFromProps(nextProps) {
     if ('value' in nextProps) {
       return {
-        value: nextProps.value
+        value: nextProps.value || []
       };
     }
     return null
@@ -87,7 +87,7 @@ export default class WordList extends Component {
     </div>
     return <div>
       {
-        value.map((word, index) => <SimpleTag key={word}>
+        value.map((word, index) => <CheckTag checked key={word}>
           {word}
           <Icon
             style={{ fontSize: "14px", color: "#256ea3", marginLeft: '6px' }}
@@ -95,7 +95,7 @@ export default class WordList extends Component {
             theme="filled"
             onClick={() => this.onChange(word, index)}
           />
-        </SimpleTag>)
+        </CheckTag>)
       }
       {value.length < 10 &&
       <Popconfirm
