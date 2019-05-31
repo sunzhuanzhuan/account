@@ -8,7 +8,12 @@ import {
   RefuseBrands,
   ManuscriptModificationLimit,
   VideoShotArea,
-  LiveArea, CooperationTips, CooperationCases
+  LiveArea,
+  CooperationTips,
+  CooperationCases,
+  AdServiceItems,
+  PostPlatform,
+  ProductPlacementType
 } from "@/accountManage/components/common/Fields";
 import { Button, Divider, Form } from "antd";
 
@@ -22,6 +27,18 @@ export default class CooperationEdit extends Component {
         isAcceptProductUse: true,
         refuseBrands: true,
         manuscriptModificationLimit: true
+      },
+      asyncOptions: {
+        adServiceItems: [
+          {
+            "id": 1,
+            "adServiceItemName": "真人出镜"
+          },
+          {
+            "id": 2,
+            "adServiceItemName": "口播"
+          }
+        ]
       }
     }
   }
@@ -50,7 +67,8 @@ export default class CooperationEdit extends Component {
       modifiedAt // 账号基本信息修改时间
     } = data.accountInfo || {}
     const {
-      asyncVisibility
+      asyncVisibility,
+      asyncOptions
     } = this.state
     const right = <div className='wrap-panel-right-content'>
       <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>
@@ -70,10 +88,10 @@ export default class CooperationEdit extends Component {
             {asyncVisibility.refuseBrands && <RefuseBrands {...fieldProps} />}
             {asyncVisibility.manuscriptModificationLimit &&
             <ManuscriptModificationLimit {...fieldProps} />}
-            <VideoShotArea {...fieldProps}/>
-            <LiveArea {...fieldProps}/>
+            <VideoShotArea {...fieldProps} />
+            <LiveArea {...fieldProps} />
             <Divider dashed />
-            <CooperationTips {...fieldProps}/>
+            <CooperationTips {...fieldProps} />
           </div>
         </li>
         <li className='subclass-item-wrap'>
@@ -83,6 +101,17 @@ export default class CooperationEdit extends Component {
           </h4>
           <div className='subclass-content'>
             <CooperationCases {...fieldProps} />
+          </div>
+        </li>
+        <li className='subclass-item-wrap'>
+          <h4 className='subclass-head'>
+            <span className='text'>广告服务</span>
+            <small className='line' />
+          </h4>
+          <div className='subclass-content'>
+            <AdServiceItems {...fieldProps} options={asyncOptions.adServiceItems} />
+            <PostPlatform {...fieldProps} options={[]}/>
+            <ProductPlacementType {...fieldProps}/>
           </div>
         </li>
       </ul>

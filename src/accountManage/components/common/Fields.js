@@ -16,7 +16,7 @@ const { TextArea } = Input;
 
 // 数据校验
 const checkForSensitiveWord = action => (rule, value, callback) => {
-  if(!value) return callback()
+  if (!value) return callback()
   action({ string: value }).then(result => {
     let is_sensitive_words = result.data && result.data.is_sensitive_words;
     if (is_sensitive_words === 1) {
@@ -608,7 +608,7 @@ export const Verified = (props) => {
           rules: [{ required: false }],
           initialValue: verifiedStatus || 2
         })(
-          <RadioGroup  disabled={verifiedStatusFrom === 2}>
+          <RadioGroup disabled={verifiedStatusFrom === 2}>
             {
               verifiedOptional.map(opt => <Radio key={opt.id} value={opt.id}>{opt.name}</Radio>)
             }
@@ -622,7 +622,7 @@ export const Verified = (props) => {
             { required: true, message: '请填写认证说明' },
             { pattern: /.{2,40}/, message: '请输入2~40字的认证原因' },
             { validator: checkForSensitiveWord(sensitiveWordsFilter) }
-            ],
+          ],
           initialValue: verificationInfo
         })(
           <TextArea
@@ -660,7 +660,7 @@ export const OpenStore = (props) => {
   const {
     isOpenStore,
     isOpenStoreFrom,
-    isOpenStoreMaintainedTime,
+    isOpenStoreMaintainedTime
   } = accountInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='橱窗/店铺'>
@@ -692,7 +692,7 @@ export const OpenLiveProgram = (props) => {
   const {
     isOpenLiveProgram,
     isOpenLiveProgramFrom,
-    isOpenLiveProgramMaintainedTime,
+    isOpenLiveProgramMaintainedTime
   } = accountInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='直播'>
@@ -724,7 +724,7 @@ export const DirectItems = (props) => {
   } = props;
   const {
     isAcceptHardAd,
-    isAcceptProductUse,
+    isAcceptProductUse
   } = accountInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='拒绝项'>
@@ -760,7 +760,7 @@ export const RefuseBrands = (props) => {
     data: { accountInfo }
   } = props;
   const {
-    refuseBrands,
+    refuseBrands
   } = accountInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='不接受的品牌'>
@@ -772,8 +772,8 @@ export const RefuseBrands = (props) => {
           message='请输入2~20字的品牌名称'
           label='添加品牌'
           validator={value => {
-          return !(value.length < 2 || value.length > 20)
-        }}/>
+            return !(value.length < 2 || value.length > 20)
+          }} />
       )}
     </FormItem>
   </div>
@@ -789,7 +789,7 @@ export const ManuscriptModificationLimit = (props) => {
     data: { accountInfo }
   } = props;
   const {
-    manuscriptModificationLimit,
+    manuscriptModificationLimit
   } = accountInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='稿件/大纲修改次数'>
@@ -799,7 +799,7 @@ export const ManuscriptModificationLimit = (props) => {
         <Select style={{ width: '100%' }}>
           <Option value={-1}>不限</Option>
           {
-            [1,2,3,4,5,6,7,8,9,10].map(n => <Option key={n} value={n}>{n}</Option>)
+            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => <Option key={n} value={n}>{n}</Option>)
           }
         </Select>
       )}
@@ -836,12 +836,11 @@ export const VideoShotArea = (props) => {
             rules: [{ required: true, message: '请选择视频拍摄地点' }],
             initialValue: videoShotAreas
           })(
-            <AreasTreeSelect/>
+            <AreasTreeSelect />
           )}
         </FormItem>
       </div>}
     </FormItem>
-
   </div>
 };
 
@@ -875,12 +874,11 @@ export const LiveArea = (props) => {
             rules: [{ required: true, message: '请选择视频拍摄地点' }],
             initialValue: liveAreas
           })(
-            <AreasTreeSelect/>
+            <AreasTreeSelect />
           )}
         </FormItem>
       </div>}
     </FormItem>
-
   </div>
 };
 
@@ -914,7 +912,6 @@ export const CooperationTips = (props) => {
         />
       )}
     </FormItem>
-
   </div>
 };
 
@@ -925,7 +922,6 @@ export const CooperationCases = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    actions: { sensitiveWordsFilter },
     data: { accountInfo }
   } = props;
   const {
@@ -934,21 +930,128 @@ export const CooperationCases = (props) => {
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label=' '>
       {getFieldDecorator('cooperation.cooperationCases', {
-        initialValue: cooperationCases || [{
-          "cooperationCaseId": 11, // int 合作案例ID
-          "brand": "sss", // String 品牌
-          "link": "http://", // String 链接
-          "content": "ddd", // String 合作效果
-          "sort": 1, // int 排序索引
-        }]
+        initialValue: cooperationCases
       })(
-        <CooperationCasesCore getFieldDecorator={getFieldDecorator}/>
+        <CooperationCasesCore {...props} />
       )}
     </FormItem>
-
   </div>
 };
 
+/**
+ * adServiceItems - 可提供的广告服务
+ */
+export const AdServiceItems = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    data: { accountInfo },
+    options = []
+  } = props;
+  const {
+    adServiceItems
+  } = accountInfo;
+  return <div className='field-wrap-item base-media-type'>
+    <FormItem {...layout.full} label='可提供'>
+      {getFieldDecorator('cooperation.adServiceItems', {
+        initialValue: (adServiceItems || []).map(item => item.id || item)
+      })(
+        <Checkbox.Group>
+          {
+            options.map(item =>
+              <Checkbox key={item.id} value={item.id}>{item.adServiceItemName}</Checkbox>)
+          }
+        </Checkbox.Group>
+      )}
+    </FormItem>
+  </div>
+};
+
+/**
+ * postPlatform - 分发平台
+ */
+export const PostPlatform = (props) => {
+  const {
+    form: { getFieldDecorator, getFieldValue },
+    layout,
+    actions: { sensitiveWordsFilter },
+    data: { accountInfo },
+    options = []
+  } = props;
+  const {
+    supportMultiPlatformOriginalPost,
+    postPlatforms,
+    multiPlatformOriginalPostTips
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.full} label='分发平台'>
+      {getFieldDecorator('cooperation.supportMultiPlatformOriginalPost', {
+        initialValue: supportMultiPlatformOriginalPost || 1
+      })(
+        <RadioGroup style={{ width: '100%' }}>
+          <Radio value={1}>可分发</Radio>
+          <Radio value={2}>不可分发</Radio>
+        </RadioGroup>
+      )}
+    </FormItem>
+    {getFieldValue('cooperation.supportMultiPlatformOriginalPost') === 1 && <div>
+      <FormItem {...layout.half} label='选择分发平台'>
+        {getFieldDecorator('cooperation.postPlatforms', {
+          rules: [{ required: false }],
+          initialValue: (postPlatforms || []).map(item => item.id || item)
+        })(
+          <Select mode="multiple" placeholder='选择分发平台(可多选)'>
+            {
+              options.map(item => <Option key={item.id} value={item.id}>{item.platformName}</Option>)
+            }
+          </Select>
+        )}
+      </FormItem>
+      <FormItem {...layout.half} label='备注'>
+        {getFieldDecorator('cooperation.multiPlatformOriginalPostTips', {
+          validateFirst: true,
+          rules: [
+            { pattern: /^[\u4e00-\u9fa5a-zA-Z]{0,200}$/, message: '分发平台备注请输入中英文, 最多可输入200个字' },
+            { validator: checkForSensitiveWord(sensitiveWordsFilter) }
+          ],
+          initialValue: multiPlatformOriginalPostTips
+        })(
+          <TextArea
+            autosize={{ minRows: 2, maxRows: 2 }}
+            placeholder='备注'
+          />
+        )}
+      </FormItem>
+    </div>}
+  </div>
+};
+
+/**
+ * productPlacementType - 植入类型
+ */
+export const ProductPlacementType = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    data: { accountInfo },
+  } = props;
+  const {
+    productPlacementType,
+  } = accountInfo;
+  return <div className='field-wrap-item base-media-type'>
+    <FormItem {...layout.full} label='植入类型'>
+      {getFieldDecorator('cooperation.productPlacementType', {
+        initialValue: productPlacementType
+      })(
+        <RadioGroup style={{ width: '100%' }}>
+          <Radio value={0}>不限</Radio>
+          <Radio value={1}>仅单品<b className='gray-text'>（1次可投放1个单品）</b></Radio>
+          <Radio value={2}>仅合集<b className='gray-text'>（1次可投放多个单品）</b></Radio>
+        </RadioGroup>
+      )}
+    </FormItem>
+  </div>
+};
 
 
 /**

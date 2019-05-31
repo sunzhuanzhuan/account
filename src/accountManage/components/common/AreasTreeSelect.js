@@ -5,7 +5,7 @@ import debounce from 'lodash/debounce'
 import areas from '@/accountManage/constants/areas'
 
 const {
-  "1": chinaAreas, "2": otherAreas, hotCity
+  "china": chinaAreas, "foreign": foreignAreas, hotCity
 } = areas
 
 const { TreeNode } = Tree;
@@ -26,7 +26,7 @@ const generateList = data => {
   }
 };
 generateList(chinaAreas)
-generateList(otherAreas)
+generateList(foreignAreas)
 
 const getParentKey = (key, tree) => {
   let parentKey;
@@ -224,7 +224,7 @@ class SearchSelect extends Component {
             // filterTreeNode={this.filterTreeNode}
             onCheck={this.onOtherCheck}
           >
-            {loop(otherAreas)}
+            {loop(foreignAreas)}
           </Tree>
         </div>
       </main>

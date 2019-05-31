@@ -3,7 +3,7 @@ import './style.less'
 
 const FieldView = props => {
   return <div className='view-field-wrap'>
-    <div className='title'>{props.title}</div>
+    <div className='title' style={{ width: props.width ? props.width : '90px' }}>{props.title}</div>
     <div className='value'>{props.value || '--'}</div>
   </div>
 }

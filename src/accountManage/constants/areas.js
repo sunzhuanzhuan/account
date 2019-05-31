@@ -1,5 +1,5 @@
 export default {
-  "1": [
+  "china": [
     {
       "areaName": "北京",
       "areaLevel": 2,
@@ -2019,7 +2019,7 @@ export default {
       "childrenList": []
     }
   ],
-  "2": [
+  "foreign": [
     {
       "areaName": "澳大利亚",
       "areaLevel": 1,

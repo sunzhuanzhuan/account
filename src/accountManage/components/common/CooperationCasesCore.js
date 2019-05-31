@@ -62,7 +62,13 @@ export default class CooperationCasesCore extends React.Component {
 
   render() {
     const { value = [] } = this.state
-    const { getFieldDecorator } = this.props
+    const {
+      form: { getFieldDecorator },
+      layout,
+      actions: { sensitiveWordsFilter },
+      data: { accountInfo },
+      configurePlatform
+    } = this.props;
     return <div>
       {value.map((item, index) => {
         return <Card key={item.uuid} type="inner" title={'案例' + (index + 1)} extra={
@@ -79,7 +85,7 @@ export default class CooperationCasesCore extends React.Component {
             })(
               <TextArea
                 style={{ width: '100%' }}
-                placeholder=''
+                placeholder='品牌：该链接所涉及的品牌名称 主题：如某品牌的线上直播活动、原创视频作品；或该视频的主要内容'
               />
             )}
           </FormItem>
@@ -92,7 +98,7 @@ export default class CooperationCasesCore extends React.Component {
               }],
               initialValue: item.link
             })(
-              <Input style={{ width: '100%' }} placeholder="" />
+              <Input style={{ width: '100%' }} placeholder="请填写曾合作的广告案例链接；若无案例可添加曾发布的视频、直播回放或微博链接" />
             )}
           </FormItem>
           <FormItem label="合作效果" {...formItemLayout}>
@@ -103,7 +109,7 @@ export default class CooperationCasesCore extends React.Component {
             })(
               <TextArea
                 style={{ width: '100%' }}
-                placeholder=""
+                placeholder={configurePlatform.configure.cooperateContentPlaceHolder}
                 autosize={{
                   minRows: 3,
                   maxRows: 6
