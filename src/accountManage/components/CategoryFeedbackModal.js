@@ -51,7 +51,7 @@ export class FeedbackCreate extends Component {
       maskClosable={false}
     >
       <Form style={{ position: 'relative' }}>
-        <Form.Item label='请选择你期望的分类' colon={false}>
+        <Form.Item label='请选择您期望的分类' colon={false}>
           {
             getFieldDecorator('newClassifyKey', {
               rules: [
@@ -143,7 +143,7 @@ export class FeedbackMini extends Component {
     } = accountInfo
     return <Modal
       visible
-      title='没有找到你内容分类？填写告诉我们'
+      title='没有找到您期望的内容分类？请填写告诉我们'
       onCancel={() => this.props.setModal()}
       onOk={() => {
         this.submit()
@@ -157,7 +157,7 @@ export class FeedbackMini extends Component {
               validateFirst: true,
               rules: [
                 { pattern: /^[\u4e00-\u9fa5a-zA-Z]+$/, message: '请填写中英文分类名称' },
-                { max: 10, min: 2, message: '最多可输入2~10个字' },
+                { max: 10, min: 2, message: '请输入2~10个字' },
                 { required: true, message: '请填写分类名称' }
               ]
             })(
