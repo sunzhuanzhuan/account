@@ -274,10 +274,23 @@
 .gray-block-container{
   background: #f7f7f7;
   border-radius: 4px;
-  padding: 10px 48px;
+  padding: 10px 18px;
   .gray-block-item{
+    padding: 10px 20px;
     &:last-of-type{
       border-bottom: none;
+    }
+    p {
+      padding: 10px 0;
+      margin: 0;
+    }
+    .url {
+      display: inline-block;
+      white-space: nowrap;
+      vertical-align: middle;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 400px;
     }
     border-bottom: 1px dashed #dddddd;
   }

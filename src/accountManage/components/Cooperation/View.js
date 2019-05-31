@@ -18,18 +18,6 @@ export default class CooperationView extends Component {
         isAcceptProductUse: true,
         refuseBrands: true,
         manuscriptModificationLimit: true
-      },
-      asyncOptions: {
-        adServiceItems: [
-          {
-            "id": 1,
-            "adServiceItemName": "真人出镜"
-          },
-          {
-            "id": 2,
-            "adServiceItemName": "口播"
-          }
-        ]
       }
     }
   }
@@ -55,22 +43,10 @@ export default class CooperationView extends Component {
       liveAreaType,
       liveAreas = [],
       cooperationTips,
-      cooperationCases = [{
-        "cooperationCaseId": 11, // int 合作案例ID
-        "brand": "sss", // String 品牌
-        "link": "http://", // String 链接
-        "content": "ddd", // String 合作效果
-        "sort": 1, // int 排序索引
-        "createdAt": "2019-01-01 00:00:00", // yyyy-dd-mm HH:mm:ss, date 创建时间
-        "modifiedAt": "2019-01-01 00:00:00", // yyyy-dd-mm HH:mm:ss, date 修改时间
-        "createdBy": 1, // int 创建人
-        "modifiedBy": 22, // int 修改人
-        "createdFrom": 1, // int 创建端
-        "modifiedFrom": 3, // int 修改端
-      }],
-      adServiceItems,
+      cooperationCases = [],
+      adServiceItems = [],
       supportMultiPlatformOriginalPost,
-      postPlatforms,
+      postPlatforms = [],
       multiPlatformOriginalPostTips,
       productPlacementType,
       modifiedAt // 信息修改时间
@@ -94,21 +70,24 @@ export default class CooperationView extends Component {
           <div className='subclass-content'>
             <div className="view-fields-container">
               <div className='right-wrap'>
+                {asyncVisibility.isAcceptHardAd && asyncVisibility.isAcceptProductUse &&
                 <FieldView width={130} title="拒绝项" value={
                   <div>
                     <span>{isAcceptHardAd === 1 ? '接硬广' : '不接受硬广'}</span>、
                     <span>{isAcceptProductUse === 1 ? '接受产品试用' : '不接受产品试用'}</span>
                   </div>
-                } />
+                } />}
+                {asyncVisibility.refuseBrands &&
                 <FieldView width={130} title="不接受的品牌" value={
                   refuseBrands.join('、')
-                } />
+                } />}
+                {asyncVisibility.manuscriptModificationLimit &&
                 <FieldView width={130} title="稿件/大纲修改次数" value={
                   manuscriptModificationLimit === -1 ? '不限' : manuscriptModificationLimit
-                } />
+                } />}
                 <FieldView width={130} title="视频拍摄地点" value={
                   <div>
-                    <span>{videoShotAreaType === 2 ? '部分地区' : '不限地点'}</span>
+                    <span style={{ marginRight: '8px' }}>{videoShotAreaType === 2 ? '部分地区' : '不限地点'}</span>
                     {
                       videoShotAreas.map(area => <Tag key={area.id}>{area.areaName}</Tag>)
                     }
@@ -116,11 +95,12 @@ export default class CooperationView extends Component {
                 } />
                 <FieldView width={130} title="直播形式" value={
                   liveAreaType === -1 ? '' : <div>
-                    {liveAreaType === 1 && <span>不限</span>}
-                    {liveAreaType === 2 && <span>线上直播间</span>}
-                    {liveAreaType === 3 && <span>线下指定地点</span>}
+                    {liveAreaType === 1 && <span style={{ marginRight: '8px' }}>不限</span>}
+                    {liveAreaType === 2 && <span style={{ marginRight: '8px' }}>线上直播间</span>}
+                    {liveAreaType === 3 && <span style={{ marginRight: '8px' }}>线下指定地点</span>}
                     {
-                      liveAreaType === 3 && liveAreas.map(area => <Tag key={area.id}>{area.areaName}</Tag>)
+                      liveAreaType === 3 && liveAreas.map(area =>
+                        <Tag key={area.id}>{area.areaName}</Tag>)
                     }
                   </div>
                 } />
@@ -137,7 +117,7 @@ export default class CooperationView extends Component {
           <div className='subclass-content'>
             <div className="view-fields-container">
               <div className='right-wrap'>
-                <CooperationCasesView list={cooperationCases}/>
+                <CooperationCasesView list={cooperationCases} />
               </div>
             </div>
           </div>
@@ -148,7 +128,28 @@ export default class CooperationView extends Component {
             <small className='line' />
           </h4>
           <div className='subclass-content'>
-
+            <div className="view-fields-container">
+              <div className='right-wrap'>
+                {
+                  adServiceItems.map(item => <Tag key={item.id}>{item.adServiceItemName}</Tag>)
+                }
+                <FieldView width={70} title="植入类型" value={
+                  productPlacementType === -1 ? '' : <div>
+                    {productPlacementType === 0 && <span>不限</span>}
+                    {productPlacementType === 1 && <span>单品</span>}
+                    {productPlacementType === 2 && <span>合集</span>}
+                  </div>
+                } />
+                <FieldView width={70} title="分发平台" value={
+                  <div>
+                    <span style={{ marginRight: '8px' }}>{supportMultiPlatformOriginalPost === 1 ? '可分发' : '不可分发'}</span>
+                    {
+                      postPlatforms.map(item => <Tag key={item.id}>{item.platformName}</Tag>)
+                    }
+                  </div>
+                } />
+              </div>
+            </div>
           </div>
         </li>
       </ul>
