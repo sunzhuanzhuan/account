@@ -6,6 +6,7 @@ import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
 import { Button, Divider, Form, Tag } from "antd";
 import FieldView from "@/accountManage/base/FeildView";
 import SimpleTag from "@/accountManage/base/SimpleTag";
+import CooperationCasesView from "@/accountManage/components/common/CooperationCasesView";
 
 @Form.create()
 export default class CooperationView extends Component {
@@ -54,7 +55,19 @@ export default class CooperationView extends Component {
       liveAreaType,
       liveAreas = [],
       cooperationTips,
-      cooperationCases,
+      cooperationCases = [{
+        "cooperationCaseId": 11, // int 合作案例ID
+        "brand": "sss", // String 品牌
+        "link": "http://", // String 链接
+        "content": "ddd", // String 合作效果
+        "sort": 1, // int 排序索引
+        "createdAt": "2019-01-01 00:00:00", // yyyy-dd-mm HH:mm:ss, date 创建时间
+        "modifiedAt": "2019-01-01 00:00:00", // yyyy-dd-mm HH:mm:ss, date 修改时间
+        "createdBy": 1, // int 创建人
+        "modifiedBy": 22, // int 修改人
+        "createdFrom": 1, // int 创建端
+        "modifiedFrom": 3, // int 修改端
+      }],
       adServiceItems,
       supportMultiPlatformOriginalPost,
       postPlatforms,
@@ -122,7 +135,11 @@ export default class CooperationView extends Component {
             <small className='line' />
           </h4>
           <div className='subclass-content'>
-
+            <div className="view-fields-container">
+              <div className='right-wrap'>
+                <CooperationCasesView list={cooperationCases}/>
+              </div>
+            </div>
           </div>
         </li>
         <li className='subclass-item-wrap'>
