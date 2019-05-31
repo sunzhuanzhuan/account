@@ -10,7 +10,7 @@ const statusComponent = (status) => {
     'edit': CooperationEdit,
     'view': CooperationView,
   }
-  return _map[status] || <div>基础信息错误</div>
+  return _map[status] || <div>信息错误</div>
 }
 
 export default class Cooperation extends Component {

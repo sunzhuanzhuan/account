@@ -8,6 +8,7 @@ import CheckedWrap from "./CheckedWrap";
 import WordList from "@/accountManage/components/common/WordList";
 import AreasTreeSelect from "@/accountManage/components/common/AreasTreeSelect";
 import CooperationCasesCore from "@/accountManage/components/common/CooperationCasesCore";
+import DefaultAndCustomTag from "@/accountManage/components/common/DefaultAndCustomTag";
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -1002,7 +1003,8 @@ export const PostPlatform = (props) => {
         })(
           <Select mode="multiple" placeholder='选择分发平台(可多选)'>
             {
-              options.map(item => <Option key={item.id} value={item.id}>{item.platformName}</Option>)
+              options.map(item =>
+                <Option key={item.id} value={item.id}>{item.platformName}</Option>)
             }
           </Select>
         )}
@@ -1033,10 +1035,10 @@ export const ProductPlacementType = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo },
+    data: { accountInfo }
   } = props;
   const {
-    productPlacementType,
+    productPlacementType
   } = accountInfo;
   return <div className='field-wrap-item base-media-type'>
     <FormItem {...layout.full} label='植入类型'>
@@ -1048,6 +1050,44 @@ export const ProductPlacementType = (props) => {
           <Radio value={1}>仅单品<b className='gray-text'>（1次可投放1个单品）</b></Radio>
           <Radio value={2}>仅合集<b className='gray-text'>（1次可投放多个单品）</b></Radio>
         </RadioGroup>
+      )}
+    </FormItem>
+  </div>
+};
+
+// 内容相关
+/**
+ * contentForms - 内容形式
+ */
+export const ContentForms = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    actions: { sensitiveWordsFilter },
+    data: { accountInfo }
+  } = props;
+  const {
+    forms,
+    customForm
+  } = accountInfo;
+  return <div className='field-wrap-item base-media-type'>
+    <FormItem {...layout.full} label='内容形式'>
+      {getFieldDecorator('content.forms', {
+        initialValue: {
+          defaultItems: forms || [{
+            "id": 1, // int 内容形式ID
+            "name": "aaa" // String 内容形式名称
+          }],
+          custom: customForm || ["aaa", "bbb"]
+        }
+      })(
+        <DefaultAndCustomTag
+          placeholder='请输入1~10字'
+          rules={[
+            { required: true, pattern: /^[\u4e00-\u9fa5a-zA-Z]{1,10}$/, message: '请输入1~10个中英文字符' },
+            { validator: checkForSensitiveWord(sensitiveWordsFilter) }
+          ]}
+        />
       )}
     </FormItem>
   </div>

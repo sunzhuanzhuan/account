@@ -64,7 +64,7 @@ export default class CooperationEdit extends Component {
     const fieldProps = { layout, data, form, actions }
     const {
       isFamous,
-      modifiedAt // 账号基本信息修改时间
+      modifiedAt // 信息修改时间
     } = data.accountInfo || {}
     const {
       asyncVisibility,
