@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Select, Input, Checkbox, Popover, Radio, InputNumber } from 'antd';
+import { Form, Select, Input, Checkbox, Popover, Radio, InputNumber, Tooltip, Divider } from 'antd';
 import { OssUpload } from 'wbyui';
 import SimpleTag from '../../base/SimpleTag';
 import moment from 'moment';
@@ -9,6 +9,7 @@ import WordList from "@/accountManage/components/common/WordList";
 import AreasTreeSelect from "@/accountManage/components/common/AreasTreeSelect";
 import CooperationCasesCore from "@/accountManage/components/common/CooperationCasesCore";
 import DefaultAndCustomTag from "@/accountManage/components/common/DefaultAndCustomTag";
+import { handleReason } from "@/accountManage/util";
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -1190,6 +1191,195 @@ export const ContentStyles = (props) => {
         />
       )}
     </FormItem>
+  </div>
+};
+
+// 策略信息
+/**
+ * onSaleInfo - 上架信息
+ */
+export const OnSaleInfo = (props) => {
+  const {
+    form: { getFieldDecorator, getFieldValue },
+    layout,
+    data: { accountInfo }
+  } = props;
+  const {
+    approvedStatus,
+    disapprovalReason,
+    isContacted,
+    isSignedOff,
+    isOnline,
+    isOpen,
+    isShielded,
+    offlineReason,
+    aOnShelfStatus,
+    aOffShelfReasonStringList,
+    bOnShelfStatus,
+    bOffShelfReasonStringList
+  } = accountInfo;
+  return <div className='field-wrap-item base-media-type'>
+    <FormItem {...layout.full} label='审核状态:'>
+      {getFieldDecorator('strategyInfo.approvedStatus', {
+        rules: [{ required: false }],
+        initialValue: approvedStatus ? approvedStatus : 0
+      })(
+        <RadioGroup>
+          <Radio value={1}>未审核</Radio>
+          <Radio value={2}>审核成功</Radio>
+          <Radio value={3}>审核失败</Radio>
+        </RadioGroup>
+      )}
+    </FormItem>
+    {getFieldValue('strategyInfo.approvedStatus') === 3 &&
+    <FormItem {...layout.full} label=' ' colon={false}>
+      {getFieldDecorator('strategyInfo.disapprovalReason', {
+        rules: [{ required: true, message: '审核失败原因不能未空！' },
+          { max: 1000, message: '审核失败原因不能超过1000字' }
+        ],
+        initialValue: disapprovalReason
+      })(
+        <TextArea style={{ width: '30%' }} placeholder="请输入失败原因！" autosize={{
+          minRows: 2,
+          maxRows: 6
+        }} />
+      )}
+    </FormItem>}
+    <FormItem {...layout.full} label='是否与博主联系'>
+      {getFieldDecorator('strategyInfo.isContacted', {
+        rules: [{ required: true, message: '是否与博主联系为必填项！' }],
+        initialValue: isContacted ? isContacted : 1
+      })(
+        <RadioGroup>
+          <Radio value={1}>是</Radio>
+          <Radio value={2}>否</Radio>
+        </RadioGroup>
+      )}
+    </FormItem>
+    <FormItem {...layout.full} label='是否在C端已注销'>
+      {getFieldDecorator('strategyInfo.isSignedOff', {
+        rules: [{ required: true, message: '是否在C端已注销为必填项！' }],
+        initialValue: isSignedOff ? isSignedOff : 2
+      })(
+        <RadioGroup>
+          <Radio value={1}>是</Radio>
+          <Radio value={2}>否</Radio>
+        </RadioGroup>
+      )}
+    </FormItem>
+    <FormItem {...layout.full} label='是否可售卖'>
+      <div>
+        {isOnline && isOnline == 2 && <span>否</span>}
+        {isOnline && isOnline == 2 && offlineReason &&
+        <Tooltip title={handleReason(offlineReason)}>
+          <a style={{ marginLeft: '20px' }}>显示原因</a>
+        </Tooltip>
+        }
+        {isOnline && isOnline == 1 && <span>是</span>}
+      </div>
+    </FormItem>
+    <Divider dashed />
+    <FormItem {...layout.full} label='是否公开'>
+      {getFieldDecorator('strategyInfo.isOpen', {
+        rules: [{ required: true, message: '是否公开为必填项！' }],
+        initialValue: isOpen ? isOpen : 1
+      })(
+        <RadioGroup>
+          <Radio value={1}>是</Radio>
+          <Radio value={2}>否</Radio>
+        </RadioGroup>
+      )}
+    </FormItem>
+    <FormItem {...layout.full} label='是否被官方屏蔽'>
+      {getFieldDecorator('strategyInfo.isShielded', {
+        rules: [{ required: true, message: '是否被官方屏蔽必填项！' }],
+        initialValue: isShielded ? isShielded : 2
+      })(
+        <RadioGroup>
+          <Radio value={1}>是</Radio>
+          <Radio value={2}>否</Radio>
+        </RadioGroup>
+      )}
+    </FormItem>
+    <FormItem {...layout.full} label='可在A端上架'>
+      <div>
+        {aOnShelfStatus && aOnShelfStatus == 2 && <span>否</span>}
+        {aOnShelfStatus && aOnShelfStatus == 2 && aOffShelfReasonStringList &&
+        <Tooltip title={handleReason(aOffShelfReasonStringList)}>
+          <a style={{ marginLeft: '20px' }}>显示原因</a>
+        </Tooltip>
+        }
+        {aOnShelfStatus && aOnShelfStatus == 1 && <span>是</span>}
+        {!aOnShelfStatus && '--'}
+      </div>
+    </FormItem>
+    <FormItem {...layout.full} label='可在B端上架'>
+      <div>
+        {bOnShelfStatus && bOnShelfStatus == 2 && <span>否</span>}
+        {bOnShelfStatus && bOnShelfStatus == 2 && bOffShelfReasonStringList &&
+        <Tooltip title={handleReason(bOffShelfReasonStringList)}>
+          <a style={{ marginLeft: '20px' }}>显示原因</a>
+        </Tooltip>
+        }
+        {bOnShelfStatus && bOnShelfStatus == 1 && <span>是</span>}
+        {!bOnShelfStatus && '--'}
+      </div>
+    </FormItem>
+  </div>
+};
+
+/**
+ * maxOrderCount - 最大接单数
+ */
+export const MaxOrderCount = (props) => {
+  const {
+    form: { getFieldDecorator, getFieldValue },
+    layout,
+    actions: { sensitiveWordsFilter },
+    options,
+    data: { accountInfo }
+  } = props;
+  const {
+    maxOrderCount,
+    maxOrderCountNote
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem label=" ">
+      {getFieldDecorator('_client.isFinite', {
+        valuePropName: 'checked',
+        initialValue: !!maxOrderCount
+      })(
+        <Checkbox onChange={(e) => this.handleChangeForStartegy(e, '1')}>接单上限</Checkbox>
+      )}
+    </FormItem>
+    {getFieldValue('_client.isFinite') &&
+    <div>
+      <FormItem
+        label="每日最大接单数"
+        {...layout.full}
+      >
+        {getFieldDecorator('extend.maxOrderCount', {
+          rules: [{ required: true, message: '请填写每日最大接单数！' }],
+          initialValue: maxOrderCount || 1
+        })(
+          <InputNumber min={1} max={99} />
+        )}
+      </FormItem>
+      <FormItem
+        label="备注"
+        {...layout.full}
+      >
+        {getFieldDecorator('extend.maxOrderCountNote', {
+          rules: [{ required: false, message: '' }, {
+            max: 1000,
+            message: '备注不能超过1000字'
+          }],
+          initialValue: maxOrderCountNote
+        })(
+          <TextArea style={{ width: '30%' }} />
+        )}
+      </FormItem>
+    </div>}
   </div>
 };
 

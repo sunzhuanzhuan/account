@@ -2,19 +2,33 @@
  * 策略信息
  */
 import React, { Component } from "react"
-import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
+import StrategyEdit from "./Edit";
+import StrategyView from "./View";
+
+const statusComponent = (status) => {
+  const _map = {
+    'edit': StrategyEdit,
+    'view': StrategyView,
+  }
+  return _map[status] || <div>信息错误</div>
+}
 
 export default class Strategy extends Component {
-  render() {
-    const {  module: configureModule, platform: configurePlatform } = this.props
+  constructor(props) {
+    super(props);
+    this.state = {
+      moduleStatus: props.moduleStatus || 'edit'
+    }
+  }
 
-    return <div className='module-item-container'>
-      <ModuleHeader title={configureModule.title} />
-      <section className='content-wrap'>
-        策略信息
-      </section>
-      {/*<section className='custom-infos'>
-			</section>*/}
-    </div>
+  handleChange = (moduleStatus) => {
+    this.setState({
+      moduleStatus
+    })
+  }
+
+  render() {
+    const Component = statusComponent(this.state.moduleStatus)
+    return <Component {...this.props} onModuleStatusChange={this.handleChange} />
   }
 }
