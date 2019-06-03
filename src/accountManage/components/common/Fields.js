@@ -1087,7 +1087,7 @@ export const ContentForms = (props) => {
       {getFieldDecorator('_client.form', {
         initialValue: {
           defaultItems: (forms || []).map(item => item.id || item),
-          custom: customForm
+          custom: customForm || []
         }
       })(
         <DefaultAndCustomTag
@@ -1099,6 +1099,90 @@ export const ContentForms = (props) => {
             {
               validator: checkDefaultAndCustomTagRepeat(() => {
                 let { custom } = getFieldValue('_client.form')
+                return [].concat(options.map(item => item.name), custom)
+              })
+            }
+          ]}
+        />
+      )}
+    </FormItem>
+  </div>
+};
+
+/**
+ * contentFeatures - 内容特点
+ */
+export const ContentFeatures = (props) => {
+  const {
+    form: { getFieldDecorator, getFieldValue },
+    layout,
+    actions: { sensitiveWordsFilter },
+    options,
+    data: { accountInfo }
+  } = props;
+  const {
+    features,
+    customFeature
+  } = accountInfo;
+  return <div className='field-wrap-item base-media-type'>
+    <FormItem {...layout.full} label='内容特点'>
+      {getFieldDecorator('_client.feature', {
+        initialValue: {
+          defaultItems: (features || []).map(item => item.id || item),
+          custom: customFeature || []
+        }
+      })(
+        <DefaultAndCustomTag
+          options={options}
+          placeholder='请输入1~10字'
+          rules={[
+            { required: true, pattern: /^[\u4e00-\u9fa5a-zA-Z]{1,10}$/, message: '请输入1~10个中英文字符' },
+            { validator: checkForSensitiveWord(sensitiveWordsFilter) },
+            {
+              validator: checkDefaultAndCustomTagRepeat(() => {
+                let { custom } = getFieldValue('_client.feature')
+                return [].concat(options.map(item => item.name), custom)
+              })
+            }
+          ]}
+        />
+      )}
+    </FormItem>
+  </div>
+};
+
+/**
+ * contentStyles - 内容风格
+ */
+export const ContentStyles = (props) => {
+  const {
+    form: { getFieldDecorator, getFieldValue },
+    layout,
+    actions: { sensitiveWordsFilter },
+    options,
+    data: { accountInfo }
+  } = props;
+  const {
+    styles,
+    customStyle
+  } = accountInfo;
+  return <div className='field-wrap-item base-media-type'>
+    <FormItem {...layout.full} label='内容风格'>
+      {getFieldDecorator('_client.style', {
+        initialValue: {
+          defaultItems: (styles || []).map(item => item.id || item),
+          custom: customStyle || []
+        }
+      })(
+        <DefaultAndCustomTag
+          options={options}
+          placeholder='请输入1~10字'
+          rules={[
+            { required: true, pattern: /^[\u4e00-\u9fa5a-zA-Z]{1,10}$/, message: '请输入1~10个中英文字符' },
+            { validator: checkForSensitiveWord(sensitiveWordsFilter) },
+            {
+              validator: checkDefaultAndCustomTagRepeat(() => {
+                let { custom } = getFieldValue('_client.style')
                 return [].concat(options.map(item => item.name), custom)
               })
             }

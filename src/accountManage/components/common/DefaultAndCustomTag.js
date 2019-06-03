@@ -40,7 +40,7 @@ class MiniForm extends Component {
         <Form.Item label={label} colon={false} required={false}>
           {getFieldDecorator('text', {
             validateFirst: true,
-            validateTrigger: 'onBlur',
+            validateTrigger: 'onSubmit',
             rules: rules || []
           })(
             <Input placeholder={placeholder} />

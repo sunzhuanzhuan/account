@@ -4,18 +4,11 @@
 import React, { Component } from "react"
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
 import {
-  DirectItems,
-  RefuseBrands,
-  ManuscriptModificationLimit,
-  VideoShotArea,
-  LiveArea,
-  CooperationTips,
-  CooperationCases,
-  AdServiceItems,
-  PostPlatform,
-  ProductPlacementType, ContentForms
+  ContentForms,
+  ContentFeatures,
+  ContentStyles
 } from "@/accountManage/components/common/Fields";
-import { Button, Divider, Form } from "antd";
+import { Button, Form } from "antd";
 
 @Form.create()
 export default class ContentEdit extends Component {
@@ -24,15 +17,9 @@ export default class ContentEdit extends Component {
     this.state = {
       asyncVisibility: {},
       asyncOptions: {
-        forms: [{
-          "id": 1, // int 内容形式ID
-          "name": "aaa" // String 内容形式名称
-        },{
-          "id": 2, // int 内容形式ID
-          "name": "bbb" // String 内容形式名称
-        },],
+        forms: [],
         features: [],
-        styles: [],
+        styles: []
       }
     }
   }
@@ -40,9 +27,19 @@ export default class ContentEdit extends Component {
   submit = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, fieldsValue) => {
-      console.log('Received values of form: ', fieldsValue);
-      if (err) {
-        return;
+      if (!err) {
+        const { form, feature, style } = fieldsValue['_client']
+        let value = {
+          content: {
+            forms: form.defaultItems,
+            customForm: form.custom,
+            features: feature.defaultItems,
+            customFeature: feature.custom,
+            styles: style.defaultItems,
+            customStyle: style.custom
+          }
+        }
+        console.log('Received values of form: ', value);
       }
     });
   }
@@ -71,7 +68,9 @@ export default class ContentEdit extends Component {
     return <Form className='module-item-container' onSubmit={this.submit} colon={false}>
       <ModuleHeader title={configureModule.title} right={right} />
       <section className='content-wrap'>
-        <ContentForms {...fieldProps} options={asyncOptions.forms}/>
+        <ContentForms {...fieldProps} options={asyncOptions.forms} />
+        <ContentStyles {...fieldProps} options={asyncOptions.styles} />
+        <ContentFeatures {...fieldProps} options={asyncOptions.features} />
       </section>
     </Form>
   }
