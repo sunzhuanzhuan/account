@@ -59,7 +59,7 @@ export default class CooperationView extends Component {
       <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>
       <Button type='primary' onClick={() => onModuleStatusChange('edit')}>编辑</Button>
     </div>;
-    return <Form className='module-item-container' onSubmit={this.submit} colon={false}>
+    return <div className='module-item-container'>
       <ModuleHeader title={configureModule.title} right={right} />
       <ul className='content-wrap'>
         <li className='subclass-item-wrap'>
@@ -153,6 +153,6 @@ export default class CooperationView extends Component {
           </div>
         </li>
       </ul>
-    </Form>
+    </div>
   }
 }

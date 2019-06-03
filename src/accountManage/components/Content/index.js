@@ -2,13 +2,13 @@
  * 内容相关
  */
 import React, { Component } from "react"
-import CooperationEdit from "./Edit";
-import CooperationView from "./View";
+import ContentEdit from "./Edit";
+import ContentView from "./View";
 
 const statusComponent = (status) => {
   const _map = {
-    'edit': CooperationEdit,
-    'view': CooperationView,
+    'edit': ContentEdit,
+    'view': ContentView,
   }
   return _map[status] || <div>信息错误</div>
 }
