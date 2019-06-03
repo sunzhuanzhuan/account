@@ -13,9 +13,11 @@ class MiniForm extends Component {
 
   add = () => {
     this.props.form.validateFields((err, values) => {
-      console.log(values);
       if (!err) {
-        // this.props.onChange()
+        this.props.onChange({
+          text: values.text,
+          index: -1
+        }, 'custom')
         this.close()
       }
     })
@@ -38,6 +40,7 @@ class MiniForm extends Component {
         <Form.Item label={label} colon={false} required={false}>
           {getFieldDecorator('text', {
             validateFirst: true,
+            validateTrigger: 'onBlur',
             rules: rules || []
           })(
             <Input placeholder={placeholder} />
@@ -81,14 +84,26 @@ export default class DefaultAndCustomTag extends Component {
     }
   }
 
-  onChange = (word, index) => {
-    const { value } = this.state
-    let newValue = [...value]
-    // let index = value.indexOf(word)
-    if (index < 0) {
-      newValue.push(word)
-    } else {
-      newValue.splice(index, 1)
+  onChange = (value, type) => {
+    const { defaultItems, custom } = this.state
+    let newValue = {
+      defaultItems: [...defaultItems],
+      custom: [...custom]
+    }
+    if (type === "default") {
+      let { id, index } = value
+      if (index > -1) {
+        newValue.defaultItems.splice(index, 1)
+      } else {
+        newValue.defaultItems.push(id)
+      }
+    } else if (type === "custom") {
+      let { text, index } = value
+      if (index > -1) {
+        newValue.custom.splice(index, 1)
+      } else {
+        newValue.custom.push(text)
+      }
     }
     this.setState({ value: newValue }, () => {
       this.triggerChange(newValue)
@@ -96,26 +111,33 @@ export default class DefaultAndCustomTag extends Component {
   }
 
   render() {
-    const { placeholder, label = '自定义', rules } = this.props
+    const { placeholder, label = '自定义', rules, options = [] } = this.props
     const { defaultItems = [], custom = [] } = this.state
     return <div>
       {
-        defaultItems.map(({ id, name }, index) => <CheckTag checked key={id}>
-          {name}
-        </CheckTag>)
+        options.map(({ id, name }, index) => {
+          let checked = defaultItems.find(key => id === key)
+          return <CheckTag
+            checked={checked}
+            key={id}
+            onClick={() => this.onChange({ id, index: checked ? index : -1 }, 'default')}
+          >
+            {name}
+          </CheckTag>
+        })
       }
       {
-        custom.map((word, index) => <CheckTag checked key={word}>
-          {word}
+        custom.map((text, index) => <CheckTag checked key={text}>
+          {text}
           <Icon
             style={{ fontSize: "14px", color: "#256ea3", marginLeft: '6px' }}
             type="close-circle"
             theme="filled"
-            onClick={() => this.onChange(word, index)}
+            onClick={() => this.onChange({ text, index }, 'custom')}
           />
         </CheckTag>)
       }
-      <MiniForm placeholder={placeholder} label={label} rules={rules} />
+      <MiniForm placeholder={placeholder} label={label} rules={rules} onChange={this.onChange} />
     </div>
   }
 }

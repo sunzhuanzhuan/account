@@ -4,6 +4,6 @@ module.exports = function (app) {
     { target: 'http://192.168.20.51:7300/mock/5cc7f9c773f3100017a6441e', changeOrigin: true }
   ));
   app.use(proxy('/api',
-    { target: 'http://nb.tst-weiboyi.com', changeOrigin: true }
+    { target: process.env.HOST || 'http://nb.tst-weiboyi.com', changeOrigin: true }
   ));
 }

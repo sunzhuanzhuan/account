@@ -28,6 +28,17 @@ const checkForSensitiveWord = action => (rule, value, callback) => {
   });
 };
 
+// DefaultAndCustomTag 重复校验
+const checkDefaultAndCustomTagRepeat = getSource => (rule, value, callback) => {
+  let source = getSource()
+  let isRepeat = source.some(name => value === name)
+  if (isRepeat) {
+    callback('添加内容已存在，请修订');
+  } else {
+    callback()
+  }
+};
+
 // base - 账号基本信息
 /**
  * snsUniqueId - 唯一标识
@@ -1061,9 +1072,10 @@ export const ProductPlacementType = (props) => {
  */
 export const ContentForms = (props) => {
   const {
-    form: { getFieldDecorator },
+    form: { getFieldDecorator, getFieldValue },
     layout,
     actions: { sensitiveWordsFilter },
+    options,
     data: { accountInfo }
   } = props;
   const {
@@ -1072,20 +1084,24 @@ export const ContentForms = (props) => {
   } = accountInfo;
   return <div className='field-wrap-item base-media-type'>
     <FormItem {...layout.full} label='内容形式'>
-      {getFieldDecorator('content.forms', {
+      {getFieldDecorator('_client.form', {
         initialValue: {
-          defaultItems: forms || [{
-            "id": 1, // int 内容形式ID
-            "name": "aaa" // String 内容形式名称
-          }],
-          custom: customForm || ["aaa", "bbb"]
+          defaultItems: (forms || []).map(item => item.id || item),
+          custom: customForm
         }
       })(
         <DefaultAndCustomTag
+          options={options}
           placeholder='请输入1~10字'
           rules={[
             { required: true, pattern: /^[\u4e00-\u9fa5a-zA-Z]{1,10}$/, message: '请输入1~10个中英文字符' },
-            { validator: checkForSensitiveWord(sensitiveWordsFilter) }
+            { validator: checkForSensitiveWord(sensitiveWordsFilter) },
+            {
+              validator: checkDefaultAndCustomTagRepeat(() => {
+                let { custom } = getFieldValue('_client.form')
+                return [].concat(options.map(item => item.name), custom)
+              })
+            }
           ]}
         />
       )}

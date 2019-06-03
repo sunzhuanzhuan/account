@@ -23,7 +23,17 @@ export default class ContentEdit extends Component {
     super(props)
     this.state = {
       asyncVisibility: {},
-      asyncOptions: {}
+      asyncOptions: {
+        forms: [{
+          "id": 1, // int 内容形式ID
+          "name": "aaa" // String 内容形式名称
+        },{
+          "id": 2, // int 内容形式ID
+          "name": "bbb" // String 内容形式名称
+        },],
+        features: [],
+        styles: [],
+      }
     }
   }
 
@@ -61,7 +71,7 @@ export default class ContentEdit extends Component {
     return <Form className='module-item-container' onSubmit={this.submit} colon={false}>
       <ModuleHeader title={configureModule.title} right={right} />
       <section className='content-wrap'>
-        <ContentForms {...fieldProps}/>
+        <ContentForms {...fieldProps} options={asyncOptions.forms}/>
       </section>
     </Form>
   }

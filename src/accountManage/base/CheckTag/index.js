@@ -1,12 +1,9 @@
 import React from "react"
 import './style.less'
 
-const   CheckTag = props => {
+const CheckTag = props => {
 
-  return <div className={'check-tag ' + (props.checked ? 'checked' : '')} onClick={e => {
-    e && e.stopPropagation()
-    props.onChange && props.onChange(e)
-  }}>
+  return <div {...props} className={'check-tag ' + (props.checked ? 'checked' : '')} >
     {props.children}
   </div>
 }
