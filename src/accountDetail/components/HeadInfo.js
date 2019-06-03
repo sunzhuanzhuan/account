@@ -97,9 +97,9 @@ class HeadInfo extends Component {
                 {isExistCar ? <Button className='add-select-car-button' type='primary' onClick={() => selectCarEdit(true)}>加入选号车</Button> :
                   <Button className='remove-select-car-button' onClick={() => selectCarEdit(false)}>移出选号车</Button>}
                 <a onClick={() => setShowModal(true, {
-                  content: <RecentPrice />, title: `近期应约价（${accountDetail.historyPriceCount}）`, width: 700
+                  content: <RecentPrice />, title: `近期应约（${accountDetail.historyPriceCount}）`, width: 1000
                 })}>
-                  近期应约价（{accountDetail.historyPriceCount}）
+                  近期应约（{accountDetail.historyPriceCount}）
                 </a>
               </div>
               {/* <div style={{ textAlign: "center", marginTop: 12 }}>加入收藏<span className='collect'>（100人已收藏）</span></div> */}
