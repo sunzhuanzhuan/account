@@ -1344,12 +1344,12 @@ export const MaxOrderCount = (props) => {
     maxOrderCountNote
   } = accountInfo;
   return <div className='field-wrap-item'>
-    <FormItem label=" ">
+    <FormItem {...layout.full} label=" ">
       {getFieldDecorator('_client.isFinite', {
         valuePropName: 'checked',
         initialValue: !!maxOrderCount
       })(
-        <Checkbox onChange={(e) => this.handleChangeForStartegy(e, '1')}>接单上限</Checkbox>
+        <Checkbox>接单上限</Checkbox>
       )}
     </FormItem>
     {getFieldValue('_client.isFinite') &&
@@ -1360,9 +1360,9 @@ export const MaxOrderCount = (props) => {
       >
         {getFieldDecorator('extend.maxOrderCount', {
           rules: [{ required: true, message: '请填写每日最大接单数！' }],
-          initialValue: maxOrderCount || 1
+          initialValue: maxOrderCount,
         })(
-          <InputNumber min={1} max={99} />
+          <InputNumber min={0} max={99} precision={0}/>
         )}
       </FormItem>
       <FormItem
