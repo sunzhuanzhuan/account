@@ -38,6 +38,7 @@ class App extends Component {
     try {
       await this.props.actions.getAuthorizations();
     }catch (e) {
+      NProgress.done()
       return message.error('权限接口错误!')
     }
     NProgress.inc()
@@ -45,6 +46,7 @@ class App extends Component {
 		try {
       Info = await this.props.actions.getUserLoginInfo();
     }catch (e) {
+      NProgress.done()
       return message.error('获取用户信息错误!')
     }
 		let userInfoId = Info.data.user_info.user_id

@@ -72,7 +72,7 @@ export const tabs = [
       // "fetch",
       // "main",
       // "cooperation",
-      "content",
+      // "content",
       "strategy",
       "other"
     ]

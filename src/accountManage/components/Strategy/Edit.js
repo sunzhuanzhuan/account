@@ -9,6 +9,7 @@ import {
 import { Button, Divider, Form } from "antd";
 import { OnSaleInfo } from "@/accountManage/components/common/Fields";
 import { MaxOrderCount } from "@/accountManage/components/common/Fields";
+import { Strategy } from "@/accountManage/components/common/Fields";
 
 @Form.create()
 export default class StrategyEdit extends Component {
@@ -27,8 +28,10 @@ export default class StrategyEdit extends Component {
   submit = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, fieldsValue) => {
+      console.log('Received values of form: ', fieldsValue);
+
       if (!err) {
-        console.log('Received values of form: ', fieldsValue);
+        //
       }
     });
   }
@@ -54,7 +57,7 @@ export default class StrategyEdit extends Component {
       <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>
       <Button htmlType='submit' type='primary'>保存</Button>
     </div>;
-    return <Form className='module-item-container' onSubmit={this.submit} colon={false}>
+    return <Form className='module-item-container' onSubmit={this.submit} colon={false} hideRequiredMark>
       <ModuleHeader title={configureModule.title} right={right} />
       <ul className='content-wrap'>
         <li className='subclass-item-wrap'>
@@ -63,7 +66,7 @@ export default class StrategyEdit extends Component {
             <small className='line' />
           </h4>
           <div className='subclass-content'>
-              <OnSaleInfo {...fieldProps}/>
+              {/*<OnSaleInfo {...fieldProps}/>*/}
           </div>
         </li>
         <li className='subclass-item-wrap'>
@@ -72,6 +75,7 @@ export default class StrategyEdit extends Component {
             <small className='line' />
           </h4>
           <div className='subclass-content'>
+            <Strategy {...fieldProps}/>
             <MaxOrderCount {...fieldProps}/>
           </div>
         </li>

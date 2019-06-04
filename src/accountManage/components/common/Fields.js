@@ -1,5 +1,19 @@
+/**
+ * 账号字段集合
+ */
 import React from 'react';
-import { Form, Select, Input, Checkbox, Popover, Radio, InputNumber, Tooltip, Divider } from 'antd';
+import {
+  Form,
+  Select,
+  Input,
+  Checkbox,
+  Popover,
+  Radio,
+  InputNumber,
+  Tooltip,
+  Divider,
+  DatePicker, TimePicker, Row, Col
+} from 'antd';
 import { OssUpload } from 'wbyui';
 import SimpleTag from '../../base/SimpleTag';
 import moment from 'moment';
@@ -13,8 +27,33 @@ import { handleReason } from "@/accountManage/util";
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
+const CheckboxGroup = Checkbox.Group;
 const FormItem = Form.Item;
 const { TextArea } = Input;
+const { RangePicker } = DatePicker;
+
+const createRange = (start, end) => {
+  const result = [];
+  for (let i = start; i < end; i++) {
+    result.push(i);
+  }
+  return result;
+}
+
+const handleWeeks = (weeks) => {
+  let result = []
+  if (weeks) {
+    if (Array.isArray(weeks)) {
+      return weeks.map(num => num.toString())
+    }
+    try {
+      result = JSON.parse(weeks)
+    } catch (e) {
+      result = []
+    }
+  }
+  return result.map(num => num.toString())
+}
 
 // 数据校验
 const checkForSensitiveWord = action => (rule, value, callback) => {
@@ -40,7 +79,7 @@ const checkDefaultAndCustomTagRepeat = getSource => (rule, value, callback) => {
   }
 };
 
-// base - 账号基本信息
+/* region  base - 账号基本信息  */
 /**
  * snsUniqueId - 唯一标识
  */
@@ -724,8 +763,9 @@ export const OpenLiveProgram = (props) => {
       <input type="hidden" />)}
   </div>
 };
+/* endregion  base - 账号基本信息  */
 
-// cooperation - 合作相关
+/* region  cooperation - 合作相关  */
 /**
  * isAcceptHardAd, isAcceptProductUse - 拒绝项
  */
@@ -1066,8 +1106,9 @@ export const ProductPlacementType = (props) => {
     </FormItem>
   </div>
 };
+/* endregion  cooperation - 合作相关  */
 
-// 内容相关
+/* region  content - 内容相关  */
 /**
  * contentForms - 内容形式
  */
@@ -1193,8 +1234,9 @@ export const ContentStyles = (props) => {
     </FormItem>
   </div>
 };
+/* endregion  content - 内容相关  */
 
-// 策略信息
+/* region  strategyInfo - 策略信息  */
 /**
  * onSaleInfo - 上架信息
  */
@@ -1269,13 +1311,13 @@ export const OnSaleInfo = (props) => {
     </FormItem>
     <FormItem {...layout.full} label='是否可售卖'>
       <div>
-        {isOnline && isOnline == 2 && <span>否</span>}
-        {isOnline && isOnline == 2 && offlineReason &&
+        {isOnline && isOnline === 2 && <span>否</span>}
+        {isOnline && isOnline === 2 && offlineReason &&
         <Tooltip title={handleReason(offlineReason)}>
           <a style={{ marginLeft: '20px' }}>显示原因</a>
         </Tooltip>
         }
-        {isOnline && isOnline == 1 && <span>是</span>}
+        {isOnline && isOnline === 1 && <span>是</span>}
       </div>
     </FormItem>
     <Divider dashed />
@@ -1303,25 +1345,25 @@ export const OnSaleInfo = (props) => {
     </FormItem>
     <FormItem {...layout.full} label='可在A端上架'>
       <div>
-        {aOnShelfStatus && aOnShelfStatus == 2 && <span>否</span>}
-        {aOnShelfStatus && aOnShelfStatus == 2 && aOffShelfReasonStringList &&
+        {aOnShelfStatus && aOnShelfStatus === 2 && <span>否</span>}
+        {aOnShelfStatus && aOnShelfStatus === 2 && aOffShelfReasonStringList &&
         <Tooltip title={handleReason(aOffShelfReasonStringList)}>
           <a style={{ marginLeft: '20px' }}>显示原因</a>
         </Tooltip>
         }
-        {aOnShelfStatus && aOnShelfStatus == 1 && <span>是</span>}
+        {aOnShelfStatus && aOnShelfStatus === 1 && <span>是</span>}
         {!aOnShelfStatus && '--'}
       </div>
     </FormItem>
     <FormItem {...layout.full} label='可在B端上架'>
       <div>
-        {bOnShelfStatus && bOnShelfStatus == 2 && <span>否</span>}
-        {bOnShelfStatus && bOnShelfStatus == 2 && bOffShelfReasonStringList &&
+        {bOnShelfStatus && bOnShelfStatus === 2 && <span>否</span>}
+        {bOnShelfStatus && bOnShelfStatus === 2 && bOffShelfReasonStringList &&
         <Tooltip title={handleReason(bOffShelfReasonStringList)}>
           <a style={{ marginLeft: '20px' }}>显示原因</a>
         </Tooltip>
         }
-        {bOnShelfStatus && bOnShelfStatus == 1 && <span>是</span>}
+        {bOnShelfStatus && bOnShelfStatus === 1 && <span>是</span>}
         {!bOnShelfStatus && '--'}
       </div>
     </FormItem>
@@ -1335,12 +1377,10 @@ export const MaxOrderCount = (props) => {
   const {
     form: { getFieldDecorator, getFieldValue },
     layout,
-    actions: { sensitiveWordsFilter },
-    options,
     data: { accountInfo }
   } = props;
   const {
-    maxOrderCount,
+    maxOrderCount = 0,
     maxOrderCountNote
   } = accountInfo;
   return <div className='field-wrap-item'>
@@ -1356,32 +1396,185 @@ export const MaxOrderCount = (props) => {
     <div>
       <FormItem
         label="每日最大接单数"
-        {...layout.full}
+        {...layout.half}
       >
-        {getFieldDecorator('extend.maxOrderCount', {
+        {getFieldDecorator('strategyInfo.maxOrderCount', {
           rules: [{ required: true, message: '请填写每日最大接单数！' }],
-          initialValue: maxOrderCount,
+          initialValue: maxOrderCount || 1
         })(
-          <InputNumber min={0} max={99} precision={0}/>
+          <InputNumber min={1} max={99} precision={0} style={{ width: '100%' }} />
         )}
       </FormItem>
       <FormItem
         label="备注"
-        {...layout.full}
+        {...layout.half}
       >
-        {getFieldDecorator('extend.maxOrderCountNote', {
+        {getFieldDecorator('strategyInfo.maxOrderCountNote', {
           rules: [{ required: false, message: '' }, {
             max: 1000,
             message: '备注不能超过1000字'
           }],
           initialValue: maxOrderCountNote
         })(
-          <TextArea style={{ width: '30%' }} />
+          <TextArea style={{ width: '100%' }} />
         )}
       </FormItem>
     </div>}
   </div>
 };
+
+/**
+ * strategy - 暂离设置
+ */
+export const Strategy = (props) => {
+  const {
+    form: { getFieldDecorator, getFieldValue },
+    layout,
+    data: { accountInfo }
+  } = props;
+  const {
+    strategy = { type: 1 }
+  } = accountInfo;
+
+  const disabledStartDate = () => {
+    const endValue = getFieldValue('strategyInfo.strategy.endTimeOfTime');
+    if (endValue) {
+      let flag = moment(endValue).hour();
+      return createRange(0, 24).slice(flag, 24)
+    }
+    return [23]
+  }
+  const disabledEndDate = () => {
+    const startValue = getFieldValue('strategyInfo.strategy.startTimeOfTime');
+    if (startValue) {
+      let flag = moment(startValue).hour();
+      return createRange(0, 24).slice(0, flag + 1)
+    }
+    return [0]
+  }
+
+  const checkWeeks = (rule, value, callback) => {
+    value = handleWeeks(value)
+    if (value.length > 6) {
+      return callback('最多选择6天!')
+    }
+    return callback()
+  }
+
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.full} label=" ">
+      {getFieldDecorator('_client.isLeave', {
+        valuePropName: 'checked',
+        initialValue: Object.keys(strategy).length > 0
+      })(
+        <Checkbox>暂离</Checkbox>
+      )}
+    </FormItem>
+    {getFieldValue('_client.isLeave') &&
+    <div>
+      <FormItem {...layout.full} label=" ">
+        {getFieldDecorator('strategyInfo.strategy.type', {
+          initialValue: strategy.type,
+          rules: [{
+            required: true,
+            message: '请选择对应的时间类型'
+          }]
+        })(
+          <RadioGroup>
+            <Radio value={1}>每日</Radio>
+            <Radio value={2}>每周</Radio>
+            <Radio value={3}>自定义时间</Radio>
+          </RadioGroup>
+        )}
+      </FormItem>
+      {getFieldValue('strategyInfo.strategy.type') === 2 && <FormItem {...layout.full} label=' '>
+        {getFieldDecorator('strategyInfo.strategy.weeks', {
+          initialValue: handleWeeks(strategy.weeks),
+          rules: [
+            { required: true, message: '请选择星期！' },
+            { validator: checkWeeks }
+          ]
+        })(
+          <CheckboxGroup options={[
+            { label: '星期一', value: '1' },
+            { label: '星期二', value: '2' },
+            { label: '星期三', value: '3' },
+            { label: '星期四', value: '4' },
+            { label: '星期五', value: '5' },
+            { label: '星期六', value: '6' },
+            { label: '星期日', value: '7' }]
+          } />
+        )}
+      </FormItem>}
+      {(getFieldValue('strategyInfo.strategy.type') === 1 || getFieldValue('strategyInfo.strategy.type') === 2) && <div>
+        <FormItem {...layout.full} label='离开时间' style={{ display: 'inner-block' }}>
+          {getFieldDecorator('strategyInfo.strategy.startTimeOfTime', {
+            rules: [{ required: true, message: '离开时间不能为空' }],
+            initialValue: strategy.startTimeOfTime ? moment(strategy.startTimeOfTime, 'HH:mm') : null
+          })(
+            <TimePicker
+              placeholder="离开时间"
+              disabledHours={disabledStartDate}
+              minuteStep={15}
+              format="HH:mm"
+            />
+          )}
+        </FormItem>
+        <FormItem {...layout.full} label='返回时间' style={{ display: 'inner-block' }}>
+          {getFieldDecorator('strategyInfo.strategy.endTimeOfTime', {
+            rules: [{ required: true, message: '返回时间不能为空' }],
+            initialValue: strategy.endTimeOfTime ? moment(strategy.endTimeOfTime, 'HH:mm') : null
+          })(
+            <TimePicker
+              placeholder="返回时间"
+              disabledHours={disabledEndDate}
+              minuteStep={15}
+              format="HH:mm"
+            />
+          )}
+        </FormItem>
+        <FormItem {...layout.full} label='备注'>
+          {getFieldDecorator('strategyInfo.strategy.comment', {
+            rules: [{
+              max: 1000, message: '备注不能超过1000字'
+            }],
+            initialValue: strategy.comment
+          })(
+            <TextArea style={{ width: '35%' }} />
+          )}
+        </FormItem>
+      </div>}
+      {getFieldValue('strategyInfo.strategy.type') === 3 && <FormItem {...layout.full} label="选择时间">
+        {getFieldDecorator('strategyInfo.strategy.otherTime', {
+          initialValue: (strategy.startTimeOfDate && strategy.endTimeOfDate) ? [moment(strategy.startTimeOfDate), moment(strategy.endTimeOfDate)] : [],
+          rules: [{ type: 'array', required: true, message: '请填入对应的时间！' }],
+          getValueFromEvent: (value) => {
+            if (value && value.length) {
+              let [start, end] = value
+              if (start.minute() % 15) {
+                start.minute(0)
+              }
+              if (end.minute() % 15) {
+                end.minute(0)
+              }
+              start.second(0);
+              end.second(0);
+              return [start, end]
+            }
+          }
+        })(
+          <RangePicker
+            showTime={{ minuteStep: 15, format: "HH:mm" }}
+            format="YYYY-MM-DD HH:mm"
+            disabledDate={(current) => current && current < moment().startOf('day')}
+          />
+        )}
+      </FormItem>}
+    </div>}
+  </div>
+};
+
+/* endregion  strategyInfo - 策略信息  */
 
 
 /**
