@@ -66,7 +66,7 @@ export default class StrategyEdit extends Component {
             <small className='line' />
           </h4>
           <div className='subclass-content'>
-              {/*<OnSaleInfo {...fieldProps}/>*/}
+              <OnSaleInfo {...fieldProps}/>
           </div>
         </li>
         <li className='subclass-item-wrap'>

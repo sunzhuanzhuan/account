@@ -23,7 +23,7 @@ import WordList from "@/accountManage/components/common/WordList";
 import AreasTreeSelect from "@/accountManage/components/common/AreasTreeSelect";
 import CooperationCasesCore from "@/accountManage/components/common/CooperationCasesCore";
 import DefaultAndCustomTag from "@/accountManage/components/common/DefaultAndCustomTag";
-import { handleReason } from "@/accountManage/util";
+import { createRange, handleReason, handleWeeks } from "@/accountManage/util";
 import {
   FeedbackCreate,
   FeedbackDetail,
@@ -36,29 +36,6 @@ const CheckboxGroup = Checkbox.Group;
 const FormItem = Form.Item;
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
-
-const createRange = (start, end) => {
-  const result = [];
-  for (let i = start; i < end; i++) {
-    result.push(i);
-  }
-  return result;
-}
-
-const handleWeeks = (weeks) => {
-  let result = []
-  if (weeks) {
-    if (Array.isArray(weeks)) {
-      return weeks.map(num => num.toString())
-    }
-    try {
-      result = JSON.parse(weeks)
-    } catch (e) {
-      result = []
-    }
-  }
-  return result.map(num => num.toString())
-}
 
 // 数据校验
 const checkForSensitiveWord = action => (rule, value, callback) => {
@@ -1426,7 +1403,7 @@ export const MaxOrderCount = (props) => {
     data: { accountInfo }
   } = props;
   const {
-    maxOrderCount = 0,
+    maxOrderCount,
     maxOrderCountNote
   } = accountInfo;
   return <div className='field-wrap-item'>
@@ -1479,7 +1456,7 @@ export const Strategy = (props) => {
     data: { accountInfo }
   } = props;
   const {
-    strategy = { type: 1 }
+    strategy = {}
   } = accountInfo;
 
   const disabledStartDate = () => {

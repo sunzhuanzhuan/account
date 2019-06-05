@@ -12,17 +12,17 @@ import moment from 'moment'
  * @returns {string|*} [url] - 提交的文件地址(绝对路径)
  */
 export function uploadUrl(file, key = 'url', limit = 1) {
-	//  校验file类型, 不合法或没有传入则返回 undefined
-	if (!Array.isArray(file)) return undefined
+  //  校验file类型, 不合法或没有传入则返回 undefined
+  if (!Array.isArray(file)) return undefined
 
-	if (limit === 1) {
-		// 当只上传一个路径
-		return file.length ? file[0][key] : ''
-	} else {
-		// 当上传多个路径
-		let ary = file.splice(0, limit)
-		return ary.map(item => item[key])
-	}
+  if (limit === 1) {
+    // 当只上传一个路径
+    return file.length ? file[0][key] : ''
+  } else {
+    // 当上传多个路径
+    let ary = file.splice(0, limit)
+    return ary.map(item => item[key])
+  }
 
 }
 /**
@@ -31,11 +31,11 @@ export function uploadUrl(file, key = 'url', limit = 1) {
  * @param {array} [map]
  * @returns {*}
  */
-export function checkVal(value, map = ["2","1"]) {
-	if (typeof value === "boolean") {
-		return map[value / 1]
-	}
-	return value
+export function checkVal(value, map = ["2", "1"]) {
+  if (typeof value === "boolean") {
+    return map[value / 1]
+  }
+  return value
 }
 /**
  * 处理原因显示
@@ -43,13 +43,13 @@ export function checkVal(value, map = ["2","1"]) {
  * @returns {string} reason - 返回字符串原因
  */
 export function handleReason(reason = '') {
-	let result = ''
-	if (Array.isArray(reason)) {
-		result = reason.join('，')
-	} else if (typeof reason === 'string') {
-		result = reason.replace(/,/g, '，')
-	}
-	return result
+  let result = ''
+  if (Array.isArray(reason)) {
+    result = reason.join('，')
+  } else if (typeof reason === 'string') {
+    result = reason.replace(/,/g, '，')
+  }
+  return result
 }
 /**
  * 时间转moment对象
@@ -57,8 +57,62 @@ export function handleReason(reason = '') {
  * @returns {moment} moment - 返回moment对象
  */
 export function date2moment(date) {
-	// 判断 date 是否为一个有效值
-	return date ? moment(date) : moment.invalid()
+  // 判断 date 是否为一个有效值
+  return date ? moment(date) : moment.invalid()
 }
+
+/**
+ * 创建数字区间
+ * @param start
+ * @param end
+ * @returns {Array}
+ */
+export const createRange = (start, end) => {
+  const result = [];
+  for (let i = start; i < end; i++) {
+    result.push(i);
+  }
+  return result;
+}
+
+/**
+ * 处理星期数组
+ * @param weeks
+ * @returns {string[]|*}
+ */
+export const handleWeeks = (weeks) => {
+  let result = []
+  if (weeks) {
+    if (Array.isArray(weeks)) {
+      return weeks.map(num => num.toString())
+    }
+    try {
+      result = JSON.parse(weeks)
+    } catch (e) {
+      result = []
+    }
+  }
+  return result.map(num => num.toString())
+}
+
+/**
+ * 处理星期显示为中文星期数字
+ * @param weeks
+ * @returns {string[]|*}
+ */
+export const weeksToNames = (weeks) => {
+  let weekSource = {
+    "1": "星期一",
+    "2": "星期二",
+    "3": "星期三",
+    "4": "星期四",
+    "5": "星期五",
+    "6": "星期六",
+    "7": "星期日"
+  }
+  let _data = handleWeeks(weeks)
+  return _data.map(key => weekSource[key])
+}
+
 
 export default { uploadUrl, checkVal, handleReason, date2moment }
