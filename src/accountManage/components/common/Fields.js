@@ -1433,7 +1433,7 @@ export const MaxOrderCount = (props) => {
         {...layout.half}
       >
         {getFieldDecorator('strategyInfo.maxOrderCountNote', {
-          rules: [{ required: false, message: '' }, {
+          rules: [{
             max: 1000,
             message: '备注不能超过1000字'
           }],
@@ -1599,6 +1599,59 @@ export const Strategy = (props) => {
 };
 
 /* endregion  strategyInfo - 策略信息  */
+
+/* region otherInfo - 其他信息 */
+/**
+ * isLowQuality - 是否劣质号
+ */
+export const IsLowQuality = (props) => {
+  const {
+    layout,
+    data: { accountInfo }
+  } = props;
+  const {
+    isLowQuality,
+    lowQualityReasonList
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.full} label='是否劣质号'>
+      {isLowQuality ? <div>
+        {isLowQuality === 1 && <Tooltip title={handleReason(lowQualityReasonList)}>
+          <span>是</span>
+        </Tooltip>}
+        {isLowQuality === 2 && <span>否</span>}
+      </div> : '未获取到数据'}
+    </FormItem>
+  </div>
+};
+
+/**
+ * mediaTeamNote - 媒介备注
+ */
+export const MediaTeamNote = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    data: { accountInfo }
+  } = props;
+  const {
+    mediaTeamNote
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem label="媒介备注"  {...layout.half} >
+      {getFieldDecorator('otherInfo.mediaTeamNote', {
+        rules: [{
+          max: 1000,
+          message: '媒介备注不能超过1000字'
+        }],
+        initialValue: mediaTeamNote
+      })(
+        <TextArea style={{ width: '100%' }} />
+      )}
+    </FormItem>
+  </div>
+};
+/* endregion otherInfo - 其他信息 */
 
 
 /**

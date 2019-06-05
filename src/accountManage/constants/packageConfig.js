@@ -73,7 +73,7 @@ export const tabs = [
       // "main",
       // "cooperation",
       // "content",
-      "strategy",
+      // "strategy",
       "other"
     ]
   }, {
@@ -210,7 +210,8 @@ export const diffByTypes = {
         uniqueId: true,
         url: true,
         qcCode: true,
-        isFansNumberImg: true
+        isFansNumberImg: true,
+        isLowQuality: true,
       },
       modules: [
         "owner",
