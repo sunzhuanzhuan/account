@@ -24,6 +24,11 @@ import AreasTreeSelect from "@/accountManage/components/common/AreasTreeSelect";
 import CooperationCasesCore from "@/accountManage/components/common/CooperationCasesCore";
 import DefaultAndCustomTag from "@/accountManage/components/common/DefaultAndCustomTag";
 import { handleReason } from "@/accountManage/util";
+import {
+  FeedbackCreate,
+  FeedbackDetail,
+  FeedbackMini
+} from "@/accountManage/components/CategoryFeedbackModal";
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -415,28 +420,69 @@ export const MicroFlashPost = (props) => {
 /**
  * classificationList - 内容分类
  */
-export const ContentCategory = (props) => {
-  const {
-    // form: { getFieldDecorator },
-    layout,
-    data: { accountInfo }
-  } = props;
-  const {
-    classificationList: category = [{ name: '美食' }, { name: '游戏' }]
-  } = accountInfo;
-  return <div className='field-wrap-item'>
-    <FormItem {...layout.full} label='内容分类'>
-      {category.length ?
-        <div>
-          {
-            category.map(({ name }) => <SimpleTag key={name}>{name}</SimpleTag>)
-          }
-          <a>分类错误?</a>
-        </div>
-        : '暂无分类'}
-    </FormItem>
-  </div>
-};
+export class ContentCategory extends React.Component {
+  state = { feedback: '' }
+
+  componentDidMount() {
+    this.reload()
+  }
+
+  reload = () => {
+    const { actions, data: { accountInfo } } = this.props
+    actions.isExistClassify({ accountId: accountInfo.accountId }).then(({ data }) => {
+      this.setState({
+        classifyAuditInfoId: data.classifyAuditInfoId,
+        hasRecord: data.count
+      })
+    })
+  }
+
+  setModal = type => {
+    this.setState({ feedback: type })
+  }
+
+  render() {
+    const {
+      layout,
+      data: { accountInfo },
+      actions
+    } = this.props;
+    const {
+      classificationList: category = []
+    } = accountInfo;
+    const { hasRecord, classifyAuditInfoId } = this.state
+    return <div className='field-wrap-item'>
+      <FormItem {...layout.full} label='内容分类'>
+        {category.length ?
+          <div>
+            {
+              category.map(({ name }) => <SimpleTag key={name}>{name}</SimpleTag>)
+            }
+            {
+              hasRecord ? <a
+                className='category-feedback-btn'
+                onClick={() => this.setModal('detail')}
+              >
+                查看反馈进度
+              </a> : <a
+                className='category-feedback-btn'
+                onClick={() => this.setModal('create')}
+              >
+                分类错误?
+              </a>
+            }
+          </div>
+          : '暂无分类'}
+      </FormItem>
+      {this.state.feedback === 'create' &&
+      <FeedbackCreate setModal={this.setModal} reload={this.reload} hasReason accountInfo={accountInfo} actions={actions} />}
+      {this.state.feedback === 'detail' &&
+      <FeedbackDetail setModal={this.setModal} actions={actions} classifyAuditInfoId={classifyAuditInfoId} />}
+      {this.state.feedback === 'mini' &&
+      <FeedbackMini setModal={this.setModal} accountInfo={accountInfo} actions={actions} />}
+    </div>
+  }
+}
 
 /**
  * followerCount - 粉丝数
@@ -1506,7 +1552,8 @@ export const Strategy = (props) => {
           } />
         )}
       </FormItem>}
-      {(getFieldValue('strategyInfo.strategy.type') === 1 || getFieldValue('strategyInfo.strategy.type') === 2) && <div>
+      {(getFieldValue('strategyInfo.strategy.type') === 1 || getFieldValue('strategyInfo.strategy.type') === 2) &&
+      <div>
         <FormItem {...layout.full} label='离开时间' style={{ display: 'inner-block' }}>
           {getFieldDecorator('strategyInfo.strategy.startTimeOfTime', {
             rules: [{ required: true, message: '离开时间不能为空' }],
