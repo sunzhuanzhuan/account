@@ -5,7 +5,8 @@ import {
   Cooperation,
   Strategy,
   Content,
-  Other
+  Other,
+  Price
 } from "../components/packageComponents";
 import intersection from 'lodash/intersection'
 import update from 'immutability-helper'
@@ -52,6 +53,11 @@ export const modulesMap = {
     anchorId: "other",
     title: "其他信息",
     component: Other
+  },
+  'price' : {
+    anchorId: "price",
+    title: "账号报价",
+    component: Price
   }
 }
 
@@ -74,7 +80,8 @@ export const tabs = [
       // "cooperation",
       // "content",
       // "strategy",
-      "other"
+      // "other",
+      "price"
     ]
   }, {
     index: '2',
@@ -182,7 +189,8 @@ export const diffByTypes = {
         "cooperation",
         "strategy",
         "content",
-        "other"
+        "other",
+        "price"
       ]
     },
     configure: {

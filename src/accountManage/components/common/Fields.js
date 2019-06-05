@@ -62,6 +62,7 @@ const checkDefaultAndCustomTagRepeat = getSource => (rule, value, callback) => {
 };
 
 /* region  base - 账号基本信息  */
+
 /**
  * snsUniqueId - 唯一标识
  */
@@ -786,9 +787,11 @@ export const OpenLiveProgram = (props) => {
       <input type="hidden" />)}
   </div>
 };
+
 /* endregion  base - 账号基本信息  */
 
 /* region  cooperation - 合作相关  */
+
 /**
  * isAcceptHardAd, isAcceptProductUse - 拒绝项
  */
@@ -1129,9 +1132,11 @@ export const ProductPlacementType = (props) => {
     </FormItem>
   </div>
 };
+
 /* endregion  cooperation - 合作相关  */
 
 /* region  content - 内容相关  */
+
 /**
  * contentForms - 内容形式
  */
@@ -1257,9 +1262,11 @@ export const ContentStyles = (props) => {
     </FormItem>
   </div>
 };
+
 /* endregion  content - 内容相关  */
 
 /* region  strategyInfo - 策略信息  */
+
 /**
  * onSaleInfo - 上架信息
  */
@@ -1601,6 +1608,7 @@ export const Strategy = (props) => {
 /* endregion  strategyInfo - 策略信息  */
 
 /* region otherInfo - 其他信息 */
+
 /**
  * isLowQuality - 是否劣质号
  */
@@ -1651,59 +1659,19 @@ export const MediaTeamNote = (props) => {
     </FormItem>
   </div>
 };
+
 /* endregion otherInfo - 其他信息 */
 
+/* region price - 报价信息 */
 
 /**
- * 账号类型(入库用)
- */
-export const AccountType = (props) => {
-  const { getFieldDecorator, layout, halfWrapCol, data: { accountInfo } } = props;
-  const {
-    mediaType = 0
-  } = accountInfo;
-  return <FormItem {...layout} wrapperCol={halfWrapCol} label='账号类型'>
-    {getFieldDecorator('base.mediaType', {
-      initialValue: mediaType || 3
-      // rules: [{ required: true, message: '账号类型必须选择' }]
-    })(
-      <Select style={{ width: '100%' }}>
-        <Option value={3}>未知</Option>
-        <Option value={1}>草根</Option>
-        <Option value={2}>名人</Option>
-        <Option value={4}>媒体</Option>
-        <Option value={5}>个人</Option>
-      </Select>
-    )}
-  </FormItem>;
-};
-
-/**
- * 利润等级
- */
-export const ProfitLevel = (props) => {
-  const { getFieldDecorator, layout, halfWrapCol, data: { priceInfo } } = props;
-  const {
-    profitGradeId
-  } = priceInfo;
-  return <FormItem {...layout} wrapperCol={halfWrapCol} label='利润等级'>
-    {getFieldDecorator('profitGradeId', {
-      initialValue: profitGradeId || 1,
-      rules: [{ required: true, message: '' }]
-    })(
-      <Select style={{ width: '100%' }}>
-        <Option value={1}>未知</Option>
-      </Select>
-    )}
-  </FormItem>;
-};
-
-
-/**
- * 微博报价特有项(参考报价)
+ * referencePrice - 参考报价
  */
 export const ReferencePrice = (props) => {
-  const { layout = {}, data: { accountInfo } } = props;
+  const {
+    layout,
+    data: { accountInfo }
+  } = props;
   const {
     priceMicroTaskTweet,
     priceMicroTaskRetweet,
@@ -1711,8 +1679,8 @@ export const ReferencePrice = (props) => {
     priceWeiqRetweet,
     weitaskFetchedTime
   } = accountInfo;
-  return <div>
-    <FormItem {...layout} label='参考报价'>
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.full} label='参考报价'>
       <div className='sina-reference-table'>
         <table>
           <tbody>
@@ -1743,26 +1711,30 @@ export const ReferencePrice = (props) => {
 };
 
 /**
- * 微博报价特有项(报价包含)
+ * priceInclude - 报价包含
  */
 export const PriceInclude = (props) => {
-  const { getFieldDecorator, layout = {}, data: { priceInfo } } = props;
+  const {
+    form: { getFieldDecorator },
+    layout,
+    data: {  priceInfo }
+  } = props;
   const {
     isSupportTopicAndLink,
     isPreventShielding
   } = priceInfo;
-  return <div>
-    <FormItem {...layout} label='报价包含'>
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.full} label='报价包含'>
       {getFieldDecorator('isPreventShielding', {
         valuePropName: 'checked',
-        initialValue: isPreventShielding == 1
+        initialValue: isPreventShielding === 1
       })(
         <Checkbox>防屏蔽（博主可自行下微任务/接WEIQ订单）</Checkbox>)}
     </FormItem>
-    <FormItem style={{ top: '-16px' }}  {...layout} label=' ' colon={false}>
+    <FormItem style={{ top: '-16px' }}  {...layout.full} label=' ' colon={false}>
       {getFieldDecorator('isSupportTopicAndLink', {
         valuePropName: 'checked',
-        initialValue: isSupportTopicAndLink == 1
+        initialValue: isSupportTopicAndLink === 1
       })(
         <Checkbox>话题/@/链接 </Checkbox>)}
     </FormItem>
@@ -1770,60 +1742,14 @@ export const PriceInclude = (props) => {
 };
 
 /**
- * 账号报价帮助信息
- */
-export const AccountPriceHelp = () => {
-  const content = <div className='account-price-help-tips'>
-    <img src={require('../../images/help.jpg')} />
-  </div>;
-  return <div>
-    <Popover getPopupContainer={() => document.querySelector('.price_scroll_container') || document.querySelector('#account-manage-container')} placement="topLeft" title={null} content={content} trigger="click">
-      <a>查看订单成本, 收入计算规则</a>
-    </Popover>
-  </div>;
-};
-
-
-/**
- * 可在A端展示
- */
-export const DisplayForA = (props) => {
-  const { getFieldDecorator, layout = {}, data: { accountInfo } } = props;
-  const {
-    isOpen = 1
-  } = accountInfo;
-  return <FormItem {...layout} label=' ' colon={false}>
-    {getFieldDecorator('extend.isOpen', {
-      valuePropName: 'checked',
-      initialValue: isOpen == 1
-    })(
-      <Checkbox>可在A端展示</Checkbox>)}
-  </FormItem>;
-};
-/**
- * 可接单(入库)
- */
-export const Orderable = (props) => {
-  const { getFieldDecorator, layout = {}, data: { accountInfo } } = props;
-  const {
-    isAllowOrderStatus = 1
-  } = accountInfo;
-  return <FormItem {...layout} label='是否可接单'>
-    {getFieldDecorator('skuList.isAllowOrderStatus', {
-      initialValue: isAllowOrderStatus || 1
-    })(
-      <RadioGroup>
-        <Radio value={1}>是</Radio>
-        <Radio value={2}>否</Radio>
-      </RadioGroup>
-    )}
-  </FormItem>;
-};
-/**
- * 接单策略
+ * isAcceptHardAd - 接硬广
  * */
-export const OrderStrategy = (props) => {
-  const { getFieldDecorator, getFieldValue, layout = {}, halfWrapCol, data: { priceInfo } } = props;
+export const IsAcceptHardAd = (props) => {
+  const {
+    form: { getFieldDecorator, getFieldValue },
+    layout,
+    data: { priceInfo }
+  } = props;
   const {
     isAcceptHardAd,
     isAcceptHardAdDescription
@@ -1831,23 +1757,23 @@ export const OrderStrategy = (props) => {
   let style = {};
   let show = false;
   if (getFieldValue('isAcceptHardAd') === undefined) {
-    style = (isAcceptHardAd == 1) ? { display: 'block' } : { display: 'none' };
-    show = isAcceptHardAd == 1;
+    style = (isAcceptHardAd === 1) ? { display: 'block' } : { display: 'none' };
+    show = isAcceptHardAd === 1;
   } else {
     style = (getFieldValue('isAcceptHardAd')) ? { display: 'block' } : { display: 'none' };
     show = getFieldValue('isAcceptHardAd');
   }
-  return <div>
-    <FormItem label="接硬广"  {...layout} >
+  return <div className='field-wrap-item'>
+    <FormItem label=" "  {...layout.full} >
       {getFieldDecorator('isAcceptHardAd', {
         rules: [{ required: false }],
         valuePropName: 'checked',
-        initialValue: isAcceptHardAd == 1
+        initialValue: isAcceptHardAd === 1
       })(
         <Checkbox>接硬广</Checkbox>
       )}
     </FormItem>
-    {show ? <FormItem style={style} label="备注" {...layout} wrapperCol={halfWrapCol}>
+    {show ? <FormItem style={style} label="备注" {...layout} {...layout.half}>
       {getFieldDecorator('isAcceptHardAdDescription', {
         rules: [{ max: 1000, message: '备注不能超过1000字' }],
         initialValue: isAcceptHardAdDescription
@@ -1857,3 +1783,9 @@ export const OrderStrategy = (props) => {
     </FormItem> : null}
   </div>;
 };
+
+/* endregion price - 报价信息 */
+
+/* region personalInfo - 播主个人信息 */
+
+/* endregion personalInfo - 播主个人信息 */

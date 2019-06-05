@@ -76,7 +76,7 @@ class UpdatePageForPackage extends Component {
         <div className='tab-pane-modules'>
           {
             modulesList.map((module) => {
-              return <Module key={module.anchorId} module={module} platform={platform} actions={this.props.actions} data={this.props.accountManage} />
+              return <Module key={module.anchorId} module={module} platform={platform} actions={this.props.actions} data={{...this.props.accountManage, auth: this.props.auth}} />
             })
           }
         </div>
