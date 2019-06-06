@@ -10,6 +10,8 @@ import * as action from '../actions/index'
 import * as commonAction from "@/actions";
 import { executionMap, executionList } from "../constants/executionData";
 import { PopoverFormat } from "../base/TitleAndDecide";
+import { getWeixinAvg, getOtherAllAvg } from "../util";
+
 class RecentPrice extends Component {
   constructor(props) {
     super(props);
@@ -102,7 +104,8 @@ class RecentPrice extends Component {
                               executionMap[platformId].list.map((one, index) => <div key={index} className='execution-data-item'>
                                 <span>{one.name}：</span>
                                 <span>{item[one.value] === 0 || item[one.value] ?
-                                  item[one.value]
+                                  platformId == 9 ? getWeixinAvg(item[one.value])
+                                    : getOtherAllAvg(item[one.value])
                                   : '-'}</span>
                               </div>
                               ) : '暂无数据'}
