@@ -11,7 +11,6 @@ class NewVideo extends Component {
   }
   componentDidMount = () => {
     this.props.getNewVideo({ accountId: this.props.accountId })
-    console.log('最新视频数据加载啦啦啦啦')
   }
   render() {
     const { newVideoList } = this.props
