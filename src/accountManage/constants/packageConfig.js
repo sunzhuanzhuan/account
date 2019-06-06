@@ -6,7 +6,9 @@ import {
   Strategy,
   Content,
   Other,
-  Price
+  Price,
+  Personal,
+  Dashboard
 } from "../components/packageComponents";
 import intersection from 'lodash/intersection'
 import update from 'immutability-helper'
@@ -58,6 +60,16 @@ export const modulesMap = {
     anchorId: "price",
     title: "账号报价",
     component: Price
+  },
+  'personal' : {
+    anchorId: "personal",
+    title: "博主个人信息",
+    component: Personal
+  },
+  'dashboard' : {
+    anchorId: "dashboard",
+    title: "数据统计",
+    component: Dashboard
   }
 }
 
@@ -81,7 +93,8 @@ export const tabs = [
       // "content",
       // "strategy",
       // "other",
-      "price"
+      "personal",
+      "dashboard"
     ]
   }, {
     index: '2',
@@ -125,7 +138,10 @@ export const diffByTypes = {
         "cooperation",
         "strategy",
         "content",
-        "other"
+        "other",
+        "price",
+        "personal",
+        "dashboard"
       ]
     },
     configure: {
@@ -156,7 +172,10 @@ export const diffByTypes = {
         "cooperation",
         "strategy",
         "content",
-        "other"
+        "other",
+        "price",
+        "personal",
+        "dashboard"
       ]
     },
     configure: {
@@ -190,7 +209,9 @@ export const diffByTypes = {
         "strategy",
         "content",
         "other",
-        "price"
+        "price",
+        "personal",
+        "dashboard"
       ]
     },
     configure: {
@@ -228,7 +249,10 @@ export const diffByTypes = {
         "cooperation",
         "strategy",
         "content",
-        "other"
+        "other",
+        "price",
+        "personal",
+        "dashboard"
       ]
     },
     configure: {
@@ -265,7 +289,10 @@ export const diffByTypes = {
         "cooperation",
         "strategy",
         "content",
-        "other"
+        "other",
+        "price",
+        "personal",
+        "dashboard"
       ]
     },
     configure: {
@@ -295,7 +322,10 @@ export const diffByTypes = {
         "cooperation",
         "strategy",
         "content",
-        "other"
+        "other",
+        "price",
+        "personal",
+        "dashboard"
       ]
     },
     configure: {
@@ -318,7 +348,10 @@ export const diffByTypes = {
         "cooperation",
         "strategy",
         "content",
-        "other"
+        "other",
+        "price",
+        "personal",
+        "dashboard"
       ]
     },
     configure: {
@@ -361,7 +394,10 @@ export const diffByTypes = {
         "cooperation",
         "strategy",
         "content",
-        "other"
+        "other",
+        "price",
+        "personal",
+        "dashboard"
       ]
     },
     configure: {
@@ -392,7 +428,10 @@ export const diffByTypes = {
         "cooperation",
         "strategy",
         "content",
-        "other"
+        "other",
+        "price",
+        "personal",
+        "dashboard"
       ]
     },
     configure: {
@@ -423,7 +462,10 @@ export const diffByTypes = {
         "cooperation",
         "strategy",
         "content",
-        "other"
+        "other",
+        "price",
+        "personal",
+        "dashboard"
       ]
     },
     configure: {
@@ -454,7 +496,10 @@ export const diffByTypes = {
         "cooperation",
         "strategy",
         "content",
-        "other"
+        "other",
+        "price",
+        "personal",
+        "dashboard"
       ]
     },
     configure: {
@@ -485,7 +530,10 @@ export const diffByTypes = {
         "cooperation",
         "strategy",
         "content",
-        "other"
+        "other",
+        "price",
+        "personal",
+        "dashboard"
       ]
     },
     configure: {
@@ -516,7 +564,10 @@ export const diffByTypes = {
         "cooperation",
         "strategy",
         "content",
-        "other"
+        "other",
+        "price",
+        "personal",
+        "dashboard"
       ]
     },
     configure: {

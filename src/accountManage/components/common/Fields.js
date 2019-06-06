@@ -7,7 +7,6 @@ import {
   Select,
   Input,
   Checkbox,
-  Popover,
   Radio,
   InputNumber,
   Tooltip,
@@ -19,16 +18,18 @@ import SimpleTag from '../../base/SimpleTag';
 import moment from 'moment';
 import InputCount from "@/accountManage/base/InputCount";
 import CheckedWrap from "./CheckedWrap";
-import WordList from "@/accountManage/components/common/WordList";
-import AreasTreeSelect from "@/accountManage/components/common/AreasTreeSelect";
-import CooperationCasesCore from "@/accountManage/components/common/CooperationCasesCore";
-import DefaultAndCustomTag from "@/accountManage/components/common/DefaultAndCustomTag";
+import WordList from "./WordList";
+import AreasTreeSelect from "./AreasTreeSelect";
+import CooperationCasesCore from "./CooperationCasesCore";
+import DefaultAndCustomTag from "./DefaultAndCustomTag";
 import { createRange, handleReason, handleWeeks } from "@/accountManage/util";
 import {
   FeedbackCreate,
   FeedbackDetail,
   FeedbackMini
 } from "@/accountManage/components/CategoryFeedbackModal";
+import LazyAreaOptions from "./LazyAreaOptions";
+import EmSpan from "@/accountManage/base/EmSpan";
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -1788,4 +1789,88 @@ export const IsAcceptHardAd = (props) => {
 
 /* region personalInfo - 播主个人信息 */
 
+/**
+ * sexualOrientation - 性取向
+ */
+export const SexualOrientation = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    data: { accountInfo }
+  } = props;
+  const {
+    sexualOrientation
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.full} label='性取向'>
+      {getFieldDecorator('personalInfo.sexualOrientation', {
+        initialValue: sexualOrientation,
+      })(
+        <RadioGroup>
+          <Radio value={1}>同性</Radio>
+          <Radio value={2}>异性</Radio>
+          <Radio value={3}>双性</Radio>
+        </RadioGroup>
+      )}
+    </FormItem>
+  </div>
+};
+
+/**
+ * gender - 性别
+ */
+export const Gender = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    data: { accountInfo }
+  } = props;
+  const {
+    gender,
+    genderFrom,
+    genderMaintainedTime
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.full} label='性别'>
+      {getFieldDecorator('personalInfo.gender', {
+        initialValue: gender,
+      })(
+        <RadioGroup>
+          <Radio value={1}><EmSpan length={2}>男</EmSpan></Radio>
+          <Radio value={2}><EmSpan length={2}>女</EmSpan></Radio>
+          <Radio value={3}>未知</Radio>
+        </RadioGroup>
+      )}
+    </FormItem>
+    {getFieldDecorator('personalInfo.genderFrom', { initialValue: genderFrom })(
+      <input type="hidden" />)}
+    {getFieldDecorator('personalInfo.genderMaintainedTime', { initialValue: genderMaintainedTime })(
+      <input type="hidden" />)}
+  </div>
+};
+
+/**
+ * area - 常住地
+ */
+export const Area = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    data: { accountInfo }
+  } = props;
+  const {
+    area = {areaLevel: 3,
+      areaName: "北京",
+      id: 1010101,}
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.half} label='常住地'>
+      {getFieldDecorator('personalInfo.area', {
+        initialValue: area,
+      })(
+        <LazyAreaOptions level={3}/>
+      )}
+    </FormItem>
+  </div>
+};
 /* endregion personalInfo - 播主个人信息 */
