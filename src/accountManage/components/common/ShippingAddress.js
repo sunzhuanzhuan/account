@@ -1,7 +1,8 @@
 import React, { Component } from "react"
-import { Cascader, Form } from 'antd';
+import { Cascader, Form, Input, Modal } from 'antd';
 import areas from "@/constants/areas";
 import { analyzeAreaCode } from "@/util/analyzeAreaCode";
+import LazyAreaOptions from "@/accountManage/components/common/LazyAreaOptions";
 
 function copyAreas(areas, level) {
   return areas.map(area => {
@@ -20,8 +21,52 @@ function copyAreas(areas, level) {
 
 @Form.create()
 class EditModal extends Component {
+  submit = e => {
+    e && e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+      }
+    });
+  };
   render() {
-    return ''
+    const { getFieldDecorator } = this.props.form;
+
+    return <Modal
+      visible
+      title='填写收货地址信息'
+    >
+      <Form colon={false} hideRequired>
+        <Form.Item label='收货人'>
+          {getFieldDecorator('receiver', {
+            rules: [{ required: true, message: 'Please select your country!' }],
+          })(
+            <Input/>
+          )}
+        </Form.Item>
+        <Form.Item label='手机号'>
+          {getFieldDecorator('phoneNumber', {
+            rules: [{ required: true, message: 'Please select your country!' }],
+          })(
+            <Input/>
+          )}
+        </Form.Item>
+        <Form.Item label='所在地区'>
+          {getFieldDecorator('area', {
+            rules: [{ required: true, message: 'Please select your country!' }],
+          })(
+            <LazyAreaOptions/>
+          )}
+        </Form.Item>
+        <Form.Item label='详细地址'>
+          {getFieldDecorator('addressDetail', {
+            rules: [{ required: true, message: 'Please select your country!' }],
+          })(
+            <Input.TextArea placeholder='详细地址：如道路、门牌号、小区、楼栋号、单元室等'/>
+          )}
+        </Form.Item>
+      </Form>
+    </Modal>
   }
 
 }
@@ -65,6 +110,7 @@ export default class ShippingAddress extends Component {
         <span className='gray-text'>
          （用于您接收广告主提供的试用产品）
         </span>
+        <EditModal data={this.state.value}/>
       </div>
     );
   }
