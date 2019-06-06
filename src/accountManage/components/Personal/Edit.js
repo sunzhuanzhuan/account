@@ -6,7 +6,7 @@ import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
 import {
   ContentForms,
   ContentFeatures,
-  ContentStyles, SexualOrientation, Gender, Area
+  ContentStyles, SexualOrientation, Gender, Area, Shipping
 } from "@/accountManage/components/common/Fields";
 import { Button, Form } from "antd";
 
@@ -65,6 +65,7 @@ export default class PersonalEdit extends Component {
             <SexualOrientation {...fieldProps}/>
             <Gender {...fieldProps}/>
             <Area {...fieldProps}/>
+            <Shipping {...fieldProps}/>
           </div>
         </li>
       </ul>

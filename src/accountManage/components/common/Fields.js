@@ -30,6 +30,7 @@ import {
 } from "@/accountManage/components/CategoryFeedbackModal";
 import LazyAreaOptions from "./LazyAreaOptions";
 import EmSpan from "@/accountManage/base/EmSpan";
+import ShippingAddress from "@/accountManage/components/common/ShippingAddress";
 
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -1859,9 +1860,9 @@ export const Area = (props) => {
     data: { accountInfo }
   } = props;
   const {
-    area = {areaLevel: 3,
-      areaName: "北京",
-      id: 1010101,}
+    area = {},
+    areaFrom,
+    areaMaintainedTime
   } = accountInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='常住地'>
@@ -1869,6 +1870,42 @@ export const Area = (props) => {
         initialValue: area,
       })(
         <LazyAreaOptions level={3}/>
+      )}
+    </FormItem>
+    {getFieldDecorator('personalInfo.areaFrom', { initialValue: areaFrom })(
+      <input type="hidden" />)}
+    {getFieldDecorator('personalInfo.areaMaintainedTime', { initialValue: areaMaintainedTime })(
+      <input type="hidden" />)}
+  </div>
+};
+
+/**
+ * shipping - 收货地址
+ */
+export const Shipping = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    data: { accountInfo }
+  } = props;
+  const {
+    shipping = {
+      "receiver": "222", ////String 收货人
+      "phoneNumber": "1312312", ////String 收货人手机号
+      "countryId": 1, //int 收货人国家ID
+      "provinceId": 2, //int 收货人省ID
+      "cityId": 3, //int 收货人市ID
+      "countyId": 4, //int 收货人县ID
+      "address": "aa/bb/cc/dd", // //String 收货人地址
+      "addressDetail": "sss", ////String 收货人详细地址
+    }
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.half} label='收货地址'>
+      {getFieldDecorator('personalInfo.shipping', {
+        initialValue: shipping,
+      })(
+        <ShippingAddress/>
       )}
     </FormItem>
   </div>
