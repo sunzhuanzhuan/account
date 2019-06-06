@@ -9,7 +9,6 @@ import { connect } from "react-redux";
 import * as action from '../actions/index'
 import * as commonAction from "@/actions";
 import { executionMap, executionList } from "../constants/executionData";
-import { getWeixinAvg, getOtherAllAvg } from "../util";
 import { PopoverFormat } from "../base/TitleAndDecide";
 class RecentPrice extends Component {
   constructor(props) {
@@ -103,8 +102,7 @@ class RecentPrice extends Component {
                               executionMap[platformId].list.map((one, index) => <div key={index} className='execution-data-item'>
                                 <span>{one.name}：</span>
                                 <span>{item[one.value] === 0 || item[one.value] ?
-                                  platformId == 9 ? getWeixinAvg(item[one.value])
-                                    : getOtherAllAvg(item[one.value])
+                                  item[one.value]
                                   : '-'}</span>
                               </div>
                               ) : '暂无数据'}
