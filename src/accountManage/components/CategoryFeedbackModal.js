@@ -192,7 +192,7 @@ const auditTypeMap = {
   '3': {
     code: 3,
     text: '已驳回',
-    desc: '如您对反馈处理结果不满意，您可'
+    desc: '如您对反馈处理结果不满意，您可联系产品'
   }
 }
 
@@ -243,8 +243,8 @@ export class FeedbackDetail extends Component {
           </div>
           <div className='category-desc'>
             {auditTypeMap[auditType].desc}
-            {auditType === 3 &&
-            <a onClick={this.showContact} style={{ marginLeft: '6px' }}>联系客服</a>}
+            {/*{auditType === 3 &&
+            <a onClick={this.showContact} style={{ marginLeft: '6px' }}>联系客服</a>}*/}
           </div>
           <main>
             <header>协商历史</header>
