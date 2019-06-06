@@ -60,6 +60,7 @@ export const getWeixinAvg = (value) => {
   }
 }
 export const getOtherAllAvg = (value) => {
+  console.log("TCL: getOtherAllAvg -> value", value)
   if (value) {
     let unit = ""
     let valueTransform = value || 0
