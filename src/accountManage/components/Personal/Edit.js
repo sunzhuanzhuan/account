@@ -27,6 +27,8 @@ export default class PersonalEdit extends Component {
     this.props.form.validateFieldsAndScroll((err, fieldsValue) => {
       if (!err) {
         console.log('Received values of form: ', fieldsValue);
+
+        // 处理父级id
       }
     });
   }

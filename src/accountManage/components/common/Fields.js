@@ -1719,7 +1719,7 @@ export const PriceInclude = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: {  priceInfo }
+    data: { priceInfo }
   } = props;
   const {
     isSupportTopicAndLink,
@@ -1788,7 +1788,7 @@ export const IsAcceptHardAd = (props) => {
 
 /* endregion price - 报价信息 */
 
-/* region personalInfo - 播主个人信息 */
+/* region personalInfo - 博主个人信息 */
 
 /**
  * sexualOrientation - 性取向
@@ -1805,7 +1805,7 @@ export const SexualOrientation = (props) => {
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='性取向'>
       {getFieldDecorator('personalInfo.sexualOrientation', {
-        initialValue: sexualOrientation,
+        initialValue: sexualOrientation
       })(
         <RadioGroup>
           <Radio value={1}>同性</Radio>
@@ -1834,7 +1834,7 @@ export const Gender = (props) => {
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='性别'>
       {getFieldDecorator('personalInfo.gender', {
-        initialValue: gender,
+        initialValue: gender
       })(
         <RadioGroup>
           <Radio value={1}><EmSpan length={2}>男</EmSpan></Radio>
@@ -1867,9 +1867,9 @@ export const Area = (props) => {
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='常住地'>
       {getFieldDecorator('personalInfo.area', {
-        initialValue: area,
+        initialValue: area
       })(
-        <LazyAreaOptions level={3}/>
+        <LazyAreaOptions level={3} />
       )}
     </FormItem>
     {getFieldDecorator('personalInfo.areaFrom', { initialValue: areaFrom })(
@@ -1889,23 +1889,14 @@ export const Shipping = (props) => {
     data: { accountInfo }
   } = props;
   const {
-    shipping = {
-      "receiver": "222", ////String 收货人
-      "phoneNumber": "1312312", ////String 收货人手机号
-      "countryId": 1, //int 收货人国家ID
-      "provinceId": 2, //int 收货人省ID
-      "cityId": 3, //int 收货人市ID
-      "countyId": 4, //int 收货人县ID
-      "address": "aa/bb/cc/dd", // //String 收货人地址
-      "addressDetail": "sss", ////String 收货人详细地址
-    }
+    shipping = {}
   } = accountInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='收货地址'>
       {getFieldDecorator('personalInfo.shipping', {
-        initialValue: shipping,
+        initialValue: shipping
       })(
-        <ShippingAddress/>
+        <ShippingAddress />
       )}
     </FormItem>
   </div>

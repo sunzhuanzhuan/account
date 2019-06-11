@@ -28,7 +28,12 @@ export default class LazyAreaOptions extends Component {
 
   static getDerivedStateFromProps(nextProps) {
     if ('value' in nextProps) {
-      let value = analyzeAreaCode((nextProps.value || {}).id)
+      let value = []
+      if(Array.isArray(nextProps.value)){
+        value = nextProps.value.map(item => item.id || item)
+      } else {
+        value = analyzeAreaCode((nextProps.value || {}).id)
+      }
       return {
         value
       };
@@ -47,7 +52,12 @@ export default class LazyAreaOptions extends Component {
     if (!('value' in this.props)) {
       this.setState({ value });
     }
-    const targetOption = selectedOptions[selectedOptions.length - 1] || {}
+    let targetOption
+    if(Array.isArray(this.props.value)){
+      targetOption = selectedOptions
+    } else {
+      targetOption = selectedOptions[selectedOptions.length - 1] || {}
+    }
     this.triggerChange(targetOption)
   };
 
