@@ -6,7 +6,15 @@ import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
 import {
   ContentForms,
   ContentFeatures,
-  ContentStyles, SexualOrientation, Gender, Area, Shipping
+  ContentStyles,
+  SexualOrientation,
+  Gender,
+  Area,
+  Shipping,
+  Birthday,
+  Nationality,
+  Industry,
+  Occupations, EducationQualification
 } from "@/accountManage/components/common/Fields";
 import { Button, Form } from "antd";
 
@@ -17,7 +25,22 @@ export default class PersonalEdit extends Component {
     this.state = {
       asyncVisibility: {},
       asyncOptions: {
-
+        nationality: [],
+        industry: [],
+        occupations: [],
+        educationQualification: [
+          { key: -1, text: '无' },
+          { key: 1, text: '初中' },
+          { key: 2, text: '高中' },
+          { key: 3, text: '中技' },
+          { key: 4, text: '中转' },
+          { key: 5, text: '大专' },
+          { key: 6, text: '本科' },
+          { key: 7, text: '硕士' },
+          { key: 8, text: 'MBA' },
+          { key: 9, text: 'EMBA' },
+          { key: 10, text: '博士' },
+        ]
       }
     }
   }
@@ -68,6 +91,11 @@ export default class PersonalEdit extends Component {
             <Gender {...fieldProps}/>
             <Area {...fieldProps}/>
             <Shipping {...fieldProps}/>
+            <Birthday {...fieldProps}/>
+            <Nationality {...fieldProps} options={this.state.asyncOptions.nationality}/>
+            <Industry {...fieldProps} options={this.state.asyncOptions.industry}/>
+            <Occupations {...fieldProps} options={this.state.asyncOptions.occupations}/>
+            <EducationQualification {...fieldProps} options={this.state.asyncOptions.educationQualification}/>
           </div>
         </li>
       </ul>

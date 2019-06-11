@@ -1901,4 +1901,147 @@ export const Shipping = (props) => {
     </FormItem>
   </div>
 };
+
+/**
+ * birthDate - 生日
+ */
+export const Birthday = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    data: { accountInfo }
+  } = props;
+  const {
+    birthDate
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.half} label='生日'>
+      {getFieldDecorator('personalInfo.birthDate', {
+        initialValue: birthDate
+      })(
+         <DatePicker  style={{width: '100%'}} placeholder='请选择您的生日' disabledDate={date => {
+           return date.isBefore(moment().subtract(150, 'y'))
+         }}/>
+      )}
+    </FormItem>
+  </div>
+};
+
+/**
+ * nationality - 国籍
+ */
+export const Nationality = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    options,
+    data: { accountInfo }
+  } = props;
+  const {
+    nationalityId,
+    // nationalityName
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.half} label='国籍'>
+      {getFieldDecorator('personalInfo.nationalityId', {
+        initialValue: nationalityId
+      })(
+        <Select style={{ width: "100%" }} placeholder='请选择'>
+          {
+            options.map(({key, text}) =>
+              <Option key={key} value={parseInt(key)}>{text}</Option>)
+          }
+        </Select>
+      )}
+    </FormItem>
+  </div>
+};
+
+/**
+ * industry - 行业
+ */
+export const Industry = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    options,
+    data: { accountInfo }
+  } = props;
+  const {
+    industryId
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.half} label='行业'>
+      {getFieldDecorator('personalInfo.industryId', {
+        initialValue: industryId
+      })(
+        <Select style={{ width: "100%" }} placeholder='请选择'>
+          {
+            options.map(({key, text}) =>
+              <Option key={key} value={parseInt(key)}>{text}</Option>)
+          }
+        </Select>
+      )}
+    </FormItem>
+  </div>
+};
+
+/**
+ * occupations - 职业
+ */
+export const Occupations = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    options,
+    data: { accountInfo }
+  } = props;
+  const {
+    occupations = []
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.half} label='职业'>
+      {getFieldDecorator('personalInfo.occupations', {
+        initialValue: occupations.map(item => item.id || item)
+      })(
+        <Select mode='multiple' style={{ width: "100%" }} placeholder='请选择'>
+          {
+            options.map(({key, text}) =>
+              <Option key={key} value={parseInt(key)}>{text}</Option>)
+          }
+        </Select>
+      )}
+    </FormItem>
+  </div>
+};
+
+/**
+ * educationQualification - 学历
+ */
+export const EducationQualification = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    options,
+    data: { accountInfo }
+  } = props;
+  const {
+    educationQualification
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.half} label='学历/学位'>
+      {getFieldDecorator('personalInfo.educationQualification', {
+        initialValue: educationQualification || -1
+      })(
+        <Select style={{ width: "100%" }} placeholder='请选择'>
+          {
+            options.map(({key, text}) =>
+              <Option key={key} value={parseInt(key)}>{text}</Option>)
+          }
+        </Select>
+      )}
+    </FormItem>
+  </div>
+};
+
 /* endregion personalInfo - 播主个人信息 */
