@@ -219,6 +219,7 @@ export class AccountPriceForm extends Component {
       isFamous,
       platformId
     } = accountInfo;
+    this.props.form.validateFields()
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         let { price_now, price_next } = values;
