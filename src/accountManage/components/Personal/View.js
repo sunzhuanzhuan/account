@@ -74,7 +74,7 @@ export default class PersonalView extends Component {
                 <FieldView width={70} title="常驻地" value={area.areaName} />
                 <FieldView width={70} title="收货地址" value={
                   Object.keys(shipping).length > 0 &&
-                  <div className='shipping-card-item' style={{ display: "inline-block" }}>
+                  <div className='shipping-card-item' style={{ width: "300px" }}>
                     <p>收货人： {shipping.receiver}</p>
                     <p>手机号： {shipping.phoneNumber}</p>
                     <p>收货地址： {shippingArea.map(item => item.areaName).join('')} {shipping.addressDetail}</p>
