@@ -93,8 +93,7 @@ export const tabs = [
       // "content",
       // "strategy",
       // "other",
-      // "price",
-      "personal",
+      // "personal",
       "dashboard"
     ]
   }, {
@@ -200,7 +199,8 @@ export const diffByTypes = {
         uniqueId: true,
         url: true,
         referencePrice: true,
-        priceInclude: true
+        priceInclude: true,
+        trueFansRate: true
       },
       modules: [
         "owner",

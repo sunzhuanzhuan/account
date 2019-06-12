@@ -100,7 +100,6 @@ export default class PersonalEdit extends Component {
           <h4 className='subclass-head'>
             <span className='text'>播主信息</span>
             <small className='line' />
-            {/*<span className='gray-text text'>asdasd</span>*/}
           </h4>
           <div className='subclass-content'>
             <SexualOrientation {...fieldProps} />

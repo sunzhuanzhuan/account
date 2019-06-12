@@ -3,17 +3,15 @@
  */
 import React, { Component } from "react"
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
-import { Button, Form, message, Modal } from "antd";
-import { FamousPrice, NamelessPrice } from "../common/AccountPrice";
-import { IsAcceptHardAd, PriceInclude, ReferencePrice } from "../common/Fields";
-import { WrapPanel } from "@/accountManage/components/index";
-import { checkVal } from "@/accountManage/util";
+import { Statistic, Row, Col } from "antd";
+import ContentStatistic from "@/accountManage/components/common/ContentStatistic";
+import PercentageChart from "@/accountManage/components/common/PercentageChart";
 
 export default class Dashboard extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      loading: true
+      asyncVisibility: {}
     }
   }
 
@@ -23,21 +21,133 @@ export default class Dashboard extends Component {
 
   render() {
     const {
-      layout,
       data,
-      actions,
       module: configureModule, platform: configurePlatform
     } = this.props
-    const fieldProps = { layout, data, actions }
     const {
-      isFamous
+      isFamous,
+      feature = {
+        "sexs": [
+          {
+            "name": "男",
+            "value": 60
+          },
+          {
+            "name": "女",
+            "value": 10
+          }
+        ],
+        "ages": [
+          {
+            "name": "19-24",
+            "value": 60
+          },
+          {
+            "name": "25-34",
+            "value": 35
+          }
+        ],
+        "areas": [
+          {
+            "name": "北京",
+            "value": 20
+          },
+          {
+            "name": "上海",
+            "value": 20
+          },
+          {
+            "name": "广州",
+            "value": 20
+          }
+        ],
+        "interests": [
+          {
+            "name": "游戏",
+            "value": 50
+          },
+          {
+            "name": "汽车",
+            "value": 46
+          },
+          {
+            "name": "3C",
+            "value": 46
+          }
+        ]
+      }
     } = data.accountInfo || {}
 
+    const {
+      snbt,
+      trueFansRate,
+      sexs,
+      ages,
+      areas,
+      interests
+    } = feature
     return <div className='module-item-container'>
-        <ModuleHeader title={configureModule.title}/>
-        <section className='content-wrap'>
-          数据统计
-        </section>
-      </div>
+      <ModuleHeader title={configureModule.title} />
+      <ul className='content-wrap'>
+        <li className='subclass-item-wrap'>
+          <h4 className='subclass-head'>
+            <span className='text'>平台统计</span>
+            <small className='line' />
+            <span className='gray-text text'>最近更新于: --</span>
+          </h4>
+          <div className='subclass-content'>
+            <div className='view-fields-container'>
+              <div className='right-wrap'>
+                <Row>
+                  <Col span={3}>
+                    <Statistic title="SNBT" value={snbt} formatter={snbt ? null : () => '-'} precision={1} />
+                  </Col>
+                  {
+                    process.env.REACT_APP_CLIENT === 'NB' &&
+                    configurePlatform.visibility.fields.trueFansRate &&
+                    <Col span={3}>
+                      <Statistic title="真粉率" value={trueFansRate} precision={1} suffix={'%'} />
+                    </Col>}
+                </Row>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li className='subclass-item-wrap'>
+          <h4 className='subclass-head'>
+            <span className='text'>内容统计</span>
+            <small className='line' />
+            <span className='gray-text text'>最近更新于: --</span>
+          </h4>
+          <div className='subclass-content'>
+            <div className='view-fields-container'>
+              <div className='right-wrap'>
+                <ContentStatistic pid={configurePlatform.platformId} data={feature} />
+              </div>
+            </div>
+          </div>
+        </li>
+        <li className='subclass-item-wrap'>
+          <h4 className='subclass-head'>
+            <span className='text'>受众画像</span>
+            <small className='line' />
+            <span className='gray-text text'>最近更新于: --</span>
+          </h4>
+          <div className='subclass-content'>
+            <div className='view-fields-container'>
+              <div className='right-wrap' style={{
+                display: 'flex',
+                justifyContent: "space-around"
+              }}>
+                <PercentageChart title='性别' value={sexs} colors={['#4880ff', '#f4525b']} />
+                <PercentageChart title='年龄' value={ages} colors={['#4880ff', '#ffc400']} />
+                <PercentageChart title='地域' value={areas} colors={['#4880ff', '#ffc400', '#f4525b']} />
+                <PercentageChart title='兴趣' value={interests} colors={['#f4525b', '#ffc400', '#23cab6']} />
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
   }
 }
