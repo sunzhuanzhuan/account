@@ -31,12 +31,13 @@ import {
 import LazyAreaOptions from "./LazyAreaOptions";
 import EmSpan from "@/accountManage/base/EmSpan";
 import ShippingAddress from "@/accountManage/components/common/ShippingAddress";
+import ChildrenList from "@/accountManage/components/common/ChildrenList";
 
-const Option = Select.Option;
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
 const FormItem = Form.Item;
 const { TextArea } = Input;
+const { Option, OptGroup } = Select;
 const { RangePicker } = DatePicker;
 
 // 数据校验
@@ -1919,9 +1920,9 @@ export const Birthday = (props) => {
       {getFieldDecorator('personalInfo.birthDate', {
         initialValue: birthDate
       })(
-         <DatePicker  style={{width: '100%'}} placeholder='请选择您的生日' disabledDate={date => {
-           return date.isBefore(moment().subtract(150, 'y'))
-         }}/>
+        <DatePicker style={{ width: '100%' }} placeholder='请选择您的生日' disabledDate={date => {
+          return date.isBefore(moment().subtract(150, 'y'))
+        }} />
       )}
     </FormItem>
   </div>
@@ -1938,7 +1939,7 @@ export const Nationality = (props) => {
     data: { accountInfo }
   } = props;
   const {
-    nationalityId,
+    nationalityId
     // nationalityName
   } = accountInfo;
   return <div className='field-wrap-item'>
@@ -1948,7 +1949,7 @@ export const Nationality = (props) => {
       })(
         <Select style={{ width: "100%" }} placeholder='请选择'>
           {
-            options.map(({key, text}) =>
+            options.map(({ key, text }) =>
               <Option key={key} value={parseInt(key)}>{text}</Option>)
           }
         </Select>
@@ -1977,7 +1978,7 @@ export const Industry = (props) => {
       })(
         <Select style={{ width: "100%" }} placeholder='请选择'>
           {
-            options.map(({key, text}) =>
+            options.map(({ key, text }) =>
               <Option key={key} value={parseInt(key)}>{text}</Option>)
           }
         </Select>
@@ -2006,7 +2007,7 @@ export const Occupations = (props) => {
       })(
         <Select mode='multiple' style={{ width: "100%" }} placeholder='请选择'>
           {
-            options.map(({key, text}) =>
+            options.map(({ key, text }) =>
               <Option key={key} value={parseInt(key)}>{text}</Option>)
           }
         </Select>
@@ -2031,11 +2032,11 @@ export const EducationQualification = (props) => {
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='学历/学位'>
       {getFieldDecorator('personalInfo.educationQualification', {
-        initialValue: educationQualification || -1
+        initialValue: educationQualification
       })(
         <Select style={{ width: "100%" }} placeholder='请选择'>
           {
-            options.map(({key, text}) =>
+            options.map(({ key, text }) =>
               <Option key={key} value={parseInt(key)}>{text}</Option>)
           }
         </Select>
@@ -2043,5 +2044,215 @@ export const EducationQualification = (props) => {
     </FormItem>
   </div>
 };
+
+/**
+ * relationshipStatus - 情感状况
+ */
+export const RelationshipStatus = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    data: { accountInfo }
+  } = props;
+  const {
+    relationshipStatus
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.full} label='情感状况'>
+      {getFieldDecorator('personalInfo.relationshipStatus', {
+        initialValue: relationshipStatus
+      })(
+        <RadioGroup>
+          <Radio value={1}>单身</Radio>
+          <Radio value={2}>情侣</Radio>
+          <Radio value={3}>已婚</Radio>
+          <Radio value={4}>离婚</Radio>
+        </RadioGroup>
+      )}
+    </FormItem>
+  </div>
+};
+
+/**
+ * hasHouse, hasCar - 资产
+ */
+export const Assets = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    data: { accountInfo }
+  } = props;
+  const {
+    isAcceptHardAd,
+    isAcceptProductUse
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.full} label='资产'>
+      {getFieldDecorator('personalInfo.hasHouse', {
+        initialValue: isAcceptHardAd,
+        valuePropName: 'checked',
+        getValueFromEvent: e => {
+          return e.target.checked ? 1 : 2
+        }
+      })(
+        <CheckedWrap mapBooleanToValueAry={[2, 1]}>有房</CheckedWrap>
+      )}
+      {getFieldDecorator('personalInfo.hasCar', {
+        initialValue: isAcceptProductUse,
+        valuePropName: 'checked',
+        getValueFromEvent: e => {
+          return e.target.checked ? 1 : 2
+        }
+      })(
+        <CheckedWrap mapBooleanToValueAry={[2, 1]}>有车</CheckedWrap>
+      )}
+    </FormItem>
+  </div>
+};
+
+/**
+ * children - 宝宝信息
+ */
+export const Children = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    data: { accountInfo }
+  } = props;
+  const {
+    children
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.full} label='宝宝信息'>
+      {getFieldDecorator('personalInfo.children', {
+        initialValue: children
+      })(
+        <ChildrenList {...props} />
+      )}
+    </FormItem>
+  </div>
+};
+
+/**
+ * pets - 宠物信息
+ */
+export const Pets = (props) => {
+  const {
+    form: { getFieldDecorator, getFieldValue },
+    actions: { sensitiveWordsFilter },
+    layout,
+    options,
+    data: { accountInfo }
+  } = props;
+  const {
+    pets,
+    customPets
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.full} label='宠物信息'>
+      {getFieldDecorator('_client.pets', {
+        initialValue: {
+          defaultItems: (pets || []).map(item => item.id || item),
+          custom: customPets || []
+        }
+      })(
+        <DefaultAndCustomTag
+          options={options}
+          placeholder='请输入1~10字'
+          rules={[
+            { required: true, pattern: /^[\u4e00-\u9fa5a-zA-Z]{1,10}$/, message: '请输入1~10个中英文字符' },
+            { validator: checkForSensitiveWord(sensitiveWordsFilter) },
+            {
+              validator: checkDefaultAndCustomTagRepeat(() => {
+                let { custom } = getFieldValue('_client.pets')
+                return [].concat(options.map(item => item.name), custom)
+              })
+            }
+          ]}
+        />
+      )}
+    </FormItem>
+  </div>
+};
+
+/**
+ * skills - 选择技能
+ */
+export const Skills = (props) => {
+  const {
+    form: { getFieldDecorator },
+    layout,
+    options,
+    data: { accountInfo }
+  } = props;
+  const {
+    skills,
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.full} label='技能'>
+      {getFieldDecorator('personalInfo.skills', {
+        initialValue: skills
+      })(
+        <Select
+          mode='multiple'
+          style={{ width: '100%' }}
+          placeholder='添加您的特长或才艺，将提升您的竞争力，在同类账号中更加突出哦~'
+          allowClear
+          showArrow
+        >
+          {
+            options.map(item => <OptGroup label={item.text} key={item.key}>
+              {
+                item.children.map(n => <Option value={n.key} key={n.key}>{n.text}</Option>)
+              }
+            </OptGroup>)
+          }
+        </Select>,
+      )}
+    </FormItem>
+  </div>
+};
+
+/**
+ * customSkills - 其他技能
+ */
+export const CustomSkills = (props) => {
+  const {
+    form: { getFieldDecorator, getFieldValue },
+    actions: { sensitiveWordsFilter },
+    layout,
+    options = [],
+    data: { accountInfo }
+  } = props;
+  const {
+    customSkills
+  } = accountInfo;
+  return <div className='field-wrap-item'>
+    <FormItem {...layout.full} label='其他技能'>
+      {getFieldDecorator('_client.skills', {
+        initialValue: {
+          defaultItems: [],
+          custom: customSkills || []
+        }
+      })(
+        <DefaultAndCustomTag
+          options={options}
+          placeholder='请输入1~10字'
+          rules={[
+            { required: true, pattern: /^[\u4e00-\u9fa5a-zA-Z]{1,10}$/, message: '请输入1~10个中英文字符' },
+            { validator: checkForSensitiveWord(sensitiveWordsFilter) },
+            {
+              validator: checkDefaultAndCustomTagRepeat(() => {
+                let { custom } = getFieldValue('_client.skills')
+                return [].concat(options.map(item => item.name), custom)
+              })
+            }
+          ]}
+        />
+      )}
+    </FormItem>
+  </div>
+};
+
 
 /* endregion personalInfo - 播主个人信息 */

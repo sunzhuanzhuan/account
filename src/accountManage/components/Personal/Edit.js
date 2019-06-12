@@ -4,9 +4,6 @@
 import React, { Component } from "react"
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
 import {
-  ContentForms,
-  ContentFeatures,
-  ContentStyles,
   SexualOrientation,
   Gender,
   Area,
@@ -14,10 +11,17 @@ import {
   Birthday,
   Nationality,
   Industry,
-  Occupations, EducationQualification
+  Occupations,
+  EducationQualification,
+  RelationshipStatus,
+  Assets,
+  Children,
+  Pets,
+  Skills,
+  CustomSkills
 } from "@/accountManage/components/common/Fields";
 import { Button, Form } from "antd";
-
+// TODO: 同步配置项提取出来
 @Form.create()
 export default class PersonalEdit extends Component {
   constructor(props) {
@@ -39,8 +43,10 @@ export default class PersonalEdit extends Component {
           { key: 7, text: '硕士' },
           { key: 8, text: 'MBA' },
           { key: 9, text: 'EMBA' },
-          { key: 10, text: '博士' },
-        ]
+          { key: 10, text: '博士' }
+        ],
+        pets: [],
+        skills: []
       }
     }
   }
@@ -49,9 +55,19 @@ export default class PersonalEdit extends Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, fieldsValue) => {
       if (!err) {
-        console.log('Received values of form: ', fieldsValue);
+        const { pets, skills } = fieldsValue['_client']
+        let value = {
+          personalInfo:
+            {
+              ...fieldsValue.personalInfo,
+              pets: pets.defaultItems,
+              customPets: pets.custom,
+              customSkills: skills.custom
+            }
+        }
+        console.log('Received values of form: ', fieldsValue, value);
 
-        // 处理父级id
+        // 处理父级地域id
       }
     });
   }
@@ -84,18 +100,40 @@ export default class PersonalEdit extends Component {
           <h4 className='subclass-head'>
             <span className='text'>播主信息</span>
             <small className='line' />
-            <span className='gray-text text'>asdasd</span>
+            {/*<span className='gray-text text'>asdasd</span>*/}
           </h4>
           <div className='subclass-content'>
-            <SexualOrientation {...fieldProps}/>
-            <Gender {...fieldProps}/>
-            <Area {...fieldProps}/>
-            <Shipping {...fieldProps}/>
-            <Birthday {...fieldProps}/>
-            <Nationality {...fieldProps} options={this.state.asyncOptions.nationality}/>
-            <Industry {...fieldProps} options={this.state.asyncOptions.industry}/>
-            <Occupations {...fieldProps} options={this.state.asyncOptions.occupations}/>
-            <EducationQualification {...fieldProps} options={this.state.asyncOptions.educationQualification}/>
+            <SexualOrientation {...fieldProps} />
+            <Gender {...fieldProps} />
+            <Area {...fieldProps} />
+            <Shipping {...fieldProps} />
+            <Birthday {...fieldProps} />
+            <Nationality {...fieldProps} options={asyncOptions.nationality} />
+            <Industry {...fieldProps} options={asyncOptions.industry} />
+            <Occupations {...fieldProps} options={asyncOptions.occupations} />
+            <EducationQualification {...fieldProps} options={asyncOptions.educationQualification} />
+            <RelationshipStatus {...fieldProps} />
+            <Assets {...fieldProps} />
+          </div>
+        </li>
+        <li className='subclass-item-wrap'>
+          <h4 className='subclass-head'>
+            <span className='text'>家庭信息</span>
+            <small className='line' />
+          </h4>
+          <div className='subclass-content'>
+            <Children {...fieldProps} />
+            <Pets {...fieldProps} options={asyncOptions.pets} />
+          </div>
+        </li>
+        <li className='subclass-item-wrap'>
+          <h4 className='subclass-head'>
+            <span className='text'>技能</span>
+            <small className='line' />
+          </h4>
+          <div className='subclass-content'>
+            <Skills {...fieldProps} options={asyncOptions.skills} />
+            <CustomSkills {...fieldProps} />
           </div>
         </li>
       </ul>
