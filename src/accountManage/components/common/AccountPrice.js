@@ -15,6 +15,7 @@ import PriceInput from '../../base/PriceInput';
 import { priceTitle } from '../../constants/price';
 import moment from 'moment';
 import { handleReason, date2moment } from '../../util';
+import FieldView from "@/accountManage/base/FeildView";
 
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
@@ -200,7 +201,7 @@ export class NamelessPrice extends Component {
       form: { getFieldDecorator },
       layout,
       children, priceKeys,
-      data: { accountInfo,  priceInfo }
+      data: { accountInfo, priceInfo }
     } = this.props;
     const {
       skuList,
@@ -247,6 +248,7 @@ export class FamousPrice extends Component {
       orderStatusReason: offShelfReason // 强制可下单原因
     };
   }
+
   //
 
   // 价格有效期联动校验 -- 时间
@@ -303,7 +305,7 @@ export class FamousPrice extends Component {
   setDefaultValue = (value) => () => {
     const { setFields, getFieldValue } = this.props;
     let date = getFieldValue('nextPriceValidTo');
-    if(!date){
+    if (!date) {
       setFields({
         'nextPriceValidTo': { value: value }
       });
@@ -458,7 +460,7 @@ export class FamousPrice extends Component {
 }
 
 // 报价table组
-class PriceTable extends Component {
+export class PriceTable extends Component {
   constructor(props) {
     super(props);
     this.priceKeys = props.priceKeys || [];
@@ -572,3 +574,82 @@ class NamelessStatus extends Component {
   }
 }
 
+// 派单报价展示态
+export class FamousPriceView extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+
+  render() {
+    const {
+      children, priceKeys, data: { accountInfo, priceInfo }
+    } = this.props;
+    const {
+      priceValidFrom,
+      priceValidTo,
+      nextPriceValidFrom,
+      nextPriceValidTo,
+      reviewStatus,
+      reviewFailReason,
+      skuList
+    } = priceInfo;
+    let nowVal = {}, nextVal = {};
+    skuList && skuList.forEach(({ skuTypeId, costPriceRaw, nextCostPriceRaw }) => {
+      nowVal[skuTypeId] = costPriceRaw;
+      nextVal[skuTypeId] = nextCostPriceRaw;
+    });
+    return <div>
+      <FieldView width={80} title="本期有效期" value={
+        <div>
+          <span>{priceValidFrom}</span>
+          <span className='m10-e'>至</span>
+          <span>{priceValidTo}</span>
+        </div>
+      } />
+      <FieldView width={80} title="账号报价" value={
+        <PriceTable style={{ lineHeight: '40px' }} isEdit={false} priceKeys={priceKeys} value={nowVal} />
+      } />
+      <FieldView width={80} title="下期有效期" value={
+        <div>
+          <span>{nextPriceValidFrom || '-'}</span>
+          <span className='m10-e'>至</span>
+          <span>{nextPriceValidTo || '-'}</span>
+        </div>
+      } />
+      <FieldView width={80} title="账号报价" value={
+        <PriceTable style={{ lineHeight: '40px' }} isEdit={false} priceKeys={priceKeys} value={nextVal} />
+      } />
+      <FieldView width={80} title="审核状态" value={
+        approvalStatus(reviewStatus, reviewFailReason)
+      } />
+      <Divider dashed />
+      {children}
+    </div>;
+  }
+}
+
+// 派单报价展示态
+export class NamelessPriceView extends Component {
+  render() {
+    const {
+      children, priceKeys,
+      data: { priceInfo }
+    } = this.props;
+    const {
+      skuList,
+    } = priceInfo;
+    let val = {};
+    skuList && skuList.forEach(({ skuTypeId, costPriceRaw }) => {
+      val[skuTypeId] = costPriceRaw;
+    });
+    return <div>
+        <FieldView width={80} title="账号报价" value={
+          <PriceTable style={{ lineHeight: '40px' }} isEdit={false} priceKeys={priceKeys} value={val} />
+        } />
+        <Divider dashed />
+        {children}
+    </div>
+  }
+}

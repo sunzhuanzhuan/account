@@ -81,7 +81,7 @@ class UpdatePageForPackage extends Component {
           }
         </div>
         {
-          modulesList.length > 1 ? <div style={{ float: 'right' }}>
+          modulesList.length > 2 ? <div style={{ float: 'right' }}>
             <Anchor
               onClick={e => e.preventDefault()}
               offsetTop={60}
