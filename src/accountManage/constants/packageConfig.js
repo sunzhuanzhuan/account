@@ -93,7 +93,7 @@ export const tabs = [
       // "content",
       // "strategy",
       // "other",
-      "price",
+      // "price",
       "personal",
       "dashboard"
     ]
