@@ -14,7 +14,6 @@ class ContentData extends Component {
     };
   }
   componentDidMount = () => {
-    console.log('加载数据内容数据服务-粉丝点赞趋势图')
     const { getTrend, accountId } = this.props
     getTrend({ accountId: accountId }).then(({ data }) => {
       if (data) {

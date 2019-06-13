@@ -9,7 +9,6 @@ class AudienceAttribute extends Component {
     this.state = {};
   }
   componentDidMount = () => {
-    console.log('受众属性数据加载啦啦啦啦')
     const { getAudienceAttribute, accountId, getQueryTgiList } = this.props
     getAudienceAttribute({ accountId: accountId })
     getQueryTgiList({ accountId: accountId })
@@ -29,7 +28,7 @@ class AudienceAttribute extends Component {
 
     return (
       <div className='audience-attribute'>
-        <div className='title-big'>受众属性<span style={{ fontSize: 13, color: '#999',fontWeight:'none' }}>（数据取活跃粉丝分布数据）</span></div>
+        <div className='title-big'>受众属性<span style={{ fontSize: 13, color: '#999', fontWeight: 'none' }}>（数据取活跃粉丝分布数据）</span></div>
         <div className='audience-attribute-charts'>
           <div className='left-three'>
             <div className='left-three-two'>
