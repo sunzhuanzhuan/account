@@ -75,14 +75,6 @@ export const accountInfo = handleActions({
     }
   },
   /*fetchAccountBaseInfo_success, */
-  [combineActions(updateFetchInfo)]: (state, action) => {
-    let data = { ...action.payload.data }
-    data = handleEdit(data)
-    return {
-      ...state,
-      ...data
-    }
-  },
   [combineActions(addFetchInfo)]: (state, action) => {
     let data = { ...action.payload.data }
     let { isNewFetch, value } = data
@@ -193,12 +185,12 @@ if (process.env.REACT_APP_CLIENT === 'NC') {
   }
 } else {
   initStatus = {
-    "main": "mini",
-    "cooperation": "view",
-    "content": "view",
-    "strategy": "view",
-    "price": "view",
-    "personal": "view"
+    "main": "edit",
+    "cooperation": "edit",
+    "content": "edit",
+    "strategy": "edit",
+    "price": "edit",
+    "personal": "edit"
   }
 }
 
@@ -212,8 +204,20 @@ export const moduleStatus = handleActions({
   }
 }, initStatus)
 
+// 设置主账号信息
+export const adminAccount = handleActions({
+  [combineActions(getPrimaryAccountInfo_success)]: (state, action) => {
+    return {
+      ...state,
+      ...action.payload.data
+    }
+  }
+}, {})
+
+
 export default combineReducers({
   account,
+  adminAccount,
   accountInfo,
   priceInfo,
   priceTypeList,

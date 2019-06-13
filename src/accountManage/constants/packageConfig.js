@@ -77,7 +77,14 @@ export function platformToModules(platformId, filterSource) {
   filterSource = filterSource || Object.keys(modulesMap)
   let platformData = platformToType[platformId] || platformToType["-1"]
   // 获取该平台的差异性配置
-  let _modules = intersection(filterSource, platformData.visibility.modules).map(key => modulesMap[key])
+  // let _modules = intersection(filterSource, platformData.visibility.modules).map(key => modulesMap[key])
+  let _modules = []
+  if(process.env.REACT_APP_CLIENT === 'NB'){
+    _modules = intersection(diffByClient['NB'].wrap, filterSource, platformData.visibility.modules)
+  }else if(process.env.REACT_APP_CLIENT === 'NC'){
+    _modules = intersection(diffByClient['NC'].wrap, platformData.visibility.modules)
+  }
+  _modules = _modules.map(key => modulesMap[key])
   return update(platformData, { visibility: { modules: { $set: _modules } } })
 }
 export const tabs = [
@@ -116,6 +123,34 @@ export const tabs = [
   }
 ]
 
+// 客户端差异性
+export const diffByClient = {
+  "NB": {
+    wrap: [
+      "owner",
+      "fetch",
+      "main",
+      "cooperation",
+      "content",
+      "strategy",
+      "other",
+      "price",
+      "dashboard",
+      "personal"
+    ]
+  },
+  "NC": {
+    wrap: [
+      "main",
+      "cooperation",
+      "content",
+      "strategy",
+      "price",
+      "dashboard",
+      "personal"
+    ]
+  }
+}
 // 平台差异性
 export const diffByTypes = {
   "default": {

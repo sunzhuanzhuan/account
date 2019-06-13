@@ -26,9 +26,6 @@ const rules = {
 }
 
 export default class Fetch extends React.Component {
-  static defaultProps = {
-    pid: '1'
-  }
   state = {
     isLoading: false
   }
@@ -39,10 +36,10 @@ export default class Fetch extends React.Component {
     let urlParams = parseUrlQuery()
     this.isAutoFetch = urlParams['fetch_info'] && decodeURIComponent(urlParams['fetch_info'])
     let isID = /^\d+$/.test(this.isAutoFetch)
-    const { platform: configurePlatform, pid } = this.props
+    const { platform: configurePlatform } = this.props
     // TODO: 逻辑重写
     let keys = configurePlatform.configure.fetchDefaultKeys
-    if(typeof keys === "function"){
+    if (typeof keys === "function") {
       keys = keys(isID)
     }
     this.type = {
@@ -74,17 +71,22 @@ export default class Fetch extends React.Component {
   }
 
   handleFetch = () => {
-    const { pid, actions: { fetchAccountBaseInfo, fetchAccountBaseInfoByUpdate, updateFetchInfo, addFetchInfo }, form, data: { accountInfo }, isUpdate } = this.props
+    const {
+      actions: { fetchAccountBaseInfo, fetchAccountBaseInfoByUpdate, updateFetchInfo, addFetchInfo },
+      form,
+      data: { account },
+      isUpdate = true
+    } = this.props
     const { value, keys } = this.state
     this.setState({ isLoading: true })
-    let flag_id = window.oldSnsUniqueId || accountInfo.snsUniqueId
+    let flag_id = window.oldSnsUniqueId || account.base.snsUniqueId
     let action = isUpdate ? fetchAccountBaseInfoByUpdate : fetchAccountBaseInfo
     let params = isUpdate ? {
-      platformId: pid,
+      platformId: account.base.platformId,
       [keys]: value,
       is_edit_account_page: 1,
-      accountId: accountInfo.accountId
-    } : { platformId: pid, [keys]: value }
+      accountId: account.id
+    } : { platformId: account.base.platformId, [keys]: value }
     action(params).then((data = {}) => {
       this.setState({ isLoading: false })
       let value = data.data
@@ -102,6 +104,10 @@ export default class Fetch extends React.Component {
           value
         })
       }
+      // 重置form
+      Object.keys(data.data).forEach(key => {
+        window._updataForms.main.resetFields("base." + key)
+      })
       let forms = Object.values((window.updateForms || {})) // 维护页分段提交form
       let singleForm = form // 入库页单个提交form
       if (singleForm) {

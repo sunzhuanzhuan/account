@@ -37,14 +37,20 @@ class UpdatePageForPackage extends Component {
        window.location.replace('/account/manage/package/' + 9 + '?account_id=' + this.state.accountId)
      }, 2000);*/
     const { actions } = this.props
-    actions.getDetail({ accountId: this.state.accountId }).then(() => {
+    actions.getDetail({ accountId: this.state.accountId }).then(({ data}) => {
+      // 获取主账号信息
+      let { userId } = data.base
+      if (userId) {
+        actions.getPrimaryAccountInfo({ userId })
+        actions.getUserInvoiceInfo({ userIds: userId })
+      }
       this.setState({
         fullLoading: false
       })
-    }).catch(({ errorMsg }) => {
+    }).catch((err) => {
       this.setState({
         fullLoading: false,
-        isError: { info: errorMsg }
+        isError: { info: err }
       })
     })
   }
@@ -69,7 +75,7 @@ class UpdatePageForPackage extends Component {
     }
     return (!fullLoading && !isError) ? <div className='update-package-page-container'>
       <h2>账号维护</h2>
-      <Tabs
+      {process.env.REACT_APP_CLIENT === 'NB' && <Tabs
         activeKey={active}
         animated={{ inkBar: true, tabPane: false }}
         style={{
@@ -93,7 +99,7 @@ class UpdatePageForPackage extends Component {
             </div>
           } key={pane.index} />)
         }
-      </Tabs>
+      </Tabs>}
       <div className='tab-pane-common-box'>
         <div className='tab-pane-modules'>
           {
@@ -113,7 +119,7 @@ class UpdatePageForPackage extends Component {
               showInkInFixed={true}
               getContainer={() => document.querySelector('#app-content-children-id')}
             >
-              <ImproveStatistics {...statisticsProps} actions={this.props.actions}/>
+              <ImproveStatistics {...statisticsProps} actions={this.props.actions} />
               {
                 modulesList.map(({ anchorId: key, title }) =>
                   <Link key={key} href={"#navLink-" + key} title={

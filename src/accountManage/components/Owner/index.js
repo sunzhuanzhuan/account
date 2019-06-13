@@ -6,21 +6,28 @@ import { Row, Col } from 'antd/lib/index'
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
 
 export default class Owner extends Component {
-  render() {
-    const { auth = {}, data: { accountInfo } = {}, actions } = this.props.params || {};
-    const { babysitter_host = {} } = window.bentleyConfig || {};
-    const {  module: configureModule, platform: configurePlatform } = this.props
 
+  render() {
+    const { babysitter_host = {} } = window.bentleyConfig || {};
+    const {
+      module: configureModule,
+      platform: configurePlatform,
+      data: { account, adminAccount, auth = {} },
+      actions
+    } = this.props
     const {
       identityName,
       userId,
       ownerAdminRealName,
       volAdminRealName,
-      babysitterHost = babysitter_host.value || 'http://toufang.weiboyi.com',
-      accountId,
-      modifiedAt,
       platformId
-    } = accountInfo || {}
+    } = adminAccount
+    // TODO: 主账号更新时间字段
+    const {
+      id: accountId,
+      base: { modifiedAt }
+    } = account
+    const babysitterHost = babysitter_host.value || 'http://toufang.tst-weiboyi.com';
     let isOwner = auth['account.manage.update.change.main.account'];
     let href = isOwner ? `${babysitterHost}/user/index/type/huanma/account_id/${accountId}/weibo_type/${platformId}` : `${babysitterHost}/user/chowner/account_id/${accountId}`;
 
@@ -38,8 +45,6 @@ export default class Owner extends Component {
           <Col span={6}>项目媒介：{volAdminRealName || '--'}</Col>
         </Row>
       </section>
-      {/*<section className='custom-infos'>
-			</section>*/}
     </div>
   }
 }

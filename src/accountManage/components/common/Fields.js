@@ -73,11 +73,11 @@ export const UniqueId = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     snsUniqueId
-  } = accountInfo;
+  } = account.base;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='唯一标识'>
       {getFieldDecorator('base.snsUniqueId', {
@@ -96,11 +96,11 @@ export const AccountId = (props) => {
   const {
     // form: { getFieldDecorator },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     id
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='account_id'>
       {id || '--'}
@@ -115,13 +115,13 @@ export const Name = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     snsName,
     snsNameFrom,
     snsNameMaintainedTime
-  } = accountInfo;
+  } = account.base;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='账号名称'>
       {getFieldDecorator('base.snsName', {
@@ -132,7 +132,7 @@ export const Name = (props) => {
           message: '账号名称最多可输入80个字符'
         }]
       })(
-        <InputCount placeholder="账号名称" showCount disabled={false} max={40} />
+        <InputCount placeholder="账号名称" showCount disabled={snsNameFrom === 2} max={40} />
       )}
     </FormItem>
     {getFieldDecorator('base.snsNameFrom', { initialValue: snsNameFrom })(
@@ -149,13 +149,13 @@ export const Id = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     snsId,
     snsIdFrom,
     snsIdMaintainedTime
-  } = accountInfo;
+  } = account.base;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='账号ID'>
       {getFieldDecorator('base.snsId', {
@@ -183,13 +183,13 @@ export const Url = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     url,
     urlFrom,
     urlMaintainedTime
-  } = accountInfo;
+  } = account.base;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='主页链接'>
       {getFieldDecorator('base.url', {
@@ -217,18 +217,21 @@ export const AvatarUrl = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo },
+    data: { account },
     authToken
   } = props;
   const {
     avatarUrl,
     avatarUrlFrom,
     avatarUrlMaintainedTime
-  } = accountInfo;
+  } = account.base;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='头像'>
       {getFieldDecorator('base.avatarUrl', {
-        initialValue: avatarUrl,
+        initialValue: avatarUrl ? [{
+          url: avatarUrl,
+          uid: avatarUrl,
+        }] : [],
         valuePropName: 'fileList',
         getValueFromEvent: e => e.fileList,
         rules: [{ required: true, message: '头像不能为空' }]
@@ -265,22 +268,21 @@ export const QrCodeUrl = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo },
+    data: { account },
     authToken
   } = props;
   const {
     qrCodeUrl,
     qrCodeUrlFrom,
     qrCodeUrlMaintainedTime
-  } = accountInfo;
+  } = account.base;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='二维码'>
       <div className='clearfix'>
         {getFieldDecorator('base.qrCodeUrl', {
           initialValue: qrCodeUrl ? [{
-            name: qrCodeUrl,
             url: qrCodeUrl,
-            filepath: qrCodeUrl
+            uid: qrCodeUrl,
           }] : [],
           valuePropName: 'fileList',
           getValueFromEvent: e => e.fileList,
@@ -319,13 +321,13 @@ export const Introduction = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo },
+    data: { account },
     actions: { sensitiveWordsFilter },
     placeholder
   } = props;
   const {
     introduction
-  } = accountInfo;
+  } = account.base;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='账号简介'>
       {getFieldDecorator('base.introduction', {
@@ -350,11 +352,11 @@ export const WeiboUrl = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     weiboUrl
-  } = accountInfo;
+  } = account.base;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='新浪微博:'>
       {getFieldDecorator('base.weiboUrl', {
@@ -377,12 +379,12 @@ export const MicroFlashPost = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     microFlashPost = 0,
     isFamous
-  } = accountInfo;
+  } = account.base;
   const style = isFamous === 1 ? { display: 'none' } : {};
   return <div className='field-wrap-item'>
     <FormItem style={style} {...layout.full} label='是否微闪投账号'>
@@ -409,8 +411,8 @@ export class ContentCategory extends React.Component {
   }
 
   reload = () => {
-    const { actions, data: { accountInfo } } = this.props
-    actions.isExistClassify({ accountId: accountInfo.accountId }).then(({ data }) => {
+    const { actions, data: { account } } = this.props
+    actions.isExistClassify({ accountId: account.id }).then(({ data }) => {
       this.setState({
         classifyAuditInfoId: data.classifyAuditInfoId,
         hasRecord: data.count
@@ -425,12 +427,12 @@ export class ContentCategory extends React.Component {
   render() {
     const {
       layout,
-      data: { accountInfo },
+      data: { account },
       actions
     } = this.props;
     const {
       classificationList: category = []
-    } = accountInfo;
+    } = account.base;
     const { hasRecord, classifyAuditInfoId } = this.state
     return <div className='field-wrap-item'>
       <FormItem {...layout.full} label='内容分类'>
@@ -456,11 +458,11 @@ export class ContentCategory extends React.Component {
           : '暂无分类'}
       </FormItem>
       {this.state.feedback === 'create' &&
-      <FeedbackCreate setModal={this.setModal} reload={this.reload} hasReason accountInfo={accountInfo} actions={actions} />}
+      <FeedbackCreate setModal={this.setModal} reload={this.reload} hasReason account={account} actions={actions} />}
       {this.state.feedback === 'detail' &&
       <FeedbackDetail setModal={this.setModal} actions={actions} classifyAuditInfoId={classifyAuditInfoId} />}
       {this.state.feedback === 'mini' &&
-      <FeedbackMini setModal={this.setModal} accountInfo={accountInfo} actions={actions} />}
+      <FeedbackMini setModal={this.setModal} account={account} actions={actions} />}
     </div>
   }
 }
@@ -472,14 +474,14 @@ export const FollowerCount = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     disabled,
     followerCount,
     followerCountFrom,
     followerCountMaintainedTime
-  } = accountInfo;
+  } = account.base;
   const max = Math.pow(10, 10) - 1;
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='粉丝数'>
@@ -512,20 +514,19 @@ export const FollowerCountScreenshotUrl = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo },
+    data: { account },
     authToken,
     disabled
   } = props;
   const {
     followerCountScreenshotUrl: url
-  } = accountInfo;
+  } = account.base;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='粉丝截图'>
       {getFieldDecorator('base.followerCountScreenshotUrl', {
         initialValue: url ? [{
-          name: url,
+          uid: url,
           url: url,
-          filepath: url
         }] : [],
         valuePropName: 'fileList',
         getValueFromEvent: e => e.fileList,
@@ -559,12 +560,12 @@ export const FollowerCountVerificationStatus = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo },
+    data: { account },
     disabled
   } = props;
   const {
     followerCountVerificationStatus: status
-  } = accountInfo;
+  } = account.base;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='粉丝数目认证'>
       {getFieldDecorator('base.followerCountVerificationStatus', {
@@ -588,14 +589,14 @@ export const Level = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo },
+    data: { account },
     options
   } = props;
   const {
     level,
     levelFrom,
     levelMaintainedTime
-  } = accountInfo;
+  } = account.base;
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='平台等级:'>
       {getFieldDecorator('base.level', {
@@ -626,11 +627,11 @@ export const MediaType = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     mediaType
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item base-media-type'>
     <FormItem {...layout.full} label=' ' colon={false}>
       {getFieldDecorator('base.mediaType', {
@@ -656,7 +657,7 @@ export const Verified = (props) => {
     form: { getFieldDecorator, getFieldValue },
     actions: { sensitiveWordsFilter },
     layout,
-    data: { accountInfo },
+    data: { account },
     verifiedOptional
   } = props;
   const {
@@ -669,7 +670,7 @@ export const Verified = (props) => {
     verificationInfo,
     verificationInfoFrom,
     verificationInfoMaintainedTime
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='是否认证'>
       {getFieldDecorator('base.isVerified', {
@@ -734,13 +735,13 @@ export const OpenStore = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     isOpenStore,
     isOpenStoreFrom,
     isOpenStoreMaintainedTime
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='橱窗/店铺'>
       {getFieldDecorator('base.mediaType', {
@@ -766,13 +767,13 @@ export const OpenLiveProgram = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     isOpenLiveProgram,
     isOpenLiveProgramFrom,
     isOpenLiveProgramMaintainedTime
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='直播'>
       {getFieldDecorator('base.isOpenLiveProgram', {
@@ -802,12 +803,12 @@ export const DirectItems = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     isAcceptHardAd,
     isAcceptProductUse
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='拒绝项'>
       {getFieldDecorator('cooperation.isAcceptHardAd', {
@@ -839,11 +840,11 @@ export const RefuseBrands = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     refuseBrands
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='不接受的品牌'>
       {getFieldDecorator('cooperation.refuseBrands', {
@@ -868,11 +869,11 @@ export const ManuscriptModificationLimit = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     manuscriptModificationLimit
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='稿件/大纲修改次数'>
       {getFieldDecorator('cooperation.manuscriptModificationLimit', {
@@ -896,12 +897,12 @@ export const VideoShotArea = (props) => {
   const {
     form: { getFieldDecorator, getFieldValue },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     videoShotAreaType,
     videoShotAreas
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='视频拍摄地点'>
       {getFieldDecorator('cooperation.videoShotAreaType', {
@@ -933,12 +934,12 @@ export const LiveArea = (props) => {
   const {
     form: { getFieldDecorator, getFieldValue },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     liveAreaType,
     liveAreas
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='直播形式'>
       {getFieldDecorator('cooperation.liveAreaType', {
@@ -972,11 +973,11 @@ export const CooperationTips = (props) => {
     form: { getFieldDecorator },
     layout,
     actions: { sensitiveWordsFilter },
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     cooperationTips
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='备注'>
       {getFieldDecorator('cooperation.cooperationTips', {
@@ -1004,11 +1005,11 @@ export const CooperationCases = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     cooperationCases
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label=' '>
       {getFieldDecorator('cooperation.cooperationCases', {
@@ -1027,12 +1028,12 @@ export const AdServiceItems = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo },
+    data: { account },
     options = []
   } = props;
   const {
     adServiceItems
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item base-media-type'>
     <FormItem {...layout.full} label='可提供'>
       {getFieldDecorator('cooperation.adServiceItems', {
@@ -1057,14 +1058,14 @@ export const PostPlatform = (props) => {
     form: { getFieldDecorator, getFieldValue },
     layout,
     actions: { sensitiveWordsFilter },
-    data: { accountInfo },
+    data: { account },
     options = []
   } = props;
   const {
     supportMultiPlatformOriginalPost,
     postPlatforms,
     multiPlatformOriginalPostTips
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='分发平台'>
       {getFieldDecorator('cooperation.supportMultiPlatformOriginalPost', {
@@ -1116,11 +1117,11 @@ export const ProductPlacementType = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     productPlacementType
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item base-media-type'>
     <FormItem {...layout.full} label='植入类型'>
       {getFieldDecorator('cooperation.productPlacementType', {
@@ -1149,12 +1150,12 @@ export const ContentForms = (props) => {
     layout,
     actions: { sensitiveWordsFilter },
     options,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     forms,
     customForm
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item base-media-type'>
     <FormItem {...layout.full} label='内容形式'>
       {getFieldDecorator('_client.form', {
@@ -1191,12 +1192,12 @@ export const ContentFeatures = (props) => {
     layout,
     actions: { sensitiveWordsFilter },
     options,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     features,
     customFeature
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item base-media-type'>
     <FormItem {...layout.full} label='内容特点'>
       {getFieldDecorator('_client.feature', {
@@ -1233,12 +1234,12 @@ export const ContentStyles = (props) => {
     layout,
     actions: { sensitiveWordsFilter },
     options,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     styles,
     customStyle
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item base-media-type'>
     <FormItem {...layout.full} label='内容风格'>
       {getFieldDecorator('_client.style', {
@@ -1277,7 +1278,7 @@ export const OnSaleInfo = (props) => {
   const {
     form: { getFieldDecorator, getFieldValue },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     approvedStatus,
@@ -1292,7 +1293,7 @@ export const OnSaleInfo = (props) => {
     aOffShelfReasonStringList,
     bOnShelfStatus,
     bOffShelfReasonStringList
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item base-media-type'>
     <FormItem {...layout.full} label='审核状态:'>
       {getFieldDecorator('strategyInfo.approvedStatus', {
@@ -1410,12 +1411,12 @@ export const MaxOrderCount = (props) => {
   const {
     form: { getFieldDecorator, getFieldValue },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     maxOrderCount,
     maxOrderCountNote
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label=" ">
       {getFieldDecorator('_client.isFinite', {
@@ -1463,11 +1464,11 @@ export const Strategy = (props) => {
   const {
     form: { getFieldDecorator, getFieldValue },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     strategy = {}
-  } = accountInfo;
+  } = account;
 
   const disabledStartDate = () => {
     const endValue = getFieldValue('strategyInfo.strategy.endTimeOfTime');
@@ -1618,12 +1619,12 @@ export const Strategy = (props) => {
 export const IsLowQuality = (props) => {
   const {
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     isLowQuality,
     lowQualityReasonList
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='是否劣质号'>
       {isLowQuality ? <div>
@@ -1643,11 +1644,11 @@ export const MediaTeamNote = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     mediaTeamNote
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem label="媒介备注"  {...layout.half} >
       {getFieldDecorator('otherInfo.mediaTeamNote', {
@@ -1673,7 +1674,7 @@ export const MediaTeamNote = (props) => {
 export const ReferencePrice = (props) => {
   const {
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     priceMicroTaskTweet,
@@ -1681,7 +1682,7 @@ export const ReferencePrice = (props) => {
     priceWeiqTweet,
     priceWeiqRetweet,
     weitaskFetchedTime
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='参考报价'>
       <div className='sina-reference-table'>
@@ -1798,11 +1799,11 @@ export const SexualOrientation = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     sexualOrientation
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='性取向'>
       {getFieldDecorator('personalInfo.sexualOrientation', {
@@ -1825,13 +1826,13 @@ export const Gender = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     gender,
     genderFrom,
     genderMaintainedTime
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='性别'>
       {getFieldDecorator('personalInfo.gender', {
@@ -1858,13 +1859,13 @@ export const Area = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     area = {},
     areaFrom,
     areaMaintainedTime
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='常住地'>
       {getFieldDecorator('personalInfo.area', {
@@ -1887,11 +1888,11 @@ export const Shipping = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     shipping = {}
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='收货地址'>
       {getFieldDecorator('personalInfo.shipping', {
@@ -1910,11 +1911,11 @@ export const Birthday = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     birthDate
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='生日'>
       {getFieldDecorator('personalInfo.birthDate', {
@@ -1936,12 +1937,12 @@ export const Nationality = (props) => {
     form: { getFieldDecorator },
     layout,
     options,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     nationalityId
     // nationalityName
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='国籍'>
       {getFieldDecorator('personalInfo.nationalityId', {
@@ -1966,11 +1967,11 @@ export const Industry = (props) => {
     form: { getFieldDecorator },
     layout,
     options,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     industryId
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='行业'>
       {getFieldDecorator('personalInfo.industryId', {
@@ -1995,11 +1996,11 @@ export const Occupations = (props) => {
     form: { getFieldDecorator },
     layout,
     options,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     occupations = []
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='职业'>
       {getFieldDecorator('personalInfo.occupations', {
@@ -2024,11 +2025,11 @@ export const EducationQualification = (props) => {
     form: { getFieldDecorator },
     layout,
     options,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     educationQualification
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='学历/学位'>
       {getFieldDecorator('personalInfo.educationQualification', {
@@ -2052,11 +2053,11 @@ export const RelationshipStatus = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     relationshipStatus
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='情感状况'>
       {getFieldDecorator('personalInfo.relationshipStatus', {
@@ -2080,12 +2081,12 @@ export const Assets = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     isAcceptHardAd,
     isAcceptProductUse
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='资产'>
       {getFieldDecorator('personalInfo.hasHouse', {
@@ -2117,11 +2118,11 @@ export const Children = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     children
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='宝宝信息'>
       {getFieldDecorator('personalInfo.children', {
@@ -2142,12 +2143,12 @@ export const Pets = (props) => {
     actions: { sensitiveWordsFilter },
     layout,
     options,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     pets,
     customPets
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='宠物信息'>
       {getFieldDecorator('_client.pets', {
@@ -2183,11 +2184,11 @@ export const Skills = (props) => {
     form: { getFieldDecorator },
     layout,
     options,
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     skills,
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='技能'>
       {getFieldDecorator('personalInfo.skills', {
@@ -2222,11 +2223,11 @@ export const CustomSkills = (props) => {
     actions: { sensitiveWordsFilter },
     layout,
     options = [],
-    data: { accountInfo }
+    data: { account }
   } = props;
   const {
     customSkills
-  } = accountInfo;
+  } = account;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='其他技能'>
       {getFieldDecorator('_client.skills', {

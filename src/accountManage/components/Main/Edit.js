@@ -54,6 +54,14 @@ export default class MainEdit extends Component {
   }
 
   componentDidMount() {
+    // window注入form对象
+    if (window._updataForms) {
+      window._updataForms.main = this.props.form
+    } else {
+      window._updataForms = {
+        main: this.props.form
+      }
+    }
     // 获取上传图片token
     this.props.actions.getNewToken().then(({ data: authToken }) => {
       this.setState({ authToken })
@@ -88,7 +96,7 @@ export default class MainEdit extends Component {
     const {
       isFamous,
       baseModifiedAt // 账号基本信息修改时间
-    } = data.accountInfo || {}
+    } = data.account.base || {}
     const {
       authToken,
       asyncVisibility,
@@ -166,7 +174,7 @@ export default class MainEdit extends Component {
             <small className='line' />
           </h4>
           <div className='subclass-content'>
-            <Verified {...fieldProps} verifiedOptional={verifiedOptional}/>
+            <Verified {...fieldProps} verifiedOptional={verifiedOptional} />
             {/* 以下字段需要判断可见性 */}
             {asyncVisibility.isOpenStore && <OpenStore {...fieldProps} />}
             {asyncVisibility.isOpenLiveProgram && <OpenLiveProgram {...fieldProps} />}

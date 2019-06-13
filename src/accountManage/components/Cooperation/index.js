@@ -8,7 +8,7 @@ import CooperationView from "./View";
 const statusComponent = (status) => {
   const _map = {
     'edit': CooperationEdit,
-    'view': CooperationView,
+    'view': CooperationView
   }
   return _map[status] || <div>信息错误</div>
 }
@@ -20,6 +20,7 @@ export default class Cooperation extends Component {
       moduleStatus: 'edit'
     }
   }
+
   static getDerivedStateFromProps(nextProps) {
     if ('moduleStatus' in nextProps) {
       return {
@@ -29,12 +30,20 @@ export default class Cooperation extends Component {
     return null
   }
 
+  reload = (cb) => {
+    const { getDetail } = this.props.actions
+    getDetail().finally(() => {
+      cb && cb()
+    })
+
+  }
+
   handleChange = (moduleStatus) => {
     this.props.actions.setModuleStatus({ 'cooperation': moduleStatus })
   }
 
   render() {
     const Component = statusComponent(this.state.moduleStatus)
-    return <Component {...this.props} onModuleStatusChange={this.handleChange} />
+    return <Component {...this.props} onModuleStatusChange={this.handleChange} reload={this.reload}/>
   }
 }

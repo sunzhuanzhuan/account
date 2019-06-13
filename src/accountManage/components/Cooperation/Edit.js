@@ -39,16 +39,26 @@ export default class CooperationEdit extends Component {
             "adServiceItemName": "口播"
           }
         ]
-      }
+      },
+      submitLoading: false
     }
   }
+
 
   submit = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, fieldsValue) => {
-      console.log('Received values of form: ', fieldsValue);
-      if (err) {
-        return;
+      if (!err) {
+        console.log('Received values of form: ', fieldsValue);
+        this.setState({
+          submitLoading: true
+        })
+        setTimeout(() => {
+          this.setState({
+            submitLoading: false
+          })
+          this.props.reload(() => this.props.onModuleStatusChange('view'))
+        }, 2000);
       }
     });
   }
@@ -68,11 +78,12 @@ export default class CooperationEdit extends Component {
     } = data.accountInfo || {}
     const {
       asyncVisibility,
-      asyncOptions
+      asyncOptions,
+      submitLoading
     } = this.state
     const right = <div className='wrap-panel-right-content'>
       <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>
-      <Button htmlType='submit' type='primary'>保存</Button>
+      <Button htmlType='submit' type='primary' loading={submitLoading}>保存</Button>
     </div>;
     return <Form className='module-item-container' onSubmit={this.submit} colon={false}>
       <ModuleHeader title={configureModule.title} right={right} />
@@ -100,7 +111,7 @@ export default class CooperationEdit extends Component {
             <small className='line' />
           </h4>
           <div className='subclass-content'>
-            <CooperationCases {...fieldProps} />
+            <CooperationCases {...fieldProps} configurePlatform={configurePlatform}/>
           </div>
         </li>
         <li className='subclass-item-wrap'>
@@ -110,8 +121,8 @@ export default class CooperationEdit extends Component {
           </h4>
           <div className='subclass-content'>
             <AdServiceItems {...fieldProps} options={asyncOptions.adServiceItems} />
-            <PostPlatform {...fieldProps} options={[]}/>
-            <ProductPlacementType {...fieldProps}/>
+            <PostPlatform {...fieldProps} options={[]} />
+            <ProductPlacementType {...fieldProps} />
           </div>
         </li>
       </ul>

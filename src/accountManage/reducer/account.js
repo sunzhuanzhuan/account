@@ -3,13 +3,16 @@ import { handleActions, combineActions } from 'redux-actions';
 import {
   getDetail_success,
 } from '../actions/package'
+import {
+  updateFetchInfo,
+} from '../actions'
 import { allEditables } from "@/accountManage/constants/editables";
 
-const handleEdit = (_data) => {
+const filterFetchData = (_data) => {
 	let data = { ..._data }
 	for (let key in data) {
 		if (!data.hasOwnProperty(key)) continue
-		if (parseInt(data[key]) === 1 && Object.keys(allEditables).find(str => str === key)) {
+		if (parseInt(data[key]) === 1 && Object.keys(allEditables).indexOf(key) > -1 ) {
 			delete data[key]
 			delete data[allEditables[key]]
 		}
@@ -41,14 +44,14 @@ export const base = handleActions({
 			...base
 		}
 	},
-	/*[combineActions(updateFetchInfo)]: (state, action) => {
+	[combineActions(updateFetchInfo)]: (state, action) => {
 		let data = action.payload.data
-		data = handleEdit(data)
+		data = filterFetchData(data)
 		return {
 			...state,
 			...data
 		}
-	}*/
+	}
 }, initEditable())
 // 合作相关
 export const cooperation = handleActions({
