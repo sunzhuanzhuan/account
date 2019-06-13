@@ -6,6 +6,11 @@ import { createAction } from 'redux-actions'
  * 获取账号信息
  */
 export const {
-    test,
-    test_success
-  } = createHttpAction('test', Interface.package.test);
+  getDetail,
+  getDetail_success
+} = createHttpAction('getDetail', Interface.account.getDetail);
+
+// 设置模块状态
+export const setModuleStatus = createAction('setModuleStatus', (data) => {
+  return { data };
+})

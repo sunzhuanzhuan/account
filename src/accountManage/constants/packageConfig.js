@@ -29,17 +29,13 @@ export const modulesMap = {
     anchorId: "main",
     title: "账号基本信息",
     component: Main,
-    children: {
-      'base': {
-        anchorId: "base",
-        title: "基础信息"
-      }
-    }
+    perfectionDegreeKey: 'base'
   },
   'cooperation': {
     anchorId: "cooperation",
     title: "合作相关",
-    component: Cooperation
+    component: Cooperation,
+    perfectionDegreeKey: 'cooperation'
   },
   'strategy': {
     anchorId: "strategy",
@@ -49,24 +45,27 @@ export const modulesMap = {
   'content': {
     anchorId: "content",
     title: "内容相关",
-    component: Content
+    component: Content,
+    perfectionDegreeKey: "content"
   },
   'other': {
     anchorId: "other",
     title: "其他信息",
     component: Other
   },
-  'price' : {
+  'price': {
     anchorId: "price",
     title: "账号报价",
-    component: Price
+    component: Price,
+    perfectionDegreeKey: 'sku'
   },
-  'personal' : {
+  'personal': {
     anchorId: "personal",
     title: "博主个人信息",
-    component: Personal
+    component: Personal,
+    perfectionDegreeKey: 'personal'
   },
-  'dashboard' : {
+  'dashboard': {
     anchorId: "dashboard",
     title: "数据统计",
     component: Dashboard
@@ -86,38 +85,34 @@ export const tabs = [
     index: '1',
     title: '账号信息',
     warp: [
-      // "owner",
-      // "fetch",
-      // "main",
-      // "cooperation",
-      // "content",
-      // "strategy",
-      // "other",
-      // "personal",
-      "dashboard"
+      "owner",
+      "fetch",
+      "main",
+      "cooperation",
+      "content",
+      "strategy",
+      "other"
     ]
   }, {
     index: '2',
     title: '报价信息',
     warp: [
-      "owner",
-      "fetch",
-      "other"
-    ]
+      "price"
+    ],
+    perfectionDegreeKey: 'sku'
   }, {
     index: '3',
     title: '数据统计',
     warp: [
-      "content"
+      "dashboard"
     ]
   }, {
     index: '4',
     title: '博主信息',
     warp: [
-      "strategy",
-      "content",
-      "other"
-    ]
+      "personal"
+    ],
+    perfectionDegreeKey: 'personal'
   }
 ]
 
@@ -229,7 +224,7 @@ export const diffByTypes = {
         }
       ],
       introductionPlaceholder: '微博知名段子手/大V/星座达人，致力于网络新起事物、热点事件、热门电影等相关的创作，内容有自己的独特视角；出版作品《xxxx》等。若您不接受原创合作，可写：帐号支持转发，可支持下微任务防屏蔽，可购买粉丝头条等',
-    cooperateContentPlaceHolder: '在微博活跃的时间段，通过抽奖的形式进行微博图文直发，使xxx剃须刀曝光在广大男性用户的视野中，通过网页链接，直接跳转到京东店铺购买。阅读量100W+，点赞量3W+，评论量1000W+等；'
+      cooperateContentPlaceHolder: '在微博活跃的时间段，通过抽奖的形式进行微博图文直发，使xxx剃须刀曝光在广大男性用户的视野中，通过网页链接，直接跳转到京东店铺购买。阅读量100W+，点赞量3W+，评论量1000W+等；'
     }
   },
   "weChat": {
@@ -241,7 +236,7 @@ export const diffByTypes = {
         url: true,
         qcCode: true,
         isFansNumberImg: true,
-        isLowQuality: true,
+        isLowQuality: true
       },
       modules: [
         "owner",

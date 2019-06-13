@@ -20,11 +20,17 @@ export default class Personal extends Component {
       moduleStatus: props.moduleStatus || 'edit'
     }
   }
+  static getDerivedStateFromProps(nextProps) {
+    if ('moduleStatus' in nextProps) {
+      return {
+        moduleStatus: nextProps.moduleStatus || 'edit'
+      };
+    }
+    return null
+  }
 
   handleChange = (moduleStatus) => {
-    this.setState({
-      moduleStatus
-    })
+    this.props.actions.setModuleStatus({ 'personal': moduleStatus })
   }
 
   render() {

@@ -8,7 +8,7 @@ import PriceView from "./View";
 const statusComponent = (status) => {
   const _map = {
     'edit': PriceEdit,
-    'view': PriceView,
+    'view': PriceView
   }
   return _map[status] || <div>信息错误</div>
 }
@@ -17,9 +17,18 @@ export default class Price extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      moduleStatus: props.moduleStatus || 'edit',
+      moduleStatus: 'edit',
       loading: true
     }
+  }
+
+  static getDerivedStateFromProps(nextProps) {
+    if ('moduleStatus' in nextProps) {
+      return {
+        moduleStatus: nextProps.moduleStatus || 'edit'
+      };
+    }
+    return null
   }
 
   componentDidMount() {
@@ -35,13 +44,12 @@ export default class Price extends Component {
   }
 
   handleChange = (moduleStatus) => {
-    this.setState({
-      moduleStatus
-    })
+    this.props.actions.setModuleStatus({ 'price': moduleStatus })
   }
 
   render() {
     const Component = statusComponent(this.state.moduleStatus)
-    return !this.state.loading ? <Component {...this.props} onModuleStatusChange={this.handleChange} /> : 'loading...'
+    return !this.state.loading ?
+      <Component {...this.props} onModuleStatusChange={this.handleChange} /> : 'loading...'
   }
 }

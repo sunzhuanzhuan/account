@@ -8,7 +8,7 @@ import ContentView from "./View";
 const statusComponent = (status) => {
   const _map = {
     'edit': ContentEdit,
-    'view': ContentView,
+    'view': ContentView
   }
   return _map[status] || <div>信息错误</div>
 }
@@ -17,14 +17,21 @@ export default class Content extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      moduleStatus: props.moduleStatus || 'edit'
+      moduleStatus: 'edit'
     }
   }
 
+  static getDerivedStateFromProps(nextProps) {
+    if ('moduleStatus' in nextProps) {
+      return {
+        moduleStatus: nextProps.moduleStatus || 'edit'
+      };
+    }
+    return null
+  }
+
   handleChange = (moduleStatus) => {
-    this.setState({
-      moduleStatus
-    })
+    this.props.actions.setModuleStatus({ 'content': moduleStatus })
   }
 
   render() {

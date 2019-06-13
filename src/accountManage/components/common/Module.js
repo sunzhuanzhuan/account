@@ -1,5 +1,6 @@
 import React, { Component, PureComponent } from "react";
 import './style.less'
+import { moduleStatus } from "@/accountManage/reducer";
 
 const formItemLayout = {
   labelCol: {
@@ -36,8 +37,9 @@ const halfWrapCol = {
 export default class Module extends Component {
   render() {
     const { anchorId: key, component: C } = this.props.module
+    const { moduleStatus } = this.props.data
     return <article id={"navLink-" + key} className='module-item-wrap'>
-      {C && <C {...this.props} layout={{ full: formItemLayout, half: halfWrapCol }} moduleStatus='view'/>}
+      {C && <C {...this.props} layout={{ full: formItemLayout, half: halfWrapCol }} moduleStatus={moduleStatus[key]}/>}
     </article>
   }
 }

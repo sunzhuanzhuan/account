@@ -4,7 +4,7 @@ export default {
   common: {
     areas: prefix + '/common/v1/areas',
     industries: prefix + '/common/v1/industries',
-    platform: prefix + '/common/v1/platform',
+    platform: prefix + '/common/v1/platform'
   },
   fetchAccountBaseInfo: prefix + '/account/v1/captureInfo',
   getAudiencePortrait: prefix + '/account/v1/getAudiencePortrait',
@@ -25,7 +25,7 @@ export default {
     accountOnSale: prefix + '/account/v1/updateOnline',
     accountStrategy: prefix + '/account/v1/updateStrategy',
     accountOther: prefix + '/account/v1/updateOtherInfo',
-    accountAudiencePortrait: prefix + '/account/v1/updateAudiencePortrait',
+    accountAudiencePortrait: prefix + '/account/v1/updateAudiencePortrait'
   },
   classify: {
     isExistClassify: prefix + '/classifyAudit/v1/isExistClassify',
@@ -33,7 +33,7 @@ export default {
     addClassifyAuditInfo: prefix + '/classifyAudit/v1/addClassifyAuditInfo',
     addCustomClassify: prefix + '/classifyAudit/v1/addCustomClassify'
   },
-  package: {
-    test: '/accountPackage/test',
+  account: {
+    getDetail: prefix + '/account/v1_1/getDetail'
   }
 }

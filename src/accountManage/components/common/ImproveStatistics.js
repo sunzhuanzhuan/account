@@ -14,11 +14,12 @@ export default class ImproveStatistics extends Component {
 
   goComplete = (moduleId = 'main') => {
     this.handleScroll('#navLink-' + moduleId)
-    // 处理编辑状态
+    this.props.actions.setModuleStatus({[moduleId]: 'edit'})
   }
 
   render() {
-    const { percent = 33, done } = this.props
+    const { percent = 33, moduleId } = this.props
+    const done = percent >= 100
     return <div className='improve-statistics-wrapper'>
       <div className='header-title'>账号完善度</div>
       <Progress
@@ -31,7 +32,7 @@ export default class ImproveStatistics extends Component {
       />
       {done ? <div className='tips-text'>账号的曝光率提升了100%</div> :
         <div className='tips-text'>立即完善将提升账号的曝光率哦~</div>}
-      {done ? null : <a onClick={() => this.goComplete()}>去完善</a>}
+      {done ? null : <a onClick={() => this.goComplete(moduleId)}>去完善</a>}
     </div>
   }
 }

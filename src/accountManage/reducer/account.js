@@ -1,9 +1,8 @@
 import { combineReducers } from 'redux'
 import { handleActions, combineActions } from 'redux-actions';
 import {
-	getAccountInfo_success,
-	updateFetchInfo
-} from '../actions'
+  getDetail_success,
+} from '../actions/package'
 import { allEditables } from "@/accountManage/constants/editables";
 
 const handleEdit = (_data) => {
@@ -25,75 +24,75 @@ let initEditable = () => {
 	return obj
 }
 
-// 账号id
+// id
 export const id = handleActions({
-	[combineActions(getAccountInfo_success)]: (state, action) => {
+	[combineActions(getDetail_success)]: (state, action) => {
 		let { id } = action.payload.data
 		return id
 	}
 }, '')
 
-// 账号基本信息
+// 基本信息
 export const base = handleActions({
-	[combineActions(getAccountInfo_success)]: (state, action) => {
+	[combineActions(getDetail_success)]: (state, action) => {
 		let { base = {} } = action.payload.data
 		return {
 			...state,
 			...base
 		}
 	},
-	[combineActions(updateFetchInfo)]: (state, action) => {
+	/*[combineActions(updateFetchInfo)]: (state, action) => {
 		let data = action.payload.data
 		data = handleEdit(data)
 		return {
 			...state,
 			...data
 		}
-	}
+	}*/
 }, initEditable())
-// 账号拓展信息
-export const extend = handleActions({
-	[combineActions(getAccountInfo_success)]: (state, action) => {
-		let { extend = {} } = action.payload.data
+// 合作相关
+export const cooperation = handleActions({
+	[combineActions(getDetail_success)]: (state, action) => {
+		let { cooperation = {} } = action.payload.data
 		return {
 			...state,
-			...extend
+			...cooperation
 		}
 	}
 }, {})
-// 受众画像
-export const audiencePortrait = handleActions({
-	[combineActions(getAccountInfo_success)]: (state, action) => {
-		let { audiencePortrait = {} } = action.payload.data
+// 内容相关
+export const content = handleActions({
+	[combineActions(getDetail_success)]: (state, action) => {
+		let { content = {} } = action.payload.data
 		return {
 			...state,
-			...audiencePortrait
+			...content
 		}
 	}
 }, {})
-// 策略
-export const strategy = handleActions({
-	[combineActions(getAccountInfo_success)]: (state, action) => {
-		let { strategy = {} } = action.payload.data
+// 策略信息
+export const strategyInfo = handleActions({
+	[combineActions(getDetail_success)]: (state, action) => {
+		let { strategyInfo = {} } = action.payload.data
 		return {
 			...state,
-			...strategy
+			...strategyInfo
 		}
 	}
 }, {})
-// sku
-export const skuList = handleActions({
-	[combineActions(getAccountInfo_success)]: (state, action) => {
-		let { skuList = [] } = action.payload.data
-		return [
+// 其他信息
+export const otherInfo = handleActions({
+	[combineActions(getDetail_success)]: (state, action) => {
+		let { otherInfo = {} } = action.payload.data
+		return {
 			...state,
-			...skuList
-		]
+			...otherInfo
+		}
 	}
-}, [])
+}, {})
 // 特征数据
 export const feature = handleActions({
-	[combineActions(getAccountInfo_success)]: (state, action) => {
+	[combineActions(getDetail_success)]: (state, action) => {
 		let { feature = {} } = action.payload.data
 		return {
 			...state,
@@ -101,24 +100,41 @@ export const feature = handleActions({
 		}
 	}
 }, {})
-// 合作案例
-export const cooperationCases = handleActions({
-	[combineActions(getAccountInfo_success)]: (state, action) => {
-		let { cooperationCases = [] } = action.payload.data
-		return [
+// 博主个人信息
+export const personalInfo = handleActions({
+	[combineActions(getDetail_success)]: (state, action) => {
+		let { personalInfo = {} } = action.payload.data
+		return {
 			...state,
-			...cooperationCases
-		]
+			...personalInfo
+		}
 	}
-}, [])
+}, {})
+// 账号完整度
+export const perfectionDegree = handleActions({
+	[combineActions(getDetail_success)]: (state, action) => {
+		let { perfectionDegree = {} } = action.payload.data
+		return {
+			...state,
+			...perfectionDegree
+		}
+	}
+}, {})
+// 完整响应信息
+export const _response = handleActions({
+	[combineActions(getDetail_success)]: (state, action) => {
+		return action.payload.data
+	}
+}, {})
 
 export default combineReducers({
 	id,
 	base,
-	extend,
-	audiencePortrait,
-	strategy,
-	cooperationCases,
-	skuList,
-	feature
+	cooperation,
+	content,
+	strategyInfo,
+	perfectionDegree,
+	otherInfo,
+	feature,
+  _response
 })

@@ -6,9 +6,10 @@ import * as action from '../actions/index'
 import * as commonAction from '@/actions/index'
 import * as packageAction from '../actions/package'
 import { parseUrlQuery } from "@/util/parseUrl";
-import { tabs, modules, platformToModules } from '../constants/packageConfig'
+import { tabs, modulesMap, platformToModules } from '../constants/packageConfig'
 import Module from "@/accountManage/components/common/Module";
 import ImproveStatistics from "@/accountManage/components/common/ImproveStatistics";
+import LoadingBlock from "@/accountManage/base/LoadingBlock";
 
 const { TabPane } = Tabs;
 const { Link } = Anchor;
@@ -32,21 +33,41 @@ class UpdatePageForPackage extends Component {
     // 获取account_id参数, 参数错误error
     // TODO: addQuote 参数判断是否是否直接进入报价编辑
     // 根据account_id获取账号信息, 错误error, 平台不对修改平台
-    setTimeout(() => {
-      // window.location.replace('/account/manage/package/' + 9 + '?account_id=' + this.state.accountId)
-    }, 2000);
+    /* setTimeout(() => {
+       window.location.replace('/account/manage/package/' + 9 + '?account_id=' + this.state.accountId)
+     }, 2000);*/
     const { actions } = this.props
-    actions.test({ accountId: this.state.accountId }).then(data => {
-      // console.log(data, '======>');
+    actions.getDetail({ accountId: this.state.accountId }).then(() => {
+      this.setState({
+        fullLoading: false
+      })
+    }).catch(({ errorMsg }) => {
+      this.setState({
+        fullLoading: false,
+        isError: { info: errorMsg }
+      })
     })
   }
 
   render() {
-    const { accountId, active, platformId } = this.state
+    const {
+      active,
+      fullLoading,
+      isError
+    } = this.state
     const activeTab = tabs[active - 1] || {}
-    const platform = platformToModules(platformId, activeTab.warp || [])
+    const { account: { perfectionDegree, base } } = this.props.accountManage
+    const platform = platformToModules(base.platformId || this.state.platformId, activeTab.warp || [])
     const modulesList = platform.visibility.modules
-    return <div className='update-package-page-container'>
+    const statisticsProps = {
+      percent: perfectionDegree.overall,
+      // 找到当前tab的第一个未完善模块
+      moduleId: activeTab.warp.find(key => {
+        let perKey = modulesMap[key].perfectionDegreeKey
+        return (perKey && perfectionDegree[perKey] < 100)
+      })
+    }
+    return (!fullLoading && !isError) ? <div className='update-package-page-container'>
       <h2>账号维护</h2>
       <Tabs
         activeKey={active}
@@ -67,7 +88,8 @@ class UpdatePageForPackage extends Component {
           tabs.map(pane => <TabPane tab={
             <div className='tab-bar-item-wrapper'>
               <span>{pane.title}</span>
-              {pane.title.endsWith('统计') && <b>(未完善)</b>}
+              {pane.perfectionDegreeKey && perfectionDegree[pane.perfectionDegreeKey] < 100 ?
+                <b>(已完善 {perfectionDegree[pane.perfectionDegreeKey]}%)</b> : null}
             </div>
           } key={pane.index} />)
         }
@@ -76,7 +98,10 @@ class UpdatePageForPackage extends Component {
         <div className='tab-pane-modules'>
           {
             modulesList.map((module) => {
-              return <Module key={module.anchorId} module={module} platform={platform} actions={this.props.actions} data={{...this.props.accountManage, auth: this.props.auth}} />
+              return <Module key={module.anchorId} module={module} platform={platform} actions={this.props.actions} data={{
+                ...this.props.accountManage,
+                auth: this.props.auth
+              }} />
             })
           }
         </div>
@@ -88,7 +113,7 @@ class UpdatePageForPackage extends Component {
               showInkInFixed={true}
               getContainer={() => document.querySelector('#app-content-children-id')}
             >
-              <ImproveStatistics/>
+              <ImproveStatistics {...statisticsProps} actions={this.props.actions}/>
               {
                 modulesList.map(({ anchorId: key, title }) =>
                   <Link key={key} href={"#navLink-" + key} title={
@@ -105,7 +130,7 @@ class UpdatePageForPackage extends Component {
           </div> : null
         }
       </div>
-    </div>
+    </div> : <LoadingBlock loading={fullLoading} error={isError} />
   }
 }
 

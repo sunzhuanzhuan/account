@@ -17,14 +17,20 @@ export default class Cooperation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      moduleStatus: props.moduleStatus || 'edit'
+      moduleStatus: 'edit'
     }
+  }
+  static getDerivedStateFromProps(nextProps) {
+    if ('moduleStatus' in nextProps) {
+      return {
+        moduleStatus: nextProps.moduleStatus || 'edit'
+      };
+    }
+    return null
   }
 
   handleChange = (moduleStatus) => {
-    this.setState({
-      moduleStatus
-    })
+    this.props.actions.setModuleStatus({ 'cooperation': moduleStatus })
   }
 
   render() {
