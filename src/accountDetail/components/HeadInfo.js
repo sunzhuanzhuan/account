@@ -19,9 +19,9 @@ class HeadInfo extends Component {
     const { base = {}, feature = {}, skuList = [] } = baseInfo
     const { isMale, consumptionLevel, systemType, avatarUrl,
       snsName, snsId, followerCount, introduction, platformId = 0,
-      url, qrCodeUrl, cooperationTips
+      url, qrCodeUrl,classification = '-', cooperationTips
     } = base
-    const { classification = '-', wholeRank = 0, orderResponseDuration, orderResponsePercentile,
+    const {  wholeRank = 0, orderResponseDuration, orderResponsePercentile,
       orderAcceptanceNum = '-', orderAcceptanceRate, orderMajorIndustryCategory, orderCompleteDuration,
       isVerified, verificationReason } = feature
     //排名处理
