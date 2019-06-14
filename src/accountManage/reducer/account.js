@@ -136,6 +136,7 @@ export default combineReducers({
 	cooperation,
 	content,
 	strategyInfo,
+  personalInfo,
 	perfectionDegree,
 	otherInfo,
 	feature,

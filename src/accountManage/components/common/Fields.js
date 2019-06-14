@@ -1822,7 +1822,7 @@ export const SexualOrientation = (props) => {
   } = props;
   const {
     sexualOrientation
-  } = account;
+  } = account.personalInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='性取向'>
       {getFieldDecorator('personalInfo.sexualOrientation', {
@@ -1851,7 +1851,7 @@ export const Gender = (props) => {
     gender,
     genderFrom,
     genderMaintainedTime
-  } = account;
+  } = account.personalInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='性别'>
       {getFieldDecorator('personalInfo.gender', {
@@ -1884,7 +1884,7 @@ export const Area = (props) => {
     area = {},
     areaFrom,
     areaMaintainedTime
-  } = account;
+  } = account.personalInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='常住地'>
       {getFieldDecorator('personalInfo.area', {
@@ -1911,7 +1911,7 @@ export const Shipping = (props) => {
   } = props;
   const {
     shipping = {}
-  } = account;
+  } = account.personalInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='收货地址'>
       {getFieldDecorator('personalInfo.shipping', {
@@ -1934,7 +1934,7 @@ export const Birthday = (props) => {
   } = props;
   const {
     birthDate
-  } = account;
+  } = account.personalInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='生日'>
       {getFieldDecorator('personalInfo.birthDate', {
@@ -1961,7 +1961,7 @@ export const Nationality = (props) => {
   const {
     nationalityId
     // nationalityName
-  } = account;
+  } = account.personalInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='国籍'>
       {getFieldDecorator('personalInfo.nationalityId', {
@@ -1990,7 +1990,7 @@ export const Industry = (props) => {
   } = props;
   const {
     industryId
-  } = account;
+  } = account.personalInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='行业'>
       {getFieldDecorator('personalInfo.industryId', {
@@ -2019,7 +2019,7 @@ export const Occupations = (props) => {
   } = props;
   const {
     occupations = []
-  } = account;
+  } = account.personalInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='职业'>
       {getFieldDecorator('personalInfo.occupations', {
@@ -2048,7 +2048,7 @@ export const EducationQualification = (props) => {
   } = props;
   const {
     educationQualification
-  } = account;
+  } = account.personalInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='学历/学位'>
       {getFieldDecorator('personalInfo.educationQualification', {
@@ -2076,7 +2076,7 @@ export const RelationshipStatus = (props) => {
   } = props;
   const {
     relationshipStatus
-  } = account;
+  } = account.personalInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='情感状况'>
       {getFieldDecorator('personalInfo.relationshipStatus', {
@@ -2105,7 +2105,7 @@ export const Assets = (props) => {
   const {
     isAcceptHardAd,
     isAcceptProductUse
-  } = account;
+  } = account.personalInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='资产'>
       {getFieldDecorator('personalInfo.hasHouse', {
@@ -2141,7 +2141,7 @@ export const Children = (props) => {
   } = props;
   const {
     children
-  } = account;
+  } = account.personalInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='宝宝信息'>
       {getFieldDecorator('personalInfo.children', {
@@ -2167,7 +2167,7 @@ export const Pets = (props) => {
   const {
     pets,
     customPets
-  } = account;
+  } = account.personalInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='宠物信息'>
       {getFieldDecorator('_client.pets', {
@@ -2207,11 +2207,11 @@ export const Skills = (props) => {
   } = props;
   const {
     skills,
-  } = account;
+  } = account.personalInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='技能'>
       {getFieldDecorator('personalInfo.skills', {
-        initialValue: skills
+        initialValue: skills.map(item => item.skillId || item)
       })(
         <Select
           mode='multiple'
@@ -2245,8 +2245,8 @@ export const CustomSkills = (props) => {
     data: { account }
   } = props;
   const {
-    customSkills
-  } = account;
+    customSkills = []
+  } = account.personalInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='其他技能'>
       {getFieldDecorator('_client.skills', {
