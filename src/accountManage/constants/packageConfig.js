@@ -79,9 +79,9 @@ export function platformToModules(platformId, filterSource) {
   // 获取该平台的差异性配置
   // let _modules = intersection(filterSource, platformData.visibility.modules).map(key => modulesMap[key])
   let _modules = []
-  if(process.env.REACT_APP_CLIENT === 'NB'){
+  if (process.env.REACT_APP_CLIENT === 'NB') {
     _modules = intersection(diffByClient['NB'].wrap, filterSource, platformData.visibility.modules)
-  }else if(process.env.REACT_APP_CLIENT === 'NC'){
+  } else if (process.env.REACT_APP_CLIENT === 'NC') {
     _modules = intersection(diffByClient['NC'].wrap, platformData.visibility.modules)
   }
   _modules = _modules.map(key => modulesMap[key])
@@ -92,9 +92,9 @@ export const tabs = [
     index: '1',
     title: '账号信息',
     warp: [
-      "owner",
-      "fetch",
-      "main",
+      // "owner",
+      // "fetch",
+      // "main",
       "cooperation",
       "content",
       "strategy",
@@ -154,12 +154,48 @@ export const diffByClient = {
 // 平台差异性
 export const diffByTypes = {
   "default": {
-    platforms: [115, 24, 103, 120, 111, 119, 118, 116, 30, 29, 110, 100, 101, 102],
+    platforms: [24, 120, 111, 119, 118, 116, 30, 29, 110, 100, 101, 102],
     visibility: {
       fields: {
         weiboUrl: true,
         uniqueId: true,
         url: true
+      },
+      modules: [
+        "owner",
+        "fetch",
+        "main",
+        "cooperation",
+        "strategy",
+        "content",
+        "other",
+        "price",
+        "personal",
+        "dashboard"
+      ]
+    },
+    configure: {
+      fetchDefaultKeys: 'url',
+      fetchTypes: [
+        {
+          title: '抓取信息',
+          field: 'url',
+          placeholder: '请输入主页链接'
+        }
+      ],
+      introductionPlaceholder: '搞笑视频达人，视频风格犀利独到，容易引起话题性传播；曾创作过“xxxx”系列节目，取得xxx万播放量。在XXX等多个视频平台均可发布若您不接受原创合作，可写：帐号支持发布客户的指定视频，支持多平台发布等',
+      cooperateContentPlaceHolder: '1.播放量100w，点赞量3w，转发量1w、观看量3W等等；\n2.以关爱女性为主题，搭配浪漫温馨风格，完美植入了XX产品或进行了xx主题视频发布；\n	3.促进了产品销售，达到了推广效果，登上平台热门推荐，取得良好效果。'
+    }
+  },
+  "douyin": {
+    platforms: [103,115],
+    visibility: {
+      fields: {
+        weiboUrl: true,
+        uniqueId: true,
+        url: true,
+        isOpenStore: true,
+        isOpenLiveProgram: true
       },
       modules: [
         "owner",
@@ -636,3 +672,22 @@ export const platformToType = Object.entries(diffByTypes).reduce((obj, [key, ite
   delete obj["-1"].platforms
   return obj
 }, {})
+
+// 配置项itemKey对应字段名称
+export const configItemKeyToField = {
+  "ggzdxs1": "分发平台",
+  "ggzdxs2": "植入类型",
+  "hzxz1": "接硬广",
+  "hzxz2": "不接受的品牌",
+  "hzxz3": "接受产品试用",
+  "hzxz4": "视频修改次数",
+  "hzxz5": "视频拍摄地点",
+  "hzxz6": "直播形式",
+  "hzxz7": "稿件/大纲修改次数",
+  "vsdr2": "达人认证",
+  "vsjg3": "机构认证",
+  "vswb2": "黄V",
+  "vswb3": "蓝V",
+  "vswb4": "达人",
+  "vswb5": "金V"
+}

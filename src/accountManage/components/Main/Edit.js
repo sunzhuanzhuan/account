@@ -21,6 +21,7 @@ import {
 } from "../common/Fields";
 import { Fetch } from "@/accountManage/components/packageComponents";
 import { modulesMap } from "@/accountManage/constants/packageConfig";
+import update from 'immutability-helper'
 
 const FormItem = Form.Item;
 
@@ -35,31 +36,20 @@ export default class MainEdit extends Component {
         isOpenLiveProgram: true, // 直播
         isOpenStore: true // 橱窗/店铺
       },
-      verifiedOptional: [
-        {
-          id: 2,
-          name: '黄V'
-        }, {
-          id: 3,
-          name: '蓝V'
-        }, {
-          id: 6,
-          name: '金V'
-        }, {
-          id: 4,
-          name: '达人'
-        }
-      ]
+      asyncOptions: {
+        verified: []
+      }
     }
   }
 
   componentDidMount() {
+    const { actions, form, data: { account } } = this.props
     // window注入form对象
     if (window._updataForms) {
-      window._updataForms.main = this.props.form
+      window._updataForms.main = form
     } else {
       window._updataForms = {
-        main: this.props.form
+        main: form
       }
     }
     // 获取上传图片token
@@ -71,6 +61,18 @@ export default class MainEdit extends Component {
     // isOpenStore // 橱窗/店铺
 
     // 获取配置项 - 认证类型
+    actions.getVerifiedType({ accountId: account.id }).then(({ data }) => {
+      this.setState(update(this.state, {
+        asyncOptions: {
+          verified: {
+            $set: data.map(item => ({
+              id: item.itemKey,
+              name: item.itemValue
+            }))
+          }
+        }
+      }))
+    })
   }
 
   submit = (e) => {
@@ -100,7 +102,7 @@ export default class MainEdit extends Component {
     const {
       authToken,
       asyncVisibility,
-      verifiedOptional
+      asyncOptions
     } = this.state
     const left = <div className='wrap-panel-left-content'>
       <span style={{
@@ -174,10 +176,9 @@ export default class MainEdit extends Component {
             <small className='line' />
           </h4>
           <div className='subclass-content'>
-            <Verified {...fieldProps} verifiedOptional={verifiedOptional} />
-            {/* 以下字段需要判断可见性 */}
-            {asyncVisibility.isOpenStore && <OpenStore {...fieldProps} />}
-            {asyncVisibility.isOpenLiveProgram && <OpenLiveProgram {...fieldProps} />}
+            <Verified {...fieldProps} options={asyncOptions.verified} />
+            {configurePlatform.visibility.fields.isOpenStore && <OpenStore {...fieldProps} />}
+            {configurePlatform.visibility.fields.isOpenLiveProgram && <OpenLiveProgram {...fieldProps} />}
           </div>
         </li>
       </ul>

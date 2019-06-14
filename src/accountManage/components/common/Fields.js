@@ -631,7 +631,7 @@ export const MediaType = (props) => {
   } = props;
   const {
     mediaType
-  } = account;
+  } = account.base;
   return <div className='field-wrap-item base-media-type'>
     <FormItem {...layout.full} label=' ' colon={false}>
       {getFieldDecorator('base.mediaType', {
@@ -658,7 +658,7 @@ export const Verified = (props) => {
     actions: { sensitiveWordsFilter },
     layout,
     data: { account },
-    verifiedOptional
+    options
   } = props;
   const {
     isVerified,
@@ -670,7 +670,7 @@ export const Verified = (props) => {
     verificationInfo,
     verificationInfoFrom,
     verificationInfoMaintainedTime
-  } = account;
+  } = account.base;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='是否认证'>
       {getFieldDecorator('base.isVerified', {
@@ -690,7 +690,7 @@ export const Verified = (props) => {
         })(
           <RadioGroup disabled={verifiedStatusFrom === 2}>
             {
-              verifiedOptional.map(opt => <Radio key={opt.id} value={opt.id}>{opt.name}</Radio>)
+              options.map(opt => <Radio key={opt.id} value={opt.id}>{opt.name}</Radio>)
             }
           </RadioGroup>
         )}
@@ -741,10 +741,10 @@ export const OpenStore = (props) => {
     isOpenStore,
     isOpenStoreFrom,
     isOpenStoreMaintainedTime
-  } = account;
+  } = account.base;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='橱窗/店铺'>
-      {getFieldDecorator('base.mediaType', {
+      {getFieldDecorator('base.isOpenStore', {
         initialValue: isOpenStore
       })(
         <RadioGroup style={{ width: '100%' }}>
@@ -773,7 +773,7 @@ export const OpenLiveProgram = (props) => {
     isOpenLiveProgram,
     isOpenLiveProgramFrom,
     isOpenLiveProgramMaintainedTime
-  } = account;
+  } = account.base;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='直播'>
       {getFieldDecorator('base.isOpenLiveProgram', {
@@ -808,7 +808,7 @@ export const DirectItems = (props) => {
   const {
     isAcceptHardAd,
     isAcceptProductUse
-  } = account;
+  } = account.cooperation;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='拒绝项'>
       {getFieldDecorator('cooperation.isAcceptHardAd', {
@@ -844,7 +844,7 @@ export const RefuseBrands = (props) => {
   } = props;
   const {
     refuseBrands
-  } = account;
+  } = account.cooperation;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='不接受的品牌'>
       {getFieldDecorator('cooperation.refuseBrands', {
@@ -873,7 +873,7 @@ export const ManuscriptModificationLimit = (props) => {
   } = props;
   const {
     manuscriptModificationLimit
-  } = account;
+  } = account.cooperation;
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='稿件/大纲修改次数'>
       {getFieldDecorator('cooperation.manuscriptModificationLimit', {
@@ -896,13 +896,15 @@ export const ManuscriptModificationLimit = (props) => {
 export const VideoShotArea = (props) => {
   const {
     form: { getFieldDecorator, getFieldValue },
+    actions,
     layout,
-    data: { account }
+    data: { account, areasHotCity }
   } = props;
   const {
     videoShotAreaType,
     videoShotAreas
-  } = account;
+  } = account.cooperation;
+  console.log(areasHotCity, '====?');
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='视频拍摄地点'>
       {getFieldDecorator('cooperation.videoShotAreaType', {
@@ -919,7 +921,7 @@ export const VideoShotArea = (props) => {
             rules: [{ required: true, message: '请选择视频拍摄地点' }],
             initialValue: videoShotAreas
           })(
-            <AreasTreeSelect />
+            <AreasTreeSelect actions={actions} areas={areasHotCity}/>
           )}
         </FormItem>
       </div>}

@@ -4,7 +4,10 @@ export default {
   common: {
     areas: prefix + '/common/v1/areas',
     industries: prefix + '/common/v1/industries',
-    platform: prefix + '/common/v1/platform'
+    platform: prefix + '/common/v1/platform',
+    getCountryList: prefix + '/account/v1_1/onlineCountryList',
+    getAreasHotCity: prefix + '/account/v1_1/countryCityAreaTree',
+    getChildrenAreaList: prefix + '/account/v1_1/childrenAreaList',
   },
   fetchAccountBaseInfo: prefix + '/account/v1/captureInfo',
   getAudiencePortrait: prefix + '/account/v1/getAudiencePortrait',
@@ -35,5 +38,19 @@ export default {
   },
   account: {
     getDetail: prefix + '/account/v1_1/getDetail'
+  },
+  config: {
+    getVerifiedType: prefix + '/account/v1_1/configuration/verifiedType',
+    getPlatFormData: prefix + '/account/v1_1/configuration/platFormData',
+    getSkill: prefix + '/account/v1_1/configuration/skill',
+    getLanguage: prefix + '/account/v1_1/configuration/language',
+    getPet: prefix + '/account/v1_1/configuration/pet',
+    getProfession: prefix + '/account/v1_1/configuration/profession',
+    getContentStyle: prefix + '/account/v1_1/configuration/contentStyle',
+    getContentFeature: prefix + '/account/v1_1/configuration/contentFeature',
+    getContentForm: prefix + '/account/v1_1/configuration/contentForm',
+    getAdvertisingOfferServices: prefix + '/account/v1_1/configuration/advertisingOfferServices',
+    getAdvertisingFieldConfig: prefix + '/account/v1_1/configuration/advertisingFieldConfig',
+    getCooperateNoticeFieldConfig: prefix + '/account/v1_1/configuration/cooperateNoticeFieldConfig',
   }
 }

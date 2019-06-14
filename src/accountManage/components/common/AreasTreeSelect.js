@@ -2,31 +2,8 @@ import React, { Component } from "react"
 import { Icon, Input, message, Tree, Popover } from 'antd'
 import CheckTag from "@/accountManage/base/CheckTag";
 import debounce from 'lodash/debounce'
-import areas from '@/accountManage/constants/areas'
-
-const {
-  "china": chinaAreas, "foreign": foreignAreas, hotCity
-} = areas
-
 const { TreeNode } = Tree;
 const Search = Input.Search;
-
-const cityList = [];
-const areasMap = {};
-const generateList = data => {
-  for (let i = 0; i < data.length; i++) {
-    const node = data[i];
-    const id = node.id;
-    let item = { id: node.id, areaName: node.areaName, areaLevel: node.areaLevel }
-    cityList.push(item);
-    areasMap[id] = item
-    if (node.childrenList) {
-      generateList(node.childrenList);
-    }
-  }
-};
-generateList(chinaAreas)
-generateList(foreignAreas)
 
 const getParentKey = (key, tree) => {
   let parentKey;
@@ -77,9 +54,13 @@ class SearchSelect extends Component {
   }
 
   triggerChange = (changedValue) => {
+    const {
+      areasMap
+    } = this.props.areas
     const onChange = this.props.onChange;
     if (onChange) {
       changedValue = changedValue.map(key => areasMap[key])
+
       onChange(changedValue);
     }
   }
@@ -92,6 +73,9 @@ class SearchSelect extends Component {
   };
 
   coreSearch = (value) => {
+    const {
+      cityList, chinaAreas
+    } = this.props.areas
     let expandedKeys = []
     if (value) {
       expandedKeys = cityList.map(item => {
@@ -150,7 +134,7 @@ class SearchSelect extends Component {
     } else {
       newKeys.push(city.id)
     }
-    this.onCheck({ chinaCheckedKeys: newKeys})
+    this.onCheck({ chinaCheckedKeys: newKeys })
   }
 
   render() {
@@ -161,6 +145,9 @@ class SearchSelect extends Component {
       chinaCheckedKeys,
       otherCheckedKeys
     } = this.state;
+    const {
+      chinaAreas, foreignAreas, hotCity
+    } = this.props.areas
     const loop = data =>
       data.map(item => {
         const index = item.areaName.indexOf(searchValue);
@@ -241,6 +228,12 @@ export default class AreasTreeSelect extends Component {
       value
     };
   }
+  componentDidMount() {
+    const { chinaAreas } = this.props.areas
+    if (chinaAreas.length === 0) {
+      this.props.actions.getAreasHotCity()
+    }
+  }
 
   static getDerivedStateFromProps(nextProps) {
     if ('value' in nextProps) {
@@ -297,7 +290,7 @@ export default class AreasTreeSelect extends Component {
       }
       <Popover
         overlayStyle={{ padding: 0 }}
-        content={<SearchSelect value={value} onChange={this.onPopChange} />}
+        content={<SearchSelect value={value} onChange={this.onPopChange} areas={this.props.areas}/>}
         placement="bottomLeft"
         trigger={value.length >= 5 ? [] : ['click']}
       >

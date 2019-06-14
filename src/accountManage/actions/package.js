@@ -14,3 +14,14 @@ export const {
 export const setModuleStatus = createAction('setModuleStatus', (data) => {
   return { data };
 })
+
+// 配置项接口
+// 认证信息
+export const {
+  getVerifiedType,
+} = createHttpAction('getVerifiedType', Interface.config.getVerifiedType);
+// 获取地域加热门城市
+export const {
+  getAreasHotCity,
+  getAreasHotCity_success,
+} = createHttpAction('getAreasHotCity', Interface.common.getAreasHotCity);

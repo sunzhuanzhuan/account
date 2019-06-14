@@ -21,11 +21,12 @@ import {
   getIndustryListForAccount_success,
   getUserInvoiceInfo_success,
   sensitiveWordsFilter_success,
-  setAddSubmit,
+  setAddSubmit
 } from '../actions'
 
 import {
-  setModuleStatus
+  setModuleStatus,
+  getAreasHotCity_success
 } from '../actions/package'
 
 const handleEdit = (data) => {
@@ -214,10 +215,47 @@ export const adminAccount = handleActions({
   }
 }, {})
 
+// 地域信息(包含热门城市)
+const storeAreasHotCity = window.localStorage.getItem("areasHotCity_v1")
+export const areasHotCity = handleActions({
+  [combineActions(getAreasHotCity_success)]: (state, action) => {
+    const {
+      "china": chinaAreas, "foreign": foreignAreas, hotCity
+    } = action.payload.data
+    const cityList = [];
+    const areasMap = {};
+    const generateList = data => {
+      for (let i = 0; i < data.length; i++) {
+        const node = data[i];
+        const id = node.id;
+        let item = { id: node.id, areaName: node.areaName, areaLevel: node.areaLevel }
+        cityList.push(item);
+        areasMap[id] = item
+        if (node.childrenList) {
+          generateList(node.childrenList);
+        }
+      }
+    };
+    generateList([].concat(chinaAreas, foreignAreas))
+    let data = { cityList, areasMap, chinaAreas, foreignAreas, hotCity }
+    window.localStorage.setItem("areasHotCity_v1", JSON.stringify(data))
+    return {
+      ...state,
+      ...data
+    }
+  }
+}, storeAreasHotCity ? JSON.parse(storeAreasHotCity) : {
+  cityList: [],
+  areasMap: {},
+  chinaAreas: [],
+  foreignAreas: [],
+  hotCity: []
+})
 
 export default combineReducers({
   account,
   adminAccount,
+  areasHotCity,
   accountInfo,
   priceInfo,
   priceTypeList,
