@@ -25,6 +25,7 @@ export default class ContentEdit extends Component {
       }
     }
   }
+
   componentDidMount() {
     const { actions, form, data: { account } } = this.props
     // 获取配置项
@@ -65,6 +66,7 @@ export default class ContentEdit extends Component {
       }))
     })
   }
+
   submit = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, fieldsValue) => {
@@ -96,8 +98,8 @@ export default class ContentEdit extends Component {
     const fieldProps = { layout, data, form, actions }
     const {
       isFamous,
-      modifiedAt // 信息修改时间
-    } = data.accountInfo || {}
+      content: { modifiedAt } // 信息修改时间
+    } = data.account || {}
     const {
       asyncVisibility,
       asyncOptions

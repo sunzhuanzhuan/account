@@ -27,7 +27,7 @@ export default class CooperationEdit extends Component {
       asyncVisibility: {},
       asyncOptions: {
         adServiceItems: [],
-        platforms : []
+        platforms: []
       },
       submitLoading: false
     }
@@ -112,8 +112,8 @@ export default class CooperationEdit extends Component {
     const fieldProps = { layout, data, form, actions }
     const {
       isFamous,
-      modifiedAt // 信息修改时间
-    } = data.accountInfo || {}
+      cooperation: { modifiedAt } // 信息修改时间
+    } = data.account || {}
     const {
       asyncVisibility,
       asyncOptions,
@@ -159,7 +159,8 @@ export default class CooperationEdit extends Component {
           </h4>
           <div className='subclass-content'>
             <AdServiceItems {...fieldProps} options={asyncOptions.adServiceItems} />
-            {asyncVisibility.postPlatform && <PostPlatform {...fieldProps} options={asyncOptions.platforms} />}
+            {asyncVisibility.postPlatform &&
+            <PostPlatform {...fieldProps} options={asyncOptions.platforms} />}
             {asyncVisibility.productPlacement && <ProductPlacementType {...fieldProps} />}
           </div>
         </li>

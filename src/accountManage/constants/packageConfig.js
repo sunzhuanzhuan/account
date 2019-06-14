@@ -94,8 +94,8 @@ export const tabs = [
     warp: [
       // "owner",
       // "fetch",
-      // "main",
-      // "cooperation",
+      "main",
+      "cooperation",
       "content",
       "strategy",
       "other"

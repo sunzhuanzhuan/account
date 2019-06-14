@@ -47,8 +47,8 @@ export default class StrategyEdit extends Component {
     const fieldProps = { layout, data, form, actions }
     const {
       isFamous,
-      modifiedAt // 信息修改时间
-    } = data.accountInfo || {}
+      strategyInfo : { modifiedAt} // 信息修改时间
+    } = data.account || {}
     const {
       asyncVisibility,
       asyncOptions

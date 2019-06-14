@@ -12,6 +12,7 @@ export default class Other extends Component {
     super(props)
     this.state = {}
   }
+
   submit = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, fieldsValue) => {
@@ -20,6 +21,7 @@ export default class Other extends Component {
       }
     });
   }
+
   render() {
     const {
       layout,
@@ -31,18 +33,19 @@ export default class Other extends Component {
     const fieldProps = { layout, data, form, actions }
     const {
       isFamous,
-      modifiedAt // 信息修改时间
-    } = data.accountInfo || {}
+      otherInfo: { otherInfoModifiedAt }
+      // 信息修改时间
+    } = data.account || {}
     const right = <div className='wrap-panel-right-content'>
-      <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>
+      <span className='gray-text'>最近更新于: {otherInfoModifiedAt || '--'}</span>
       <Button htmlType='submit' type='primary'>保存</Button>
     </div>;
 
     return <Form className='module-item-container' onSubmit={this.submit} colon={false}>
-      <ModuleHeader title={configureModule.title} right={right}/>
+      <ModuleHeader title={configureModule.title} right={right} />
       <section className='content-wrap'>
-        {configurePlatform.visibility.fields.isLowQuality && <IsLowQuality {...fieldProps}/>}
-        <MediaTeamNote {...fieldProps}/>
+        {configurePlatform.visibility.fields.isLowQuality && <IsLowQuality {...fieldProps} />}
+        <MediaTeamNote {...fieldProps} />
       </section>
     </Form>
   }

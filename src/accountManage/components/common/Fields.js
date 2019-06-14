@@ -1305,12 +1305,14 @@ export const OnSaleInfo = (props) => {
     isOnline,
     isOpen,
     isShielded,
+    onShelfStatus: {
+      aOnShelfStatus,
+      aOffShelfReasonStringList,
+      bOnShelfStatus,
+      bOffShelfReasonStringList
+    } = {},
     offlineReason,
-    aOnShelfStatus,
-    aOffShelfReasonStringList,
-    bOnShelfStatus,
-    bOffShelfReasonStringList
-  } = account;
+  } = account.strategyInfo;
   return <div className='field-wrap-item base-media-type'>
     <FormItem {...layout.full} label='审核状态:'>
       {getFieldDecorator('strategyInfo.approvedStatus', {
@@ -1433,7 +1435,7 @@ export const MaxOrderCount = (props) => {
   const {
     maxOrderCount,
     maxOrderCountNote
-  } = account;
+  } = account.strategyInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label=" ">
       {getFieldDecorator('_client.isFinite', {
@@ -1485,7 +1487,7 @@ export const Strategy = (props) => {
   } = props;
   const {
     strategy = {}
-  } = account;
+  } = account.strategyInfo;
 
   const disabledStartDate = () => {
     const endValue = getFieldValue('strategyInfo.strategy.endTimeOfTime');
@@ -1641,7 +1643,7 @@ export const IsLowQuality = (props) => {
   const {
     isLowQuality,
     lowQualityReasonList
-  } = account;
+  } = account.otherInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='是否劣质号'>
       {isLowQuality ? <div>
@@ -1665,7 +1667,7 @@ export const MediaTeamNote = (props) => {
   } = props;
   const {
     mediaTeamNote
-  } = account;
+  } = account.otherInfo;
   return <div className='field-wrap-item'>
     <FormItem label="媒介备注"  {...layout.half} >
       {getFieldDecorator('otherInfo.mediaTeamNote', {
