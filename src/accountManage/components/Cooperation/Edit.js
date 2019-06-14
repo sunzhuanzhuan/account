@@ -71,6 +71,16 @@ export default class CooperationEdit extends Component {
         }
       }))
     })
+    // 获取配置项 - 可选择的平台
+    actions.getAvailablePlatformList().then(({ data }) => {
+      this.setState(update(this.state, {
+        asyncOptions: {
+          platforms: {
+            $set: data
+          }
+        }
+      }))
+    })
   }
 
   submit = (e) => {
@@ -149,7 +159,7 @@ export default class CooperationEdit extends Component {
           </h4>
           <div className='subclass-content'>
             <AdServiceItems {...fieldProps} options={asyncOptions.adServiceItems} />
-            {asyncVisibility.postPlatform && <PostPlatform {...fieldProps} options={[]} />}
+            {asyncVisibility.postPlatform && <PostPlatform {...fieldProps} options={asyncOptions.platforms} />}
             {asyncVisibility.productPlacement && <ProductPlacementType {...fieldProps} />}
           </div>
         </li>

@@ -36,6 +36,18 @@ export const {
 export const {
   getAdvertisingOfferServices,
 } = createHttpAction('getAdvertisingOfferServices', Interface.config.getAdvertisingOfferServices);
+// 内容形式配置项
+export const {
+  getContentForm,
+} = createHttpAction('getContentForm', Interface.config.getContentForm);
+// 内容特点配置项
+export const {
+  getContentFeature,
+} = createHttpAction('getContentFeature', Interface.config.getContentFeature);
+// 内容风格配置项
+export const {
+  getContentStyle,
+} = createHttpAction('getContentStyle', Interface.config.getContentStyle);
 // 获取地域加热门城市
 export const {
   getAreasHotCity,

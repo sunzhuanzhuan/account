@@ -115,12 +115,12 @@ export default class DefaultAndCustomTag extends Component {
     const { defaultItems = [], custom = [] } = this.state
     return <div>
       {
-        options.map(({ id, name }, index) => {
-          let checked = defaultItems.find(key => id === key)
+        options.map(({ id, name }) => {
+          let index = defaultItems.indexOf(id)
           return <CheckTag
-            checked={checked}
+            checked={index > -1}
             key={id}
-            onClick={() => this.onChange({ id, index: checked ? index : -1 }, 'default')}
+            onClick={() => this.onChange({ id, index }, 'default')}
           >
             {name}
           </CheckTag>

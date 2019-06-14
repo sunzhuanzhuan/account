@@ -1138,7 +1138,7 @@ export const ProductPlacementType = (props) => {
   } = props;
   const {
     productPlacementType
-  } = account;
+  } = account.cooperation;
   return <div className='field-wrap-item base-media-type'>
     <FormItem {...layout.full} label='植入类型'>
       {getFieldDecorator('cooperation.productPlacementType', {
@@ -1172,7 +1172,7 @@ export const ContentForms = (props) => {
   const {
     forms,
     customForm
-  } = account;
+  } = account.content;
   return <div className='field-wrap-item base-media-type'>
     <FormItem {...layout.full} label='内容形式'>
       {getFieldDecorator('_client.form', {
@@ -1214,7 +1214,7 @@ export const ContentFeatures = (props) => {
   const {
     features,
     customFeature
-  } = account;
+  } = account.content;
   return <div className='field-wrap-item base-media-type'>
     <FormItem {...layout.full} label='内容特点'>
       {getFieldDecorator('_client.feature', {
@@ -1256,7 +1256,7 @@ export const ContentStyles = (props) => {
   const {
     styles,
     customStyle
-  } = account;
+  } = account.content;
   return <div className='field-wrap-item base-media-type'>
     <FormItem {...layout.full} label='内容风格'>
       {getFieldDecorator('_client.style', {

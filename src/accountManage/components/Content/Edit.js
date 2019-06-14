@@ -9,6 +9,8 @@ import {
   ContentStyles
 } from "@/accountManage/components/common/Fields";
 import { Button, Form } from "antd";
+import update from "immutability-helper";
+import { configItemKeyToField } from "@/accountManage/constants/packageConfig";
 
 @Form.create()
 export default class ContentEdit extends Component {
@@ -23,7 +25,46 @@ export default class ContentEdit extends Component {
       }
     }
   }
-
+  componentDidMount() {
+    const { actions, form, data: { account } } = this.props
+    // 获取配置项
+    actions.getContentForm({ accountId: account.id }).then(({ data }) => {
+      this.setState(update(this.state, {
+        asyncOptions: {
+          forms: {
+            $set: data.map(item => ({
+              id: item.itemKey,
+              name: item.itemValue
+            }))
+          }
+        }
+      }))
+    })
+    actions.getContentFeature({ accountId: account.id }).then(({ data }) => {
+      this.setState(update(this.state, {
+        asyncOptions: {
+          features: {
+            $set: data.map(item => ({
+              id: item.itemKey,
+              name: item.itemValue
+            }))
+          }
+        }
+      }))
+    })
+    actions.getContentStyle({ accountId: account.id }).then(({ data }) => {
+      this.setState(update(this.state, {
+        asyncOptions: {
+          styles: {
+            $set: data.map(item => ({
+              id: item.itemKey,
+              name: item.itemValue
+            }))
+          }
+        }
+      }))
+    })
+  }
   submit = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, fieldsValue) => {
