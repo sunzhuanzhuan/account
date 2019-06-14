@@ -20,7 +20,7 @@ import {
   Name, QrCodeUrl, WeiboUrl, Level, MediaType, Verified, OpenStore, OpenLiveProgram
 } from "../common/Fields";
 import { Fetch } from "@/accountManage/components/packageComponents";
-import { modulesMap } from "@/accountManage/constants/packageConfig";
+import { configItemKeyToField, modulesMap } from "@/accountManage/constants/packageConfig";
 import update from 'immutability-helper'
 
 const FormItem = Form.Item;
@@ -32,10 +32,7 @@ export default class MainEdit extends Component {
     this.state = {
       authToken: '',
       fetchModal: false,
-      asyncVisibility: {
-        isOpenLiveProgram: true, // 直播
-        isOpenStore: true // 橱窗/店铺
-      },
+      asyncVisibility: {},
       asyncOptions: {
         verified: []
       }
@@ -56,9 +53,22 @@ export default class MainEdit extends Component {
     this.props.actions.getNewToken().then(({ data: authToken }) => {
       this.setState({ authToken })
     })
-    // 获取配置项 - 账号特权
-    // isOpenLiveProgram, // 直播
-    // isOpenStore // 橱窗/店铺
+    // 获取字段配置项 - 账号特权
+    actions.getAccountFieldConfig({ accountId: account.id }).then(({ data }) => {
+      this.setState(update(this.state, {
+        asyncVisibility: {
+          verified: {
+            $set: data.reduce((obj, item) => {
+              let key = configItemKeyToField[item.itemKey]
+              if (key) {
+                obj[key] = true
+              }
+              return obj
+            }, this.state.asyncVisibility)
+          }
+        }
+      }))
+    })
 
     // 获取配置项 - 认证类型
     actions.getVerifiedType({ accountId: account.id }).then(({ data }) => {
@@ -177,8 +187,8 @@ export default class MainEdit extends Component {
           </h4>
           <div className='subclass-content'>
             <Verified {...fieldProps} options={asyncOptions.verified} />
-            {configurePlatform.visibility.fields.isOpenStore && <OpenStore {...fieldProps} />}
-            {configurePlatform.visibility.fields.isOpenLiveProgram && <OpenLiveProgram {...fieldProps} />}
+            {asyncVisibility.isOpenStore && <OpenStore {...fieldProps} />}
+            {asyncVisibility.isOpenLiveProgram && <OpenLiveProgram {...fieldProps} />}
           </div>
         </li>
       </ul>

@@ -902,9 +902,8 @@ export const VideoShotArea = (props) => {
   } = props;
   const {
     videoShotAreaType,
-    videoShotAreas
+    videoShotAreas = []
   } = account.cooperation;
-  console.log(areasHotCity, '====?');
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='视频拍摄地点'>
       {getFieldDecorator('cooperation.videoShotAreaType', {
@@ -919,7 +918,7 @@ export const VideoShotArea = (props) => {
         <FormItem {...layout.full}>
           {getFieldDecorator('cooperation.videoShotAreas', {
             rules: [{ required: true, message: '请选择视频拍摄地点' }],
-            initialValue: videoShotAreas
+            initialValue: videoShotAreas.map(area => area.id || area)
           })(
             <AreasTreeSelect actions={actions} areas={areasHotCity}/>
           )}
@@ -936,12 +935,13 @@ export const LiveArea = (props) => {
   const {
     form: { getFieldDecorator, getFieldValue },
     layout,
-    data: { account }
+    actions,
+    data: { account, areasHotCity }
   } = props;
   const {
     liveAreaType,
-    liveAreas
-  } = account;
+    liveAreas = []
+  } = account.cooperation;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='直播形式'>
       {getFieldDecorator('cooperation.liveAreaType', {
@@ -957,9 +957,9 @@ export const LiveArea = (props) => {
         <FormItem {...layout.full}>
           {getFieldDecorator('cooperation.liveAreas', {
             rules: [{ required: true, message: '请选择视频拍摄地点' }],
-            initialValue: liveAreas
+            initialValue: liveAreas.map(area => area.id || area)
           })(
-            <AreasTreeSelect />
+            <AreasTreeSelect actions={actions} areas={areasHotCity}/>
           )}
         </FormItem>
       </div>}
@@ -979,7 +979,7 @@ export const CooperationTips = (props) => {
   } = props;
   const {
     cooperationTips
-  } = account;
+  } = account.cooperation;
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='备注'>
       {getFieldDecorator('cooperation.cooperationTips', {
@@ -1010,8 +1010,8 @@ export const CooperationCases = (props) => {
     data: { account }
   } = props;
   const {
-    cooperationCases
-  } = account;
+    cooperationCases = []
+  } = account.cooperation;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label=' '>
       {getFieldDecorator('cooperation.cooperationCases', {
@@ -1034,17 +1034,32 @@ export const AdServiceItems = (props) => {
     options = []
   } = props;
   const {
-    adServiceItems
-  } = account;
+    adServiceItems = []
+  } = account.cooperation;
   return <div className='field-wrap-item base-media-type'>
     <FormItem {...layout.full} label='可提供'>
       {getFieldDecorator('cooperation.adServiceItems', {
         initialValue: (adServiceItems || []).map(item => item.id || item)
       })(
-        <Checkbox.Group>
+        <Checkbox.Group style={{
+          display: 'flex',
+          flexWrap: 'wrap'
+        }}>
           {
-            options.map(item =>
-              <Checkbox key={item.id} value={item.id}>{item.adServiceItemName}</Checkbox>)
+            options.map(item => {
+              return <Checkbox
+                key={item.id}
+                value={item.id}
+                style={{
+                  display: "block",
+                  width: "155px",
+                  margin: "0",
+                  padding: "6px 0",
+                }}
+              >
+                {item.adServiceItemName}
+              </Checkbox>
+            })
           }
         </Checkbox.Group>
       )}
@@ -1067,7 +1082,7 @@ export const PostPlatform = (props) => {
     supportMultiPlatformOriginalPost,
     postPlatforms,
     multiPlatformOriginalPostTips
-  } = account;
+  } = account.cooperation;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='分发平台'>
       {getFieldDecorator('cooperation.supportMultiPlatformOriginalPost', {

@@ -20,6 +20,22 @@ export const setModuleStatus = createAction('setModuleStatus', (data) => {
 export const {
   getVerifiedType,
 } = createHttpAction('getVerifiedType', Interface.config.getVerifiedType);
+// 获取账号特权
+export const {
+  getAccountFieldConfig,
+} = createHttpAction('getAccountFieldConfig', Interface.config.getAccountFieldConfig);
+// 合作须知项
+export const {
+  getCooperateNoticeFieldConfig,
+} = createHttpAction('getCooperateNoticeFieldConfig', Interface.config.getCooperateNoticeFieldConfig);
+// 广告服务项
+export const {
+  getAdvertisingFieldConfig,
+} = createHttpAction('getAdvertisingFieldConfig', Interface.config.getAdvertisingFieldConfig);
+// 广告服务可选
+export const {
+  getAdvertisingOfferServices,
+} = createHttpAction('getAdvertisingOfferServices', Interface.config.getAdvertisingOfferServices);
 // 获取地域加热门城市
 export const {
   getAreasHotCity,

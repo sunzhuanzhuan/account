@@ -675,19 +675,15 @@ export const platformToType = Object.entries(diffByTypes).reduce((obj, [key, ite
 
 // 配置项itemKey对应字段名称
 export const configItemKeyToField = {
-  "ggzdxs1": "分发平台",
-  "ggzdxs2": "植入类型",
-  "hzxz1": "接硬广",
-  "hzxz2": "不接受的品牌",
-  "hzxz3": "接受产品试用",
-  "hzxz4": "视频修改次数",
-  "hzxz5": "视频拍摄地点",
-  "hzxz6": "直播形式",
-  "hzxz7": "稿件/大纲修改次数",
-  "vsdr2": "达人认证",
-  "vsjg3": "机构认证",
-  "vswb2": "黄V",
-  "vswb3": "蓝V",
-  "vswb4": "达人",
-  "vswb5": "金V"
+  "ggzdxs1": "postPlatform",
+  "ggzdxs2": "productPlacement",
+  "hzxz1": "isAcceptHardAd",
+  "hzxz2": "refuseBrands",
+  "hzxz3": "isAcceptProductUse",
+  "hzxz4": "manuscriptModificationLimit",
+  "hzxz5": "videoShotArea",
+  "hzxz6": "liveArea",
+  "hzxz7": "manuscriptModificationLimit",
+  "zhzdxs1": "isOpenStore",
+  "zhzdxs2": "isOpenLiveProgram",
 }

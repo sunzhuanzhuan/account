@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import { Icon, Input, message, Tree, Popover } from 'antd'
 import CheckTag from "@/accountManage/base/CheckTag";
 import debounce from 'lodash/debounce'
+
 const { TreeNode } = Tree;
 const Search = Input.Search;
 
@@ -228,12 +229,6 @@ export default class AreasTreeSelect extends Component {
       value
     };
   }
-  componentDidMount() {
-    const { chinaAreas } = this.props.areas
-    if (chinaAreas.length === 0) {
-      this.props.actions.getAreasHotCity()
-    }
-  }
 
   static getDerivedStateFromProps(nextProps) {
     if ('value' in nextProps) {
@@ -242,6 +237,13 @@ export default class AreasTreeSelect extends Component {
       };
     }
     return null
+  }
+
+  componentDidMount() {
+    const { chinaAreas } = this.props.areas
+    if (chinaAreas.length === 0) {
+      this.props.actions.getAreasHotCity()
+    }
   }
 
   triggerChange = (changedValue) => {
@@ -276,21 +278,26 @@ export default class AreasTreeSelect extends Component {
   render() {
     // const { } = this.props
     const { value = [] } = this.state
+    const { areas: { areasMap } } = this.props
     return <div>
       {
-        value.map((area, index) => <CheckTag checked key={area.id}>
-          {area.areaName}
-          <Icon
-            style={{ fontSize: "14px", color: "#256ea3", marginLeft: '6px' }}
-            type="close-circle"
-            theme="filled"
-            onClick={() => this.onChange(area, index)}
-          />
-        </CheckTag>)
+        value.map((id, index) => {
+          const area = areasMap[id]
+          return <CheckTag checked key={area.id}>
+            {area.areaName}
+            <Icon
+              style={{ fontSize: "14px", color: "#256ea3", marginLeft: '6px' }}
+              type="close-circle"
+              theme="filled"
+              onClick={() => this.onChange(area, index)}
+            />
+          </CheckTag>
+        })
       }
       <Popover
         overlayStyle={{ padding: 0 }}
-        content={<SearchSelect value={value} onChange={this.onPopChange} areas={this.props.areas}/>}
+        content={
+          <SearchSelect value={value} onChange={this.onPopChange} areas={this.props.areas} />}
         placement="bottomLeft"
         trigger={value.length >= 5 ? [] : ['click']}
       >

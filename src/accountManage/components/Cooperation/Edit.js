@@ -16,34 +16,62 @@ import {
   ProductPlacementType
 } from "@/accountManage/components/common/Fields";
 import { Button, Divider, Form } from "antd";
+import update from "immutability-helper";
+import { configItemKeyToField } from "@/accountManage/constants/packageConfig";
 
 @Form.create()
 export default class CooperationEdit extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      asyncVisibility: {
-        isAcceptHardAd: true,
-        isAcceptProductUse: true,
-        refuseBrands: true,
-        manuscriptModificationLimit: true
-      },
+      asyncVisibility: {},
       asyncOptions: {
-        adServiceItems: [
-          {
-            "id": 1,
-            "adServiceItemName": "真人出镜"
-          },
-          {
-            "id": 2,
-            "adServiceItemName": "口播"
-          }
-        ]
+        adServiceItems: [],
+        platforms : []
       },
       submitLoading: false
     }
   }
 
+  componentDidMount() {
+    const { actions, form, data: { account } } = this.props
+    // 获取字段配置项 - 合作须知/广告服务
+    Promise.all([
+      actions.getCooperateNoticeFieldConfig({ accountId: account.id }),
+      actions.getAdvertisingFieldConfig({ accountId: account.id })
+    ]).then((data) => {
+      data = data.reduce((ary, item) => {
+        ary = ary.concat(item.data)
+        return ary
+      }, [])
+      this.setState(update(this.state, {
+        asyncVisibility: {
+          verified: {
+            $set: data.reduce((obj, item) => {
+              let key = configItemKeyToField[item.itemKey]
+              if (key) {
+                obj[key] = true
+              }
+              return obj
+            }, this.state.asyncVisibility)
+          }
+        }
+      }))
+    })
+    // 获取配置项 - 可提供的广告服务
+    actions.getAdvertisingOfferServices({ accountId: account.id }).then(({ data }) => {
+      this.setState(update(this.state, {
+        asyncOptions: {
+          adServiceItems: {
+            $set: data.map(item => ({
+              id: item.itemKey,
+              adServiceItemName: item.itemValue
+            }))
+          }
+        }
+      }))
+    })
+  }
 
   submit = (e) => {
     e.preventDefault();
@@ -99,8 +127,8 @@ export default class CooperationEdit extends Component {
             {asyncVisibility.refuseBrands && <RefuseBrands {...fieldProps} />}
             {asyncVisibility.manuscriptModificationLimit &&
             <ManuscriptModificationLimit {...fieldProps} />}
-            <VideoShotArea {...fieldProps} />
-            <LiveArea {...fieldProps} />
+            {asyncVisibility.videoShotArea && <VideoShotArea {...fieldProps} />}
+            {asyncVisibility.liveArea && <LiveArea {...fieldProps} />}
             <Divider dashed />
             <CooperationTips {...fieldProps} />
           </div>
@@ -111,7 +139,7 @@ export default class CooperationEdit extends Component {
             <small className='line' />
           </h4>
           <div className='subclass-content'>
-            <CooperationCases {...fieldProps} configurePlatform={configurePlatform}/>
+            <CooperationCases {...fieldProps} configurePlatform={configurePlatform} />
           </div>
         </li>
         <li className='subclass-item-wrap'>
@@ -121,8 +149,8 @@ export default class CooperationEdit extends Component {
           </h4>
           <div className='subclass-content'>
             <AdServiceItems {...fieldProps} options={asyncOptions.adServiceItems} />
-            <PostPlatform {...fieldProps} options={[]} />
-            <ProductPlacementType {...fieldProps} />
+            {asyncVisibility.postPlatform && <PostPlatform {...fieldProps} options={[]} />}
+            {asyncVisibility.productPlacement && <ProductPlacementType {...fieldProps} />}
           </div>
         </li>
       </ul>

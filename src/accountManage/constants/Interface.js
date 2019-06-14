@@ -52,5 +52,6 @@ export default {
     getAdvertisingOfferServices: prefix + '/account/v1_1/configuration/advertisingOfferServices',
     getAdvertisingFieldConfig: prefix + '/account/v1_1/configuration/advertisingFieldConfig',
     getCooperateNoticeFieldConfig: prefix + '/account/v1_1/configuration/cooperateNoticeFieldConfig',
+    getAccountFieldConfig: prefix + '/account/v1_1/configuration/accountFieldConfig',
   }
 }
