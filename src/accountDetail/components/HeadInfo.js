@@ -19,9 +19,9 @@ class HeadInfo extends Component {
     const { base = {}, feature = {}, skuList = [] } = baseInfo
     const { isMale, consumptionLevel, systemType, avatarUrl,
       snsName, snsId, followerCount, introduction, platformId = 0,
-      url, qrCodeUrl,classification = '-', cooperationTips
+      url, qrCodeUrl, classification = '-', cooperationTips
     } = base
-    const {  wholeRank = 0, orderResponseDuration, orderResponsePercentile,
+    const { wholeRank = 0, orderResponseDuration, orderResponsePercentile,
       orderAcceptanceNum = '-', orderAcceptanceRate, orderMajorIndustryCategory, orderCompleteDuration,
       isVerified, verificationReason } = feature
     //排名处理
@@ -90,7 +90,7 @@ class HeadInfo extends Component {
             <div className='release-info'>
 
               <div className='release-info-box'>
-                {skuList.length > 0 ? skuList.slice(0, 4).map(one => <OneRelease key={one.skuId} title={one.skuTypeName} content={one.openQuotePrice} last={one.unitPrice} />) :
+                {skuList.length > 0 ? skuList.slice(0, 4).map((one, index) => <OneRelease key={one.skuId} title={one.skuTypeName} content={one.openQuotePrice} last={one.unitPrice} isDefense={index == 0} />) :
                   <Empty style={{ margin: '0px auto' }} />}
               </div>
               <div style={{ textAlign: 'center' }}>
@@ -127,9 +127,9 @@ const OneType = ({ title, content, last, color }) => {
 
   </div>
 }
-const OneRelease = ({ title = '-', content, last = '-' }) => {
+const OneRelease = ({ title = '-', content, last = '-', isDefense }) => {
   return <div className='release-info-three'>
-    <div className='title'>{title}</div>
+    <div className='title'>{title}{isDefense ? <span className='defense'>防</span> : null}</div>
     <div className='two-line-flex'>
       <div className='content'>{`${content ? '¥' + numeral(content).format('0,0') : '-'}`}</div>
       <PopoverFormat text={<div className='last'>{last}元/千粉丝</div>} content='平均每千粉丝单价' />
