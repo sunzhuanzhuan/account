@@ -4,6 +4,7 @@
 import React, { Component } from "react"
 import { Button, Divider, Icon, Form, Popover, Radio } from 'antd'
 import { WBYPlatformIcon } from 'wbyui'
+import numeral from "@/util/numeralExpand";
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
 import FieldView from "@/accountManage/base/FeildView";
 import SimpleTag from "@/accountManage/base/SimpleTag";
@@ -26,35 +27,42 @@ export default class MainMini extends Component {
 
   render() {
     const {
-      layout,
       data,
-      actions,
-      form,
       module: configureModule, platform: configurePlatform,
       onModuleStatusChange
     } = this.props
     // const { getFieldDecorator } = form
     // const fieldProps = { layout, data, form, actions }
     const {
-      avatarUrl,
-      snsName,
-      snsId,
-      url,
-      weiboUrl,
-      qrCodeUrl,
-      introduction,
-      followerCount,
-      followerCountScreenshotUrl,
-      level,
-      mediaType,
-      classificationList = [],
-      isVerified,
-      verifiedStatus,
-      verificationInfo,
-      isOpenStore,
-      isOpenLiveProgram,
-      baseModifiedAt // 账号基本信息修改时间
-    } = data.accountInfo || {}
+      base: {
+        avatarUrl,
+        snsName,
+        snsId,
+        url,
+        weiboUrl,
+        qrCodeUrl,
+        introduction,
+        followerCount,
+        followerCountScreenshotUrl,
+        level,
+        mediaType,
+        classificationList = [],
+        isVerified,
+        verifiedStatus,
+        verificationInfo,
+        isOpenStore,
+        isOpenLiveProgram,
+        baseModifiedAt // 账号基本信息修改时间
+      },
+      strategyInfo : {
+        onShelfStatus: {
+          aOnShelfStatus,
+          aOffShelfReasonStringList,
+          bOnShelfStatus,
+          bOffShelfReasonStringList
+        } = {},
+      }
+    } = data.account || {}
     const {
       authToken,
       asyncVisibility
@@ -98,7 +106,7 @@ export default class MainMini extends Component {
             <span className='gray-text'>ID: {snsId || '--'}</span>
             <Divider type="vertical" />
             <span>
-              {followerCount || '--'}
+              {numeral(followerCount).format('0,0w') || '--'}
               <span className='gray-text' style={{ marginLeft: '8px' }}>粉丝</span></span>
             <Divider type="vertical" />
             <span style={{
@@ -113,16 +121,16 @@ export default class MainMini extends Component {
           <div>
             {introduction || '暂无简介'}
           </div>
-          <div className='line' style={{borderBottom: '1px solid #e8e8e8', margin: '10px 0'}}/>
+          {/*<div className='line' style={{ borderBottom: '1px solid #e8e8e8', margin: '10px 0' }} />
           <div className='gray-text'>
             未上架: 原因
-          </div>
+          </div>*/}
         </div>
       </main>
       <footer className='mini-fields-footer clearfix'>
         <div>
           <span onClick={() => onModuleStatusChange('view')}>
-            展开更多 <Icon type="double-right" rotate={90}/>
+            展开更多 <Icon type="double-right" rotate={90} />
           </span>
         </div>
       </footer>

@@ -28,18 +28,20 @@ export default class StrategyView extends Component {
     const fieldProps = { layout, data, form, actions }
     const {
       isFamous,
-      approvedStatus,
-      aOnShelfStatus,
-      aOffShelfReasonStringList,
-      strategy = {},
-      maxOrderCount,
-      maxOrderCountNote,
-      modifiedAt // 信息修改时间
-    } = data.accountInfo || {}
-    const {
-      asyncVisibility,
-      asyncOptions
-    } = this.state
+      strategyInfo: {
+        onShelfStatus: {
+          aOnShelfStatus,
+          aOffShelfReasonStringList,
+          bOnShelfStatus,
+          bOffShelfReasonStringList
+        } = {},
+        approvedStatus,
+        strategy = {},
+        maxOrderCount,
+        maxOrderCountNote,
+        modifiedAt // 信息修改时间
+      }
+    } = data.account || {}
     const right = <div className='wrap-panel-right-content'>
       <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>
       <Button type='primary' onClick={() => onModuleStatusChange('edit')}>编辑</Button>

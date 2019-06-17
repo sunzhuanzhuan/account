@@ -24,36 +24,32 @@ export default class CooperationView extends Component {
 
   render() {
     const {
-      layout,
       data,
-      actions,
-      form,
-      module: configureModule, platform: configurePlatform,
+      module: configureModule,
       onModuleStatusChange
     } = this.props
-    const fieldProps = { layout, data, form, actions }
     const {
-      isFamous,
-      isAcceptHardAd,
-      isAcceptProductUse,
-      manuscriptModificationLimit,
-      refuseBrands = [],
-      videoShotAreaType,
-      videoShotAreas = [],
-      liveAreaType,
-      liveAreas = [],
-      cooperationTips,
-      cooperationCases = [],
-      adServiceItems = [],
-      supportMultiPlatformOriginalPost,
-      postPlatforms = [],
-      multiPlatformOriginalPostTips,
-      productPlacementType,
-      modifiedAt // 信息修改时间
-    } = data.accountInfo || {}
+      cooperation: {
+        isAcceptHardAd,
+        isAcceptProductUse,
+        manuscriptModificationLimit,
+        refuseBrands = [],
+        videoShotAreaType,
+        videoShotAreas = [],
+        liveAreaType,
+        liveAreas = [],
+        cooperationTips,
+        cooperationCases = [],
+        adServiceItems = [],
+        supportMultiPlatformOriginalPost,
+        postPlatforms = [],
+        multiPlatformOriginalPostTips,
+        productPlacementType,
+        modifiedAt // 信息修改时间
+      }
+    } = data.account || {}
     const {
       asyncVisibility,
-      asyncOptions
     } = this.state
     const right = <div className='wrap-panel-right-content'>
       <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>

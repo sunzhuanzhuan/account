@@ -27,14 +27,16 @@ export default class ContentView extends Component {
     const fieldProps = { layout, data, form, actions }
     const {
       isFamous,
-      forms = [],
-      customForm = [],
-      features = [],
-      customFeature = [],
-      styles = [],
-      customStyle = [],
-      modifiedAt // 信息修改时间
-    } = data.accountInfo || {}
+      content: {
+        forms = [],
+        customForm = [],
+        features = [],
+        customFeature = [],
+        styles = [],
+        customStyle = [],
+        modifiedAt
+      }
+    } = data.account || {}
     const {
       asyncVisibility,
       asyncOptions

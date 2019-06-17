@@ -688,6 +688,11 @@ export const configItemKeyToField = {
   "zhzdxs2": "isOpenLiveProgram"
 }
 export const configOptions = {
+  mediaTypeMap: {
+    "2": "个人号-具有个人的属性特征",
+    "3": "企业号-社会上的企业或官方注册",
+    "4": " 内容号-不具有人的属性特征、仅以内容存在"
+  },
   educationQualification: [
     { key: -1, text: '无' },
     { key: 1, text: '初中' },

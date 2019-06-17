@@ -6,6 +6,12 @@ import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
 import { Button, Form, Tag } from "antd";
 import FieldView from "@/accountManage/base/FeildView";
 import ChildrenListView from "@/accountManage/components/common/ChildrenListView";
+import { configOptions } from "@/accountManage/constants/packageConfig";
+
+const findStatusText = (status, sources, keys = ["id", 'name']) => {
+  let _data = sources.find(item => item[keys[0]] === status) || {}
+  return _data[keys[1]]
+}
 
 @Form.create()
 export default class PersonalView extends Component {
@@ -27,24 +33,26 @@ export default class PersonalView extends Component {
     } = this.props
     const {
       isFamous,
-      gender,
-      area = {},
-      shipping = {},
-      birthDate,
-      nationalityName,
-      industryName,
-      occupations = [],
-      educationQualification,
-      relationshipStatus,
-      hasHouse,
-      hasCar,
-      children = [],
-      pets = [],
-      customPets = [],
-      skills = [],
-      customSkills = [],
-      personalInfoModifiedAt // 信息修改时间
-    } = data.accountInfo || {}
+      personalInfo: {
+        gender,
+        area = {},
+        shipping = {},
+        birthDate,
+        nationalityName,
+        industryName,
+        occupations = [],
+        educationQualification,
+        relationshipStatus,
+        hasHouse,
+        hasCar,
+        children = [],
+        pets = [],
+        customPets = [],
+        skills = [],
+        customSkills = [],
+        personalInfoModifiedAt // 信息修改时间
+      }
+    } = data.account || {}
     const {
       asyncVisibility,
       asyncOptions
@@ -62,7 +70,7 @@ export default class PersonalView extends Component {
       <ul className='content-wrap'>
         <li className='subclass-item-wrap'>
           <h4 className='subclass-head'>
-            <span className='text'>播主信息</span>
+            <span className='text'>博主信息</span>
             <small className='line' />
           </h4>
           <div className='subclass-content'>
@@ -83,9 +91,22 @@ export default class PersonalView extends Component {
                 <FieldView width={70} title="生日" value={birthDate} />
                 <FieldView width={70} title="国籍" value={nationalityName} />
                 <FieldView width={70} title="行业" value={industryName} />
-                <FieldView width={70} title="职业" value={occupations.join('、')} />
-                <FieldView width={70} title="学历/学位" value={educationQualification} />
-                <FieldView width={70} title="情感状况" value={relationshipStatus} />
+                <FieldView width={70} title="职业" value={occupations.map(n => n.occupationName).join('、')} />
+                <FieldView width={70} title="学历/学位" value={
+                  findStatusText(
+                    educationQualification,
+                    configOptions['educationQualification'],
+                    ['key', 'text']
+                  )
+                } />
+                <FieldView width={70} title="情感状况" value={
+                  findStatusText(
+                    relationshipStatus,
+                    configOptions['relationshipStatus'],
+                    ['value', 'label']
+                  )
+
+                } />
                 <FieldView width={70} title="资产" value={
                   (hasHouse === 1 || hasCar === 1) && <div>
                     {hasHouse === 1 && <span style={{ marginRight: '10px' }}>有房</span>}
@@ -104,9 +125,10 @@ export default class PersonalView extends Component {
           <div className='subclass-content'>
             <div className="view-fields-container">
               <div className='right-wrap'>
-                <FieldView width={70} title="宝宝" value={<ChildrenListView list={children}/>} />
+                <FieldView width={70} title="宝宝" value={<ChildrenListView list={children} />} />
                 <FieldView width={70} title="宠物" value={
-                  petsList.length && petsList.map((item, n) => <Tag key={n}>{item.petName || item}</Tag> )
+                  petsList.length && petsList.map((item, n) =>
+                    <Tag key={n}>{item.petName || item}</Tag>)
                 } />
               </div>
             </div>
@@ -121,7 +143,8 @@ export default class PersonalView extends Component {
             <div className="view-fields-container">
               <div className='right-wrap'>
                 {
-                  skillsList.length ? skillsList.map((item, n) => <Tag key={n}>{item.skillName || item}</Tag>) : '暂无技能'
+                  skillsList.length ? skillsList.map((item, n) =>
+                    <Tag key={n}>{item.skillName || item}</Tag>) : '暂无技能'
                 }
               </div>
             </div>

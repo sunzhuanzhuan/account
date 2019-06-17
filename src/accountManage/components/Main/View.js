@@ -7,6 +7,7 @@ import { WBYPlatformIcon } from 'wbyui'
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
 import FieldView from "@/accountManage/base/FeildView";
 import SimpleTag from "@/accountManage/base/SimpleTag";
+import { configOptions } from "@/accountManage/constants/packageConfig";
 
 
 export default class MainView extends Component {
@@ -36,27 +37,36 @@ export default class MainView extends Component {
     // const { getFieldDecorator } = form
     // const fieldProps = { layout, data, form, actions }
     const {
-      avatarUrl,
-      snsName,
-      snsId,
-      url,
-      weiboUrl,
-      qrCodeUrl,
-      introduction,
-      followerCount,
-      followerCountScreenshotUrl,
-      level,
-      mediaType,
-      classificationList = [],
-      isVerified,
-      verifiedStatus,
-      verificationInfo,
-      isOpenStore,
-      isOpenLiveProgram,
-      baseModifiedAt // 账号基本信息修改时间
-    } = data.accountInfo || {}
+      base: {
+        avatarUrl,
+        snsName,
+        snsId,
+        url,
+        weiboUrl,
+        qrCodeUrl,
+        introduction,
+        followerCount,
+        followerCountScreenshotUrl,
+        level,
+        mediaType,
+        classificationList = [],
+        isVerified,
+        verifiedStatusName,
+        verificationInfo,
+        isOpenStore,
+        isOpenLiveProgram,
+        baseModifiedAt // 账号基本信息修改时间
+      },
+      strategyInfo : {
+        onShelfStatus: {
+          aOnShelfStatus,
+          aOffShelfReasonStringList,
+          bOnShelfStatus,
+          bOffShelfReasonStringList
+        } = {},
+      },
+    } = data.account || {}
     const {
-      authToken,
       asyncVisibility
     } = this.state
     const left = <div className='wrap-panel-left-content'>
@@ -150,7 +160,7 @@ export default class MainView extends Component {
             <div className='view-fields-container'>
               <div className='right-wrap'>
                 {
-                  mediaType === 2 ? "个人号-具有个人的属性特征" : mediaType === 3 ? "企业号-社会上的企业或官方注册" : mediaType === 4 ? " 内容号-不具有人的属性特征、仅以内容存在" : "未知"
+                  configOptions.mediaTypeMap[mediaType] || '未知'
                 }
               </div>
             </div>
@@ -165,26 +175,12 @@ export default class MainView extends Component {
             <div className='view-fields-container'>
               <div className='right-wrap'>
                 <FieldView title="是否认证" value={isVerified === 1 ? '已认证' : '未认证'} />
-                {isVerified === 1 && <FieldView title="认证信息" value={verifiedStatus} />}
+                {isVerified === 1 && <FieldView title="认证信息" value={verifiedStatusName} />}
                 {isVerified === 1 && <FieldView title="认证说明" value={verificationInfo} />}
                 {asyncVisibility.isOpenStore &&
                 <FieldView title="橱窗/店铺" value={isOpenStore === 1 ? '已开通' : '未开通'} />}
                 {asyncVisibility.isOpenLiveProgram &&
                 <FieldView title="直播" value={isOpenLiveProgram === 1 ? '已开通' : '未开通'} />}
-              </div>
-            </div>
-          </div>
-        </li>
-        <li className='subclass-item-wrap'>
-          <h4 className='subclass-head'>
-            <span className='text'>上架信息</span>
-            <small className='line' />
-          </h4>
-          <div className='subclass-content'>
-            <div className='view-fields-container'>
-              <div className='right-wrap'>
-                <FieldView title="是否上架" value='否' />
-                <FieldView title="原因" value={'这是一条原因'} />
               </div>
             </div>
           </div>
