@@ -21,6 +21,8 @@ import {
   CustomSkills
 } from "@/accountManage/components/common/Fields";
 import { Button, Form } from "antd";
+import { configItemKeyToField, configOptions } from "@/accountManage/constants/packageConfig";
+import update from "immutability-helper";
 // TODO: 同步配置项提取出来
 @Form.create()
 export default class PersonalEdit extends Component {
@@ -32,23 +34,74 @@ export default class PersonalEdit extends Component {
         nationality: [],
         industry: [],
         occupations: [],
-        educationQualification: [
-          { key: -1, text: '无' },
-          { key: 1, text: '初中' },
-          { key: 2, text: '高中' },
-          { key: 3, text: '中技' },
-          { key: 4, text: '中转' },
-          { key: 5, text: '大专' },
-          { key: 6, text: '本科' },
-          { key: 7, text: '硕士' },
-          { key: 8, text: 'MBA' },
-          { key: 9, text: 'EMBA' },
-          { key: 10, text: '博士' }
-        ],
         pets: [],
         skills: []
       }
     }
+  }
+
+  componentDidMount() {
+    const { actions, form, data: { account } } = this.props
+    // 获取配置项 - 国籍列表
+    actions.getCountryList().then(({ data }) => {
+      this.setState(update(this.state, {
+        asyncOptions: {
+          nationality: {
+            $set: data.map(item => ({ value: item.id, label: item.areaName }))
+          }
+        }
+      }))
+    })
+    // 获取配置项 - 行业列表
+    actions.getIndustryListForAccount().then(({ data }) => {
+      this.setState(update(this.state, {
+        asyncOptions: {
+          industry: {
+            $set: data.map(item => ({ value: item.id, label: item.name }))
+          }
+        }
+      }))
+    })
+    // 获取配置项 - 职业列表
+    actions.getProfession().then(({ data }) => {
+      this.setState(update(this.state, {
+        asyncOptions: {
+          occupations: {
+            $set: data.map(item => ({ value: item.itemKey, label: item.itemValue }))
+          }
+        }
+      }))
+    })
+    // 获取配置项 - 宠物列表
+    actions.getPet().then(({ data }) => {
+      this.setState(update(this.state, {
+        asyncOptions: {
+          pets: {
+            $set: data.map(item => ({ id: item.itemKey, name: item.itemValue }))
+          }
+        }
+      }))
+    })
+    // 获取配置项 - 技能列表
+    actions.getSkill().then(({ data }) => {
+      let newData = data.map(item => {
+        let obj = {
+          value: item.itemKey,
+          label: item.itemValue
+        }
+        if (item.childrenList) {
+          obj.children = item.childrenList.map(n => ({ value: n.itemKey, label: n.itemValue }))
+        }
+        return obj
+      })
+      this.setState(update(this.state, {
+        asyncOptions: {
+          skills: {
+            $set: newData
+          }
+        }
+      }))
+    })
   }
 
   submit = (e) => {
@@ -110,8 +163,8 @@ export default class PersonalEdit extends Component {
             <Nationality {...fieldProps} options={asyncOptions.nationality} />
             <Industry {...fieldProps} options={asyncOptions.industry} />
             <Occupations {...fieldProps} options={asyncOptions.occupations} />
-            <EducationQualification {...fieldProps} options={asyncOptions.educationQualification} />
-            <RelationshipStatus {...fieldProps} />
+            <EducationQualification {...fieldProps} options={configOptions.educationQualification} />
+            <RelationshipStatus {...fieldProps} options={configOptions.relationshipStatus} />
             <Assets {...fieldProps} />
           </div>
         </li>

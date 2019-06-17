@@ -92,8 +92,8 @@ export const tabs = [
     index: '1',
     title: '账号信息',
     warp: [
-      // "owner",
-      // "fetch",
+      "owner",
+      "fetch",
       "main",
       "cooperation",
       "content",
@@ -188,7 +188,7 @@ export const diffByTypes = {
     }
   },
   "douyin": {
-    platforms: [103,115],
+    platforms: [103, 115],
     visibility: {
       fields: {
         weiboUrl: true,
@@ -685,5 +685,27 @@ export const configItemKeyToField = {
   "hzxz6": "liveArea",
   "hzxz7": "manuscriptModificationLimit",
   "zhzdxs1": "isOpenStore",
-  "zhzdxs2": "isOpenLiveProgram",
+  "zhzdxs2": "isOpenLiveProgram"
+}
+export const configOptions = {
+  educationQualification: [
+    { key: -1, text: '无' },
+    { key: 1, text: '初中' },
+    { key: 2, text: '高中' },
+    { key: 3, text: '中技' },
+    { key: 4, text: '中转' },
+    { key: 5, text: '大专' },
+    { key: 6, text: '本科' },
+    { key: 7, text: '硕士' },
+    { key: 8, text: 'MBA' },
+    { key: 9, text: 'EMBA' },
+    { key: 10, text: '博士' }
+  ],
+  relationshipStatus: [
+    { value: -1, label: '无' },
+    { value: 1, label: '单身' },
+    { value: 2, label: '情侣' },
+    { value: 3, label: '已婚' },
+    { value: 4, label: '离婚' }
+  ]
 }

@@ -48,6 +48,22 @@ export const {
 export const {
   getContentStyle,
 } = createHttpAction('getContentStyle', Interface.config.getContentStyle);
+// 获取国家列表
+export const {
+  getCountryList,
+} = createHttpAction('getCountryList', Interface.common.getCountryList);
+// 获取职业列表
+export const {
+  getProfession,
+} = createHttpAction('getProfession', Interface.config.getProfession);
+// 获取宠物列表
+export const {
+  getPet,
+} = createHttpAction('getPet', Interface.config.getPet);
+// 获取技能列表
+export const {
+  getSkill,
+} = createHttpAction('getSkill', Interface.config.getSkill);
 // 获取地域加热门城市
 export const {
   getAreasHotCity,

@@ -22,17 +22,14 @@ export default class Owner extends Component {
       volAdminRealName,
       platformId
     } = adminAccount
-    // TODO: 主账号更新时间字段
     const {
       id: accountId,
-      base: { modifiedAt }
     } = account
     const babysitterHost = babysitter_host.value || 'http://toufang.tst-weiboyi.com';
     let isOwner = auth['account.manage.update.change.main.account'];
     let href = isOwner ? `${babysitterHost}/user/index/type/huanma/account_id/${accountId}/weibo_type/${platformId}` : `${babysitterHost}/user/chowner/account_id/${accountId}`;
 
     const rightC = <div className='wrap-panel-right-content'>
-      <span className='gray-text'>信息更新时间 : {(modifiedAt && modifiedAt !== '1970-01-01 08:00:00') ? modifiedAt : '--'}</span>
       <a target={'_blank'} href={href}>更换主账号</a>
     </div>;
     return <div className='module-item-container'>

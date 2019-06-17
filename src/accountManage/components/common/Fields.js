@@ -230,7 +230,7 @@ export const AvatarUrl = (props) => {
       {getFieldDecorator('base.avatarUrl', {
         initialValue: avatarUrl ? [{
           url: avatarUrl,
-          uid: avatarUrl,
+          uid: avatarUrl
         }] : [],
         valuePropName: 'fileList',
         getValueFromEvent: e => e.fileList,
@@ -282,7 +282,7 @@ export const QrCodeUrl = (props) => {
         {getFieldDecorator('base.qrCodeUrl', {
           initialValue: qrCodeUrl ? [{
             url: qrCodeUrl,
-            uid: qrCodeUrl,
+            uid: qrCodeUrl
           }] : [],
           valuePropName: 'fileList',
           getValueFromEvent: e => e.fileList,
@@ -526,7 +526,7 @@ export const FollowerCountScreenshotUrl = (props) => {
       {getFieldDecorator('base.followerCountScreenshotUrl', {
         initialValue: url ? [{
           uid: url,
-          url: url,
+          url: url
         }] : [],
         valuePropName: 'fileList',
         getValueFromEvent: e => e.fileList,
@@ -920,7 +920,7 @@ export const VideoShotArea = (props) => {
             rules: [{ required: true, message: '请选择视频拍摄地点' }],
             initialValue: videoShotAreas.map(area => area.id || area)
           })(
-            <AreasTreeSelect actions={actions} areas={areasHotCity}/>
+            <AreasTreeSelect actions={actions} areas={areasHotCity} />
           )}
         </FormItem>
       </div>}
@@ -959,7 +959,7 @@ export const LiveArea = (props) => {
             rules: [{ required: true, message: '请选择视频拍摄地点' }],
             initialValue: liveAreas.map(area => area.id || area)
           })(
-            <AreasTreeSelect actions={actions} areas={areasHotCity}/>
+            <AreasTreeSelect actions={actions} areas={areasHotCity} />
           )}
         </FormItem>
       </div>}
@@ -1054,7 +1054,7 @@ export const AdServiceItems = (props) => {
                   display: "block",
                   width: "155px",
                   margin: "0",
-                  padding: "6px 0",
+                  padding: "6px 0"
                 }}
               >
                 {item.adServiceItemName}
@@ -1311,7 +1311,7 @@ export const OnSaleInfo = (props) => {
       bOnShelfStatus,
       bOffShelfReasonStringList
     } = {},
-    offlineReason,
+    offlineReason
   } = account.strategyInfo;
   return <div className='field-wrap-item base-media-type'>
     <FormItem {...layout.full} label='审核状态:'>
@@ -1890,7 +1890,7 @@ export const Area = (props) => {
       {getFieldDecorator('personalInfo.area', {
         initialValue: area
       })(
-        <LazyAreaOptions level={3} />
+        <LazyAreaOptions level={3} disabled={areaFrom === 2} />
       )}
     </FormItem>
     {getFieldDecorator('personalInfo.areaFrom', { initialValue: areaFrom })(
@@ -1938,7 +1938,7 @@ export const Birthday = (props) => {
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='生日'>
       {getFieldDecorator('personalInfo.birthDate', {
-        initialValue: birthDate
+        initialValue: moment(birthDate)
       })(
         <DatePicker style={{ width: '100%' }} placeholder='请选择您的生日' disabledDate={date => {
           return date.isBefore(moment().subtract(150, 'y'))
@@ -1969,8 +1969,8 @@ export const Nationality = (props) => {
       })(
         <Select style={{ width: "100%" }} placeholder='请选择'>
           {
-            options.map(({ key, text }) =>
-              <Option key={key} value={parseInt(key)}>{text}</Option>)
+            options.map(({ value, label }) =>
+              <Option key={value} value={parseInt(value)}>{label}</Option>)
           }
         </Select>
       )}
@@ -1998,8 +1998,8 @@ export const Industry = (props) => {
       })(
         <Select style={{ width: "100%" }} placeholder='请选择'>
           {
-            options.map(({ key, text }) =>
-              <Option key={key} value={parseInt(key)}>{text}</Option>)
+            options.map(({ value, label }) =>
+              <Option key={value} value={parseInt(value)}>{label}</Option>)
           }
         </Select>
       )}
@@ -2027,8 +2027,8 @@ export const Occupations = (props) => {
       })(
         <Select mode='multiple' style={{ width: "100%" }} placeholder='请选择'>
           {
-            options.map(({ key, text }) =>
-              <Option key={key} value={parseInt(key)}>{text}</Option>)
+            options.map(({ value, label }) =>
+              <Option key={value} value={parseInt(value)}>{label}</Option>)
           }
         </Select>
       )}
@@ -2072,6 +2072,7 @@ export const RelationshipStatus = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
+    options,
     data: { account }
   } = props;
   const {
@@ -2083,10 +2084,9 @@ export const RelationshipStatus = (props) => {
         initialValue: relationshipStatus
       })(
         <RadioGroup>
-          <Radio value={1}>单身</Radio>
-          <Radio value={2}>情侣</Radio>
-          <Radio value={3}>已婚</Radio>
-          <Radio value={4}>离婚</Radio>
+          {
+            options.map(item => <Radio key={item.value} value={item.value}>{item.label}</Radio>)
+          }
         </RadioGroup>
       )}
     </FormItem>
@@ -2103,13 +2103,13 @@ export const Assets = (props) => {
     data: { account }
   } = props;
   const {
-    isAcceptHardAd,
-    isAcceptProductUse
+    hasHouse,
+    hasCar
   } = account.personalInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='资产'>
       {getFieldDecorator('personalInfo.hasHouse', {
-        initialValue: isAcceptHardAd,
+        initialValue: hasHouse,
         valuePropName: 'checked',
         getValueFromEvent: e => {
           return e.target.checked ? 1 : 2
@@ -2118,7 +2118,7 @@ export const Assets = (props) => {
         <CheckedWrap mapBooleanToValueAry={[2, 1]}>有房</CheckedWrap>
       )}
       {getFieldDecorator('personalInfo.hasCar', {
-        initialValue: isAcceptProductUse,
+        initialValue: hasCar,
         valuePropName: 'checked',
         getValueFromEvent: e => {
           return e.target.checked ? 1 : 2
@@ -2206,7 +2206,7 @@ export const Skills = (props) => {
     data: { account }
   } = props;
   const {
-    skills,
+    skills
   } = account.personalInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='技能'>
@@ -2221,13 +2221,13 @@ export const Skills = (props) => {
           showArrow
         >
           {
-            options.map(item => <OptGroup label={item.text} key={item.key}>
+            options.map(item => <OptGroup label={item.label} key={item.value}>
               {
-                item.children.map(n => <Option value={n.key} key={n.key}>{n.text}</Option>)
+                item.children.map(n => <Option value={n.value} key={n.value}>{n.label}</Option>)
               }
             </OptGroup>)
           }
-        </Select>,
+        </Select>
       )}
     </FormItem>
   </div>

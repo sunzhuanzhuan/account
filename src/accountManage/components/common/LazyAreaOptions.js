@@ -89,6 +89,7 @@ export default class LazyAreaOptions extends Component {
     return (
       <Cascader
         value={this.state.value}
+        disabled={this.props.disabled}
         fieldNames={{
           label: 'areaName',
           value: 'id',

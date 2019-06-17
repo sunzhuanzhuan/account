@@ -45,9 +45,9 @@ export default class ChildrenList extends React.Component {
   add = () => {
     let newValue = [...this.state.value]
     newValue.push({
-      "gender": 1,
-      "birthDate": moment(),
-      "canOnCamera": 1,
+      "gender": null,
+      "birthDate": null,
+      "canOnCamera": null,
       "uuid": uuid(),
 
     })
@@ -85,7 +85,7 @@ export default class ChildrenList extends React.Component {
           </FormItem>
           <FormItem label="生日" {...formItemLayout}>
             {getFieldDecorator(`_children.${item.uuid}.birthDate`, {
-              initialValue: item.birthDate,
+              initialValue: item.birthDate && moment(item.birthDate),
               rules: [{ required: true, message: '请选择宝宝的生日' }],
             })(
               <DatePicker style={{ width: '100%' }} placeholder='请选择您的生日' disabledDate={date => {
