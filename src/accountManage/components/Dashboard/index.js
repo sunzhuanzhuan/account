@@ -25,58 +25,8 @@ export default class Dashboard extends Component {
       module: configureModule, platform: configurePlatform
     } = this.props
     const {
-      isFamous,
-      feature = {
-        "sexs": [
-          {
-            "name": "男",
-            "value": 60
-          },
-          {
-            "name": "女",
-            "value": 10
-          }
-        ],
-        "ages": [
-          {
-            "name": "19-24",
-            "value": 60
-          },
-          {
-            "name": "25-34",
-            "value": 35
-          }
-        ],
-        "areas": [
-          {
-            "name": "北京",
-            "value": 20
-          },
-          {
-            "name": "上海",
-            "value": 20
-          },
-          {
-            "name": "广州",
-            "value": 20
-          }
-        ],
-        "interests": [
-          {
-            "name": "游戏",
-            "value": 50
-          },
-          {
-            "name": "汽车",
-            "value": 46
-          },
-          {
-            "name": "3C",
-            "value": 46
-          }
-        ]
-      }
-    } = data.accountInfo || {}
+      feature = {}
+    } = data.account
 
     const {
       snbt,

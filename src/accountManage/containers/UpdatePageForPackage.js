@@ -121,11 +121,11 @@ class UpdatePageForPackage extends Component {
             >
               <ImproveStatistics {...statisticsProps} actions={this.props.actions} />
               {
-                modulesList.map(({ anchorId: key, title }) =>
+                modulesList.map(({ anchorId: key, title, perfectionDegreeKey }) =>
                   <Link key={key} href={"#navLink-" + key} title={
                     <div className='nav-link-item-wrapper'>
                       <span>{title}</span>
-                      {title.length === 5 && <b>未完善</b>}
+                      {perfectionDegreeKey && <b>{perfectionDegree[perfectionDegreeKey] > 0 ? `已完善 ${perfectionDegree[perfectionDegreeKey]}%` : '未完善'}</b>}
                     </div>
                   } />)
               }

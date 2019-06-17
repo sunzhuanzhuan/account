@@ -142,11 +142,11 @@ export const diffByClient = {
   "NC": {
     wrap: [
       "main",
+      "price",
+      "dashboard",
       "cooperation",
       "content",
       "strategy",
-      "price",
-      "dashboard",
       "personal"
     ]
   }
