@@ -7,11 +7,7 @@ import { Button, Form, Tag } from "antd";
 import FieldView from "@/accountManage/base/FeildView";
 import ChildrenListView from "@/accountManage/components/common/ChildrenListView";
 import { configOptions } from "@/accountManage/constants/packageConfig";
-
-const findStatusText = (status, sources, keys = ["id", 'name']) => {
-  let _data = sources.find(item => item[keys[0]] === status) || {}
-  return _data[keys[1]]
-}
+import { findStatusText } from '../../util'
 
 @Form.create()
 export default class PersonalView extends Component {

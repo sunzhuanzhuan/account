@@ -114,5 +114,9 @@ export const weeksToNames = (weeks) => {
   return _data.map(key => weekSource[key])
 }
 
+export const findStatusText = (status, sources, keys = ["id", 'name']) => {
+  let _data = sources.find(item => item[keys[0]] === status) || {}
+  return _data[keys[1]]
+}
 
 export default { uploadUrl, checkVal, handleReason, date2moment }

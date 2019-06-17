@@ -4,38 +4,48 @@
 import React, { Component } from "react"
 import { Button, Divider, Icon, Form, Popover, Radio } from 'antd'
 import { WBYPlatformIcon } from 'wbyui'
+import update from "immutability-helper";
+import numeral from "@/util/numeralExpand";
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
 import FieldView from "@/accountManage/base/FeildView";
 import SimpleTag from "@/accountManage/base/SimpleTag";
-import { configOptions } from "@/accountManage/constants/packageConfig";
+import { configItemKeyToField, configOptions } from "@/accountManage/constants/packageConfig";
 
 
 export default class MainView extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      authToken: '',
-      asyncVisibility: {
-        isOpenLiveProgram: true,
-        isOpenStore: true
-      }
+      asyncVisibility: {}
     }
-    props.actions.getNewToken().then(({ data: authToken }) => {
-      this.setState({ authToken })
+  }
+
+  componentDidMount() {
+    const { actions, data: { account } } = this.props
+    // 获取字段配置项 - 账号特权
+    actions.getAccountFieldConfig({ accountId: account.id }).then(({ data }) => {
+      this.setState(update(this.state, {
+        asyncVisibility: {
+          verified: {
+            $set: data.reduce((obj, item) => {
+              let key = configItemKeyToField[item.itemKey]
+              if (key) {
+                obj[key] = true
+              }
+              return obj
+            }, this.state.asyncVisibility)
+          }
+        }
+      }))
     })
   }
 
   render() {
     const {
-      layout,
       data,
-      actions,
-      form,
       module: configureModule, platform: configurePlatform,
       onModuleStatusChange
     } = this.props
-    // const { getFieldDecorator } = form
-    // const fieldProps = { layout, data, form, actions }
     const {
       base: {
         avatarUrl,
@@ -56,15 +66,7 @@ export default class MainView extends Component {
         isOpenStore,
         isOpenLiveProgram,
         baseModifiedAt // 账号基本信息修改时间
-      },
-      strategyInfo : {
-        onShelfStatus: {
-          aOnShelfStatus,
-          aOffShelfReasonStringList,
-          bOnShelfStatus,
-          bOffShelfReasonStringList
-        } = {},
-      },
+      }
     } = data.account || {}
     const {
       asyncVisibility
@@ -125,12 +127,12 @@ export default class MainView extends Component {
           <div className='subclass-content'>
             <div className='view-fields-container'>
               <div className='right-wrap'>
-                <FieldView title="粉丝数" value={followerCount} />
+                <FieldView title="粉丝数" value={numeral(followerCount).format('0,0')} />
                 <FieldView title="粉丝数截图" value={
                   followerCountScreenshotUrl ?
                     <img alt='粉丝数截图' src={followerCountScreenshotUrl} width={100} height={100} /> : '暂无截图'
                 } />
-                <FieldView title="平台等级" value={level === 0 ? '' : level} />
+                <FieldView title="平台等级" value={level === 0 ? '' : (configurePlatform.configure.levelText ? configurePlatform.configure.levelText[level] : level)} />
               </div>
             </div>
           </div>
@@ -189,7 +191,7 @@ export default class MainView extends Component {
       <footer className='mini-fields-footer clearfix'>
         <div>
           <span onClick={() => onModuleStatusChange('mini')}>
-            收起更多 <Icon type="double-left" rotate={90}/>
+            收起更多 <Icon type="double-left" rotate={90} />
           </span>
         </div>
       </footer>
