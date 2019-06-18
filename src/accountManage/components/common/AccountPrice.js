@@ -321,7 +321,7 @@ export class FamousPrice extends Component {
 
   render() {
     const {
-      getFieldDecorator, layout, children, priceKeys, data: { accountInfo, priceInfo }, auth = {}
+      getFieldDecorator, layout, children, priceKeys, data: { accountInfo, priceInfo, auth = {} }
     } = this.props;
     const {
       priceValidFrom,

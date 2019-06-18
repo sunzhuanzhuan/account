@@ -32,14 +32,26 @@ export default class Price extends Component {
   }
 
   componentDidMount() {
-    const { actions } = this.props
+    const { actions, data: { account } } = this.props
     actions.getSkuList({
-      productLineId: 1,
+      productLineId: account.base.isFamous,
       itemTypeId: 1,
-      itemId: 2001086,
-      platformId: 9
+      itemId: account.id,
+      platformId: account.base.platformId
     }).finally(() => {
       this.setState({ loading: false })
+    })
+  }
+
+  reload = (cb) => {
+    const { actions, data: { account } } = this.props
+    actions.getSkuList({
+      productLineId: account.base.isFamous,
+      itemTypeId: 1,
+      itemId: account.id,
+      platformId: account.base.platformId
+    }).finally(() => {
+      cb && cb()
     })
   }
 
@@ -50,6 +62,6 @@ export default class Price extends Component {
   render() {
     const Component = statusComponent(this.state.moduleStatus)
     return !this.state.loading ?
-      <Component {...this.props} onModuleStatusChange={this.handleChange} /> : 'loading...'
+      <Component {...this.props} onModuleStatusChange={this.handleChange} reload={this.reload}/> : 'loading...'
   }
 }

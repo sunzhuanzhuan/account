@@ -12,9 +12,7 @@ import { checkVal } from "@/accountManage/util";
 export default class PriceEdit extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-
-    }
+    this.state = {}
   }
 
   handlePrice = (skuList, price_now = {}, price_next = {}) => {
@@ -26,43 +24,47 @@ export default class PriceEdit extends Component {
       return obj;
     });
   };
+
+  handleSubmitValues = (values) => {
+    const { data: { account, priceInfo } } = this.props;
+    const { skuList } = priceInfo;
+    const {
+      id, base: { isFamous, platformId }
+    } = account;
+    let { price_now, price_next } = values;
+    values['skuList'] = this.handlePrice(skuList, price_now, price_next);
+    values['isPreventShielding'] = checkVal(values['isPreventShielding']);
+    values['isSupportTopicAndLink'] = checkVal(values['isSupportTopicAndLink']);
+    values['is_flowunit_off_shelf'] = checkVal(values['is_flowunit_off_shelf']);
+    values['forceSaleStatus'] = checkVal(values['forceSaleStatus']);
+    values['isAcceptHardAd'] = checkVal(values['isAcceptHardAd']);
+    values['id'] = id;
+    values['productLineId'] = isFamous;
+    values['platformId'] = platformId;
+    delete values['price_now'];
+    delete values['price_next'];
+    // values.base['platformId'] = platformId;
+    return values
+  };
   submit = (e) => {
     e && e.preventDefault();
-    const { data: { priceInfo, accountInfo } } = this.props;
-    const {
-      skuList
-    } = priceInfo;
-    const {
-      accountId,
-      isFamous,
-      platformId
-    } = accountInfo;
-    this.props.form.validateFieldsAndScroll((err, values) => {
+    this.props.form.validateFieldsAndScroll((err, fieldsValue) => {
       if (!err) {
-        let { price_now, price_next } = values;
-        values['skuList'] = this.handlePrice(skuList, price_now, price_next);
-        values['isPreventShielding'] = checkVal(values['isPreventShielding']);
-        values['isSupportTopicAndLink'] = checkVal(values['isSupportTopicAndLink']);
-        values['is_flowunit_off_shelf'] = checkVal(values['is_flowunit_off_shelf']);
-        values['forceSaleStatus'] = checkVal(values['forceSaleStatus']);
-        values['isAcceptHardAd'] = checkVal(values['isAcceptHardAd']);
-        delete values['price_now'];
-        delete values['price_next'];
-        this.showConfirm({ ...values, id: accountId, productLineId: isFamous, platformId });
+        let values = this.handleSubmitValues(fieldsValue)
+        this.showConfirm(values);
       }
     });
   };
   showConfirm = (values) => {
-    const { actions: { saveSku }, data: { accountInfo } } = this.props;
-    const { getSkuActions } = this.props;
-    const { isFamous } = accountInfo;
+    const { actions: { saveSku }, data: { account }, reload, onModuleStatusChange } = this.props;
+    const { isFamous } = account.base;
     Modal.confirm({
       title: '提交价格信息?',
       content: (isFamous == 1) ? '提交成功后，下个价格有效期和报价将无法修改' : '',
       onOk() {
         return saveSku(values).then(() => {
           message.success('更新报价信息成功', 1.3, () => {
-            getSkuActions();
+            reload(() => onModuleStatusChange('view'))
           });
 
         });
@@ -97,24 +99,24 @@ export default class PriceEdit extends Component {
     </div>;
 
     return <Form className='module-item-container' onSubmit={this.submit} colon={false}>
-        <ModuleHeader title={configureModule.title} right={right} />
-        <section className='content-wrap'>
-          {isFamous === 1 ?
-            <FamousPrice {...fieldProps} priceKeys={priceKeys}>
-              {configurePlatform.visibility.fields.referencePrice &&
-              <ReferencePrice  {...fieldProps} />}
-              {configurePlatform.visibility.fields.priceInclude &&
-              <PriceInclude  {...fieldProps} />}
-              <IsAcceptHardAd {...fieldProps} />
-            </FamousPrice>
-            :
-            <NamelessPrice isUpdate={true} {...fieldProps} priceKeys={priceKeys}>
-              {configurePlatform.visibility.fields.referencePrice &&
-              <ReferencePrice  {...fieldProps} />}
-              <IsAcceptHardAd {...fieldProps} />
-            </NamelessPrice>
-          }
-        </section>
-      </Form>
+      <ModuleHeader title={configureModule.title} right={right} />
+      <section className='content-wrap'>
+        {isFamous === 1 ?
+          <FamousPrice {...fieldProps} priceKeys={priceKeys}>
+            {configurePlatform.visibility.fields.referencePrice &&
+            <ReferencePrice  {...fieldProps} />}
+            {configurePlatform.visibility.fields.priceInclude &&
+            <PriceInclude  {...fieldProps} />}
+            <IsAcceptHardAd {...fieldProps} />
+          </FamousPrice>
+          :
+          <NamelessPrice isUpdate={true} {...fieldProps} priceKeys={priceKeys}>
+            {configurePlatform.visibility.fields.referencePrice &&
+            <ReferencePrice  {...fieldProps} />}
+            <IsAcceptHardAd {...fieldProps} />
+          </NamelessPrice>
+        }
+      </section>
+    </Form>
   }
 }
