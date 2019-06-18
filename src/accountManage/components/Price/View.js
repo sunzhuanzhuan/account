@@ -37,7 +37,7 @@ export default class PriceView extends Component {
     const fieldProps = { layout, data, form, actions }
     const {
       isFamous
-    } = data.accountInfo || {}
+    } = data.account.base || {}
     const {
       isSupportTopicAndLink,
       isPreventShielding,

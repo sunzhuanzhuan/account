@@ -83,7 +83,7 @@ export default class PriceEdit extends Component {
     const fieldProps = { layout, data, form, actions, ...form }
     const {
       isFamous
-    } = data.accountInfo || {}
+    } = data.account.base || {}
     const {
       skuList,
       modifiedAt // 信息修改时间

@@ -51,6 +51,13 @@ export const {
   getFileRealPath
 } = createHttpAction('getFileRealPath', Interface.common.getFileRealPath)
 
+// 敏感词校验(JAVA)
+export const {
+  checkSensitiveWord,
+} = createHttpAction('checkSensitiveWord', Interface.common.checkSensitiveWord, {
+  method: 'post',
+})
+
 export const resetSiderAuth = createAction('RESET_SIDERMENU_AUTH', () => {
   return [];
 })

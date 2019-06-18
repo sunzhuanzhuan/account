@@ -16,6 +16,7 @@ import {
 import { OssUpload } from 'wbyui';
 import SimpleTag from '../../base/SimpleTag';
 import moment from 'moment';
+import debounce from 'lodash/debounce';
 import InputCount from "@/accountManage/base/InputCount";
 import CheckedWrap from "./CheckedWrap";
 import WordList from "./WordList";
@@ -32,6 +33,8 @@ import LazyAreaOptions from "./LazyAreaOptions";
 import EmSpan from "@/accountManage/base/EmSpan";
 import ShippingAddress from "@/accountManage/components/common/ShippingAddress";
 import ChildrenList from "@/accountManage/components/common/ChildrenList";
+import api from '@/api'
+import commonInterface from '@/constants/Interface'
 
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
@@ -40,18 +43,20 @@ const { TextArea } = Input;
 const { Option, OptGroup } = Select;
 const { RangePicker } = DatePicker;
 
-// 数据校验
-const checkForSensitiveWord = action => (rule, value, callback) => {
+// 敏感词校验
+const checkForSensitiveWord = debounce((rule, value, callback) => {
   if (!value) return callback()
-  action({ string: value }).then(result => {
-    let is_sensitive_words = result.data && result.data.is_sensitive_words;
-    if (is_sensitive_words === 1) {
-      callback('账号简介有敏感词，请重新填写');
-    } else {
-      callback();
+  api.post(commonInterface.common.checkSensitiveWord, { word: value }).then(() => {
+    callback();
+  }).catch(({ data, code, errorMsg }) => {
+    if(code === '110502'){
+      const errorWords = (data.words || []).join('，')
+      callback(`${rule.name || '内容'}包含敏感词${errorWords}，请修订`);
+    }else {
+      callback(errorMsg);
     }
-  });
-};
+  })
+}, 800);
 
 // DefaultAndCustomTag 重复校验
 const checkDefaultAndCustomTagRepeat = getSource => (rule, value, callback) => {
@@ -322,7 +327,7 @@ export const Introduction = (props) => {
     form: { getFieldDecorator },
     layout,
     data: { account },
-    actions: { sensitiveWordsFilter },
+    actions: { checkSensitiveWord },
     placeholder
   } = props;
   const {
@@ -333,11 +338,11 @@ export const Introduction = (props) => {
       {getFieldDecorator('base.introduction', {
         initialValue: introduction,
         first: true,
-        validateTrigger: 'onBlur',
+        // validateTrigger: 'onBlur',
         rules: [{
           max: 1000,
           message: '账号简介不能超过1000字'
-        }, { validator: checkForSensitiveWord(sensitiveWordsFilter) }]
+        }, { validator: checkForSensitiveWord, name: '账号简介' }]
       })(
         <TextArea placeholder={placeholder || '请输入账号简介'} autosize={{ minRows: 2, maxRows: 4 }} />
       )}
@@ -655,7 +660,7 @@ export const MediaType = (props) => {
 export const Verified = (props) => {
   const {
     form: { getFieldDecorator, getFieldValue },
-    actions: { sensitiveWordsFilter },
+    actions: { checkSensitiveWord },
     layout,
     data: { account },
     options
@@ -701,7 +706,7 @@ export const Verified = (props) => {
           rules: [
             { required: true, message: '请填写认证说明' },
             { pattern: /.{2,40}/, message: '请输入2~40字的认证原因' },
-            { validator: checkForSensitiveWord(sensitiveWordsFilter) }
+            { validator: checkForSensitiveWord, name: '认证说明' }
           ],
           initialValue: verificationInfo
         })(
@@ -974,7 +979,7 @@ export const CooperationTips = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    actions: { sensitiveWordsFilter },
+    actions: { checkSensitiveWord },
     data: { account }
   } = props;
   const {
@@ -987,7 +992,7 @@ export const CooperationTips = (props) => {
         validateTrigger: 'onBlur',
         rules: [
           { pattern: /^[\u4e00-\u9fa5a-zA-Z]{0,1000}$/, message: '合作须知备注请输入中英文, 最多可输入1000个字' },
-          { validator: checkForSensitiveWord(sensitiveWordsFilter) }
+          { validator: checkForSensitiveWord, name: '合作案例备注' }
         ],
         initialValue: cooperationTips
       })(
@@ -1074,7 +1079,7 @@ export const PostPlatform = (props) => {
   const {
     form: { getFieldDecorator, getFieldValue },
     layout,
-    actions: { sensitiveWordsFilter },
+    actions: { checkSensitiveWord },
     data: { account },
     options = []
   } = props;
@@ -1113,7 +1118,7 @@ export const PostPlatform = (props) => {
           validateFirst: true,
           rules: [
             { pattern: /^[\u4e00-\u9fa5a-zA-Z]{0,200}$/, message: '分发平台备注请输入中英文, 最多可输入200个字' },
-            { validator: checkForSensitiveWord(sensitiveWordsFilter) }
+            { validator: checkForSensitiveWord, name: '分发平台备注' }
           ],
           initialValue: multiPlatformOriginalPostTips
         })(
@@ -1165,7 +1170,7 @@ export const ContentForms = (props) => {
   const {
     form: { getFieldDecorator, getFieldValue },
     layout,
-    actions: { sensitiveWordsFilter },
+    actions: { checkSensitiveWord },
     options,
     data: { account }
   } = props;
@@ -1186,7 +1191,7 @@ export const ContentForms = (props) => {
           placeholder='请输入1~10字'
           rules={[
             { required: true, pattern: /^[\u4e00-\u9fa5a-zA-Z]{1,10}$/, message: '请输入1~10个中英文字符' },
-            { validator: checkForSensitiveWord(sensitiveWordsFilter) },
+            { validator: checkForSensitiveWord, name: '添加内容' },
             {
               validator: checkDefaultAndCustomTagRepeat(() => {
                 let { custom } = getFieldValue('_client.form')
@@ -1207,7 +1212,7 @@ export const ContentFeatures = (props) => {
   const {
     form: { getFieldDecorator, getFieldValue },
     layout,
-    actions: { sensitiveWordsFilter },
+    actions: { checkSensitiveWord },
     options,
     data: { account }
   } = props;
@@ -1228,7 +1233,7 @@ export const ContentFeatures = (props) => {
           placeholder='请输入1~10字'
           rules={[
             { required: true, pattern: /^[\u4e00-\u9fa5a-zA-Z]{1,10}$/, message: '请输入1~10个中英文字符' },
-            { validator: checkForSensitiveWord(sensitiveWordsFilter) },
+            { validator: checkForSensitiveWord, name: '添加内容' },
             {
               validator: checkDefaultAndCustomTagRepeat(() => {
                 let { custom } = getFieldValue('_client.feature')
@@ -1249,7 +1254,7 @@ export const ContentStyles = (props) => {
   const {
     form: { getFieldDecorator, getFieldValue },
     layout,
-    actions: { sensitiveWordsFilter },
+    actions: { checkSensitiveWord },
     options,
     data: { account }
   } = props;
@@ -1270,7 +1275,7 @@ export const ContentStyles = (props) => {
           placeholder='请输入1~10字'
           rules={[
             { required: true, pattern: /^[\u4e00-\u9fa5a-zA-Z]{1,10}$/, message: '请输入1~10个中英文字符' },
-            { validator: checkForSensitiveWord(sensitiveWordsFilter) },
+            { validator: checkForSensitiveWord, name: '添加内容' },
             {
               validator: checkDefaultAndCustomTagRepeat(() => {
                 let { custom } = getFieldValue('_client.style')
@@ -2159,7 +2164,7 @@ export const Children = (props) => {
 export const Pets = (props) => {
   const {
     form: { getFieldDecorator, getFieldValue },
-    actions: { sensitiveWordsFilter },
+    actions: { checkSensitiveWord },
     layout,
     options,
     data: { account }
@@ -2181,7 +2186,7 @@ export const Pets = (props) => {
           placeholder='请输入1~10字'
           rules={[
             { required: true, pattern: /^[\u4e00-\u9fa5a-zA-Z]{1,10}$/, message: '请输入1~10个中英文字符' },
-            { validator: checkForSensitiveWord(sensitiveWordsFilter) },
+            { validator: checkForSensitiveWord, name: '添加内容' },
             {
               validator: checkDefaultAndCustomTagRepeat(() => {
                 let { custom } = getFieldValue('_client.pets')
@@ -2239,7 +2244,7 @@ export const Skills = (props) => {
 export const CustomSkills = (props) => {
   const {
     form: { getFieldDecorator, getFieldValue },
-    actions: { sensitiveWordsFilter },
+    actions: { checkSensitiveWord },
     layout,
     options = [],
     data: { account }
@@ -2260,7 +2265,7 @@ export const CustomSkills = (props) => {
           placeholder='请输入1~10字'
           rules={[
             { required: true, pattern: /^[\u4e00-\u9fa5a-zA-Z]{1,10}$/, message: '请输入1~10个中英文字符' },
-            { validator: checkForSensitiveWord(sensitiveWordsFilter) },
+            { validator: checkForSensitiveWord, name: '添加内容' },
             {
               validator: checkDefaultAndCustomTagRepeat(() => {
                 let { custom } = getFieldValue('_client.skills')

@@ -23,8 +23,6 @@ import { Fetch } from "@/accountManage/components/packageComponents";
 import { configItemKeyToField, modulesMap } from "@/accountManage/constants/packageConfig";
 import update from 'immutability-helper'
 
-const FormItem = Form.Item;
-
 @Form.create()
 export default class MainEdit extends Component {
   constructor(props) {
