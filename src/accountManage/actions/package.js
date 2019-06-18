@@ -50,51 +50,63 @@ export const {
 // 获取配置项
 // 认证信息
 export const {
-  getVerifiedType
+  getVerifiedType,
+  getVerifiedType_success
 } = createHttpAction('getVerifiedType', Interface.config.getVerifiedType);
 // 获取账号特权
 export const {
-  getAccountFieldConfig
+  getAccountFieldConfig,
+  getAccountFieldConfig_success
 } = createHttpAction('getAccountFieldConfig', Interface.config.getAccountFieldConfig);
 // 合作须知项
 export const {
-  getCooperateNoticeFieldConfig
+  getCooperateNoticeFieldConfig,
+  getCooperateNoticeFieldConfig_success,
 } = createHttpAction('getCooperateNoticeFieldConfig', Interface.config.getCooperateNoticeFieldConfig);
 // 广告服务项
 export const {
-  getAdvertisingFieldConfig
+  getAdvertisingFieldConfig,
+  getAdvertisingFieldConfig_success,
 } = createHttpAction('getAdvertisingFieldConfig', Interface.config.getAdvertisingFieldConfig);
 // 广告服务可选
 export const {
-  getAdvertisingOfferServices
+  getAdvertisingOfferServices,
+  getAdvertisingOfferServices_success,
 } = createHttpAction('getAdvertisingOfferServices', Interface.config.getAdvertisingOfferServices);
 // 内容形式配置项
 export const {
-  getContentForm
+  getContentForm,
+  getContentForm_success,
 } = createHttpAction('getContentForm', Interface.config.getContentForm);
 // 内容特点配置项
 export const {
-  getContentFeature
+  getContentFeature,
+  getContentFeature_success,
 } = createHttpAction('getContentFeature', Interface.config.getContentFeature);
 // 内容风格配置项
 export const {
-  getContentStyle
+  getContentStyle,
+  getContentStyle_success,
 } = createHttpAction('getContentStyle', Interface.config.getContentStyle);
 // 获取国家列表
 export const {
-  getCountryList
+  getCountryList,
+  getCountryList_success,
 } = createHttpAction('getCountryList', Interface.common.getCountryList);
 // 获取职业列表
 export const {
-  getProfession
+  getProfession,
+  getProfession_success,
 } = createHttpAction('getProfession', Interface.config.getProfession);
 // 获取宠物列表
 export const {
-  getPet
+  getPet,
+  getPet_success,
 } = createHttpAction('getPet', Interface.config.getPet);
 // 获取技能列表
 export const {
-  getSkill
+  getSkill,
+  getSkill_success,
 } = createHttpAction('getSkill', Interface.config.getSkill);
 // 获取地域加热门城市
 export const {

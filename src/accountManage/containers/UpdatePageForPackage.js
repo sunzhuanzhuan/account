@@ -95,7 +95,7 @@ class UpdatePageForPackage extends Component {
       <h2>账号维护</h2>
       {process.env.REACT_APP_CLIENT === 'NB' && <Tabs
         activeKey={active}
-        animated={{ inkBar: true, tabPane: false }}
+        animated={false}
         style={{
           position: 'sticky',
           top: "-20px",

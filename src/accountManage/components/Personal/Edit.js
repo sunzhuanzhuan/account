@@ -23,6 +23,7 @@ import {
 import { Button, Form, message } from "antd";
 import { configItemKeyToField, configOptions } from "@/accountManage/constants/packageConfig";
 import update from "immutability-helper";
+import { industry } from "@/accountManage/reducer/options";
 
 @Form.create()
 export default class PersonalEdit extends Component {
@@ -30,13 +31,6 @@ export default class PersonalEdit extends Component {
     super(props)
     this.state = {
       asyncVisibility: {},
-      asyncOptions: {
-        nationality: [],
-        industry: [],
-        occupations: [],
-        pets: [],
-        skills: []
-      },
       submitLoading: false
     }
     // window注入组件
@@ -44,67 +38,17 @@ export default class PersonalEdit extends Component {
   }
 
   componentDidMount() {
-    const { actions, form, data: { account } } = this.props
+    const { actions, data: { options } } = this.props
     // 获取配置项 - 国籍列表
-    actions.getCountryList().then(({ data }) => {
-      this.setState(update(this.state, {
-        asyncOptions: {
-          nationality: {
-            $set: data.map(item => ({ value: item.id, label: item.areaName }))
-          }
-        }
-      }))
-    })
+    options.nationality.length === 0 && actions.getCountryList()
     // 获取配置项 - 行业列表
-    actions.getIndustryListForAccount().then(({ data }) => {
-      this.setState(update(this.state, {
-        asyncOptions: {
-          industry: {
-            $set: data.map(item => ({ value: item.id, label: item.name }))
-          }
-        }
-      }))
-    })
+    options.industry.length === 0 && actions.getIndustryListForAccount()
     // 获取配置项 - 职业列表
-    actions.getProfession().then(({ data }) => {
-      this.setState(update(this.state, {
-        asyncOptions: {
-          occupations: {
-            $set: data.map(item => ({ value: item.itemKey, label: item.itemValue }))
-          }
-        }
-      }))
-    })
+    options.occupations.length === 0 && actions.getProfession()
     // 获取配置项 - 宠物列表
-    actions.getPet().then(({ data }) => {
-      this.setState(update(this.state, {
-        asyncOptions: {
-          pets: {
-            $set: data.map(item => ({ id: item.itemKey, name: item.itemValue }))
-          }
-        }
-      }))
-    })
+    options.pets.length === 0 && actions.getPet()
     // 获取配置项 - 技能列表
-    actions.getSkill().then(({ data }) => {
-      let newData = data.map(item => {
-        let obj = {
-          value: item.itemKey,
-          label: item.itemValue
-        }
-        if (item.childrenList) {
-          obj.children = item.childrenList.map(n => ({ value: n.itemKey, label: n.itemValue }))
-        }
-        return obj
-      })
-      this.setState(update(this.state, {
-        asyncOptions: {
-          skills: {
-            $set: newData
-          }
-        }
-      }))
-    })
+    options.skills.length === 0 && actions.getSkill()
   }
 
   // 处理提交数据
@@ -167,13 +111,11 @@ export default class PersonalEdit extends Component {
     } = this.props
     const fieldProps = { layout, data, form, actions }
     const {
-      isFamous,
       modifiedAt // 信息修改时间
-    } = data.accountInfo || {}
+    } = data.account.personalInfo || {}
     const {
-      asyncVisibility,
-      asyncOptions
-    } = this.state
+      options: asyncOptions
+    } = data || {}
     const right = <div className='wrap-panel-right-content'>
       <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>
       <Button htmlType='submit' type='primary'>保存</Button>

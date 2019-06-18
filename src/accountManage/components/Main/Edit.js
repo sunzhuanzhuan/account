@@ -32,9 +32,6 @@ export default class MainEdit extends Component {
       authToken: '',
       fetchModal: false,
       asyncVisibility: {},
-      asyncOptions: {
-        verified: []
-      },
       submitLoading: false
     }
     // TODO: window注入组件
@@ -42,7 +39,7 @@ export default class MainEdit extends Component {
   }
 
   componentDidMount() {
-    const { actions, data: { account } } = this.props
+    const { actions, data: { account, options } } = this.props
     // 获取上传图片token
     this.props.actions.getNewToken().then(({ data: authToken }) => {
       this.setState({ authToken })
@@ -65,18 +62,7 @@ export default class MainEdit extends Component {
     })
 
     // 获取配置项 - 认证类型
-    actions.getVerifiedType({ accountId: account.id }).then(({ data }) => {
-      this.setState(update(this.state, {
-        asyncOptions: {
-          verified: {
-            $set: data.map(item => ({
-              id: item.itemKey,
-              name: item.itemValue
-            }))
-          }
-        }
-      }))
-    })
+    options.verified.length === 0 && actions.getVerifiedType({ accountId: account.id })
   }
 
   // 处理提交数据
@@ -129,9 +115,11 @@ export default class MainEdit extends Component {
     const {
       authToken,
       asyncVisibility,
-      asyncOptions,
       submitLoading
     } = this.state
+    const {
+      options: asyncOptions,
+    } = data
     const left = <div className='wrap-panel-left-content'>
       <span style={{
         verticalAlign: "middle",

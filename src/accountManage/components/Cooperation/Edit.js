@@ -26,10 +26,6 @@ export default class CooperationEdit extends Component {
     super(props)
     this.state = {
       asyncVisibility: {},
-      asyncOptions: {
-        adServiceItems: [],
-        platforms: []
-      },
       submitLoading: false
     }
     // window注入组件
@@ -37,7 +33,7 @@ export default class CooperationEdit extends Component {
   }
 
   componentDidMount() {
-    const { actions, form, data: { account } } = this.props
+    const { actions, form, data: { account, options } } = this.props
     // 获取字段配置项 - 合作须知/广告服务
     Promise.all([
       actions.getCooperateNoticeFieldConfig({ accountId: account.id }),
@@ -62,28 +58,9 @@ export default class CooperationEdit extends Component {
       }))
     })
     // 获取配置项 - 可提供的广告服务
-    actions.getAdvertisingOfferServices({ accountId: account.id }).then(({ data }) => {
-      this.setState(update(this.state, {
-        asyncOptions: {
-          adServiceItems: {
-            $set: data.map(item => ({
-              id: item.itemKey,
-              adServiceItemName: item.itemValue
-            }))
-          }
-        }
-      }))
-    })
+    options.adServiceItems.length === 0 && actions.getAdvertisingOfferServices({ accountId: account.id })
     // 获取配置项 - 可选择的平台
-    actions.getAvailablePlatformList().then(({ data }) => {
-      this.setState(update(this.state, {
-        asyncOptions: {
-          platforms: {
-            $set: data
-          }
-        }
-      }))
-    })
+    options.platforms.length === 0 && actions.getAvailablePlatformList()
   }
 
   // 处理提交数据
@@ -131,9 +108,11 @@ export default class CooperationEdit extends Component {
     } = data.account || {}
     const {
       asyncVisibility,
-      asyncOptions,
       submitLoading
     } = this.state
+    const {
+      options: asyncOptions,
+    } = data
     const right = <div className='wrap-panel-right-content'>
       <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>
       <Button htmlType='submit' type='primary' loading={submitLoading}>保存</Button>

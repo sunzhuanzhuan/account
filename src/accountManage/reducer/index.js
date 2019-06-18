@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 import { handleActions, combineActions } from 'redux-actions';
 import { allEditables } from '../constants/editables';
 import account from './account'
+import options from './options'
 
 
 import {
@@ -254,6 +255,7 @@ export const areasHotCity = handleActions({
 
 export default combineReducers({
   account,
+  options,
   adminAccount,
   areasHotCity,
   accountInfo,

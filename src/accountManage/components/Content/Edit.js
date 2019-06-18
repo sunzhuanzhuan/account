@@ -18,11 +18,6 @@ export default class ContentEdit extends Component {
     super(props)
     this.state = {
       asyncVisibility: {},
-      asyncOptions: {
-        forms: [],
-        features: [],
-        styles: []
-      },
       submitLoading: false
     }
     // window注入组件
@@ -30,44 +25,11 @@ export default class ContentEdit extends Component {
   }
 
   componentDidMount() {
-    const { actions, form, data: { account } } = this.props
+    const { actions, data: { account, options } } = this.props
     // 获取配置项
-    actions.getContentForm({ accountId: account.id }).then(({ data }) => {
-      this.setState(update(this.state, {
-        asyncOptions: {
-          forms: {
-            $set: data.map(item => ({
-              id: item.itemKey,
-              name: item.itemValue
-            }))
-          }
-        }
-      }))
-    })
-    actions.getContentFeature({ accountId: account.id }).then(({ data }) => {
-      this.setState(update(this.state, {
-        asyncOptions: {
-          features: {
-            $set: data.map(item => ({
-              id: item.itemKey,
-              name: item.itemValue
-            }))
-          }
-        }
-      }))
-    })
-    actions.getContentStyle({ accountId: account.id }).then(({ data }) => {
-      this.setState(update(this.state, {
-        asyncOptions: {
-          styles: {
-            $set: data.map(item => ({
-              id: item.itemKey,
-              name: item.itemValue
-            }))
-          }
-        }
-      }))
-    })
+    options.forms.length === 0 && actions.getContentForm({ accountId: account.id })
+    options.features.length === 0 && actions.getContentFeature({ accountId: account.id })
+    options.styles.length === 0 && actions.getContentStyle({ accountId: account.id })
   }
 
   // 处理提交数据
@@ -122,9 +84,8 @@ export default class ContentEdit extends Component {
       content: { modifiedAt } // 信息修改时间
     } = data.account || {}
     const {
-      asyncVisibility,
-      asyncOptions
-    } = this.state
+      options: asyncOptions,
+    } = data
     const right = <div className='wrap-panel-right-content'>
       <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>
       <Button htmlType='submit' type='primary'>保存</Button>
