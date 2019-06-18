@@ -8,7 +8,7 @@ import {
   ContentFeatures,
   ContentStyles
 } from "@/accountManage/components/common/Fields";
-import { Button, Form } from "antd";
+import { Button, Form, message } from "antd";
 import update from "immutability-helper";
 import { configItemKeyToField } from "@/accountManage/constants/packageConfig";
 
@@ -22,8 +22,11 @@ export default class ContentEdit extends Component {
         forms: [],
         features: [],
         styles: []
-      }
+      },
+      submitLoading: false
     }
+    // window注入组件
+    window.__UpdateAccountReactComp__.content = this
   }
 
   componentDidMount() {
@@ -67,22 +70,40 @@ export default class ContentEdit extends Component {
     })
   }
 
+  // 处理提交数据
+  handleSubmitValues = (values) => {
+    const { data: { account } } = this.props;
+    const { form, feature, style } = values['_client']
+    return {
+      id: account.id,
+      content: {
+        forms: form.defaultItems,
+        customForm: form.custom,
+        features: feature.defaultItems,
+        customFeature: feature.custom,
+        styles: style.defaultItems,
+        customStyle: style.custom
+      }
+    };
+  };
+
   submit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFieldsAndScroll((err, fieldsValue) => {
+    e && e.preventDefault();
+    const { actions, form, reload, onModuleStatusChange } = this.props
+    this.setState({ submitLoading: true });
+    form.validateFieldsAndScroll((err, fieldsValue) => {
       if (!err) {
-        const { form, feature, style } = fieldsValue['_client']
-        let value = {
-          content: {
-            forms: form.defaultItems,
-            customForm: form.custom,
-            features: feature.defaultItems,
-            customFeature: feature.custom,
-            styles: style.defaultItems,
-            customStyle: style.custom
-          }
-        }
-        console.log('Received values of form: ', value);
+        let values = this.handleSubmitValues(fieldsValue)
+        actions.updateContentInfo(values).then(() => {
+          // reload(() => onModuleStatusChange('view'))
+          message.success('更新账号成功');
+        }).finally(() => {
+          this.setState({
+            submitLoading: false
+          });
+        });
+      } else {
+        this.setState({ submitLoading: false });
       }
     });
   }

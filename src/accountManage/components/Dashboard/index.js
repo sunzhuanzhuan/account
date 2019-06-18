@@ -34,7 +34,10 @@ export default class Dashboard extends Component {
       sexs,
       ages,
       areas,
-      interests
+      interests,
+      snbtModifiedTime,
+      kolModifiedTime,
+      featureModifiedTime
     } = feature
     return <div className='module-item-container'>
       <ModuleHeader title={configureModule.title} />
@@ -43,7 +46,7 @@ export default class Dashboard extends Component {
           <h4 className='subclass-head'>
             <span className='text'>平台统计</span>
             <small className='line' />
-            <span className='gray-text text'>最近更新于: --</span>
+            <span className='gray-text text'>最近更新于: {snbtModifiedTime || '--'}</span>
           </h4>
           <div className='subclass-content'>
             <div className='view-fields-container'>
@@ -67,7 +70,7 @@ export default class Dashboard extends Component {
           <h4 className='subclass-head'>
             <span className='text'>内容统计</span>
             <small className='line' />
-            <span className='gray-text text'>最近更新于: --</span>
+            <span className='gray-text text'>最近更新于: {kolModifiedTime || '--'}</span>
           </h4>
           <div className='subclass-content'>
             <div className='view-fields-container'>
@@ -81,7 +84,7 @@ export default class Dashboard extends Component {
           <h4 className='subclass-head'>
             <span className='text'>受众画像</span>
             <small className='line' />
-            <span className='gray-text text'>最近更新于: --</span>
+            <span className='gray-text text'>最近更新于: {featureModifiedTime || '--'}</span>
           </h4>
           <div className='subclass-content'>
             <div className='view-fields-container'>

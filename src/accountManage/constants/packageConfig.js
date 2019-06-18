@@ -95,7 +95,7 @@ export const tabs = [
       // "owner",
       // "fetch",
       // "main",
-      "cooperation",
+      // "cooperation",
       "content",
       "strategy",
       "other"

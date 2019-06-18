@@ -20,10 +20,10 @@ import {
   Skills,
   CustomSkills
 } from "@/accountManage/components/common/Fields";
-import { Button, Form } from "antd";
+import { Button, Form, message } from "antd";
 import { configItemKeyToField, configOptions } from "@/accountManage/constants/packageConfig";
 import update from "immutability-helper";
-// TODO: 同步配置项提取出来
+
 @Form.create()
 export default class PersonalEdit extends Component {
   constructor(props) {
@@ -36,8 +36,11 @@ export default class PersonalEdit extends Component {
         occupations: [],
         pets: [],
         skills: []
-      }
+      },
+      submitLoading: false
     }
+    // window注入组件
+    window.__UpdateAccountReactComp__.personal = this
   }
 
   componentDidMount() {
@@ -104,23 +107,52 @@ export default class PersonalEdit extends Component {
     })
   }
 
-  submit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFieldsAndScroll((err, fieldsValue) => {
-      if (!err) {
-        const { pets, skills } = fieldsValue['_client']
-        let value = {
-          personalInfo:
-            {
-              ...fieldsValue.personalInfo,
-              pets: pets.defaultItems,
-              customPets: pets.custom,
-              customSkills: skills.custom
-            }
-        }
-        console.log('Received values of form: ', fieldsValue, value);
+  // 处理提交数据
+  handleSubmitValues = (values) => {
+    const { data: { account } } = this.props;
+    const { pets, skills } = values['_client']
+    const { shipping, area = {} } = values['personalInfo']
+    let value = {
+      id: account.id,
+      personalInfo: {
+        ...values.personalInfo,
+        areaId: area.id,
+        pets: pets.defaultItems,
+        customPets: pets.custom,
+        customSkills: skills.custom,
+        area: undefined,
+        shipping: shipping ? {
+          "receiver": shipping.receiver,
+          "phoneNumber": shipping.phoneNumber,
+          "countryId": shipping.country.id || 0,
+          "provinceId": shipping.province.id || 0,
+          "cityId": shipping.city.id || 0,
+          "countyId": shipping.county.id || 0,
+          "addressDetail": shipping.addressDetail
+        } : {}
+      }
+    }
+    // values.base['platformId'] = platformId;
+    return value;
+  };
 
-        // 处理父级地域id
+  submit = (e) => {
+    e && e.preventDefault();
+    const { actions, form, reload, onModuleStatusChange } = this.props
+    this.setState({ submitLoading: true });
+    form.validateFieldsAndScroll((err, fieldsValue) => {
+      if (!err) {
+        let values = this.handleSubmitValues(fieldsValue)
+        actions.updatePersonalInfo(values).then(() => {
+          // reload(() => onModuleStatusChange('view'))
+          message.success('更新账号成功');
+        }).finally(() => {
+          this.setState({
+            submitLoading: false
+          });
+        });
+      } else {
+        this.setState({ submitLoading: false });
       }
     });
   }

@@ -4,20 +4,44 @@
 import React, { Component } from "react"
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
 import { IsLowQuality, MediaTeamNote } from "@/accountManage/components/common/Fields";
-import { Button, Form } from "antd";
+import { Button, Form, message } from "antd";
 
 @Form.create()
 export default class Other extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      submitLoading: false
+    }
+    // window注入组件
+    window.__UpdateAccountReactComp__.other = this
   }
+  // 处理提交数据
+  handleSubmitValues = (values) => {
+    const { data: { account } } = this.props;
+    values['id'] = account.id;
+    // values.base['platformId'] = platformId;
+    delete values['_case']
+    return values;
+  };
 
   submit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFieldsAndScroll((err, fieldsValue) => {
+    e && e.preventDefault();
+    const { actions, form, reload, onModuleStatusChange } = this.props
+    this.setState({ submitLoading: true });
+    form.validateFieldsAndScroll((err, fieldsValue) => {
       if (!err) {
-        console.log('Received values of form: ', fieldsValue);
+        let values = this.handleSubmitValues(fieldsValue)
+        actions.updateOtherInfo(values).then(() => {
+          // reload(() => onModuleStatusChange('view'))
+          message.success('更新账号成功');
+        }).finally(() => {
+          this.setState({
+            submitLoading: false
+          });
+        });
+      } else {
+        this.setState({ submitLoading: false });
       }
     });
   }

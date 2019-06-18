@@ -6,7 +6,7 @@ import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
 import {
 
 } from "@/accountManage/components/common/Fields";
-import { Button, Divider, Form } from "antd";
+import { Button, Divider, Form, message } from "antd";
 import { OnSaleInfo } from "@/accountManage/components/common/Fields";
 import { MaxOrderCount } from "@/accountManage/components/common/Fields";
 import { Strategy } from "@/accountManage/components/common/Fields";
@@ -21,17 +21,39 @@ export default class StrategyEdit extends Component {
         forms: [],
         features: [],
         styles: []
-      }
+      },
+      submitLoading: false
     }
+    // window注入组件
+    window.__UpdateAccountReactComp__.strategy = this
   }
 
-  submit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFieldsAndScroll((err, fieldsValue) => {
-      console.log('Received values of form: ', fieldsValue);
+  // 处理提交数据
+  handleSubmitValues = (values) => {
+    const { data: { account } } = this.props;
+    values['id'] = account.id;
+    // values.base['platformId'] = platformId;
+    delete values['_client']
+    return values;
+  };
 
+  submit = (e) => {
+    e && e.preventDefault();
+    const { actions, form, reload, onModuleStatusChange } = this.props
+    this.setState({ submitLoading: true });
+    form.validateFieldsAndScroll((err, fieldsValue) => {
       if (!err) {
-        //
+        let values = this.handleSubmitValues(fieldsValue)
+        actions.updateStrategyInfo(values).then(() => {
+          // reload(() => onModuleStatusChange('view'))
+          message.success('更新账号成功');
+        }).finally(() => {
+          this.setState({
+            submitLoading: false
+          });
+        });
+      } else {
+        this.setState({ submitLoading: false });
       }
     });
   }

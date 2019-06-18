@@ -1886,20 +1886,20 @@ export const Area = (props) => {
   } = props;
   const {
     area = {},
-    areaFrom,
-    areaMaintainedTime
+    areaIdFrom,
+    areaIdMaintainedTime
   } = account.personalInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='常住地'>
       {getFieldDecorator('personalInfo.area', {
         initialValue: area
       })(
-        <LazyAreaOptions level={3} disabled={areaFrom === 2} />
+        <LazyAreaOptions level={3} disabled={areaIdFrom === 2} />
       )}
     </FormItem>
-    {getFieldDecorator('personalInfo.areaFrom', { initialValue: areaFrom })(
+    {getFieldDecorator('personalInfo.areaIdFrom', { initialValue: areaIdFrom })(
       <input type="hidden" />)}
-    {getFieldDecorator('personalInfo.areaMaintainedTime', { initialValue: areaMaintainedTime })(
+    {getFieldDecorator('personalInfo.areaIdMaintainedTime', { initialValue: areaIdMaintainedTime })(
       <input type="hidden" />)}
   </div>
 };
