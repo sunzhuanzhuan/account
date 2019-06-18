@@ -16,7 +16,6 @@ import {
 import { OssUpload } from 'wbyui';
 import SimpleTag from '../../base/SimpleTag';
 import moment from 'moment';
-import debounce from 'lodash/debounce';
 import InputCount from "@/accountManage/base/InputCount";
 import CheckedWrap from "./CheckedWrap";
 import WordList from "./WordList";
@@ -44,7 +43,7 @@ const { Option, OptGroup } = Select;
 const { RangePicker } = DatePicker;
 
 // 敏感词校验
-const checkForSensitiveWord = debounce((rule, value, callback) => {
+const checkForSensitiveWord = (rule, value, callback) => {
   if (!value) return callback()
   api.post(commonInterface.common.checkSensitiveWord, { word: value }).then(() => {
     callback();
@@ -56,7 +55,7 @@ const checkForSensitiveWord = debounce((rule, value, callback) => {
       callback(errorMsg);
     }
   })
-}, 800);
+};
 
 // DefaultAndCustomTag 重复校验
 const checkDefaultAndCustomTagRepeat = getSource => (rule, value, callback) => {
@@ -338,7 +337,7 @@ export const Introduction = (props) => {
       {getFieldDecorator('base.introduction', {
         initialValue: introduction,
         first: true,
-        // validateTrigger: 'onBlur',
+        validateTrigger: 'onBlur',
         rules: [{
           max: 1000,
           message: '账号简介不能超过1000字'
@@ -734,7 +733,7 @@ export const Verified = (props) => {
 };
 
 /**
- * isOpenStore - 橱窗/店铺
+ * showWindow - 橱窗/店铺
  */
 export const OpenStore = (props) => {
   const {
@@ -743,14 +742,14 @@ export const OpenStore = (props) => {
     data: { account }
   } = props;
   const {
-    isOpenStore,
-    isOpenStoreFrom,
-    isOpenStoreMaintainedTime
+    showWindow,
+    showWindowFrom,
+    showWindowMaintainedTime
   } = account.base;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='橱窗/店铺'>
-      {getFieldDecorator('base.isOpenStore', {
-        initialValue: isOpenStore
+      {getFieldDecorator('base.showWindow', {
+        initialValue: showWindow
       })(
         <RadioGroup style={{ width: '100%' }}>
           <Radio value={1}>已开通</Radio>
@@ -758,15 +757,15 @@ export const OpenStore = (props) => {
         </RadioGroup>
       )}
     </FormItem>
-    {getFieldDecorator('base.isOpenStoreFrom', { initialValue: isOpenStoreFrom })(
+    {getFieldDecorator('base.showWindowFrom', { initialValue: showWindowFrom })(
       <input type="hidden" />)}
-    {getFieldDecorator('base.isOpenStoreMaintainedTime', { initialValue: isOpenStoreMaintainedTime })(
+    {getFieldDecorator('base.showWindowMaintainedTime', { initialValue: showWindowMaintainedTime })(
       <input type="hidden" />)}
   </div>
 };
 
 /**
- * isOpenLiveProgram - 直播
+ * isSupportLive - 直播
  */
 export const OpenLiveProgram = (props) => {
   const {
@@ -775,14 +774,14 @@ export const OpenLiveProgram = (props) => {
     data: { account }
   } = props;
   const {
-    isOpenLiveProgram,
-    isOpenLiveProgramFrom,
-    isOpenLiveProgramMaintainedTime
+    isSupportLive,
+    isSupportLiveFrom,
+    isSupportLiveMaintainedTime
   } = account.base;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='直播'>
-      {getFieldDecorator('base.isOpenLiveProgram', {
-        initialValue: isOpenLiveProgram
+      {getFieldDecorator('base.isSupportLive', {
+        initialValue: isSupportLive
       })(
         <RadioGroup style={{ width: '100%' }}>
           <Radio value={1}>已开通</Radio>
@@ -790,9 +789,9 @@ export const OpenLiveProgram = (props) => {
         </RadioGroup>
       )}
     </FormItem>
-    {getFieldDecorator('base.isOpenLiveProgramFrom', { initialValue: isOpenLiveProgramFrom })(
+    {getFieldDecorator('base.isSupportLiveFrom', { initialValue: isSupportLiveFrom })(
       <input type="hidden" />)}
-    {getFieldDecorator('base.isOpenLiveProgramMaintainedTime', { initialValue: isOpenLiveProgramMaintainedTime })(
+    {getFieldDecorator('base.isSupportLiveMaintainedTime', { initialValue: isSupportLiveMaintainedTime })(
       <input type="hidden" />)}
   </div>
 };

@@ -63,8 +63,8 @@ export default class MainView extends Component {
         isVerified,
         verifiedStatusName,
         verificationInfo,
-        isOpenStore,
-        isOpenLiveProgram,
+        showWindow,
+        isSupportLive,
         baseModifiedAt // 账号基本信息修改时间
       }
     } = data.account || {}
@@ -179,10 +179,10 @@ export default class MainView extends Component {
                 <FieldView title="是否认证" value={isVerified === 1 ? '已认证' : '未认证'} />
                 {isVerified === 1 && <FieldView title="认证信息" value={verifiedStatusName} />}
                 {isVerified === 1 && <FieldView title="认证说明" value={verificationInfo} />}
-                {asyncVisibility.isOpenStore &&
-                <FieldView title="橱窗/店铺" value={isOpenStore === 1 ? '已开通' : '未开通'} />}
-                {asyncVisibility.isOpenLiveProgram &&
-                <FieldView title="直播" value={isOpenLiveProgram === 1 ? '已开通' : '未开通'} />}
+                {asyncVisibility.showWindow &&
+                <FieldView title="橱窗/店铺" value={showWindow === 1 ? '已开通' : '未开通'} />}
+                {asyncVisibility.isSupportLive &&
+                <FieldView title="直播" value={isSupportLive === 1 ? '已开通' : '未开通'} />}
               </div>
             </div>
           </div>

@@ -194,8 +194,8 @@ export const diffByTypes = {
         weiboUrl: true,
         uniqueId: true,
         url: true,
-        isOpenStore: true,
-        isOpenLiveProgram: true
+        showWindow: true,
+        isSupportLive: true
       },
       modules: [
         "owner",
@@ -684,8 +684,8 @@ export const configItemKeyToField = {
   "hzxz5": "videoShotArea",
   "hzxz6": "liveArea",
   "hzxz7": "manuscriptModificationLimit",
-  "zhzdxs1": "isOpenStore",
-  "zhzdxs2": "isOpenLiveProgram"
+  "zhzdxs1": "showWindow",
+  "zhzdxs2": "isSupportLive"
 }
 export const configOptions = {
   mediaTypeMap: {

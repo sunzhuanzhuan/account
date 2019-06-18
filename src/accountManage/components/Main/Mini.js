@@ -16,8 +16,8 @@ export default class MainMini extends Component {
     this.state = {
       authToken: '',
       asyncVisibility: {
-        isOpenLiveProgram: true,
-        isOpenStore: true
+        isSupportLive: true,
+        showWindow: true
       }
     }
     props.actions.getNewToken().then(({ data: authToken }) => {
@@ -50,8 +50,8 @@ export default class MainMini extends Component {
         isVerified,
         verifiedStatus,
         verificationInfo,
-        isOpenStore,
-        isOpenLiveProgram,
+        showWindow,
+        isSupportLive,
         baseModifiedAt // 账号基本信息修改时间
       },
       strategyInfo : {

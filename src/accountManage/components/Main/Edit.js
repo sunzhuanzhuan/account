@@ -89,6 +89,7 @@ export default class MainEdit extends Component {
     values.base['followerCountScreenshotUrl'] = uploadUrl(values.base['followerCountScreenshotUrl']);
     return values;
   };
+
   submit = (e) => {
     e && e.preventDefault();
     const { actions, form, reload, onModuleStatusChange } = this.props
@@ -204,8 +205,8 @@ export default class MainEdit extends Component {
           </h4>
           <div className='subclass-content'>
             <Verified {...fieldProps} options={asyncOptions.verified} />
-            {asyncVisibility.isOpenStore && <OpenStore {...fieldProps} />}
-            {asyncVisibility.isOpenLiveProgram && <OpenLiveProgram {...fieldProps} />}
+            {asyncVisibility.showWindow && <OpenStore {...fieldProps} />}
+            {asyncVisibility.isSupportLive && <OpenLiveProgram {...fieldProps} />}
           </div>
         </li>
       </ul>
