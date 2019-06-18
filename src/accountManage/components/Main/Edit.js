@@ -2,7 +2,7 @@
  * 账号基本信息 - 编辑态
  */
 import React, { Component } from "react"
-import { Button, Divider, Form, Modal } from 'antd'
+import { Button, Divider, Form, message, Modal } from 'antd'
 import { WBYPlatformIcon } from 'wbyui'
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
 import {
@@ -22,6 +22,7 @@ import {
 import { Fetch } from "@/accountManage/components/packageComponents";
 import { configItemKeyToField, modulesMap } from "@/accountManage/constants/packageConfig";
 import update from 'immutability-helper'
+import { uploadUrl } from "@/accountManage/util";
 
 @Form.create()
 export default class MainEdit extends Component {
@@ -33,20 +34,15 @@ export default class MainEdit extends Component {
       asyncVisibility: {},
       asyncOptions: {
         verified: []
-      }
+      },
+      submitLoading: false
     }
+    // TODO: window注入组件
+    window.__UpdateAccountReactComp__.main = this
   }
 
   componentDidMount() {
-    const { actions, form, data: { account } } = this.props
-    // window注入form对象
-    if (window._updataForms) {
-      window._updataForms.main = form
-    } else {
-      window._updataForms = {
-        main: form
-      }
-    }
+    const { actions, data: { account } } = this.props
     // 获取上传图片token
     this.props.actions.getNewToken().then(({ data: authToken }) => {
       this.setState({ authToken })
@@ -83,12 +79,34 @@ export default class MainEdit extends Component {
     })
   }
 
+  // 处理提交数据
+  handleSubmitValues = (values) => {
+    const { data: { account } } = this.props;
+    values['id'] = account.id;
+    // values.base['platformId'] = platformId;
+    values.base['avatarUrl'] = uploadUrl(values.base['avatarUrl']);
+    values.base['qrCodeUrl'] = uploadUrl(values.base['qrCodeUrl']);
+    values.base['followerCountScreenshotUrl'] = uploadUrl(values.base['followerCountScreenshotUrl']);
+    return values;
+  };
   submit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFieldsAndScroll((err, fieldsValue) => {
-      console.log('Received values of form: ', fieldsValue);
-      if (err) {
-        return;
+    e && e.preventDefault();
+    const { actions, form, reload, onModuleStatusChange } = this.props
+    this.setState({ submitLoading: true });
+    form.validateFieldsAndScroll((err, fieldsValue) => {
+      if (!err) {
+        let values = this.handleSubmitValues(fieldsValue)
+        actions.updateBaseInfo(values).then(() => {
+          window.oldSnsUniqueId = values.base.snsUniqueId
+          // reload(() => onModuleStatusChange('view'))
+          message.success('更新账号成功');
+        }).finally(() => {
+          this.setState({
+            submitLoading: false
+          });
+        });
+      } else {
+        this.setState({ submitLoading: false });
       }
     });
   }
@@ -110,7 +128,8 @@ export default class MainEdit extends Component {
     const {
       authToken,
       asyncVisibility,
-      asyncOptions
+      asyncOptions,
+      submitLoading
     } = this.state
     const left = <div className='wrap-panel-left-content'>
       <span style={{
@@ -129,7 +148,7 @@ export default class MainEdit extends Component {
         <Button style={{ marginRight: '10px' }} type='primary' ghost
           onClick={() => this.setState({ fetchModal: true })}>抓取</Button>
       }
-      <Button htmlType='submit' type='primary'>保存</Button>
+      <Button htmlType='submit' type='primary' loading={submitLoading}>保存</Button>
     </div>;
 
     return <Form className='module-item-container' onSubmit={this.submit} colon={false}>

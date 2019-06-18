@@ -30,20 +30,12 @@ export default class Cooperation extends Component {
     return null
   }
 
-  reload = (cb) => {
-    const { getDetail } = this.props.actions
-    getDetail().finally(() => {
-      cb && cb()
-    })
-
-  }
-
   handleChange = (moduleStatus) => {
     this.props.actions.setModuleStatus({ 'cooperation': moduleStatus })
   }
 
   render() {
     const Component = statusComponent(this.state.moduleStatus)
-    return <Component {...this.props} onModuleStatusChange={this.handleChange} reload={this.reload}/>
+    return <Component {...this.props} onModuleStatusChange={this.handleChange}/>
   }
 }

@@ -106,7 +106,7 @@ export default class Fetch extends React.Component {
       }
       // 重置form
       Object.keys(data.data).forEach(key => {
-        window._updataForms.main.resetFields("base." + key)
+        window.__UpdateAccountReactComp__.main.props.resetFields("base." + key)
       })
       let forms = Object.values((window.updateForms || {})) // 维护页分段提交form
       let singleForm = form // 入库页单个提交form

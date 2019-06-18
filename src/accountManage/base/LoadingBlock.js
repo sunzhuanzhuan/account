@@ -14,7 +14,7 @@ const LoadingBlock = props => {
     return <Alert
       message="错误!"
       description={props.error.info || '未知错误!'}
-      type="warning"
+      type={props.error.type || "warning"}
       showIcon
     />
   } else if(props.loading){

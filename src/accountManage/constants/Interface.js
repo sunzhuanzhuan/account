@@ -38,12 +38,12 @@ export default {
   },
   account: {
     getDetail: prefix + '/account/v1_1/getDetail',
-    updateBaseInfo: prefix + 'account/v1_1/updateBaseInfo',
-    updateCooperationInfo: prefix + 'account/v1_1/updateCooperationInfo',
-    updateContentInfo: prefix + 'account/v1_1/updateContentInfo',
-    updateStrategyInfo: prefix + 'account/v1_1/updateStrategyInfo',
-    updateOtherInfo: prefix + 'account/v1_1/updateOtherInfo',
-    updatePersonalInfo: prefix + 'account/v1_1/updatePersonalInfo',
+    updateBaseInfo: prefix + '/account/v1_1/updateBaseInfo',
+    updateCooperationInfo: prefix + '/account/v1_1/updateCooperationInfo',
+    updateContentInfo: prefix + '/account/v1_1/updateContentInfo',
+    updateStrategyInfo: prefix + '/account/v1_1/updateStrategyInfo',
+    updateOtherInfo: prefix + '/account/v1_1/updateOtherInfo',
+    updatePersonalInfo: prefix + '/account/v1_1/updatePersonalInfo',
 
   },
   config: {
