@@ -38,11 +38,11 @@ class SearchSelect extends Component {
   static getDerivedStateFromProps(nextProps) {
     if ('value' in nextProps) {
       let chinaCheckedKeys = [], otherCheckedKeys = [];
-      (nextProps.value || []).forEach(item => {
-        if ((item.id + '').length > 3) {
-          chinaCheckedKeys.push(item.id)
+      (nextProps.value || []).forEach(areaId => {
+        if ((areaId + '').length > 3) {
+          chinaCheckedKeys.push(areaId)
         } else {
-          otherCheckedKeys.push(item.id)
+          otherCheckedKeys.push(areaId)
         }
       })
       // let value = (nextProps.value || []).map(item => item.id)
@@ -60,7 +60,7 @@ class SearchSelect extends Component {
     } = this.props.areas
     const onChange = this.props.onChange;
     if (onChange) {
-      changedValue = changedValue.map(key => areasMap[key])
+      // changedValue = changedValue.map(key => areasMap[key])
       onChange(changedValue);
     }
   }
@@ -172,7 +172,7 @@ class SearchSelect extends Component {
         }
         return <TreeNode key={item.id} title={title} textKey={item.areaName} />;
       });
-    return <div className='popup-search-tree-select'>
+    return chinaAreas.length > 0 &&  <div className='popup-search-tree-select'>
       <header>
         <Search placeholder='搜索' onChange={this.onChange} />
       </header>
@@ -268,9 +268,10 @@ export default class AreasTreeSelect extends Component {
   }
 
   onPopChange = (value) => {
-    this.setState({ value }, () => {
-      this.triggerChange(value)
-    })
+    if (!('value' in this.props)) {
+      this.setState({ value });
+    }
+    this.triggerChange(value)
   }
 
 
@@ -280,8 +281,8 @@ export default class AreasTreeSelect extends Component {
     const { areas: { areasMap } } = this.props
     return <div>
       {
-        value.map((id, index) => {
-          const area = areasMap[id]
+        value.map((item, index) => {
+          const area = areasMap[item] || {}
           return <CheckTag checked key={area.id}>
             {area.areaName}
             <Icon
