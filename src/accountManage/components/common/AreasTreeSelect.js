@@ -61,7 +61,6 @@ class SearchSelect extends Component {
     const onChange = this.props.onChange;
     if (onChange) {
       changedValue = changedValue.map(key => areasMap[key])
-
       onChange(changedValue);
     }
   }

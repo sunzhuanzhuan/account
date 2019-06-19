@@ -22,7 +22,6 @@ export default class CooperationView extends Component {
     Object.keys(visibility.advertisingFields).length === 0 &&
     actions.getAdvertisingFieldConfig({ accountId: account.id })
   }
-   // TODO: 显示态配置项获取, 按钮loading
   render() {
     const {
       data,

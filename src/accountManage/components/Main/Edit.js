@@ -33,7 +33,7 @@ export default class MainEdit extends Component {
       fetchModal: false,
       submitLoading: false
     }
-    // TODO: window注入组件
+    // window注入组件
     window.__UpdateAccountReactComp__.main = this
   }
 

@@ -95,7 +95,7 @@ export default class PriceEdit extends Component {
     })) : [];
     const right = <div className='wrap-panel-right-content'>
       <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>
-      <Button htmlType='submit' type='primary'>保存</Button>
+      <Button htmlType='submit' type='primary' loading={this.state.submitLoading}>保存</Button>
     </div>;
 
     return <Form className='module-item-container' onSubmit={this.submit} colon={false}>
