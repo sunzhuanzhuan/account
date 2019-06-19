@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import LookIndex from "./LookIndex";
 import { PopoverFormat } from "../base/TitleAndDecide";
 import "./HeadInfo.less"
-import { Avatar, Button, Divider, Empty, Icon } from 'antd';
+import { Avatar, Button, Divider, Empty, Icon, Popover } from 'antd';
 import MultiClamp from 'react-multi-clamp';
 import { platformView } from "../../accountManage/constants/platform";
 import FieldMap from "../constants/FieldMap";
@@ -90,7 +90,7 @@ class HeadInfo extends Component {
             <div className='release-info'>
 
               <div className='release-info-box'>
-                {skuList.length > 0 ? skuList.slice(0, 4).map((one, index) => <OneRelease key={one.skuId} title={one.skuTypeName} content={one.openQuotePrice} last={one.unitPrice} isDefense={index == 0} />) :
+                {skuList.length > 0 ? skuList.slice(0, 4).map((one, index) => <OneRelease key={one.skuId} title={one.skuTypeName} content={one.openQuotePrice} last={one.unitPrice} isDefense={index == 0 && one.isPreventShielding == 1} />) :
                   <Empty style={{ margin: '0px auto' }} />}
               </div>
               <div style={{ textAlign: 'center' }}>
@@ -129,7 +129,11 @@ const OneType = ({ title, content, last, color }) => {
 }
 const OneRelease = ({ title = '-', content, last = '-', isDefense }) => {
   return <div className='release-info-three'>
-    <div className='title'>{title}{isDefense ? <span className='defense'>防</span> : null}</div>
+    <div className='title'>{title}{isDefense ?
+      <Popover content='该参考报价为含防屏蔽的报价'>
+        <span className='defense'>防</span>
+      </Popover>
+      : null}</div>
     <div className='two-line-flex'>
       <div className='content'>{`${content ? '¥' + numeral(content).format('0,0') : '-'}`}</div>
       <PopoverFormat text={<div className='last'>{last}元/千粉丝</div>} content='平均每千粉丝单价' />
