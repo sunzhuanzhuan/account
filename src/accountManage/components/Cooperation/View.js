@@ -12,16 +12,17 @@ import CooperationCasesView from "@/accountManage/components/common/CooperationC
 export default class CooperationView extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      asyncVisibility: {
-        isAcceptHardAd: true,
-        isAcceptProductUse: true,
-        refuseBrands: true,
-        manuscriptModificationLimit: true
-      }
-    }
+    this.state = {}
   }
-
+  componentDidMount() {
+    const { actions, data: { account, visibility } } = this.props
+    // 获取字段配置项 - 合作须知/广告服务
+    Object.keys(visibility.cooperateNoticeFields).length === 0 &&
+    actions.getCooperateNoticeFieldConfig({ accountId: account.id })
+    Object.keys(visibility.advertisingFields).length === 0 &&
+    actions.getAdvertisingFieldConfig({ accountId: account.id })
+  }
+   // TODO: 显示态配置项获取, 按钮loading
   render() {
     const {
       data,
@@ -49,8 +50,12 @@ export default class CooperationView extends Component {
       }
     } = data.account || {}
     const {
-      asyncVisibility,
-    } = this.state
+      visibility
+    } = data
+    const asyncVisibility = {
+      ...visibility.cooperateNoticeFields,
+      ...visibility.advertisingFields
+    }
     const right = <div className='wrap-panel-right-content'>
       <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>
       <Button type='primary' onClick={() => onModuleStatusChange('edit')}>编辑</Button>

@@ -30,7 +30,6 @@ export default class PersonalEdit extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      asyncVisibility: {},
       submitLoading: false
     }
     // window注入组件

@@ -14,15 +14,7 @@ export default class MainMini extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      authToken: '',
-      asyncVisibility: {
-        isSupportLive: true,
-        showWindow: true
-      }
     }
-    props.actions.getNewToken().then(({ data: authToken }) => {
-      this.setState({ authToken })
-    })
   }
 
   render() {

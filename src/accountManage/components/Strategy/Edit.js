@@ -16,12 +16,6 @@ export default class StrategyEdit extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      asyncVisibility: {},
-      asyncOptions: {
-        forms: [],
-        features: [],
-        styles: []
-      },
       submitLoading: false
     }
     // window注入组件
@@ -71,10 +65,6 @@ export default class StrategyEdit extends Component {
       isFamous,
       strategyInfo : { modifiedAt} // 信息修改时间
     } = data.account || {}
-    const {
-      asyncVisibility,
-      asyncOptions
-    } = this.state
     const right = <div className='wrap-panel-right-content'>
       <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>
       <Button htmlType='submit' type='primary'>保存</Button>

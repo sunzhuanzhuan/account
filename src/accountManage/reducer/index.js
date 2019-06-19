@@ -3,6 +3,7 @@ import { handleActions, combineActions } from 'redux-actions';
 import { allEditables } from '../constants/editables';
 import account from './account'
 import options from './options'
+import visibility from './visibility'
 
 
 import {
@@ -256,6 +257,7 @@ export const areasHotCity = handleActions({
 export default combineReducers({
   account,
   options,
+  visibility,
   adminAccount,
   areasHotCity,
   accountInfo,

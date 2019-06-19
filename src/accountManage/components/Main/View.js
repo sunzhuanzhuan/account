@@ -16,28 +16,14 @@ export default class MainView extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      asyncVisibility: {}
     }
   }
 
   componentDidMount() {
-    const { actions, data: { account } } = this.props
+    const { actions, data: { account, visibility } } = this.props
     // 获取字段配置项 - 账号特权
-    actions.getAccountFieldConfig({ accountId: account.id }).then(({ data }) => {
-      this.setState(update(this.state, {
-        asyncVisibility: {
-          verified: {
-            $set: data.reduce((obj, item) => {
-              let key = configItemKeyToField[item.itemKey]
-              if (key) {
-                obj[key] = true
-              }
-              return obj
-            }, this.state.asyncVisibility)
-          }
-        }
-      }))
-    })
+    Object.keys(visibility.accountFields).length === 0 &&
+    actions.getAccountFieldConfig({ accountId: account.id })
   }
 
   render() {
@@ -69,8 +55,9 @@ export default class MainView extends Component {
       }
     } = data.account || {}
     const {
-      asyncVisibility
-    } = this.state
+      visibility
+    } = data
+    const asyncVisibility = visibility.accountFields
     const left = <div className='wrap-panel-left-content'>
       <span style={{
         verticalAlign: "middle",

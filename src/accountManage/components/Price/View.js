@@ -21,7 +21,6 @@ export default class PriceView extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      asyncVisibility: {}
     }
   }
 

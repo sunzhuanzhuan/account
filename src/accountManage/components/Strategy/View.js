@@ -12,7 +12,6 @@ export default class StrategyView extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      asyncVisibility: {}
     }
   }
 

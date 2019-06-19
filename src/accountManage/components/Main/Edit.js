@@ -31,7 +31,6 @@ export default class MainEdit extends Component {
     this.state = {
       authToken: '',
       fetchModal: false,
-      asyncVisibility: {},
       submitLoading: false
     }
     // TODO: window注入组件
@@ -39,27 +38,15 @@ export default class MainEdit extends Component {
   }
 
   componentDidMount() {
-    const { actions, data: { account, options } } = this.props
+    const { actions, data: { account, options, visibility } } = this.props
     // 获取上传图片token
     this.props.actions.getNewToken().then(({ data: authToken }) => {
       this.setState({ authToken })
     })
+
     // 获取字段配置项 - 账号特权
-    actions.getAccountFieldConfig({ accountId: account.id }).then(({ data }) => {
-      this.setState(update(this.state, {
-        asyncVisibility: {
-          verified: {
-            $set: data.reduce((obj, item) => {
-              let key = configItemKeyToField[item.itemKey]
-              if (key) {
-                obj[key] = true
-              }
-              return obj
-            }, this.state.asyncVisibility)
-          }
-        }
-      }))
-    })
+    Object.keys(visibility.accountFields).length === 0 &&
+    actions.getAccountFieldConfig({ accountId: account.id })
 
     // 获取配置项 - 认证类型
     options.verified.length === 0 && actions.getVerifiedType({ accountId: account.id })
@@ -114,12 +101,13 @@ export default class MainEdit extends Component {
     } = data.account.base || {}
     const {
       authToken,
-      asyncVisibility,
       submitLoading
     } = this.state
     const {
       options: asyncOptions,
+      visibility
     } = data
+    const asyncVisibility = visibility.accountFields
     const left = <div className='wrap-panel-left-content'>
       <span style={{
         verticalAlign: "middle",

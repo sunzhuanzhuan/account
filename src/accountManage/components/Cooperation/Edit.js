@@ -19,13 +19,16 @@ import { Button, Divider, Form, message } from "antd";
 import update from "immutability-helper";
 import { configItemKeyToField } from "@/accountManage/constants/packageConfig";
 import { uploadUrl } from "@/accountManage/util";
+import visibility, {
+  advertisingFields,
+  cooperateNoticeFields
+} from "@/accountManage/reducer/visibility";
 
 @Form.create()
 export default class CooperationEdit extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      asyncVisibility: {},
       submitLoading: false
     }
     // window注入组件
@@ -33,30 +36,13 @@ export default class CooperationEdit extends Component {
   }
 
   componentDidMount() {
-    const { actions, form, data: { account, options } } = this.props
+    const { actions, data: { account, options, visibility } } = this.props
     // 获取字段配置项 - 合作须知/广告服务
-    Promise.all([
-      actions.getCooperateNoticeFieldConfig({ accountId: account.id }),
-      actions.getAdvertisingFieldConfig({ accountId: account.id })
-    ]).then((data) => {
-      data = data.reduce((ary, item) => {
-        ary = ary.concat(item.data)
-        return ary
-      }, [])
-      this.setState(update(this.state, {
-        asyncVisibility: {
-          verified: {
-            $set: data.reduce((obj, item) => {
-              let key = configItemKeyToField[item.itemKey]
-              if (key) {
-                obj[key] = true
-              }
-              return obj
-            }, this.state.asyncVisibility)
-          }
-        }
-      }))
-    })
+    Object.keys(visibility.cooperateNoticeFields).length === 0 &&
+    actions.getCooperateNoticeFieldConfig({ accountId: account.id })
+    Object.keys(visibility.advertisingFields).length === 0 &&
+    actions.getAdvertisingFieldConfig({ accountId: account.id })
+
     // 获取配置项 - 可提供的广告服务
     options.adServiceItems.length === 0 && actions.getAdvertisingOfferServices({ accountId: account.id })
     // 获取配置项 - 可选择的平台
@@ -107,12 +93,16 @@ export default class CooperationEdit extends Component {
       cooperation: { modifiedAt } // 信息修改时间
     } = data.account || {}
     const {
-      asyncVisibility,
       submitLoading
     } = this.state
     const {
       options: asyncOptions,
+      visibility
     } = data
+    const asyncVisibility = {
+      ...visibility.cooperateNoticeFields,
+      ...visibility.advertisingFields
+    }
     const right = <div className='wrap-panel-right-content'>
       <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>
       <Button htmlType='submit' type='primary' loading={submitLoading}>保存</Button>
