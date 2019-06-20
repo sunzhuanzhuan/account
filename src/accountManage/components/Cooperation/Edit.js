@@ -39,12 +39,12 @@ export default class CooperationEdit extends Component {
     const { actions, data: { account, options, visibility } } = this.props
     // 获取字段配置项 - 合作须知/广告服务
     Object.keys(visibility.cooperateNoticeFields).length === 0 &&
-    actions.getCooperateNoticeFieldConfig({ accountId: account.id })
+    actions.getCooperateNoticeFieldConfig({ platformId: account.base.platformId })
     Object.keys(visibility.advertisingFields).length === 0 &&
-    actions.getAdvertisingFieldConfig({ accountId: account.id })
+    actions.getAdvertisingFieldConfig({ platformId: account.base.platformId })
 
     // 获取配置项 - 可提供的广告服务
-    options.adServiceItems.length === 0 && actions.getAdvertisingOfferServices({ accountId: account.id })
+    options.adServiceItems.length === 0 && actions.getAdvertisingOfferServices({ platformId: account.base.platformId })
     // 获取配置项 - 可选择的平台
     options.platforms.length === 0 && actions.getAvailablePlatformList()
   }

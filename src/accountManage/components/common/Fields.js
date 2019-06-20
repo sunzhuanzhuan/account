@@ -702,6 +702,7 @@ export const Verified = (props) => {
       <FormItem {...layout.half} label='认证说明'>
         {getFieldDecorator('base.verificationInfo', {
           validateFirst: true,
+          validateTrigger: 'onBlur',
           rules: [
             { required: true, message: '请填写认证说明' },
             { pattern: /.{2,40}/, message: '请输入2~40字的认证原因' },
@@ -810,8 +811,8 @@ export const DirectItems = (props) => {
     data: { account }
   } = props;
   const {
-    isAcceptHardAd,
-    isAcceptProductUse
+    isAcceptHardAd = 1,
+    isAcceptProductUse = 1
   } = account.cooperation;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='拒绝项'>
@@ -1115,6 +1116,7 @@ export const PostPlatform = (props) => {
       <FormItem {...layout.half} label='备注'>
         {getFieldDecorator('cooperation.multiPlatformOriginalPostTips', {
           validateFirst: true,
+          validateTrigger: 'onBlur',
           rules: [
             { pattern: /^[\u4e00-\u9fa5a-zA-Z]{0,200}$/, message: '分发平台备注请输入中英文, 最多可输入200个字' },
             { validator: checkForSensitiveWord, name: '分发平台备注' }

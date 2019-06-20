@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { bindActionCreators } from "redux";
-import { Tabs, Anchor, Button } from 'antd'
+import { Tabs, Anchor, Button, message } from 'antd'
 import { connect } from "react-redux";
 import * as action from '../actions/index'
 import * as commonAction from '@/actions/index'
@@ -10,6 +10,7 @@ import { tabs, modulesMap, platformToModules } from '../constants/packageConfig'
 import Module from "@/accountManage/components/common/Module";
 import ImproveStatistics from "@/accountManage/components/common/ImproveStatistics";
 import LoadingBlock from "@/accountManage/base/LoadingBlock";
+import { sensors } from "@/util/sensor/sensors";
 
 const { TabPane } = Tabs;
 const { Link } = Anchor;
@@ -24,9 +25,10 @@ class UpdatePageForPackage extends Component {
     this.state = {
       active: active || (addQuote ? '2' : '1'),
       accountId: account_id,
-      platformId: platformId || '1',
+      platformId: parseInt(platformId) || 1,
       fullLoading: true,
-      isError: false // { info: 'ssss' }
+      isError: false,// { info: 'ssss' }
+      submitLoading: false
     }
     // 创建更新form容器
     window.__UpdateAccountReactComp__ = {}
@@ -41,6 +43,57 @@ class UpdatePageForPackage extends Component {
 
   allSubmit = () => {
     // TODO:一键提交
+    const {
+      updateBaseInfo,
+      updateCooperationInfo,
+      updateContentInfo,
+      updateStrategyInfo,
+      updateOtherInfo,
+      updatePersonalInfo
+    } = this.props.actions
+    let actionsMap = {
+      'main': updateBaseInfo,
+      'cooperation': updateCooperationInfo,
+      'content': updateContentInfo,
+      'strategy': updateStrategyInfo,
+      'other': updateOtherInfo,
+      'personal': updatePersonalInfo
+    }
+    let comps = [], actions = [];
+    Object.entries(window.__UpdateAccountReactComp__).forEach(([key, value]) => {
+      if (value) {
+        comps.push(value)
+        actions.push(actionsMap[key])
+      }
+    })
+    const verifies = comps.map((c) => {
+      return new Promise((resolve, reject) => {
+        c.props.form.validateFieldsAndScroll((err, fieldsValue) => {
+          if (!err) resolve(c.handleSubmitValues(fieldsValue))
+          reject(err)
+        })
+      })
+    })
+    Promise.all(verifies).then(data => {
+      this.setState({
+        submitLoading: true
+      })
+      let updates = actions.map((action, index) => action(data[index]))
+      Promise.all(updates).then((data) => {
+        this.setState({
+          submitLoading: false
+        })
+        message.success(data.message || '更新账号成功', 1.5, () => this.reload())
+
+      }).finally(() => {
+        this.setState({
+          submitLoading: false
+        })
+      })
+    }).catch(err => {
+      console.error('一键提交:', err);
+      message.error('信息填写不合法, 请重新填写')
+    })
   }
 
   componentDidMount() {
@@ -50,10 +103,6 @@ class UpdatePageForPackage extends Component {
         isError: { info: '参数错误: 没有账号ID' }
       })
     }
-    // 根据account_id获取账号信息, 错误error, 平台不对修改平台
-    /* setTimeout(() => {
-       window.location.replace('/account/manage/package/' + 9 + '?account_id=' + this.state.accountId)
-     }, 2000);*/
     const { actions } = this.props
     actions.getDetail({ accountId: this.state.accountId }).then(({ data }) => {
       // 获取主账号信息
@@ -77,7 +126,8 @@ class UpdatePageForPackage extends Component {
     const {
       active,
       fullLoading,
-      isError
+      isError,
+      submitLoading
     } = this.state
     const activeTab = tabs[active - 1] || {}
     const { account: { perfectionDegree, base } } = this.props.accountManage
@@ -90,6 +140,11 @@ class UpdatePageForPackage extends Component {
         let perKey = modulesMap[key].perfectionDegreeKey
         return (perKey && perfectionDegree[perKey] < 100)
       })
+    }
+    // 根据account_id获取账号信息, 错误error, 平台不对修改平台
+    if (base.platformId && base.platformId !== this.state.platformId) {
+      window.location.href = window.location.href.replace(/\/(\d)\?/i, `/${base.platformId}?`)
+      return null
     }
     return (!fullLoading && !isError) ? <div className='update-package-page-container'>
       <h2>账号维护</h2>
@@ -151,13 +206,17 @@ class UpdatePageForPackage extends Component {
                     <div className='nav-link-item-wrapper'>
                       <span>{title}</span>
                       {perfectionDegreeKey &&
-                      <b>{perfectionDegree[perfectionDegreeKey] > 0 ? `已完善 ${perfectionDegree[perfectionDegreeKey]}%` : '未完善'}</b>}
+                      <b>{
+                        perfectionDegree[perfectionDegreeKey] > 0 ?
+                          `已完善 ${perfectionDegree[perfectionDegreeKey]}%` :
+                          '未完善'
+                      }</b>}
                     </div>
                   } />)
               }
-              <div className='nav-box-footer'>
-                <Button type='primary' block onClick={this.allSubmit}>一键提交</Button>
-              </div>
+              {process.env.REACT_APP_CLIENT === 'NB' && <div className='nav-box-footer'>
+                <Button type='primary' loading={submitLoading} block onClick={this.allSubmit}>一键提交</Button>
+              </div>}
             </Anchor>
           </div> : null
         }

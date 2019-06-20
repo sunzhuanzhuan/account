@@ -23,7 +23,7 @@ export default class MainView extends Component {
     const { actions, data: { account, visibility } } = this.props
     // 获取字段配置项 - 账号特权
     Object.keys(visibility.accountFields).length === 0 &&
-    actions.getAccountFieldConfig({ accountId: account.id })
+    actions.getAccountFieldConfig({ platformId: account.base.platformId })
   }
 
   render() {

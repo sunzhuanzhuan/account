@@ -95,9 +95,9 @@ export const {
 } = createHttpAction('getCountryList', Interface.common.getCountryList);
 // 获取职业列表
 export const {
-  getProfession,
-  getProfession_success,
-} = createHttpAction('getProfession', Interface.config.getProfession);
+  getOccupation,
+  getOccupation_success,
+} = createHttpAction('getOccupation', Interface.config.getOccupation);
 // 获取宠物列表
 export const {
   getPet,

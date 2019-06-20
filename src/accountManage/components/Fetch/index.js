@@ -106,9 +106,10 @@ export default class Fetch extends React.Component {
       }
       // 重置form
       Object.keys(data.data).forEach(key => {
-        window.__UpdateAccountReactComp__.main.props.resetFields("base." + key)
+        console.log('=====', key);
+        window.__UpdateAccountReactComp__.main.props.form.resetFields("base." + key)
       })
-      let forms = Object.values((window.updateForms || {})) // 维护页分段提交form
+      /*let forms = Object.values((window.updateForms || {})) // 维护页分段提交form
       let singleForm = form // 入库页单个提交form
       if (singleForm) {
         Object.keys(data.data).forEach(key => {
@@ -119,7 +120,8 @@ export default class Fetch extends React.Component {
         Object.keys(data.data).forEach(key => {
           forms.forEach(form => form.resetFields(key))
         })
-      }
+      }*/
+      console.log('xxxxxx');
       message.success('获取信息成功！')
     }).catch(() => {
       this.setState({

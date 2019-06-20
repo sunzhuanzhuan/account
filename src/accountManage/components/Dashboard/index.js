@@ -30,10 +30,10 @@ export default class Dashboard extends Component {
     const {
       snbt,
       trueFansRate,
-      sexs,
-      ages,
-      areas,
-      interests,
+      sexs = [],
+      ages = [],
+      areas = [],
+      interests = [],
       snbtModifiedTime,
       kolModifiedTime,
       featureModifiedTime
@@ -92,9 +92,9 @@ export default class Dashboard extends Component {
                 justifyContent: "space-around"
               }}>
                 <PercentageChart title='性别' value={sexs} colors={['#4880ff', '#f4525b']} />
-                <PercentageChart title='年龄' value={ages} colors={['#4880ff', '#ffc400']} />
-                <PercentageChart title='地域' value={areas} colors={['#4880ff', '#ffc400', '#f4525b']} />
-                <PercentageChart title='兴趣' value={interests} colors={['#f4525b', '#ffc400', '#23cab6']} />
+                <PercentageChart title='年龄' value={ages.slice(0,3)} colors={['#4880ff', '#ffc400']} />
+                <PercentageChart title='地域' value={areas.slice(0,3)} colors={['#4880ff', '#ffc400', '#f4525b']} />
+                <PercentageChart title='兴趣' value={interests.slice(0,3)} colors={['#f4525b', '#ffc400', '#23cab6']} />
               </div>
             </div>
           </div>

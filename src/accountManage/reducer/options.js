@@ -9,7 +9,7 @@ import {
   getContentFeature_success,
   getContentStyle_success,
   getCountryList_success,
-  getProfession_success,
+  getOccupation_success,
   getPet_success,
   getSkill_success,
 } from '../actions/package'
@@ -72,7 +72,7 @@ export const nationality = handleActions({
   }
 }, [])
 export const occupations = handleActions({
-  [combineActions(getProfession_success)]: (state, action) => {
+  [combineActions(getOccupation_success)]: (state, action) => {
     const data = action.payload.data
     return data.map(item => ({ value: item.itemKey, label: item.itemValue }))
   }

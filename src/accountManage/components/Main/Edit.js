@@ -46,10 +46,10 @@ export default class MainEdit extends Component {
 
     // 获取字段配置项 - 账号特权
     Object.keys(visibility.accountFields).length === 0 &&
-    actions.getAccountFieldConfig({ accountId: account.id })
+    actions.getAccountFieldConfig({ platformId: account.base.platformId })
 
     // 获取配置项 - 认证类型
-    options.verified.length === 0 && actions.getVerifiedType({ accountId: account.id })
+    options.verified.length === 0 && actions.getVerifiedType({ platformId: account.base.platformId })
   }
 
   // 处理提交数据
@@ -72,7 +72,7 @@ export default class MainEdit extends Component {
         let values = this.handleSubmitValues(fieldsValue)
         actions.updateBaseInfo(values).then(() => {
           window.oldSnsUniqueId = values.base.snsUniqueId
-          // reload(() => onModuleStatusChange('view'))
+          reload(() => onModuleStatusChange('view'))
           message.success('更新账号成功');
         }).finally(() => {
           this.setState({
@@ -159,7 +159,7 @@ export default class MainEdit extends Component {
           </h4>
           <div className='subclass-content'>
             <FollowerCount {...fieldProps} disabled={configurePlatform.configure.disabledFollowersCount} />
-            <FollowerCountScreenshotUrl {...fieldProps} authToken={authToken} />
+            {configurePlatform.visibility.fields.isFansNumberImg && <FollowerCountScreenshotUrl {...fieldProps} authToken={authToken} />}
             <FollowerCountVerificationStatus {...fieldProps} />
             <Divider dashed />
             <Level {...fieldProps} options={configurePlatform.configure.levelText} />

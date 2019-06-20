@@ -43,7 +43,7 @@ export default class PersonalEdit extends Component {
     // 获取配置项 - 行业列表
     options.industry.length === 0 && actions.getIndustryListForAccount()
     // 获取配置项 - 职业列表
-    options.occupations.length === 0 && actions.getProfession()
+    options.occupations.length === 0 && actions.getOccupation()
     // 获取配置项 - 宠物列表
     options.pets.length === 0 && actions.getPet()
     // 获取配置项 - 技能列表
@@ -54,7 +54,7 @@ export default class PersonalEdit extends Component {
   handleSubmitValues = (values) => {
     const { data: { account } } = this.props;
     const { pets, skills } = values['_client']
-    const { shipping, area = {} } = values['personalInfo']
+    const { shipping = {}, area = {} } = values['personalInfo']
     let value = {
       id: account.id,
       personalInfo: {
@@ -64,7 +64,7 @@ export default class PersonalEdit extends Component {
         customPets: pets.custom,
         customSkills: skills.custom,
         area: undefined,
-        shipping: shipping ? {
+        shipping: Object.keys(shipping).length > 0 ?{
           "receiver": shipping.receiver,
           "phoneNumber": shipping.phoneNumber,
           "countryId": shipping.country.id || 0,

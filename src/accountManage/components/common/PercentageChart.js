@@ -1,6 +1,5 @@
 import React from "react"
-import {} from 'antd'
-
+import numeral from '@/util/numeralExpand'
 const PercentageChart = props => {
   const { title, value = [], colors = ["red"] } = props
   return <div className='percentage-chart-container' style={props.style}>
@@ -13,14 +12,14 @@ const PercentageChart = props => {
           <div
             key={name}
             className='column-item'
-            style={{height: (value || '0') + '%', backgroundColor: colors[n] || colors[0]}}
+            style={{height: numeral(value).format('0%'), backgroundColor: colors[n] || colors[0]}}
           />)
       }
     </main>
     {
       value.length ? <footer>
         <div className='value'>
-          {value.map(({ value }) => value + '%').join(' / ')}
+          {value.map(({ value }) => numeral(value).format('0%')).join(' / ')}
         </div>
         <div className='legend'>
           {

@@ -18,9 +18,9 @@ export default class CooperationView extends Component {
     const { actions, data: { account, visibility } } = this.props
     // 获取字段配置项 - 合作须知/广告服务
     Object.keys(visibility.cooperateNoticeFields).length === 0 &&
-    actions.getCooperateNoticeFieldConfig({ accountId: account.id })
+    actions.getCooperateNoticeFieldConfig({ platformId: account.base.platformId })
     Object.keys(visibility.advertisingFields).length === 0 &&
-    actions.getAdvertisingFieldConfig({ accountId: account.id })
+    actions.getAdvertisingFieldConfig({ platformId: account.base.platformId })
   }
   render() {
     const {
@@ -73,8 +73,8 @@ export default class CooperationView extends Component {
                 {asyncVisibility.isAcceptHardAd && asyncVisibility.isAcceptProductUse &&
                 <FieldView width={130} title="拒绝项" value={
                   <div>
-                    <span>{isAcceptHardAd === 1 ? '接硬广' : '不接受硬广'}</span>、
-                    <span>{isAcceptProductUse === 1 ? '接受产品试用' : '不接受产品试用'}</span>
+                    <span>{isAcceptHardAd === 2 ? '不接受硬广' : '接硬广'}</span>、
+                    <span>{isAcceptProductUse === 2 ? '不接受产品试用' : '接受产品试用'}</span>
                   </div>
                 } />}
                 {asyncVisibility.refuseBrands &&

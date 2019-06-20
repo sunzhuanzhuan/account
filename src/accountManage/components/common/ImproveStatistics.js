@@ -18,7 +18,7 @@ export default class ImproveStatistics extends Component {
   }
 
   render() {
-    const { percent = 33, moduleId } = this.props
+    const { percent = 0, moduleId } = this.props
     const done = percent >= 100
     return <div className='improve-statistics-wrapper'>
       <div className='header-title'>账号完善度</div>

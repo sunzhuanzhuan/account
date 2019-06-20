@@ -18,8 +18,8 @@ class AccountEnterIndex extends Component {
 		return (
 			<div className='account-manage' id='account-manage-container'>
 				<Route path='/account/manage/add' component={AddPage} />
-				<Route path='/account/manage/update' component={UpdatePage} />
-				<Route path='/account/manage/package/:platformId' component={UpdatePageForPackage} />
+				{/*<Route path='/account/manage/update' component={UpdatePage} />*/}
+				<Route path='/account/manage/update/:platformId' component={UpdatePageForPackage} />
 			</div>
 		);
 	}

@@ -122,7 +122,14 @@ export const perfectionDegree = handleActions({
 			...perfectionDegree
 		}
 	}
-}, {})
+}, {
+  "base": 0,
+  "sku": 0,
+  "cooperation": 0,
+  "content": 0,
+  "personal": 0,
+  "overall": 0,
+})
 // 完整响应信息
 export const _response = handleActions({
 	[combineActions(getDetail_success)]: (state, action) => {

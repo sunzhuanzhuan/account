@@ -7,7 +7,7 @@ export default {
     getAllClassifyInfos: '/operator-gateway/common/v1/getAllClassifyInfos',
     getFileRealPath: '/operator-gateway/common/v1/getRealDownLoadPath',
     platformList: '/operator-gateway/common/v1/platformList',
-    checkSensitiveWord: '/operator-gateway/account/v1_1/checkSensitiveWord'
+    checkSensitiveWord: '/operator-gateway/common/v1/checkSensitiveWord'
   },
   sourceRulesUrl: {
     add: '/sourceRule/add',

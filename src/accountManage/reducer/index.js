@@ -179,7 +179,7 @@ export const sensitiveWordsFilter = handleActions({
 let initStatus = {};
 if (process.env.REACT_APP_CLIENT === 'NC') {
   initStatus = {
-    "main": "view",
+    "main": "mini",
     "cooperation": "view",
     "content": "view",
     "strategy": "view",

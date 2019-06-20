@@ -26,9 +26,9 @@ export default class ContentEdit extends Component {
   componentDidMount() {
     const { actions, data: { account, options } } = this.props
     // 获取配置项
-    options.forms.length === 0 && actions.getContentForm({ accountId: account.id })
-    options.features.length === 0 && actions.getContentFeature({ accountId: account.id })
-    options.styles.length === 0 && actions.getContentStyle({ accountId: account.id })
+    options.forms.length === 0 && actions.getContentForm({ platformId: account.base.platformId })
+    options.features.length === 0 && actions.getContentFeature({ platformId: account.base.platformId })
+    options.styles.length === 0 && actions.getContentStyle({ platformId: account.base.platformId })
   }
 
   // 处理提交数据

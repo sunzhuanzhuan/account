@@ -92,8 +92,8 @@ export const tabs = [
     index: '1',
     title: '账号信息',
     warp: [
-      // "owner",
-      // "fetch",
+      "owner",
+      "fetch",
       "main",
       "cooperation",
       "content",
