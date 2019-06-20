@@ -220,3 +220,7 @@ export const {
 } = createHttpAction('addCustomClassify', Interface.classify.addCustomClassify, {
   method: 'post'
 })
+// 维护 - 清除账号数据
+export const clearAccountInfo = createAction('clearAccountInfo', () => {
+  return null
+})

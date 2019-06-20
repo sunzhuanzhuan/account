@@ -1041,7 +1041,7 @@ export const AdServiceItems = (props) => {
   const {
     adServiceItems = []
   } = account.cooperation;
-  return <div className='field-wrap-item base-media-type'>
+  return options.length > 0 && <div className='field-wrap-item base-media-type'>
     <FormItem {...layout.full} label='可提供'>
       {getFieldDecorator('cooperation.adServiceItems', {
         initialValue: (adServiceItems || []).map(item => item.id || item)
@@ -1088,7 +1088,7 @@ export const PostPlatform = (props) => {
     postPlatforms,
     multiPlatformOriginalPostTips
   } = account.cooperation;
-  return <div className='field-wrap-item'>
+  return options.length > 0 && <div className='field-wrap-item'>
     <FormItem {...layout.full} label='分发平台'>
       {getFieldDecorator('cooperation.supportMultiPlatformOriginalPost', {
         initialValue: supportMultiPlatformOriginalPost || 1
@@ -1172,14 +1172,14 @@ export const ContentForms = (props) => {
     form: { getFieldDecorator, getFieldValue },
     layout,
     actions: { checkSensitiveWord },
-    options,
+    options = [],
     data: { account }
   } = props;
   const {
     forms,
     customForm
   } = account.content;
-  return <div className='field-wrap-item base-media-type'>
+  return options.length > 0 && <div className='field-wrap-item base-media-type'>
     <FormItem {...layout.full} label='内容形式'>
       {getFieldDecorator('_client.form', {
         initialValue: {
@@ -1221,7 +1221,7 @@ export const ContentFeatures = (props) => {
     features,
     customFeature
   } = account.content;
-  return <div className='field-wrap-item base-media-type'>
+  return options.length > 0 && <div className='field-wrap-item base-media-type'>
     <FormItem {...layout.full} label='内容特点'>
       {getFieldDecorator('_client.feature', {
         initialValue: {
@@ -1263,7 +1263,7 @@ export const ContentStyles = (props) => {
     styles,
     customStyle
   } = account.content;
-  return <div className='field-wrap-item base-media-type'>
+  return options.length > 0 && <div className='field-wrap-item base-media-type'>
     <FormItem {...layout.full} label='内容风格'>
       {getFieldDecorator('_client.style', {
         initialValue: {
@@ -1961,14 +1961,14 @@ export const Nationality = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    options,
+    options = [],
     data: { account }
   } = props;
   const {
     nationalityId
     // nationalityName
   } = account.personalInfo;
-  return <div className='field-wrap-item'>
+  return options.length > 0 && <div className='field-wrap-item'>
     <FormItem {...layout.half} label='国籍'>
       {getFieldDecorator('personalInfo.nationalityId', {
         initialValue: nationalityId
@@ -1991,13 +1991,13 @@ export const Industry = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    options,
+    options = [],
     data: { account }
   } = props;
   const {
     industryId
   } = account.personalInfo;
-  return <div className='field-wrap-item'>
+  return options.length > 0 && <div className='field-wrap-item'>
     <FormItem {...layout.half} label='行业'>
       {getFieldDecorator('personalInfo.industryId', {
         initialValue: industryId
@@ -2020,13 +2020,13 @@ export const Occupations = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    options,
+    options = [],
     data: { account }
   } = props;
   const {
     occupations = []
   } = account.personalInfo;
-  return <div className='field-wrap-item'>
+  return options.length > 0 && <div className='field-wrap-item'>
     <FormItem {...layout.half} label='职业'>
       {getFieldDecorator('personalInfo.occupations', {
         initialValue: occupations.map(item => item.id || item)
@@ -2049,13 +2049,13 @@ export const EducationQualification = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    options,
+    options = [],
     data: { account }
   } = props;
   const {
     educationQualification
   } = account.personalInfo;
-  return <div className='field-wrap-item'>
+  return options.length > 0 && <div className='field-wrap-item'>
     <FormItem {...layout.half} label='学历/学位'>
       {getFieldDecorator('personalInfo.educationQualification', {
         initialValue: educationQualification
@@ -2078,13 +2078,13 @@ export const RelationshipStatus = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    options,
+    options = [],
     data: { account }
   } = props;
   const {
     relationshipStatus
   } = account.personalInfo;
-  return <div className='field-wrap-item'>
+  return options.length > 0 && <div className='field-wrap-item'>
     <FormItem {...layout.full} label='情感状况'>
       {getFieldDecorator('personalInfo.relationshipStatus', {
         initialValue: relationshipStatus
@@ -2167,14 +2167,14 @@ export const Pets = (props) => {
     form: { getFieldDecorator, getFieldValue },
     actions: { checkSensitiveWord },
     layout,
-    options,
+    options = [],
     data: { account }
   } = props;
   const {
     pets,
     customPets
   } = account.personalInfo;
-  return <div className='field-wrap-item'>
+  return options.length > 0 && <div className='field-wrap-item'>
     <FormItem {...layout.full} label='宠物信息'>
       {getFieldDecorator('_client.pets', {
         initialValue: {
@@ -2208,13 +2208,13 @@ export const Skills = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    options,
+    options = [],
     data: { account }
   } = props;
   const {
     skills
   } = account.personalInfo;
-  return <div className='field-wrap-item'>
+  return options.length > 0 && <div className='field-wrap-item'>
     <FormItem {...layout.full} label='技能'>
       {getFieldDecorator('personalInfo.skills', {
         initialValue: skills.map(item => item.skillId || item)
@@ -2253,7 +2253,7 @@ export const CustomSkills = (props) => {
   const {
     customSkills = []
   } = account.personalInfo;
-  return <div className='field-wrap-item'>
+  return options.length > 0 && <div className='field-wrap-item'>
     <FormItem {...layout.full} label='其他技能'>
       {getFieldDecorator('_client.skills', {
         initialValue: {

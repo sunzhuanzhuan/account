@@ -42,7 +42,7 @@ class UpdatePageForPackage extends Component {
   }
 
   allSubmit = () => {
-    // TODO:一键提交
+    // 一键提交
     const {
       updateBaseInfo,
       updateCooperationInfo,
@@ -95,7 +95,10 @@ class UpdatePageForPackage extends Component {
       message.error('信息填写不合法, 请重新填写')
     })
   }
-
+  componentWillUnmount(){
+    const { actions } = this.props
+    
+  }
   componentDidMount() {
     // 获取account_id参数, 参数错误error
     if (!this.state.accountId) {
@@ -143,6 +146,7 @@ class UpdatePageForPackage extends Component {
     }
     // 根据account_id获取账号信息, 错误error, 平台不对修改平台
     if (base.platformId && base.platformId !== this.state.platformId) {
+      console.log(base.platformId, this.state.platformId, '====>');
       window.location.href = window.location.href.replace(/\/(\d)\?/i, `/${base.platformId}?`)
       return null
     }
