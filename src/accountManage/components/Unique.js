@@ -114,22 +114,30 @@ export const AccountDesc = (props) => {
   const { getFieldDecorator, formItemLayout, data: { accountInfo }, actions: { sensitiveWordsFilter }, pid } = props;
   const {
     introduction = '',
-    platformId
+    platformId,
+    introductionFrom,
+    introductionMaintainedTime
   } = accountInfo;
   const desc = platformToDesc[platformId || pid] || '';
-  return <FormItem {...formItemLayout} label='账号简介'>
-    {getFieldDecorator('base.introduction', {
-      initialValue: introduction,
-      first: true,
-      validateTrigger: 'onBlur',
-      rules: [{
-        max: 1000,
-        message: '账号简介不能超过1000字'
-      }, { validator: checkForSensitiveWord(sensitiveWordsFilter) }]
-    })(
-      <TextArea placeholder={desc} autosize={{ minRows: 2, maxRows: 4 }} />
-    )}
-  </FormItem>;
+  return <div>
+    <FormItem {...formItemLayout} label='账号简介'>
+      {getFieldDecorator('base.introduction', {
+        initialValue: introduction,
+        first: true,
+        validateTrigger: 'onBlur',
+        rules: [{
+          max: 1000,
+          message: '账号简介不能超过1000字'
+        }, { validator: checkForSensitiveWord(sensitiveWordsFilter) }]
+      })(
+        <TextArea placeholder={desc} autosize={{ minRows: 2, maxRows: 4 }} />
+      )}
+    </FormItem>
+    {getFieldDecorator('base.introductionFrom', { initialValue: introductionFrom })(
+      <input type="hidden" />)}
+    {getFieldDecorator('base.introductionMaintainedTime', { initialValue: introductionMaintainedTime })(
+      <input type="hidden" />)}
+  </div>
 };
 
 /**

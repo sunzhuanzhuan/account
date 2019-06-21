@@ -333,7 +333,9 @@ export const Introduction = (props) => {
     placeholder
   } = props;
   const {
-    introduction
+    introduction,
+    introductionFrom,
+    introductionMaintainedTime
   } = account.base;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='账号简介'>
@@ -349,6 +351,10 @@ export const Introduction = (props) => {
         <TextArea placeholder={placeholder || '请输入账号简介'} autosize={{ minRows: 2, maxRows: 4 }} />
       )}
     </FormItem>
+    {getFieldDecorator('base.introductionFrom', { initialValue: introductionFrom })(
+      <input type="hidden" />)}
+    {getFieldDecorator('base.introductionMaintainedTime', { initialValue: introductionMaintainedTime })(
+      <input type="hidden" />)}
   </div>
 };
 
