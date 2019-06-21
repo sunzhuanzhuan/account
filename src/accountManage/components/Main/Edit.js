@@ -72,7 +72,7 @@ export default class MainEdit extends Component {
         let values = this.handleSubmitValues(fieldsValue)
         actions.updateBaseInfo(values).then(() => {
           window.oldSnsUniqueId = values.base.snsUniqueId
-          reload(() => onModuleStatusChange('view'))
+          // reload(() => onModuleStatusChange('view'))
           message.success('更新账号成功');
         }).finally(() => {
           this.setState({

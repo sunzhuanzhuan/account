@@ -1108,7 +1108,7 @@ export const PostPlatform = (props) => {
     {getFieldValue('cooperation.supportMultiPlatformOriginalPost') === 1 && <div>
       <FormItem {...layout.half} label='选择分发平台'>
         {getFieldDecorator('cooperation.postPlatformIds', {
-          rules: [{ required: false }],
+          rules: [{ required: true, message: '请选择分发平台' }],
           initialValue: (postPlatforms || []).map(item => item.id || item)
         })(
           options.length > 0 ? <Select mode="multiple" placeholder='选择分发平台(可多选)'>

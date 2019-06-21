@@ -3,9 +3,7 @@
  */
 import React, { Component } from "react"
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
-import {
-
-} from "@/accountManage/components/common/Fields";
+import {} from "@/accountManage/components/common/Fields";
 import { Button, Divider, Form, message } from "antd";
 import { OnSaleInfo } from "@/accountManage/components/common/Fields";
 import { MaxOrderCount } from "@/accountManage/components/common/Fields";
@@ -27,6 +25,34 @@ export default class StrategyEdit extends Component {
     const { data: { account } } = this.props;
     values['id'] = account.id;
     // values.base['platformId'] = platformId;
+    let strategy = { ...values.strategyInfo.strategy || {} };
+    const { isFinite, isLeave } = values['_client'];
+    if (!isFinite) {
+      values.strategyInfo.maxOrderCount = 0
+      values.strategyInfo.maxOrderCountNote = ''
+    }
+    if (!isLeave) {
+      strategy = {};
+    }
+    const {
+      startTimeOfTime,
+      endTimeOfTime,
+      otherTime
+    } = strategy
+    if (otherTime && otherTime.length > 0) {
+      const [startTimeOfDate, endTimeOfDate] = otherTime
+      strategy.startTimeOfDate = startTimeOfDate
+      strategy.endTimeOfDate = endTimeOfDate
+      delete strategy.otherTime
+    }
+
+    if (startTimeOfTime) {
+      strategy.startTimeOfTime = startTimeOfTime.format('HH:mm:ss');
+    }
+    if (endTimeOfTime) {
+      strategy.endTimeOfTime = endTimeOfTime.format('HH:mm:ss');
+    }
+    values.strategyInfo['strategy'] = strategy
     delete values['_client']
     return values;
   };
@@ -63,7 +89,7 @@ export default class StrategyEdit extends Component {
     const fieldProps = { layout, data, form, actions }
     const {
       isFamous,
-      strategyInfo : { modifiedAt} // 信息修改时间
+      strategyInfo: { modifiedAt } // 信息修改时间
     } = data.account || {}
     const right = <div className='wrap-panel-right-content'>
       <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>
@@ -78,7 +104,7 @@ export default class StrategyEdit extends Component {
             <small className='line' />
           </h4>
           <div className='subclass-content'>
-              <OnSaleInfo {...fieldProps}/>
+            <OnSaleInfo {...fieldProps} />
           </div>
         </li>
         <li className='subclass-item-wrap'>
@@ -87,8 +113,8 @@ export default class StrategyEdit extends Component {
             <small className='line' />
           </h4>
           <div className='subclass-content'>
-            <Strategy {...fieldProps}/>
-            <MaxOrderCount {...fieldProps}/>
+            <Strategy {...fieldProps} />
+            <MaxOrderCount {...fieldProps} />
           </div>
         </li>
       </ul>

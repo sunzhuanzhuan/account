@@ -19,30 +19,32 @@ import {
 import {
   getAvailablePlatformList_success
 } from '@/actions'
-
+// 认证类型
 export const verified = handleActions({
   [combineActions(getVerifiedType_success)]: (state, action) => {
     const data = action.payload.data
     return data.map(item => ({
-      id: item.itemKey,
+      id: parseInt(item.itemKey),
       name: item.itemValue
     }))
   }
 }, [])
+// 可提供服务项
 export const adServiceItems = handleActions({
   [combineActions(getAdvertisingOfferServices_success)]: (state, action) => {
     const data = action.payload.data
     return data.map(item => ({
-      id: item.itemKey,
+      id: parseInt(item.itemKey),
       adServiceItemName: item.itemValue
     }))
   }
 }, [])
+// 内容相关
 export const forms = handleActions({
   [combineActions(getContentForm_success)]: (state, action) => {
     const data = action.payload.data
     return data.map(item => ({
-      id: item.itemKey,
+      id: parseInt(item.itemKey),
       name: item.itemValue
     }))
   }
@@ -51,7 +53,7 @@ export const features = handleActions({
   [combineActions(getContentFeature_success)]: (state, action) => {
     const data = action.payload.data
     return data.map(item => ({
-      id: item.itemKey,
+      id: parseInt(item.itemKey),
       name: item.itemValue
     }))
   }
@@ -60,7 +62,7 @@ export const styles = handleActions({
   [combineActions(getContentStyle_success)]: (state, action) => {
     const data = action.payload.data
     return data.map(item => ({
-      id: item.itemKey,
+      id: parseInt(item.itemKey),
       name: item.itemValue
     }))
   }
@@ -74,7 +76,7 @@ export const nationality = handleActions({
 export const occupations = handleActions({
   [combineActions(getOccupation_success)]: (state, action) => {
     const data = action.payload.data
-    return data.map(item => ({ value: item.itemKey, label: item.itemValue }))
+    return data.map(item => ({ value: parseInt(item.itemKey), label: item.itemValue }))
   }
 }, [])
 export const industry = handleActions({
@@ -91,7 +93,7 @@ export const platforms = handleActions({
 export const pets = handleActions({
   [combineActions(getPet_success)]: (state, action) => {
     const data = action.payload.data
-    return data.map(item => ({ id: item.itemKey, name: item.itemValue }))
+    return data.map(item => ({ id: parseInt(item.itemKey), name: item.itemValue }))
   }
 }, [])
 export const skills = handleActions({
@@ -99,7 +101,7 @@ export const skills = handleActions({
     const data = action.payload.data
     let newData = data.map(item => {
       let obj = {
-        value: item.itemKey,
+        value: parseInt(item.itemKey),
         label: item.itemValue
       }
       if (item.childrenList) {
