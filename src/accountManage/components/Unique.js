@@ -73,16 +73,16 @@ export const AccountType = (props) => {
   } = accountInfo;
   return <FormItem {...formItemLayout} wrapperCol={halfWrapCol} label='账号类型'>
     {getFieldDecorator('base.mediaType', {
-      initialValue: mediaType || 3
+      initialValue: mediaType || 1
       // rules: [{ required: true, message: '账号类型必须选择' }]
     })(
-      <Select style={{ width: '100%' }}>
-        <Option value={3}>未知</Option>
-        <Option value={1}>草根</Option>
-        <Option value={2}>名人</Option>
-        <Option value={4}>媒体</Option>
-        <Option value={5}>个人</Option>
-      </Select>
+      <RadioGroup style={{ width: '100%' }}>
+        <Radio value={2}>个人号-具有个人的属性特征<b className='gray-text'>（如papi酱，谷阿莫等）</b></Radio>
+        <br />
+        <Radio value={3}>企业号-社会上的企业或官方注册<b className='gray-text'>（如央视新闻，红十字会等）</b></Radio>
+        <br />
+        <Radio value={4}>内容号-不具有人的属性特征、仅以内容存在<b className='gray-text'>（如精选搞笑排行榜、娱闻少女等）</b></Radio>
+      </RadioGroup>
     )}
   </FormItem>;
 };

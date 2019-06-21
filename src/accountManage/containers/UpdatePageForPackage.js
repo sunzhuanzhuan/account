@@ -10,6 +10,7 @@ import { tabs, modulesMap, platformToModules } from '../constants/packageConfig'
 import Module from "@/accountManage/components/common/Module";
 import ImproveStatistics from "@/accountManage/components/common/ImproveStatistics";
 import LoadingBlock from "@/accountManage/base/LoadingBlock";
+import numeral from '@/util/numeralExpand'
 import { sensors } from "@/util/sensor/sensors";
 
 const { TabPane } = Tabs;
@@ -97,7 +98,7 @@ class UpdatePageForPackage extends Component {
   }
   componentWillUnmount(){
     const { actions } = this.props
-    
+
   }
   componentDidMount() {
     // 获取account_id参数, 参数错误error
@@ -137,7 +138,7 @@ class UpdatePageForPackage extends Component {
     const platform = platformToModules(base.platformId || this.state.platformId, activeTab.warp || [])
     const modulesList = platform.visibility.modules
     const statisticsProps = {
-      percent: perfectionDegree.overall,
+      percent: numeral(perfectionDegree.overall).multiply(100).value(),
       // 找到当前tab的第一个未完善模块
       moduleId: activeTab.warp.find(key => {
         let perKey = modulesMap[key].perfectionDegreeKey
@@ -146,8 +147,7 @@ class UpdatePageForPackage extends Component {
     }
     // 根据account_id获取账号信息, 错误error, 平台不对修改平台
     if (base.platformId && base.platformId !== this.state.platformId) {
-      console.log(base.platformId, this.state.platformId, '====>');
-      window.location.href = window.location.href.replace(/\/(\d)\?/i, `/${base.platformId}?`)
+      window.location.href = window.location.href.replace(/\/(\d)+\?/i, `/${base.platformId}?`)
       return null
     }
     return (!fullLoading && !isError) ? <div className='update-package-page-container'>
@@ -172,7 +172,7 @@ class UpdatePageForPackage extends Component {
             <div className='tab-bar-item-wrapper'>
               <span>{pane.title}</span>
               {pane.perfectionDegreeKey && perfectionDegree[pane.perfectionDegreeKey] < 100 ?
-                <b>（{perfectionDegree[pane.perfectionDegreeKey] > 0 ? `已完善 ${perfectionDegree[pane.perfectionDegreeKey]}%` : '未完善'}）</b> : null}
+                <b>（{perfectionDegree[pane.perfectionDegreeKey] > 0 ? `已完善 ${numeral(perfectionDegree[pane.perfectionDegreeKey]).format('0%')}` : '未完善'}）</b> : null}
             </div>
           } key={pane.index} />)
         }
@@ -212,7 +212,7 @@ class UpdatePageForPackage extends Component {
                       {perfectionDegreeKey &&
                       <b>{
                         perfectionDegree[perfectionDegreeKey] > 0 ?
-                          `已完善 ${perfectionDegree[perfectionDegreeKey]}%` :
+                          `已完善 ${numeral(perfectionDegree[perfectionDegreeKey]).format('0%')}` :
                           '未完善'
                       }</b>}
                     </div>

@@ -11,7 +11,7 @@ import {
   InputNumber,
   Tooltip,
   Divider,
-  DatePicker, TimePicker, Row, Col
+  DatePicker, TimePicker, Row, Col, Icon
 } from 'antd';
 import { OssUpload } from 'wbyui';
 import SimpleTag from '../../base/SimpleTag';
@@ -34,6 +34,7 @@ import ShippingAddress from "@/accountManage/components/common/ShippingAddress";
 import ChildrenList from "@/accountManage/components/common/ChildrenList";
 import api from '@/api'
 import commonInterface from '@/constants/Interface'
+import FieldsOptionsLoading from "@/accountManage/base/FieldsOptionsLoading";
 
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
@@ -48,10 +49,10 @@ const checkForSensitiveWord = (rule, value, callback) => {
   api.post(commonInterface.common.checkSensitiveWord, { word: value }).then(() => {
     callback();
   }).catch(({ data, code, errorMsg }) => {
-    if(code === '110502'){
+    if (code === '110502') {
       const errorWords = (data.words || []).join('，')
       callback(`${rule.name || '内容'}包含敏感词${errorWords}，请修订`);
-    }else {
+    } else {
       callback(errorMsg);
     }
   })
@@ -255,6 +256,7 @@ export const AvatarUrl = (props) => {
           len={1}
           disabled={avatarUrlFrom === 2}
           listType='picture-card'
+          empty={<FieldsOptionsLoading/>}
         />
       )}
     </FormItem>
@@ -307,6 +309,7 @@ export const QrCodeUrl = (props) => {
             disabled={qrCodeUrlFrom === 2}
             len={1}
             listType='picture-card'
+            empty={<FieldsOptionsLoading/>}
           />
         )}
       </div>
@@ -551,6 +554,7 @@ export const FollowerCountScreenshotUrl = (props) => {
           disabled={disabled === 2}
           len={1}
           listType='picture-card'
+          empty={<FieldsOptionsLoading/>}
         />
       )}
     </FormItem>
@@ -921,7 +925,7 @@ export const VideoShotArea = (props) => {
       )}
       {getFieldValue('cooperation.videoShotAreaType') === 2 && <div>
         <FormItem {...layout.full}>
-          {getFieldDecorator('cooperation.videoShotAreas', {
+          {getFieldDecorator('cooperation.videoShotAreasIds', {
             rules: [{ required: true, message: '请选择视频拍摄地点' }],
             initialValue: videoShotAreas.map(area => area.id || area)
           })(
@@ -1041,12 +1045,12 @@ export const AdServiceItems = (props) => {
   const {
     adServiceItems = []
   } = account.cooperation;
-  return options.length > 0 && <div className='field-wrap-item base-media-type'>
+  return <div className='field-wrap-item base-media-type'>
     <FormItem {...layout.full} label='可提供'>
-      {getFieldDecorator('cooperation.adServiceItems', {
+      {getFieldDecorator('cooperation.adServiceItemIds', {
         initialValue: (adServiceItems || []).map(item => item.id || item)
       })(
-        <Checkbox.Group style={{
+        options.length > 0 ? <Checkbox.Group style={{
           display: 'flex',
           flexWrap: 'wrap'
         }}>
@@ -1066,7 +1070,7 @@ export const AdServiceItems = (props) => {
               </Checkbox>
             })
           }
-        </Checkbox.Group>
+        </Checkbox.Group> : <FieldsOptionsLoading />
       )}
     </FormItem>
   </div>
@@ -1088,7 +1092,7 @@ export const PostPlatform = (props) => {
     postPlatforms,
     multiPlatformOriginalPostTips
   } = account.cooperation;
-  return options.length > 0 && <div className='field-wrap-item'>
+  return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='分发平台'>
       {getFieldDecorator('cooperation.supportMultiPlatformOriginalPost', {
         initialValue: supportMultiPlatformOriginalPost || 1
@@ -1101,16 +1105,16 @@ export const PostPlatform = (props) => {
     </FormItem>
     {getFieldValue('cooperation.supportMultiPlatformOriginalPost') === 1 && <div>
       <FormItem {...layout.half} label='选择分发平台'>
-        {getFieldDecorator('cooperation.postPlatforms', {
+        {getFieldDecorator('cooperation.postPlatformIds', {
           rules: [{ required: false }],
           initialValue: (postPlatforms || []).map(item => item.id || item)
         })(
-          <Select mode="multiple" placeholder='选择分发平台(可多选)'>
+          options.length > 0 ? <Select mode="multiple" placeholder='选择分发平台(可多选)'>
             {
               options.map(item =>
                 <Option key={item.id} value={item.id}>{item.platformName}</Option>)
             }
-          </Select>
+          </Select> : <FieldsOptionsLoading />
         )}
       </FormItem>
       <FormItem {...layout.half} label='备注'>
@@ -1179,7 +1183,7 @@ export const ContentForms = (props) => {
     forms,
     customForm
   } = account.content;
-  return options.length > 0 && <div className='field-wrap-item base-media-type'>
+  return <div className='field-wrap-item base-media-type'>
     <FormItem {...layout.full} label='内容形式'>
       {getFieldDecorator('_client.form', {
         initialValue: {
@@ -1187,7 +1191,7 @@ export const ContentForms = (props) => {
           custom: customForm || []
         }
       })(
-        <DefaultAndCustomTag
+        options.length > 0 ? <DefaultAndCustomTag
           options={options}
           placeholder='请输入1~10字'
           rules={[
@@ -1200,7 +1204,7 @@ export const ContentForms = (props) => {
               })
             }
           ]}
-        />
+        /> : <FieldsOptionsLoading />
       )}
     </FormItem>
   </div>
@@ -1221,7 +1225,7 @@ export const ContentFeatures = (props) => {
     features,
     customFeature
   } = account.content;
-  return options.length > 0 && <div className='field-wrap-item base-media-type'>
+  return <div className='field-wrap-item base-media-type'>
     <FormItem {...layout.full} label='内容特点'>
       {getFieldDecorator('_client.feature', {
         initialValue: {
@@ -1229,7 +1233,7 @@ export const ContentFeatures = (props) => {
           custom: customFeature || []
         }
       })(
-        <DefaultAndCustomTag
+        options.length > 0 ? <DefaultAndCustomTag
           options={options}
           placeholder='请输入1~10字'
           rules={[
@@ -1242,7 +1246,7 @@ export const ContentFeatures = (props) => {
               })
             }
           ]}
-        />
+        /> : <FieldsOptionsLoading />
       )}
     </FormItem>
   </div>
@@ -1263,7 +1267,7 @@ export const ContentStyles = (props) => {
     styles,
     customStyle
   } = account.content;
-  return options.length > 0 && <div className='field-wrap-item base-media-type'>
+  return <div className='field-wrap-item base-media-type'>
     <FormItem {...layout.full} label='内容风格'>
       {getFieldDecorator('_client.style', {
         initialValue: {
@@ -1271,7 +1275,7 @@ export const ContentStyles = (props) => {
           custom: customStyle || []
         }
       })(
-        <DefaultAndCustomTag
+        options.length > 0 ? <DefaultAndCustomTag
           options={options}
           placeholder='请输入1~10字'
           rules={[
@@ -1284,7 +1288,7 @@ export const ContentStyles = (props) => {
               })
             }
           ]}
-        />
+        />: <FieldsOptionsLoading/>
       )}
     </FormItem>
   </div>
@@ -1968,17 +1972,17 @@ export const Nationality = (props) => {
     nationalityId
     // nationalityName
   } = account.personalInfo;
-  return options.length > 0 && <div className='field-wrap-item'>
+  return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='国籍'>
       {getFieldDecorator('personalInfo.nationalityId', {
         initialValue: nationalityId
       })(
-        <Select style={{ width: "100%" }} placeholder='请选择'>
+        options.length > 0 ? <Select style={{ width: "100%" }} placeholder='请选择'>
           {
             options.map(({ value, label }) =>
               <Option key={value} value={parseInt(value)}>{label}</Option>)
           }
-        </Select>
+        </Select>: <FieldsOptionsLoading/>
       )}
     </FormItem>
   </div>
@@ -1997,17 +2001,17 @@ export const Industry = (props) => {
   const {
     industryId
   } = account.personalInfo;
-  return options.length > 0 && <div className='field-wrap-item'>
+  return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='行业'>
       {getFieldDecorator('personalInfo.industryId', {
-        initialValue: industryId
+        initialValue: industryId || undefined
       })(
-        <Select style={{ width: "100%" }} placeholder='请选择'>
+        options.length > 0 ? <Select style={{ width: "100%" }} placeholder='请选择'>
           {
             options.map(({ value, label }) =>
               <Option key={value} value={parseInt(value)}>{label}</Option>)
           }
-        </Select>
+        </Select> : <FieldsOptionsLoading />
       )}
     </FormItem>
   </div>
@@ -2026,17 +2030,17 @@ export const Occupations = (props) => {
   const {
     occupations = []
   } = account.personalInfo;
-  return options.length > 0 && <div className='field-wrap-item'>
+  return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='职业'>
       {getFieldDecorator('personalInfo.occupations', {
         initialValue: occupations.map(item => item.id || item)
       })(
-        <Select mode='multiple' style={{ width: "100%" }} placeholder='请选择'>
+        options.length > 0 ? <Select mode='multiple' style={{ width: "100%" }} placeholder='请选择'>
           {
             options.map(({ value, label }) =>
               <Option key={value} value={parseInt(value)}>{label}</Option>)
           }
-        </Select>
+        </Select> : <FieldsOptionsLoading />
       )}
     </FormItem>
   </div>
@@ -2055,17 +2059,17 @@ export const EducationQualification = (props) => {
   const {
     educationQualification
   } = account.personalInfo;
-  return options.length > 0 && <div className='field-wrap-item'>
+  return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='学历/学位'>
       {getFieldDecorator('personalInfo.educationQualification', {
         initialValue: educationQualification
       })(
-        <Select style={{ width: "100%" }} placeholder='请选择'>
+        options.length > 0 ? <Select style={{ width: "100%" }} placeholder='请选择'>
           {
             options.map(({ key, text }) =>
               <Option key={key} value={parseInt(key)}>{text}</Option>)
           }
-        </Select>
+        </Select> : <FieldsOptionsLoading />
       )}
     </FormItem>
   </div>
@@ -2084,16 +2088,16 @@ export const RelationshipStatus = (props) => {
   const {
     relationshipStatus
   } = account.personalInfo;
-  return options.length > 0 && <div className='field-wrap-item'>
+  return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='情感状况'>
       {getFieldDecorator('personalInfo.relationshipStatus', {
         initialValue: relationshipStatus
       })(
-        <RadioGroup>
+        options.length > 0 ? <RadioGroup>
           {
             options.map(item => <Radio key={item.value} value={item.value}>{item.label}</Radio>)
           }
-        </RadioGroup>
+        </RadioGroup> : <FieldsOptionsLoading />
       )}
     </FormItem>
   </div>
@@ -2174,7 +2178,7 @@ export const Pets = (props) => {
     pets,
     customPets
   } = account.personalInfo;
-  return options.length > 0 && <div className='field-wrap-item'>
+  return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='宠物信息'>
       {getFieldDecorator('_client.pets', {
         initialValue: {
@@ -2182,7 +2186,7 @@ export const Pets = (props) => {
           custom: customPets || []
         }
       })(
-        <DefaultAndCustomTag
+        options.length > 0 ? <DefaultAndCustomTag
           options={options}
           placeholder='请输入1~10字'
           rules={[
@@ -2195,7 +2199,7 @@ export const Pets = (props) => {
               })
             }
           ]}
-        />
+        /> : <FieldsOptionsLoading />
       )}
     </FormItem>
   </div>
@@ -2214,12 +2218,12 @@ export const Skills = (props) => {
   const {
     skills
   } = account.personalInfo;
-  return options.length > 0 && <div className='field-wrap-item'>
+  return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='技能'>
       {getFieldDecorator('personalInfo.skills', {
         initialValue: skills.map(item => item.skillId || item)
       })(
-        <Select
+        options.length > 0 ? <Select
           mode='multiple'
           style={{ width: '100%' }}
           placeholder='添加您的特长或才艺，将提升您的竞争力，在同类账号中更加突出哦~'
@@ -2233,7 +2237,7 @@ export const Skills = (props) => {
               }
             </OptGroup>)
           }
-        </Select>
+        </Select> : <FieldsOptionsLoading />
       )}
     </FormItem>
   </div>
@@ -2253,7 +2257,7 @@ export const CustomSkills = (props) => {
   const {
     customSkills = []
   } = account.personalInfo;
-  return options.length > 0 && <div className='field-wrap-item'>
+  return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='其他技能'>
       {getFieldDecorator('_client.skills', {
         initialValue: {

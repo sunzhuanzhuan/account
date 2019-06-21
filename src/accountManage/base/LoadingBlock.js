@@ -3,7 +3,7 @@ import { Alert, Spin } from 'antd'
 
 const style = {
   textAlign: "center",
-  background: "rgba(0, 0, 0, 0.05)",
+  background: "rgba(0, 0, 0, 0.03)",
   borderRadius: "4px",
   marginBottom: "20px",
   padding: "50px 0",

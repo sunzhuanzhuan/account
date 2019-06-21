@@ -4,6 +4,7 @@
 import React, { Component } from "react"
 import PriceEdit from "./Edit";
 import PriceView from "./View";
+import LoadingBlock from "@/accountManage/base/LoadingBlock";
 
 const statusComponent = (status) => {
   const _map = {
@@ -62,6 +63,6 @@ export default class Price extends Component {
   render() {
     const Component = statusComponent(this.state.moduleStatus)
     return !this.state.loading ?
-      <Component {...this.props} onModuleStatusChange={this.handleChange} reload={this.reload}/> : 'loading...'
+      <Component {...this.props} onModuleStatusChange={this.handleChange} reload={this.reload}/> : <LoadingBlock loading/>
   }
 }

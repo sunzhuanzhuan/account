@@ -54,6 +54,13 @@ export default class CooperationEdit extends Component {
     const { data: { account } } = this.props;
     values['id'] = account.id;
     // values.base['platformId'] = platformId;
+    const _case = (values.cooperation.cooperationCases || []).map((item, index) => {
+      return {
+        ...values['_case'][item.uuid],
+        sort: index + 1
+      }
+    })
+    values.cooperation['cooperationCases'] = _case;
     delete values['_case']
     return values;
   };

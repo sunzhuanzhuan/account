@@ -53,7 +53,7 @@ export default class PersonalEdit extends Component {
   // 处理提交数据
   handleSubmitValues = (values) => {
     const { data: { account } } = this.props;
-    const { pets, skills } = values['_client']
+    const { pets = {}, skills = {} } = values['_client']
     const { shipping = {}, area = {} } = values['personalInfo']
     let value = {
       id: account.id,
