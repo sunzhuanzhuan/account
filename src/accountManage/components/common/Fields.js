@@ -11,7 +11,7 @@ import {
   InputNumber,
   Tooltip,
   Divider,
-  DatePicker, TimePicker, Row, Col, Icon
+  DatePicker, TimePicker
 } from 'antd';
 import { OssUpload } from 'wbyui';
 import SimpleTag from '../../base/SimpleTag';
@@ -329,7 +329,6 @@ export const Introduction = (props) => {
     form: { getFieldDecorator },
     layout,
     data: { account },
-    actions: { checkSensitiveWord },
     placeholder
   } = props;
   const {
@@ -669,7 +668,6 @@ export const MediaType = (props) => {
 export const Verified = (props) => {
   const {
     form: { getFieldDecorator, getFieldValue },
-    actions: { checkSensitiveWord },
     layout,
     data: { account },
     options
@@ -989,7 +987,6 @@ export const CooperationTips = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    actions: { checkSensitiveWord },
     data: { account }
   } = props;
   const {
@@ -1089,7 +1086,6 @@ export const PostPlatform = (props) => {
   const {
     form: { getFieldDecorator, getFieldValue },
     layout,
-    actions: { checkSensitiveWord },
     data: { account },
     options = []
   } = props;
@@ -1181,7 +1177,6 @@ export const ContentForms = (props) => {
   const {
     form: { getFieldDecorator, getFieldValue },
     layout,
-    actions: { checkSensitiveWord },
     options = [],
     data: { account }
   } = props;
@@ -1223,7 +1218,6 @@ export const ContentFeatures = (props) => {
   const {
     form: { getFieldDecorator, getFieldValue },
     layout,
-    actions: { checkSensitiveWord },
     options,
     data: { account }
   } = props;
@@ -1265,7 +1259,6 @@ export const ContentStyles = (props) => {
   const {
     form: { getFieldDecorator, getFieldValue },
     layout,
-    actions: { checkSensitiveWord },
     options,
     data: { account }
   } = props;
@@ -2175,7 +2168,6 @@ export const Children = (props) => {
 export const Pets = (props) => {
   const {
     form: { getFieldDecorator, getFieldValue },
-    actions: { checkSensitiveWord },
     layout,
     options = [],
     data: { account }
@@ -2255,7 +2247,6 @@ export const Skills = (props) => {
 export const CustomSkills = (props) => {
   const {
     form: { getFieldDecorator, getFieldValue },
-    actions: { checkSensitiveWord },
     layout,
     options = [],
     data: { account }
