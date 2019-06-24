@@ -5,7 +5,12 @@ import React, { Component } from "react"
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
 import { Button, Form, message, Modal } from "antd";
 import { FamousPrice, NamelessPrice } from "../common/AccountPrice";
-import { IsAcceptHardAd, PriceInclude, ReferencePrice } from "../common/Fields";
+import {
+  IsAcceptHardAd,
+  PriceInclude,
+  ReferencePrice,
+  trinityIsPreventShieldingTip
+} from "../common/Fields";
 import { checkVal } from "@/accountManage/util";
 
 @Form.create()
@@ -56,17 +61,23 @@ export default class PriceEdit extends Component {
     });
   };
   showConfirm = (values) => {
-    const { actions: { saveSku }, data: { account }, reload, onModuleStatusChange } = this.props;
+    const { actions: { saveSku }, data: { account, trinityPriceInfo }, reload, onModuleStatusChange } = this.props;
     const { isFamous } = account.base;
     Modal.confirm({
       title: '提交价格信息?',
-      content: (isFamous == 1) ? '提交成功后，下个价格有效期和报价将无法修改' : '',
-      onOk() {
-        return saveSku(values).then(() => {
-          message.success('更新报价信息成功', 1.3, () => {
-            reload(() => onModuleStatusChange('view'))
-          });
-
+      content: (isFamous === 1) ? '提交成功后，下个价格有效期和报价将无法修改' : '',
+      onOk(hide) {
+        hide()
+        trinityIsPreventShieldingTip({
+            accountValue: trinityPriceInfo.trinityIsPreventShielding,
+            skuValue: values.isPreventShielding,
+            platformId: account.base.platformId
+          }, () => {
+            return saveSku(values).then(() => {
+              message.success('更新报价信息成功', 1.3, () => {
+                reload(() => onModuleStatusChange('view'))
+              });
+            });
         });
       },
       onCancel() { }

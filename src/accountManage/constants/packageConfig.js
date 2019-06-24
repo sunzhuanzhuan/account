@@ -8,7 +8,8 @@ import {
   Other,
   Price,
   Personal,
-  Dashboard
+  Dashboard,
+  Trinity
 } from "../components/packageComponents";
 import intersection from 'lodash/intersection'
 import update from 'immutability-helper'
@@ -69,6 +70,11 @@ export const modulesMap = {
     anchorId: "dashboard",
     title: "数据统计",
     component: Dashboard
+  },
+  'trinity': {
+    anchorId: "trinity",
+    title: "三方平台报价",
+    component: Trinity
   }
 }
 
@@ -104,7 +110,8 @@ export const tabs = [
     index: '2',
     title: '报价信息',
     warp: [
-      "price"
+      "price",
+      "trinity"
     ],
     perfectionDegreeKey: 'sku'
   }, {
@@ -171,7 +178,8 @@ export const diffByTypes = {
         "other",
         "price",
         "personal",
-        "dashboard"
+        "dashboard",
+        "trinity"
       ]
     },
     configure: {
@@ -207,7 +215,8 @@ export const diffByTypes = {
         "other",
         "price",
         "personal",
-        "dashboard"
+        "dashboard",
+        "trinity"
       ]
     },
     configure: {
@@ -241,7 +250,8 @@ export const diffByTypes = {
         "other",
         "price",
         "personal",
-        "dashboard"
+        "dashboard",
+        "trinity"
       ]
     },
     configure: {
@@ -278,7 +288,8 @@ export const diffByTypes = {
         "other",
         "price",
         "personal",
-        "dashboard"
+        "dashboard",
+        "trinity"
       ]
     },
     configure: {
@@ -319,7 +330,8 @@ export const diffByTypes = {
         "other",
         "price",
         "personal",
-        "dashboard"
+        "dashboard",
+        "trinity"
       ]
     },
     configure: {
@@ -359,7 +371,8 @@ export const diffByTypes = {
         "other",
         "price",
         "personal",
-        "dashboard"
+        "dashboard",
+        "trinity"
       ]
     },
     configure: {
@@ -392,7 +405,8 @@ export const diffByTypes = {
         "other",
         "price",
         "personal",
-        "dashboard"
+        "dashboard",
+        "trinity"
       ]
     },
     configure: {
@@ -418,7 +432,8 @@ export const diffByTypes = {
         "other",
         "price",
         "personal",
-        "dashboard"
+        "dashboard",
+        "trinity"
       ]
     },
     configure: {
@@ -464,7 +479,8 @@ export const diffByTypes = {
         "other",
         "price",
         "personal",
-        "dashboard"
+        "dashboard",
+        "trinity"
       ]
     },
     configure: {
@@ -498,7 +514,8 @@ export const diffByTypes = {
         "other",
         "price",
         "personal",
-        "dashboard"
+        "dashboard",
+        "trinity"
       ]
     },
     configure: {
@@ -532,7 +549,8 @@ export const diffByTypes = {
         "other",
         "price",
         "personal",
-        "dashboard"
+        "dashboard",
+        "trinity"
       ]
     },
     configure: {
@@ -566,7 +584,8 @@ export const diffByTypes = {
         "other",
         "price",
         "personal",
-        "dashboard"
+        "dashboard",
+        "trinity"
       ]
     },
     configure: {
@@ -600,7 +619,8 @@ export const diffByTypes = {
         "other",
         "price",
         "personal",
-        "dashboard"
+        "dashboard",
+        "trinity"
       ]
     },
     configure: {
@@ -634,7 +654,8 @@ export const diffByTypes = {
         "other",
         "price",
         "personal",
-        "dashboard"
+        "dashboard",
+        "trinity"
       ]
     },
     configure: {

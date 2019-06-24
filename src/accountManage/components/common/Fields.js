@@ -11,7 +11,7 @@ import {
   InputNumber,
   Tooltip,
   Divider,
-  DatePicker, TimePicker
+  DatePicker, TimePicker, Modal, message
 } from 'antd';
 import { OssUpload } from 'wbyui';
 import SimpleTag from '../../base/SimpleTag';
@@ -68,6 +68,33 @@ const checkDefaultAndCustomTagRepeat = getSource => (rule, value, callback) => {
     callback()
   }
 };
+
+// 处理三方提交提示
+export const trinityIsPreventShieldingTip = (value, callback) => {
+  let { accountValue, skuValue, trinityName = "微任务/WEIQ", platformId } = value, diff;
+  accountValue = parseInt(accountValue)
+  skuValue = parseInt(skuValue)
+  if (platformId !== 1 || !accountValue || !skuValue || accountValue === skuValue) {
+    let hide = message.loading('保存中...');
+    Promise.resolve(callback(hide)).finally(hide)
+    return
+  }
+  if (accountValue === 1 && skuValue === 2) {
+    diff = true;
+  } else if (accountValue === 2 && skuValue === 1) {
+    diff = false;
+  } else {
+    return console.warn('其他错误:', accountValue, skuValue);
+  }
+  let text = diff ? `当前账号可以在${trinityName}下单，报价包含防屏蔽未勾选，请修改报价项价格，以免影响应约造成损失。` :
+    `当前账号不可以在${trinityName}下单，报价包含防屏蔽已勾选，请修改报价项价格，以免影响应约造成损失。`
+  Modal.confirm({
+    title: text,
+    okText: '不修改,保存',
+    cancelText: '去修改',
+    onOk: callback
+  });
+}
 
 /* region  base - 账号基本信息  */
 
@@ -256,7 +283,7 @@ export const AvatarUrl = (props) => {
           len={1}
           disabled={avatarUrlFrom === 2}
           listType='picture-card'
-          empty={<FieldsOptionsLoading/>}
+          empty={<FieldsOptionsLoading />}
         />
       )}
     </FormItem>
@@ -309,7 +336,7 @@ export const QrCodeUrl = (props) => {
             disabled={qrCodeUrlFrom === 2}
             len={1}
             listType='picture-card'
-            empty={<FieldsOptionsLoading/>}
+            empty={<FieldsOptionsLoading />}
           />
         )}
       </div>
@@ -559,7 +586,7 @@ export const FollowerCountScreenshotUrl = (props) => {
           disabled={disabled === 2}
           len={1}
           listType='picture-card'
-          empty={<FieldsOptionsLoading/>}
+          empty={<FieldsOptionsLoading />}
         />
       )}
     </FormItem>
@@ -1287,7 +1314,7 @@ export const ContentStyles = (props) => {
               })
             }
           ]}
-        />: <FieldsOptionsLoading/>
+        /> : <FieldsOptionsLoading />
       )}
     </FormItem>
   </div>
@@ -1981,7 +2008,7 @@ export const Nationality = (props) => {
             options.map(({ value, label }) =>
               <Option key={value} value={parseInt(value)}>{label}</Option>)
           }
-        </Select>: <FieldsOptionsLoading/>
+        </Select> : <FieldsOptionsLoading />
       )}
     </FormItem>
   </div>
@@ -2283,3 +2310,176 @@ export const CustomSkills = (props) => {
 
 
 /* endregion personalInfo - 播主个人信息 */
+
+/* region  trinity 三方报价相关  */
+
+/**
+ * trinityIsPreventShielding - 三方平台报价项及相关设置
+ */
+export const TrinityConfigAndPrice = (props) => {
+  const formItemLayout = {
+    labelCol: {
+      xs: { span: 24 },
+      sm: { span: 6 }
+    },
+    wrapperCol: {
+      xs: { span: 24 },
+      sm: { span: 18 }
+    }
+  };
+  const {
+    form: { getFieldDecorator, getFieldValue },
+    data: { trinityPriceInfo }
+  } = props;
+  const {
+    trinityIsPreventShielding,
+    trinityIsPreventShieldingManual,
+    trinityIsPreventShieldingAutomated,
+    trinityPlaceOrderType,
+    cooperationPlatformResVOS = []
+  } = trinityPriceInfo;
+  let name = cooperationPlatformResVOS.map(item => item.cooperationPlatformName).join('/') || '三方平台';
+  return <div className='field-wrap-item'>
+    <FormItem {...formItemLayout} label={`可在${name}下单(机维)`}>
+      {getFieldDecorator('trinityIsPreventShieldingAutomated', {
+        initialValue: trinityIsPreventShieldingAutomated
+        // rules: [{ required: true, message: '本项为必选项，请选择！' }]
+      })(
+        <RadioGroup disabled>
+          <Radio value={1}>是</Radio>
+          <Radio value={2}>否</Radio>
+        </RadioGroup>
+      )}
+    </FormItem>
+    <FormItem {...formItemLayout} label={` `} colon={false}>
+      {getFieldDecorator('_trinityIsPreventShieldingManual_', {
+        initialValue: trinityIsPreventShieldingManual > 0,
+        valuePropName: 'checked'
+      })(
+        <Checkbox>人工控制可在{name}下单</Checkbox>
+      )}
+      <div style={{ color: 'red' }}>
+        注：如果勾选此处，将以人工控制结果为准，若要恢复机维请取消勾选！
+      </div>
+    </FormItem>
+    {getFieldValue('_trinityIsPreventShieldingManual_') ?
+      <FormItem {...formItemLayout} label={`强制可在${name}下单结果`}>
+        {getFieldDecorator('trinityIsPreventShieldingManual', {
+          initialValue: trinityIsPreventShieldingManual,
+          rules: [{ required: true, message: '本项为必选项，请选择！' }]
+        })(
+          <RadioGroup>
+            <Radio value={1}>强制可下单</Radio>
+            <Radio value={2}>强制不可下单</Radio>
+          </RadioGroup>
+        )}
+      </FormItem> : null}
+    {(getFieldValue('trinityIsPreventShieldingAutomated') === 1 && !getFieldValue('_trinityIsPreventShieldingManual_')) || getFieldValue('trinityIsPreventShieldingManual') === 1 ?
+      <FormItem {...formItemLayout} label='下单方'>
+        {getFieldDecorator('trinityPlaceOrderType', {
+          initialValue: trinityPlaceOrderType,
+          rules: [{ required: true, message: '本项为必选项，请选择！' }]
+        })(
+          <RadioGroup>
+            <Radio value={2}>博主自行下单</Radio>
+            <Radio value={1}>微播易代下单</Radio>
+          </RadioGroup>
+        )}
+      </FormItem> : null}
+    {
+      cooperationPlatformResVOS.map((item, n) => {
+        let { trinitySkuInfoResVOList: priceList = [], trinityTollTypeVOList: otherList = [] } = item;
+        return <div key={n}>
+          {priceList.length ?
+            <FormItem {...formItemLayout} label={`${item.cooperationPlatformName}参考报价`}>
+              <div className='trinity-reference-table'>
+                <table>
+                  <tbody>
+                  <tr>
+                    <th>报价项名称</th>
+                    <th>报价</th>
+                    <th>更新时间</th>
+                    <th>更新人</th>
+                  </tr>
+                  {
+                    priceList.map((sku, i) => {
+                      return <tr key={sku.trinitySkuKey}>
+                        <th>{sku.wbyTypeName}</th>
+                        <td style={{ padding: '0 4px', textAlign: 'left' }}>
+                          <FormItem>
+                            {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].publicCostPrice`, {
+                              initialValue: sku.publicCostPrice,
+                              rules: [{
+                                required: (sku.publicCostPrice === 0 || sku.publicCostPrice),
+                                message: '请输入大于等于0的数'
+                              }]
+                            })(
+                              <InputNumber
+                                placeholder="报价保留两位小数"
+                                min={0}
+                                precision={2}
+                                max={999999999}
+                                style={{ width: '100%' }}
+                              />)}
+                          </FormItem>
+                        </td>
+                        <td>
+                          {sku.publicCostPriceMaintainedTime || '--'}
+                        </td>
+                        <td>
+                          {sku.publicCostPriceFrom === 2 ? '系统' : sku.modifiedName}
+                        </td>
+                        {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].trinitySkuTypeId`, {
+                          initialValue: sku.trinitySkuTypeId
+                        })(<input type='hidden' />)}
+                        {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].trinitySkuKey`, {
+                          initialValue: sku.trinitySkuKey
+                        })(<input type='hidden' />)}
+                      </tr>;
+                    })
+                  }
+                  </tbody>
+                </table>
+              </div>
+            </FormItem> : null}
+          {otherList.length ? <FormItem {...formItemLayout} label='附加费参考报价'>
+            <div className='trinity-reference-table'>
+              <table>
+                <tbody>
+                <tr>
+                  <th>附加费名称</th>
+                  <th>比例</th>
+                  <th>更新时间</th>
+                  <th>更新人</th>
+                </tr>
+                {
+                  otherList.map((trinity, i) => {
+                    return <tr key={i}>
+                      <th>{trinity.tollTypeName}</th>
+                      <td>
+                        {trinity.serviceRatio} %
+                      </td>
+                      <td>
+                        {trinity.modifiedAt || '--'}
+                      </td>
+                      <td>
+                        {trinity.modifiedName}
+                      </td>
+                    </tr>;
+                  })
+                }
+                </tbody>
+              </table>
+            </div>
+          </FormItem> : null}
+          {getFieldDecorator(`trinitySkuInfoVOS[${n}].trinityPlatformCode`, {
+            initialValue: item.cooperationPlatformCode
+          })(<input type='hidden' />)}
+        </div>;
+      })
+    }
+  </div>;
+};
+
+
+/* endregion  trinity 三方报价相关  */
