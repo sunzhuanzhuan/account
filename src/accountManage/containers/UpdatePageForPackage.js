@@ -100,6 +100,7 @@ class UpdatePageForPackage extends Component {
 
   componentWillUnmount() {
     const { actions } = this.props
+    actions.clearAccountInfo()
 
   }
 

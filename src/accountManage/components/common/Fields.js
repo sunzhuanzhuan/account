@@ -717,7 +717,7 @@ export const Verified = (props) => {
       })(
         <RadioGroup disabled={isVerifiedFrom === 2}>
           <Radio value={1}>已认证</Radio>
-          <Radio value={2}>未认证</Radio>
+          <Radio value={0}>未认证</Radio>
         </RadioGroup>
       )}
     </FormItem>

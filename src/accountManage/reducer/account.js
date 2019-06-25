@@ -5,7 +5,8 @@ import {
 } from '../actions/package'
 import {
   updateFetchInfo,
-  clearAccountInfo
+  clearAccountInfo,
+  getAccountOnShelfStatus_success
 } from '../actions'
 import { allEditables } from "@/accountManage/constants/editables";
 
@@ -95,6 +96,15 @@ export const strategyInfo = handleActions({
       ...strategyInfo
     }
   },
+  [combineActions(getAccountOnShelfStatus_success)]: (state, action) => {
+    return {
+      ...state,
+      onShelfStatus: {
+        ...state.onShelfStatus,
+        ...action.payload.data
+      }
+    }
+  },
   [combineActions(clearAccountInfo)]: () => {
     return {}
   }
@@ -139,6 +149,14 @@ export const personalInfo = handleActions({
   }
 }, {})
 // 账号完整度
+const initPerfection = {
+  "base": 0,
+  "sku": 0,
+  "cooperation": 0,
+  "content": 0,
+  "personal": 0,
+  "overall": 0
+}
 export const perfectionDegree = handleActions({
   [combineActions(getDetail_success)]: (state, action) => {
     let { perfectionDegree = {} } = action.payload.data
@@ -148,23 +166,9 @@ export const perfectionDegree = handleActions({
     }
   },
   [combineActions(clearAccountInfo)]: () => {
-    return {
-      "base": 0,
-      "sku": 0,
-      "cooperation": 0,
-      "content": 0,
-      "personal": 0,
-      "overall": 0
-    }
+    return initPerfection
   }
-}, {
-  "base": 0,
-  "sku": 0,
-  "cooperation": 0,
-  "content": 0,
-  "personal": 0,
-  "overall": 0
-})
+}, initPerfection)
 // 完整响应信息
 export const _response = handleActions({
   [combineActions(getDetail_success)]: (state, action) => {

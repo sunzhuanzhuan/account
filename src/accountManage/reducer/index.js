@@ -28,6 +28,7 @@ import {
 
 import {
   setModuleStatus,
+  getDetail_success,
   getAreasHotCity_success
 } from '../actions/package'
 
@@ -176,25 +177,13 @@ export const sensitiveWordsFilter = handleActions({
 /**
  * 账号包装新增
  */
-let initStatus = {};
-if (process.env.REACT_APP_CLIENT === 'NC') {
-  initStatus = {
-    "main": "mini",
-    "cooperation": "view",
-    "content": "view",
-    "strategy": "view",
-    "price": "view",
-    "personal": "view"
-  }
-} else {
-  initStatus = {
-    "main": "edit",
-    "cooperation": "edit",
-    "content": "edit",
-    "strategy": "edit",
-    "price": "edit",
-    "personal": "edit"
-  }
+let initStatus = {
+  "main": "view",
+  "cooperation": "view",
+  "content": "view",
+  "strategy": "view",
+  "price": "view",
+  "personal": "view"
 }
 
 // 设置模块状态
@@ -204,6 +193,36 @@ export const moduleStatus = handleActions({
       ...state,
       ...action.payload.data
     }
+  },
+  [combineActions(getDetail_success)]: (state, action) => {
+    const { base: canEdit } = action.payload.data
+    if (process.env.REACT_APP_CLIENT === 'NC') {
+      return {
+        ...initStatus,
+        "main": "mini"
+      }
+    } else {
+      if (canEdit) {
+        return {
+          "main": "edit",
+          "cooperation": "edit",
+          "content": "edit",
+          "strategy": "edit",
+          "price": "edit",
+          "personal": "edit"
+        }
+      } else {
+        return {
+          "main": "view",
+          "cooperation": "view",
+          "content": "view",
+          "strategy": "view",
+          "price": "view",
+          "personal": "view"
+        }
+      }
+    }
+
   }
 }, initStatus)
 

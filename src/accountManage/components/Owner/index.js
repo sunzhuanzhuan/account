@@ -25,7 +25,7 @@ export default class Owner extends Component {
     const {
       id: accountId,
     } = account
-    const babysitterHost = babysitter_host.value || 'http://toufang.tst-weiboyi.com';
+    const babysitterHost = babysitter_host.value /*|| 'http://toufang.weiboyi.com'*/;
     let isOwner = auth['account.manage.update.change.main.account'];
     let href = isOwner ? `${babysitterHost}/user/index/type/huanma/account_id/${accountId}/weibo_type/${platformId}` : `${babysitterHost}/user/chowner/account_id/${accountId}`;
 
