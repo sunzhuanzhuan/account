@@ -895,7 +895,7 @@ export const RefuseBrands = (props) => {
           message='请输入2~20字的品牌名称'
           label='添加品牌'
           validator={value => {
-            return !(value.length < 2 || value.length > 20)
+            return /^[^\s]{2,20}$/.test(value)
           }} />
       )}
     </FormItem>
@@ -1025,7 +1025,7 @@ export const CooperationTips = (props) => {
         validateFirst: true,
         validateTrigger: 'onBlur',
         rules: [
-          { pattern: /^\d{0,1000}$/, message: '合作须知备注可输入中英文数字符号, 最多可输入1000个字' },
+          { pattern: /^[^\s]{0,1000}$/, message: '合作须知备注可输入中英文数字符号, 最多可输入1000个字' },
           { validator: checkForSensitiveWord, name: '合作案例备注' }
         ],
         initialValue: cooperationTips
@@ -1151,7 +1151,7 @@ export const PostPlatform = (props) => {
           validateFirst: true,
           validateTrigger: 'onBlur',
           rules: [
-            { pattern: /^\d{0,200}$/, message: '分发平台备注可输入中英文数字符号, 最多可输入200个字' },
+            { pattern: /^[^\s]{0,200}$/, message: '分发平台备注可输入中英文数字符号, 最多可输入200个字' },
             { validator: checkForSensitiveWord, name: '分发平台备注' }
           ],
           initialValue: multiPlatformOriginalPostTips
@@ -1223,7 +1223,7 @@ export const ContentForms = (props) => {
           options={options}
           placeholder='请输入1~10字'
           rules={[
-            { required: true, pattern: /^\d{1,10}$/, message: '请输入1~10个中英文数字符号' },
+            { required: true, pattern: /^[^\s]{1,10}$/, message: '请输入1~10个中英文数字符号' },
             { validator: checkForSensitiveWord, name: '添加内容' },
             {
               validator: checkDefaultAndCustomTagRepeat(() => {
@@ -1264,7 +1264,7 @@ export const ContentFeatures = (props) => {
           options={options}
           placeholder='请输入1~10字'
           rules={[
-            { required: true, pattern: /^\d{1,10}$/, message: '请输入1~10个中英文数字符号' },
+            { required: true, pattern: /^[^\s]{1,10}$/, message: '请输入1~10个中英文数字符号' },
             { validator: checkForSensitiveWord, name: '添加内容' },
             {
               validator: checkDefaultAndCustomTagRepeat(() => {
@@ -1305,7 +1305,7 @@ export const ContentStyles = (props) => {
           options={options}
           placeholder='请输入1~10字'
           rules={[
-            { required: true, pattern: /^\d{1,10}$/, message: '请输入1~10个中英文数字符号' },
+            { required: true, pattern: /^[^\s]{1,10}$/, message: '请输入1~10个中英文数字符号' },
             { validator: checkForSensitiveWord, name: '添加内容' },
             {
               validator: checkDefaultAndCustomTagRepeat(() => {
@@ -2215,7 +2215,7 @@ export const Pets = (props) => {
           options={options}
           placeholder='请输入1~10字'
           rules={[
-            { required: true, pattern: /^\d{1,10}$/, message: '请输入1~10个中英文数字符号' },
+            { required: true, pattern: /^[^\s]{1,10}$/, message: '请输入1~10个中英文数字符号' },
             { validator: checkForSensitiveWord, name: '添加内容' },
             {
               validator: checkDefaultAndCustomTagRepeat(() => {
@@ -2293,7 +2293,7 @@ export const CustomSkills = (props) => {
           options={options}
           placeholder='请输入1~10字'
           rules={[
-            { required: true, pattern: /^\d{1,10}$/, message: '请输入1~10个中英文数字符号' },
+            { required: true, pattern: /^[^\s]{1,10}$/, message: '请输入1~10个中英文数字符号' },
             { validator: checkForSensitiveWord, name: '添加内容' },
             {
               validator: checkDefaultAndCustomTagRepeat(() => {
