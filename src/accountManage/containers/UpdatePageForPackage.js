@@ -12,6 +12,7 @@ import ImproveStatistics from "@/accountManage/components/common/ImproveStatisti
 import LoadingBlock from "@/accountManage/base/LoadingBlock";
 import numeral from '@/util/numeralExpand'
 import { sensors } from "@/util/sensor/sensors";
+import AccountState from "@/accountManage/components/AccountState";
 
 const { TabPane } = Tabs;
 const { Link } = Anchor;
@@ -96,10 +97,12 @@ class UpdatePageForPackage extends Component {
       message.error('信息填写不合法, 请重新填写')
     })
   }
-  componentWillUnmount(){
+
+  componentWillUnmount() {
     const { actions } = this.props
 
   }
+
   componentDidMount() {
     // 获取account_id参数, 参数错误error
     if (!this.state.accountId) {
@@ -166,6 +169,13 @@ class UpdatePageForPackage extends Component {
             document.getElementById("app-content-children-id").scrollTop = 0
           })
         }}
+        tabBarExtraContent={
+          // 是否下架 是否可接单 是否预约账号
+          <AccountState
+            actions={this.props.actions}
+            data={this.props.accountManage}
+          />
+        }
       >
         {
           tabs.map(pane => <TabPane tab={

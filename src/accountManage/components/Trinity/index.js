@@ -35,12 +35,12 @@ export default class Trinity extends Component {
 
   componentDidMount() {
     const { actions, data: { account } } = this.props
-    actions.getAccountTrinitySkuInfo({
+    /*actions.getAccountTrinitySkuInfo({
       accountId: account.id,
       platformId: account.base.platformId
     }).finally(() => {
       this.setState({ loading: false })
-    })
+    })*/
   }
 
   // 处理提交数据
@@ -113,7 +113,7 @@ export default class Trinity extends Component {
       isFamous,
       trinityPriceInfo: {
         cooperationPlatformResVOS = []
-      }
+      } = {}
       // 信息修改时间
     } = data.account || {}
     const right = <div className='wrap-panel-right-content'>
