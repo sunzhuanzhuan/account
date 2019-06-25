@@ -36,6 +36,6 @@ export default class Cooperation extends Component {
 
   render() {
     const Component = statusComponent(this.state.moduleStatus)
-    return <Component {...this.props} onModuleStatusChange={this.handleChange}/>
+    return <Component {...this.props} onModuleStatusChange={this.handleChange} />
   }
 }

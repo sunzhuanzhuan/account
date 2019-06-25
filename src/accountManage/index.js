@@ -12,17 +12,17 @@ const UpdatePageForPackage = lazyLoadComponent(() => import('./containers/Update
 
 
 class AccountEnterIndex extends Component {
-	state = {}
+  state = {}
 
-	render() {
-		return (
-			<div className='account-manage' id='account-manage-container'>
-				<Route path='/account/manage/add' component={AddPage} />
-				{/*<Route path='/account/manage/update' component={UpdatePage} />*/}
-				<Route path='/account/manage/update/:platformId' component={UpdatePageForPackage} />
-			</div>
-		);
-	}
+  render() {
+    return (
+      <div className='account-manage' id='account-manage-container'>
+        <Route path='/account/manage/add' component={AddPage} />
+        {/*<Route path='/account/manage/update' component={UpdatePage} />*/}
+        <Route path='/account/manage/update/:platformId' component={UpdatePageForPackage} />
+      </div>
+    );
+  }
 }
 
 export default AccountEnterIndex;

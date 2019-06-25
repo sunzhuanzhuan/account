@@ -7,7 +7,7 @@ export default {
     platform: prefix + '/common/v1/platform',
     getCountryList: prefix + '/common/v1/onlineCountryList',
     getAreasHotCity: prefix + '/common/v1/countryCityAreaTree',
-    getChildrenAreaList: prefix + '/common/v1/childrenAreaList',
+    getChildrenAreaList: prefix + '/common/v1/childrenAreaList'
   },
   fetchAccountBaseInfo: prefix + '/account/v1/captureInfo',
   getAudiencePortrait: prefix + '/account/v1/getAudiencePortrait',
@@ -43,7 +43,7 @@ export default {
     updateContentInfo: prefix + '/account/v1_1/updateContentInfo',
     updateStrategyInfo: prefix + '/account/v1_1/updateStrategyInfo',
     updateOtherInfo: prefix + '/account/v1/updateOtherInfo',
-    updatePersonalInfo: prefix + '/account/v1_1/updatePersonalInfo',
+    updatePersonalInfo: prefix + '/account/v1_1/updatePersonalInfo'
 
   },
   config: {
@@ -59,6 +59,6 @@ export default {
     getAdvertisingOfferServices: prefix + '/account/v1_1/configuration/advertisingOfferServices',
     getAdvertisingFieldConfig: prefix + '/account/v1_1/configuration/advertisingFieldConfig',
     getCooperateNoticeFieldConfig: prefix + '/account/v1_1/configuration/cooperateNoticeFieldConfig',
-    getAccountFieldConfig: prefix + '/account/v1_1/configuration/accountFieldConfig',
+    getAccountFieldConfig: prefix + '/account/v1_1/configuration/accountFieldConfig'
   }
 }

@@ -8,7 +8,7 @@ import StrategyView from "./View";
 const statusComponent = (status) => {
   const _map = {
     'edit': StrategyEdit,
-    'view': StrategyView,
+    'view': StrategyView
   }
   return _map[status] || <div>信息错误</div>
 }

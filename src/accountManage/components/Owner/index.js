@@ -23,7 +23,7 @@ export default class Owner extends Component {
       platformId
     } = adminAccount
     const {
-      id: accountId,
+      id: accountId
     } = account
     const babysitterHost = babysitter_host.value /*|| 'http://toufang.weiboyi.com'*/;
     let isOwner = auth['account.manage.update.change.main.account'];

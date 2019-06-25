@@ -10,8 +10,7 @@ import FieldView from "@/accountManage/base/FeildView";
 export default class ContentView extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-    }
+    this.state = {}
   }
 
   render() {

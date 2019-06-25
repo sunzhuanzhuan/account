@@ -8,6 +8,7 @@ import {
   message, Radio, DatePicker
 } from 'antd';
 import moment from "moment";
+
 const uuid = require('uuid/v1');
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -27,7 +28,7 @@ export default class ChildrenList extends React.Component {
   static getDerivedStateFromProps(nextProps) {
     if ('value' in nextProps) {
       let value = nextProps.value || []
-      value.map(item => item.uuid ? item : Object.assign(item, {uuid: uuid()}))
+      value.map(item => item.uuid ? item : Object.assign(item, { uuid: uuid() }))
       return {
         value: nextProps.value || []
       };
@@ -48,7 +49,7 @@ export default class ChildrenList extends React.Component {
       "gender": null,
       "birthDate": null,
       "canOnCamera": null,
-      "uuid": uuid(),
+      "uuid": uuid()
 
     })
     this.triggerChange(newValue)
@@ -64,7 +65,7 @@ export default class ChildrenList extends React.Component {
   render() {
     const { value = [] } = this.state
     const {
-      form: { getFieldDecorator },
+      form: { getFieldDecorator }
     } = this.props;
     return <div>
       {value.map((item, index) => {
@@ -75,7 +76,7 @@ export default class ChildrenList extends React.Component {
           <FormItem label="性别" {...formItemLayout}>
             {getFieldDecorator(`_children.${item.uuid}.gender`, {
               initialValue: item.gender,
-              rules: [{ required: true, message: '请选择宝宝的性别' }],
+              rules: [{ required: true, message: '请选择宝宝的性别' }]
             })(
               <RadioGroup>
                 <Radio value={1}>男</Radio>
@@ -86,7 +87,7 @@ export default class ChildrenList extends React.Component {
           <FormItem label="生日" {...formItemLayout}>
             {getFieldDecorator(`_children.${item.uuid}.birthDate`, {
               initialValue: item.birthDate && moment(item.birthDate),
-              rules: [{ required: true, message: '请选择宝宝的生日' }],
+              rules: [{ required: true, message: '请选择宝宝的生日' }]
             })(
               <DatePicker style={{ width: '100%' }} placeholder='请选择您的生日' disabledDate={date => {
                 return date.isBefore(moment().subtract(150, 'y'))

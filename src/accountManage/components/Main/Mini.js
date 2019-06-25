@@ -13,8 +13,7 @@ import SimpleTag from "@/accountManage/base/SimpleTag";
 export default class MainMini extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-    }
+    this.state = {}
   }
 
   render() {
@@ -46,13 +45,13 @@ export default class MainMini extends Component {
         isSupportLive,
         baseModifiedAt // 账号基本信息修改时间
       },
-      strategyInfo : {
+      strategyInfo: {
         onShelfStatus: {
           aOnShelfStatus,
           aOffShelfReasonStringList,
           bOnShelfStatus,
           bOffShelfReasonStringList
-        } = {},
+        } = {}
       }
     } = data.account || {}
     const {

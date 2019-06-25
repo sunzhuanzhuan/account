@@ -228,7 +228,7 @@ export class FeedbackDetail extends Component {
       wrongReasonType,
       newClassifyName,
       auditType = 1,
-      classifyAuditDialogList = [],
+      classifyAuditDialogList = []
     } = this.state
     return <Modal
       visible

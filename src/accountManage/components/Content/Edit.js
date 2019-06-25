@@ -83,10 +83,10 @@ export default class ContentEdit extends Component {
       content: { modifiedAt } // 信息修改时间
     } = data.account || {}
     const {
-      options: asyncOptions,
+      options: asyncOptions
     } = data
     const {
-      submitLoading,
+      submitLoading
     } = this.state
     const right = <div className='wrap-panel-right-content'>
       <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>

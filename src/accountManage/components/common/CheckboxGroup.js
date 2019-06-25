@@ -5,7 +5,7 @@ export default class CheckboxGroup extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: [],
+      value: []
     };
   }
 
@@ -34,6 +34,6 @@ export default class CheckboxGroup extends Component {
   render() {
     const { value = [] } = this.state
     const { options = [] } = this.props
-    return <Checkbox.Group options={options} value={value} onChange={this.onChange}/>
+    return <Checkbox.Group options={options} value={value} onChange={this.onChange} />
   }
 }

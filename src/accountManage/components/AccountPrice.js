@@ -234,6 +234,7 @@ export class FamousPrice extends Component {
       orderStatusReason: offShelfReason // 强制可下单原因
     };
   }
+
   //
 
   // 价格有效期联动校验 -- 时间
@@ -290,7 +291,7 @@ export class FamousPrice extends Component {
   setDefaultValue = (value) => () => {
     const { setFields, getFieldValue } = this.props;
     let date = getFieldValue('nextPriceValidTo');
-    if(!date){
+    if (!date) {
       setFields({
         'nextPriceValidTo': { value: value }
       });

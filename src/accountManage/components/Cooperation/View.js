@@ -14,6 +14,7 @@ export default class CooperationView extends Component {
     super(props)
     this.state = {}
   }
+
   componentDidMount() {
     const { actions, data: { account, visibility } } = this.props
     // 获取字段配置项 - 合作须知/广告服务
@@ -22,6 +23,7 @@ export default class CooperationView extends Component {
     Object.keys(visibility.advertisingFields).length === 0 &&
     actions.getAdvertisingFieldConfig({ platformId: account.base.platformId })
   }
+
   render() {
     const {
       data,

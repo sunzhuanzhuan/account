@@ -11,7 +11,7 @@ import {
   getCountryList_success,
   getOccupation_success,
   getPet_success,
-  getSkill_success,
+  getSkill_success
 } from '../actions/package'
 import {
   getIndustryListForAccount_success

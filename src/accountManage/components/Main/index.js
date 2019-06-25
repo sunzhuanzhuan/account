@@ -22,6 +22,7 @@ export default class Main extends Component {
       moduleStatus: 'edit'
     }
   }
+
   static getDerivedStateFromProps(nextProps) {
     if ('moduleStatus' in nextProps) {
       return {

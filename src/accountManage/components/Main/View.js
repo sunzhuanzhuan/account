@@ -15,8 +15,7 @@ import { configItemKeyToField, configOptions } from "@/accountManage/constants/p
 export default class MainView extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-    }
+    this.state = {}
   }
 
   componentDidMount() {

@@ -7,6 +7,7 @@ import {
   Popconfirm,
   message
 } from 'antd';
+
 const uuid = require('uuid/v1');
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -26,7 +27,7 @@ export default class CooperationCasesCore extends React.Component {
   static getDerivedStateFromProps(nextProps) {
     if ('value' in nextProps) {
       let value = nextProps.value || []
-      value.map(item => item.uuid ? item : Object.assign(item, {uuid: uuid()}))
+      value.map(item => item.uuid ? item : Object.assign(item, { uuid: uuid() }))
       return {
         value: nextProps.value || []
       };
@@ -47,7 +48,7 @@ export default class CooperationCasesCore extends React.Component {
       "brand": "", // String 品牌
       "link": "", // String 链接
       "content": "", // String 合作效果
-      "uuid": uuid(), // String 合作效果
+      "uuid": uuid() // String 合作效果
 
     })
     this.triggerChange(newValue)

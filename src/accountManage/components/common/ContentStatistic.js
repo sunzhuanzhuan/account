@@ -60,7 +60,7 @@ const ContentStatistic = (props) => {
   return <div className='content-statistic-wrapper'>
     <Row>
       {
-        columnsKeys.map(({key, name}) => <Col span={7} key={key}>
+        columnsKeys.map(({ key, name }) => <Col span={7} key={key}>
           <div className='statistic-field'>
             <span className='title'>{name}</span>
             <span className='value'>{data[key] || '-'}</span>

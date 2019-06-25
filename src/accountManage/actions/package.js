@@ -17,34 +17,34 @@ export const setModuleStatus = createAction('setModuleStatus', (data) => {
 
 // 更新账号信息
 export const {
-  updateBaseInfo,
+  updateBaseInfo
 } = createHttpAction('updateBaseInfo', Interface.account.updateBaseInfo, {
-  method: 'post',
+  method: 'post'
 })
 export const {
-  updateCooperationInfo,
+  updateCooperationInfo
 } = createHttpAction('updateCooperationInfo', Interface.account.updateCooperationInfo, {
-  method: 'post',
+  method: 'post'
 })
 export const {
-  updateContentInfo,
+  updateContentInfo
 } = createHttpAction('updateContentInfo', Interface.account.updateContentInfo, {
-  method: 'post',
+  method: 'post'
 })
 export const {
-  updateStrategyInfo,
+  updateStrategyInfo
 } = createHttpAction('updateStrategyInfo', Interface.account.updateStrategyInfo, {
-  method: 'post',
+  method: 'post'
 })
 export const {
-  updateOtherInfo,
+  updateOtherInfo
 } = createHttpAction('updateOtherInfo', Interface.account.updateOtherInfo, {
-  method: 'post',
+  method: 'post'
 })
 export const {
-  updatePersonalInfo,
+  updatePersonalInfo
 } = createHttpAction('updatePersonalInfo', Interface.account.updatePersonalInfo, {
-  method: 'post',
+  method: 'post'
 })
 
 // 获取配置项
@@ -61,52 +61,52 @@ export const {
 // 合作须知项
 export const {
   getCooperateNoticeFieldConfig,
-  getCooperateNoticeFieldConfig_success,
+  getCooperateNoticeFieldConfig_success
 } = createHttpAction('getCooperateNoticeFieldConfig', Interface.config.getCooperateNoticeFieldConfig);
 // 广告服务项
 export const {
   getAdvertisingFieldConfig,
-  getAdvertisingFieldConfig_success,
+  getAdvertisingFieldConfig_success
 } = createHttpAction('getAdvertisingFieldConfig', Interface.config.getAdvertisingFieldConfig);
 // 广告服务可选
 export const {
   getAdvertisingOfferServices,
-  getAdvertisingOfferServices_success,
+  getAdvertisingOfferServices_success
 } = createHttpAction('getAdvertisingOfferServices', Interface.config.getAdvertisingOfferServices);
 // 内容形式配置项
 export const {
   getContentForm,
-  getContentForm_success,
+  getContentForm_success
 } = createHttpAction('getContentForm', Interface.config.getContentForm);
 // 内容特点配置项
 export const {
   getContentFeature,
-  getContentFeature_success,
+  getContentFeature_success
 } = createHttpAction('getContentFeature', Interface.config.getContentFeature);
 // 内容风格配置项
 export const {
   getContentStyle,
-  getContentStyle_success,
+  getContentStyle_success
 } = createHttpAction('getContentStyle', Interface.config.getContentStyle);
 // 获取国家列表
 export const {
   getCountryList,
-  getCountryList_success,
+  getCountryList_success
 } = createHttpAction('getCountryList', Interface.common.getCountryList);
 // 获取职业列表
 export const {
   getOccupation,
-  getOccupation_success,
+  getOccupation_success
 } = createHttpAction('getOccupation', Interface.config.getOccupation);
 // 获取宠物列表
 export const {
   getPet,
-  getPet_success,
+  getPet_success
 } = createHttpAction('getPet', Interface.config.getPet);
 // 获取技能列表
 export const {
   getSkill,
-  getSkill_success,
+  getSkill_success
 } = createHttpAction('getSkill', Interface.config.getSkill);
 // 获取地域加热门城市
 export const {

@@ -14,7 +14,7 @@ export default class ImproveStatistics extends Component {
 
   goComplete = (moduleId = 'main') => {
     this.handleScroll('#navLink-' + moduleId)
-    this.props.actions.setModuleStatus({[moduleId]: 'edit'})
+    this.props.actions.setModuleStatus({ [moduleId]: 'edit' })
   }
 
   render() {

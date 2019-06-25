@@ -13,8 +13,7 @@ import { findStatusText } from '../../util'
 export default class PersonalView extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-    }
+    this.state = {}
   }
 
   render() {

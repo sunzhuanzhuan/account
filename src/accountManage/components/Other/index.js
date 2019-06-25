@@ -16,6 +16,7 @@ export default class Other extends Component {
     // window注入组件
     window.__UpdateAccountReactComp__.other = this
   }
+
   // 处理提交数据
   handleSubmitValues = (values) => {
     const { data: { account } } = this.props;

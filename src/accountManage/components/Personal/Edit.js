@@ -64,7 +64,7 @@ export default class PersonalEdit extends Component {
         customPets: pets.custom,
         customSkills: skills.custom,
         area: undefined,
-        shipping: Object.keys(shipping).length > 0 ?{
+        shipping: Object.keys(shipping).length > 0 ? {
           "receiver": shipping.receiver,
           "phoneNumber": shipping.phoneNumber,
           "countryId": shipping.country.id || 0,

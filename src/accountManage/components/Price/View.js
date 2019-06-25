@@ -20,8 +20,7 @@ import {
 export default class PriceView extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-    }
+    this.state = {}
   }
 
   render() {
@@ -62,7 +61,7 @@ export default class PriceView extends Component {
                   <ReferencePrice  {...fieldProps} />}
                   {configurePlatform.visibility.fields.priceInclude &&
                   <FieldView width={80} title="报价包含" value={
-                    (isPreventShielding === 1 || isSupportTopicAndLink === 1 ) ? <div>
+                    (isPreventShielding === 1 || isSupportTopicAndLink === 1) ? <div>
                       {isPreventShielding === 1 && <Tag>防屏蔽（博主可自行下微任务/接WEIQ订单）</Tag>}
                       {isSupportTopicAndLink === 1 && <Tag>话题/@/链接</Tag>}
                     </div> : '--'

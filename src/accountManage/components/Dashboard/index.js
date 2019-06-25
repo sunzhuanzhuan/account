@@ -10,8 +10,7 @@ import PercentageChart from "@/accountManage/components/common/PercentageChart";
 export default class Dashboard extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-    }
+    this.state = {}
   }
 
   componentDidMount() {
@@ -92,9 +91,9 @@ export default class Dashboard extends Component {
                 justifyContent: "space-around"
               }}>
                 <PercentageChart title='性别' value={sexs} colors={['#4880ff', '#f4525b']} />
-                <PercentageChart title='年龄' value={ages.slice(0,3)} colors={['#4880ff', '#ffc400']} />
-                <PercentageChart title='地域' value={areas.slice(0,3)} colors={['#4880ff', '#ffc400', '#f4525b']} />
-                <PercentageChart title='兴趣' value={interests.slice(0,3)} colors={['#f4525b', '#ffc400', '#23cab6']} />
+                <PercentageChart title='年龄' value={ages.slice(0, 3)} colors={['#4880ff', '#ffc400']} />
+                <PercentageChart title='地域' value={areas.slice(0, 3)} colors={['#4880ff', '#ffc400', '#f4525b']} />
+                <PercentageChart title='兴趣' value={interests.slice(0, 3)} colors={['#f4525b', '#ffc400', '#23cab6']} />
               </div>
             </div>
           </div>

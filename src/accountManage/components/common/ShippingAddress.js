@@ -17,7 +17,7 @@ class EditModal extends Component {
           province,
           city,
           county,
-          area: undefined,
+          area: undefined
         })
         this.props.setModal()
       }
@@ -135,7 +135,10 @@ export default class ShippingAddress extends Component {
           <p>收货地址： {area.map(item => item.areaName).join('')} {addressDetail}</p>
         </div>}
         {this.state.modal &&
-        <EditModal data={{...this.state.value, area}} add={this.onChange} setModal={this.setModal} />}
+        <EditModal data={{
+          ...this.state.value,
+          area
+        }} add={this.onChange} setModal={this.setModal} />}
       </div>
     );
   }

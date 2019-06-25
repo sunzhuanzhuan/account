@@ -8,7 +8,7 @@ import PersonalView from "./View";
 const statusComponent = (status) => {
   const _map = {
     'edit': PersonalEdit,
-    'view': PersonalView,
+    'view': PersonalView
   }
   return _map[status] || <div>信息错误</div>
 }
@@ -20,6 +20,7 @@ export default class Personal extends Component {
       moduleStatus: props.moduleStatus || 'edit'
     }
   }
+
   static getDerivedStateFromProps(nextProps) {
     if ('moduleStatus' in nextProps) {
       return {

@@ -39,7 +39,10 @@ export default class Module extends Component {
     const { anchorId: key, component: C } = this.props.module
     const { moduleStatus } = this.props.data
     return <article id={"navLink-" + key} className='module-item-wrap'>
-      {C && <C {...this.props} layout={{ full: formItemLayout, half: halfWrapCol }} moduleStatus={moduleStatus[key]}/>}
+      {C && <C {...this.props} layout={{
+        full: formItemLayout,
+        half: halfWrapCol
+      }} moduleStatus={moduleStatus[key]} />}
     </article>
   }
 }

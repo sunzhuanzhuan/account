@@ -650,7 +650,7 @@ export const Level = (props) => {
                 <Option key={key} value={parseInt(key)}>{text}</Option>)
             }
           </Select> :
-          <InputNumber placeholder='请输入' style={{ width: "100%" }} precision={0} min={1} max={99999}  disabled={levelFrom === 2} />
+          <InputNumber placeholder='请输入' style={{ width: "100%" }} precision={0} min={1} max={99999} disabled={levelFrom === 2} />
       )}
     </FormItem>
     {getFieldDecorator('base.levelFrom', { initialValue: levelFrom })(

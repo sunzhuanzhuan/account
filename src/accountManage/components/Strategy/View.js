@@ -11,8 +11,7 @@ import { handleReason, weeksToNames } from "@/accountManage/util";
 export default class StrategyView extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-    }
+    this.state = {}
   }
 
   render() {
@@ -97,7 +96,7 @@ export default class StrategyView extends Component {
               <div className='right-wrap'>
                 <FieldView width={70} title="暂离策略" value={
                   Object.keys(strategy).length > 0 ? <div>
-                    <div style={{paddingBottom: "8px"}}>
+                    <div style={{ paddingBottom: "8px" }}>
                       暂离
                       {strategy.type === 1 && "（每日）"}
                       {strategy.type === 2 && `（每周：${weeksToNames(strategy.weeks).join('，')}）`}
@@ -114,7 +113,7 @@ export default class StrategyView extends Component {
                 } />
                 <FieldView width={70} title="接单策略" value={
                   maxOrderCount > 0 ? <div>
-                    <div style={{paddingBottom: "8px"}}>
+                    <div style={{ paddingBottom: "8px" }}>
                       每日最大接单数 {maxOrderCount}
                     </div>
                     <FieldView width={70} title="备注" value={maxOrderCountNote} />

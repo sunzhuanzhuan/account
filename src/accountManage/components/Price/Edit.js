@@ -69,15 +69,15 @@ export default class PriceEdit extends Component {
       onOk(hide) {
         hide()
         trinityIsPreventShieldingTip({
-            accountValue: trinityPriceInfo.trinityIsPreventShielding,
-            skuValue: values.isPreventShielding,
-            platformId: account.base.platformId
-          }, () => {
-            return saveSku(values).then(() => {
-              message.success('更新报价信息成功', 1.3, () => {
-                reload(/*() => onModuleStatusChange('view')*/)
-              });
+          accountValue: trinityPriceInfo.trinityIsPreventShielding,
+          skuValue: values.isPreventShielding,
+          platformId: account.base.platformId
+        }, () => {
+          return saveSku(values).then(() => {
+            message.success('更新报价信息成功', 1.3, () => {
+              reload(/*() => onModuleStatusChange('view')*/)
             });
+          });
         });
       },
       onCancel() { }

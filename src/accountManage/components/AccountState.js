@@ -19,7 +19,7 @@ class AccountState extends React.Component {
     const {
       onShelfStatus: {
         aOnShelfStatus,
-        bOnShelfStatus,
+        bOnShelfStatus
       } = {}
     } = this.props.data.account.strategyInfo
     if (!aOnShelfStatus && !bOnShelfStatus) {

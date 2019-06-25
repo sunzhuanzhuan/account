@@ -638,18 +638,18 @@ export class NamelessPriceView extends Component {
       data: { priceInfo }
     } = this.props;
     const {
-      skuList,
+      skuList
     } = priceInfo;
     let val = {};
     skuList && skuList.forEach(({ skuTypeId, costPriceRaw }) => {
       val[skuTypeId] = costPriceRaw;
     });
     return <div>
-        <FieldView width={80} title="账号报价" value={
-          <PriceTable style={{ lineHeight: '40px' }} isEdit={false} priceKeys={priceKeys} value={val} />
-        } />
-        <Divider dashed />
-        {children}
+      <FieldView width={80} title="账号报价" value={
+        <PriceTable style={{ lineHeight: '40px' }} isEdit={false} priceKeys={priceKeys} value={val} />
+      } />
+      <Divider dashed />
+      {children}
     </div>
   }
 }

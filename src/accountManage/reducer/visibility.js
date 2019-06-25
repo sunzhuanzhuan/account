@@ -4,7 +4,7 @@ import { configItemKeyToField } from "@/accountManage/constants/packageConfig";
 import {
   getAccountFieldConfig_success,
   getCooperateNoticeFieldConfig_success,
-  getAdvertisingFieldConfig_success,
+  getAdvertisingFieldConfig_success
 } from '../actions/package'
 // 账号特权
 export const accountFields = handleActions({

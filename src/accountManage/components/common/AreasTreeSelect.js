@@ -172,7 +172,7 @@ class SearchSelect extends Component {
         }
         return <TreeNode key={item.id} title={title} textKey={item.areaName} />;
       });
-    return chinaAreas.length > 0 &&  <div className='popup-search-tree-select'>
+    return chinaAreas.length > 0 && <div className='popup-search-tree-select'>
       <header>
         <Search placeholder='搜索' onChange={this.onChange} />
       </header>
