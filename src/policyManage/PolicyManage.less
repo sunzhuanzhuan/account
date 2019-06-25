@@ -1,0 +1,50 @@
+@textColor: #1890ff;
+@borderColor: #d9d9d9;
+.policyWrapper {
+  .policyHeader {
+    font-size: 16px;
+    font-weight: 400;
+    .anticon {
+      margin-right: 10px;
+    }
+  }
+  .commonTitle {
+    padding-left: 10px;
+    margin-bottom: 8px;
+    border-left: 5px solid @textColor;
+  }
+  .appRules {
+    cursor: pointer;
+    color: @textColor;
+    .anticon {
+      margin-right: 5px;
+    }
+  }
+  .ruleWrapper {
+    border: 1px solid @borderColor;
+    border-radius: 4px;
+    .ruleTitle {
+      border-bottom: 1px solid @borderColor;
+    }
+    .ruleTitle, .ruleContent {
+      padding: 0 20px;
+    }
+    .ruleContent {
+      .ant-col-1::after{
+        content: ' :';
+      }
+    }
+  }
+  .ruleItem {
+    padding: 10px 20px;
+    background: #f5f5f5;
+  }
+  .operateText {
+    color: @textColor;
+  }
+  .remarksText {
+    resize: none;
+    height: 100px;
+  }
+}
+

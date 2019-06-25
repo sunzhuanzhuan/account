@@ -16,6 +16,7 @@ import 'numeral/locales/chs';
 import App from './containers/App';
 import AccountManage from './accountManage';
 import AccountDetail from './accountDetail';
+import PolicyManage from './policyManage/PolicyManage';
 
 import { linkTo } from '@/util/linkTo';
 // 设置语言包
@@ -33,6 +34,7 @@ const routes = () => (
     <Switch>
       <Route path="/account/manage" component={AccountManage} />
       <Route path="/account/view" component={AccountDetail} />
+      <Route path="/account/policy" component={PolicyManage} />
       <Route render={() => linkTo('/error')} />
     </Switch>
   </App>
@@ -45,7 +47,7 @@ render(
         <Switch>
           {
             process.env.NODE_ENV === 'development' ?
-              <Route exact path="/" render={() => <Redirect to="/account/view/detail" />} /> : null
+              <Route exact path="/" render={() => <Redirect to="/account/policy" />} /> : null
           }
           <Route path="/account" render={routes} />
           <Route render={redirectToOtherProjects} />
