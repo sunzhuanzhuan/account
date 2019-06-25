@@ -159,12 +159,6 @@ class UpdatePageForPackage extends Component {
       {process.env.REACT_APP_CLIENT === 'NB' && <Tabs
         activeKey={active}
         animated={{ inkBar: true, tabPane: false }}
-        style={{
-          position: 'sticky',
-          top: "-20px",
-          background: '#fff',
-          zIndex: 1
-        }}
         onChange={(active) => {
           this.setState({ active }, () => {
             document.getElementById("app-content-children-id").scrollTop = 0

@@ -40,7 +40,7 @@
   background: #fff;
   //border-radius: 4px;
   margin-bottom: 10px;
-  overflow: hidden;
+  //overflow: hidden;
   //border-top: 1px solid #f8f8f8;
   position: relative;
 
@@ -90,11 +90,13 @@
   }
 
   .header-wrap {
-    padding-left: 25px;
+    padding: 6px 0  7px 25px;
     line-height: 32px;
     border-bottom: 1px solid #e8e8e8;
-    padding-bottom: 6px;
-
+    position: sticky;
+    top: 22px;
+    z-index: 10;
+    background: #fff;
     .right {
       font-size: 13px;
       display: inline-block;
@@ -161,7 +163,7 @@
       display: inline-block;
       width: 5px;
       height: 16px;
-      top: 7px;
+      top: 14px;
       left: 0;
       background: @primary-color;
     }
