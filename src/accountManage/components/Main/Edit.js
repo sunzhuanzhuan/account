@@ -159,7 +159,8 @@ export default class MainEdit extends Component {
           </h4>
           <div className='subclass-content'>
             <FollowerCount {...fieldProps} disabled={configurePlatform.configure.disabledFollowersCount} />
-            {configurePlatform.visibility.fields.isFansNumberImg && <FollowerCountScreenshotUrl {...fieldProps} authToken={authToken} />}
+            {configurePlatform.visibility.fields.isFansNumberImg &&
+            <FollowerCountScreenshotUrl {...fieldProps} authToken={authToken} />}
             <FollowerCountVerificationStatus {...fieldProps} />
             <Divider dashed />
             <Level {...fieldProps} options={configurePlatform.configure.levelText} />
@@ -188,7 +189,10 @@ export default class MainEdit extends Component {
       </ul>
       {
         process.env.REACT_APP_CLIENT === 'NC' &&
-        <Modal visible={this.state.fetchModal} width={800} footer={null} onCancel={() => this.setState({ fetchModal: false })}>
+        <Modal visible={this.state.fetchModal} bodyStyle={{
+          paddingTop: 6,
+          paddingRight: 34
+        }} width={800} footer={null} onCancel={() => this.setState({ fetchModal: false })}>
           <div className='modal-fetch-wrapper'>
             <Fetch {...this.props} module={modulesMap['fetch']} />
           </div>
