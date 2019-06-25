@@ -61,7 +61,7 @@ export default class PriceEdit extends Component {
     });
   };
   showConfirm = (values) => {
-    const { actions: { saveSku }, data: { account, trinityPriceInfo }, reload, onModuleStatusChange } = this.props;
+    const { actions: { saveSku }, data: { account, trinityPriceInfo = {} }, reload, onModuleStatusChange } = this.props;
     const { isFamous } = account.base;
     Modal.confirm({
       title: '提交价格信息?',
@@ -75,7 +75,7 @@ export default class PriceEdit extends Component {
           }, () => {
             return saveSku(values).then(() => {
               message.success('更新报价信息成功', 1.3, () => {
-                reload(() => onModuleStatusChange('view'))
+                reload(/*() => onModuleStatusChange('view')*/)
               });
             });
         });

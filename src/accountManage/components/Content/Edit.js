@@ -38,11 +38,11 @@ export default class ContentEdit extends Component {
     return {
       id: account.id,
       content: {
-        forms: form.defaultItems,
+        formIds: form.defaultItems,
         customForm: form.custom,
-        features: feature.defaultItems,
+        featureIds: feature.defaultItems,
         customFeature: feature.custom,
-        styles: style.defaultItems,
+        styleIds: style.defaultItems,
         customStyle: style.custom
       }
     };

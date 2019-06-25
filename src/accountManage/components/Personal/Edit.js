@@ -110,13 +110,13 @@ export default class PersonalEdit extends Component {
     } = this.props
     const fieldProps = { layout, data, form, actions }
     const {
-      modifiedAt // 信息修改时间
+      personalInfoModifiedAt // 信息修改时间
     } = data.account.personalInfo || {}
     const {
       options: asyncOptions
     } = data || {}
     const right = <div className='wrap-panel-right-content'>
-      <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>
+      <span className='gray-text'>最近更新于: {personalInfoModifiedAt || '--'}</span>
       <Button htmlType='submit' type='primary' loading={this.state.submitLoading}>保存</Button>
     </div>;
     return <Form className='module-item-container' onSubmit={this.submit} colon={false}>

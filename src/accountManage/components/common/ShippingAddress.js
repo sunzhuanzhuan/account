@@ -32,6 +32,7 @@ class EditModal extends Component {
       title='填写收货地址信息'
       onOk={this.submit}
       onCancel={() => this.props.setModal()}
+      maskClosable={false}
     >
       <Form colon={false} hideRequiredMark>
         <Form.Item label='收货人'>
