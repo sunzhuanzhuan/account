@@ -3,10 +3,10 @@ import { Icon } from 'antd';
 
 class AddBtn extends React.Component {
 	render() {
-		const { title } = this.props;
+		const { title, onClick } = this.props;
 
 		return (
-			<div key='addBtn' className='appRules'><Icon type="plus" />{title}</div>
+			<div key='addBtn' className='appRules' onClick={onClick}><Icon type="plus" />{title}</div>
 		)
 	}
 }

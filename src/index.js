@@ -16,7 +16,7 @@ import 'numeral/locales/chs';
 import App from './containers/App';
 import AccountManage from './accountManage';
 import AccountDetail from './accountDetail';
-import PolicyManage from './policyManage/PolicyManage';
+import PolicyManage from './policyManage/containers/PolicyManage';
 
 import { linkTo } from '@/util/linkTo';
 // 设置语言包

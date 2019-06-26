@@ -1,8 +1,8 @@
 import React from "react"
 import { Badge, Tooltip, Icon, Form, DatePicker, Radio, Input } from 'antd'
-import CommonTitle from "./CommonTitle";
-import PolicyRulesComp from "./PolicyRulesWrapper";
-import WhiteList from "./WhiteList";
+import CommonTitle from "../components/CommonTitle";
+import PolicyRulesComp from "../components/PolicyRulesWrapper";
+import WhiteList from "../components/WhiteList";
 
 import './PolicyManage.less';
 
