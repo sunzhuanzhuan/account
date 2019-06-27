@@ -106,7 +106,6 @@ export default class Fetch extends React.Component {
       }
       // 重置form
       Object.keys(data.data).forEach(key => {
-        console.log('=====', key);
         window.__UpdateAccountReactComp__.main.props.form.resetFields("base." + key)
       })
       /*let forms = Object.values((window.updateForms || {})) // 维护页分段提交form
@@ -121,7 +120,6 @@ export default class Fetch extends React.Component {
           forms.forEach(form => form.resetFields(key))
         })
       }*/
-      console.log('xxxxxx');
       message.success('获取信息成功！')
     }).catch(() => {
       this.setState({

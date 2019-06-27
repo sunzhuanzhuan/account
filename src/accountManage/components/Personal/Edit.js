@@ -61,7 +61,6 @@ export default class PersonalEdit extends Component {
         sort: index + 1
       }
     })
-    console.log(values, '=====>');
     let value = {
       id: account.id,
       personalInfo: {
@@ -83,7 +82,6 @@ export default class PersonalEdit extends Component {
         } : {}
       }
     }
-    console.log(value, '===>');
     // values.base['platformId'] = platformId;
     return value;
   };
