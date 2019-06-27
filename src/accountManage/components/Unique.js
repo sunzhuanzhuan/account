@@ -245,7 +245,7 @@ export const AgentConfigAndPrice = (props) => {
     {getFieldValue('_trinityIsPreventShieldingManual_') ?
       <FormItem {...formItemLayout} label={`强制可在${name}下单结果`}>
         {getFieldDecorator('trinityIsPreventShieldingManual', {
-          initialValue: trinityIsPreventShieldingManual,
+          initialValue: trinityIsPreventShieldingManual || undefined,
           rules: [{ required: true, message: '本项为必选项，请选择！' }]
         })(
           <RadioGroup>
@@ -254,7 +254,9 @@ export const AgentConfigAndPrice = (props) => {
           </RadioGroup>
         )}
       </FormItem> : null}
-    {(getFieldValue('trinityIsPreventShieldingAutomated') === 1 && !getFieldValue('_trinityIsPreventShieldingManual_')) || getFieldValue('trinityIsPreventShieldingManual') === 1 ?
+    {getFieldValue('trinityIsPreventShieldingAutomated') === 1 ||
+      (getFieldValue('_trinityIsPreventShieldingManual_') &&
+    getFieldValue('trinityIsPreventShieldingManual') === 1) ?
       <FormItem {...formItemLayout} label='下单方'>
         {getFieldDecorator('trinityPlaceOrderType', {
           initialValue: trinityPlaceOrderType,
