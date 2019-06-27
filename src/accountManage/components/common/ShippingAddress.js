@@ -132,7 +132,7 @@ export default class ShippingAddress extends Component {
           </span>
           <p>收货人： {receiver}</p>
           <p>手机号： {phoneNumber}</p>
-          <p>收货地址： {area.map(item => item.areaName).join('')} {addressDetail}</p>
+          <p>收货地址： {area.map(item => item.name).join('/')} {addressDetail}</p>
         </div>}
         {this.state.modal &&
         <EditModal data={{

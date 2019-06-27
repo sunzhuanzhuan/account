@@ -55,6 +55,13 @@ export default class PersonalEdit extends Component {
     const { data: { account } } = this.props;
     const { pets = {}, skills = {} } = values['_client']
     const { shipping = {}, area = {} } = values['personalInfo']
+    const _children = (values.personalInfo.children || []).map((item, index) => {
+      return {
+        ...values['_children'][item.uuid],
+        sort: index + 1
+      }
+    })
+    console.log(values, '=====>');
     let value = {
       id: account.id,
       personalInfo: {
@@ -64,17 +71,19 @@ export default class PersonalEdit extends Component {
         customPets: pets.custom,
         customSkills: skills.custom,
         area: undefined,
+        children: _children,
         shipping: Object.keys(shipping).length > 0 ? {
           "receiver": shipping.receiver,
           "phoneNumber": shipping.phoneNumber,
-          "countryId": shipping.country.id || 0,
-          "provinceId": shipping.province.id || 0,
-          "cityId": shipping.city.id || 0,
-          "countyId": shipping.county.id || 0,
+          "countryId": (shipping.country || {}).id || 0,
+          "provinceId": (shipping.province || {}).id || 0,
+          "cityId": (shipping.city || {}).id || 0,
+          "countyId": (shipping.county || {}).id || 0,
           "addressDetail": shipping.addressDetail
         } : {}
       }
     }
+    console.log(value, '===>');
     // values.base['platformId'] = platformId;
     return value;
   };

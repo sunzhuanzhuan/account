@@ -142,7 +142,7 @@ class UpdatePageForPackage extends Component {
     const platform = platformToModules(base.platformId || this.state.platformId, activeTab.warp || [])
     const modulesList = platform.visibility.modules
     const statisticsProps = {
-      percent: numeral(perfectionDegree.overall).multiply(100).value(),
+      percent: numeral(perfectionDegree.overall).multiply(100).format('0'),
       // 找到当前tab的第一个未完善模块
       moduleId: activeTab.warp.find(key => {
         let perKey = modulesMap[key].perfectionDegreeKey

@@ -105,7 +105,7 @@ export const skills = handleActions({
         label: item.itemValue
       }
       if (item.childrenList) {
-        obj.children = item.childrenList.map(n => ({ value: n.itemKey, label: n.itemValue }))
+        obj.children = item.childrenList.map(n => ({ value: parseInt(n.itemKey), label: n.itemValue }))
       }
       return obj
     })

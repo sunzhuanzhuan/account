@@ -717,7 +717,7 @@ export const Verified = (props) => {
       })(
         <RadioGroup disabled={isVerifiedFrom === 2}>
           <Radio value={1}>已认证</Radio>
-          <Radio value={0}>未认证</Radio>
+          <Radio value={2}>未认证</Radio>
         </RadioGroup>
       )}
     </FormItem>
@@ -789,7 +789,7 @@ export const OpenStore = (props) => {
       })(
         <RadioGroup style={{ width: '100%' }}>
           <Radio value={1}>已开通</Radio>
-          <Radio value={0}>未开通</Radio>
+          <Radio value={2}>未开通</Radio>
         </RadioGroup>
       )}
     </FormItem>
@@ -956,7 +956,7 @@ export const VideoShotArea = (props) => {
       )}
       {getFieldValue('cooperation.videoShotAreaType') === 2 && <div>
         <FormItem {...layout.full}>
-          {getFieldDecorator('cooperation.videoShotAreasIds', {
+          {getFieldDecorator('cooperation.videoShotAreaIds', {
             rules: [{ required: true, message: '请选择视频拍摄地点' }],
             initialValue: videoShotAreas.map(area => area.id || area)
           })(
@@ -2058,7 +2058,7 @@ export const Occupations = (props) => {
   } = account.personalInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='职业'>
-      {getFieldDecorator('personalInfo.occupations', {
+      {getFieldDecorator('personalInfo.occupationIds', {
         initialValue: occupations.map(item => item.id || item)
       })(
         options.length > 0 ? <Select mode='multiple' style={{ width: "100%" }} placeholder='请选择'>
