@@ -713,7 +713,7 @@ export const Verified = (props) => {
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='是否认证'>
       {getFieldDecorator('base.isVerified', {
-        initialValue: isVerified
+        initialValue: isVerified || 2
       })(
         <RadioGroup disabled={isVerifiedFrom === 2}>
           <Radio value={1}>已认证</Radio>

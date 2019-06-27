@@ -40,6 +40,8 @@ export default class PriceView extends Component {
       isSupportTopicAndLink,
       isPreventShielding,
       skuList,
+      isAcceptHardAd,
+      isAcceptHardAdDescription,
       modifiedAt // 信息修改时间
     } = data.priceInfo || {};
     const right = <div className='wrap-panel-right-content'>
@@ -66,11 +68,33 @@ export default class PriceView extends Component {
                       {isSupportTopicAndLink === 1 && <Tag>话题/@/链接</Tag>}
                     </div> : '--'
                   } />}
+                  <FieldView width={80} title="接硬广" value={
+                    <div>
+                      <span>{isAcceptHardAd === 1 ? '是' : '否'}</span>
+                      {
+                        isAcceptHardAdDescription &&
+                        <div style={{paddingTop: 10}}>
+                          <span className='gray-text'>备注: </span>{isAcceptHardAdDescription}
+                        </div>
+                      }
+                    </div>
+                  } />
                 </FamousPriceView>
                 :
                 <NamelessPriceView {...fieldProps} priceKeys={priceKeys}>
                   {configurePlatform.visibility.fields.referencePrice &&
                   <ReferencePrice  {...fieldProps} />}
+                  <FieldView width={80} title="接硬广" value={
+                    <div>
+                      <span>{isAcceptHardAd === 1 ? '是' : '否'}</span>
+                      {
+                        isAcceptHardAdDescription &&
+                        <div style={{paddingTop: 10}}>
+                          <span className='gray-text'>备注: </span>{isAcceptHardAdDescription}
+                        </div>
+                      }
+                    </div>
+                  } />
                 </NamelessPriceView>
               }
             </section>

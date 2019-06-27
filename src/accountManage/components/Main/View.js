@@ -114,10 +114,11 @@ export default class MainView extends Component {
             <div className='view-fields-container'>
               <div className='right-wrap'>
                 <FieldView title="粉丝数" value={numeral(followerCount).format('0,0')} />
+                {configurePlatform.visibility.fields.isFansNumberImg &&
                 <FieldView title="粉丝数截图" value={
                   followerCountScreenshotUrl ?
                     <img alt='粉丝数截图' src={followerCountScreenshotUrl} width={100} height={100} /> : '暂无截图'
-                } />
+                } />}
                 <FieldView title="平台等级" value={level === 0 ? '' : (configurePlatform.configure.levelText ? configurePlatform.configure.levelText[level] : level)} />
               </div>
             </div>

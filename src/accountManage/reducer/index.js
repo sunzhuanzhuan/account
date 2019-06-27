@@ -196,33 +196,16 @@ export const moduleStatus = handleActions({
   },
   [combineActions(getDetail_success)]: (state, action) => {
     const { base: canEdit } = action.payload.data
-    if (process.env.REACT_APP_CLIENT === 'NC') {
+    if (canEdit) {
       return {
-        ...initStatus,
-        "main": "mini"
-      }
-    } else {
-      if (canEdit) {
-        return {
-          "main": "edit",
-          "cooperation": "edit",
-          "content": "edit",
-          "strategy": "edit",
-          "price": "edit",
-          "personal": "edit"
-        }
-      } else {
-        return {
-          "main": "view",
-          "cooperation": "view",
-          "content": "view",
-          "strategy": "view",
-          "price": "view",
-          "personal": "view"
-        }
+        "main": "edit",
+        "cooperation": "edit",
+        "content": "edit",
+        "strategy": "edit",
+        "price": "edit",
+        "personal": "edit"
       }
     }
-
   }
 }, initStatus)
 

@@ -87,6 +87,7 @@ export default class CooperationView extends Component {
                 <FieldView width={130} title="稿件/大纲修改次数" value={
                   manuscriptModificationLimit === -1 ? '不限' : manuscriptModificationLimit
                 } />}
+                {asyncVisibility.videoShotArea &&
                 <FieldView width={130} title="视频拍摄地点" value={
                   <div>
                     <span style={{ marginRight: '8px' }}>{videoShotAreaType === 2 ? '部分地区' : '不限地点'}</span>
@@ -94,7 +95,8 @@ export default class CooperationView extends Component {
                       videoShotAreas.map(area => <Tag key={area.id}>{area.areaName}</Tag>)
                     }
                   </div>
-                } />
+                } />}
+                {asyncVisibility.liveArea &&
                 <FieldView width={130} title="直播形式" value={
                   liveAreaType === -1 ? '' : <div>
                     {liveAreaType === 1 && <span style={{ marginRight: '8px' }}>不限</span>}
@@ -105,7 +107,7 @@ export default class CooperationView extends Component {
                         <Tag key={area.id}>{area.areaName}</Tag>)
                     }
                   </div>
-                } />
+                } />}
                 <FieldView width={130} title="备注" value={cooperationTips} />
               </div>
             </div>
@@ -135,21 +137,21 @@ export default class CooperationView extends Component {
                 {
                   adServiceItems.map(item => <Tag key={item.id}>{item.adServiceItemName}</Tag>)
                 }
-                <FieldView width={70} title="植入类型" value={
+                {asyncVisibility.productPlacement && <FieldView width={70} title="植入类型" value={
                   productPlacementType === -1 ? '' : <div>
                     {productPlacementType === 0 && <span>不限</span>}
                     {productPlacementType === 1 && <span>单品</span>}
                     {productPlacementType === 2 && <span>合集</span>}
                   </div>
-                } />
-                <FieldView width={70} title="分发平台" value={
+                } />}
+                {asyncVisibility.postPlatform && <FieldView width={70} title="分发平台" value={
                   <div>
                     <span style={{ marginRight: '8px' }}>{supportMultiPlatformOriginalPost === 1 ? '可分发' : '不可分发'}</span>
                     {
                       postPlatforms.map(item => <Tag key={item.id}>{item.platformName}</Tag>)
                     }
                   </div>
-                } />
+                } />}
               </div>
             </div>
           </div>
