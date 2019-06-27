@@ -1,10 +1,13 @@
-import wby from "sa-sdk-javascript"
+// import wby from "sa-sdk-javascript"
 const $ = window.$
 import _ from 'lodash';
+
 window._ = _;
+const wby = {}
 
 let isWbyInited = false;
 export const sensors = (userId, serviceUrl, appId) => {
+  /*
   wby.init({
     server_url: serviceUrl,
     heatmap_url: "https://static.sensorsdata.cn/sdk/1.10.1/heatmap.min.js",
@@ -27,6 +30,7 @@ export const sensors = (userId, serviceUrl, appId) => {
   })
   wby.login(userId)
   wby.quick("autoTrack");
+  */
   isWbyInited = true
 }
 const _obj = (data = {}) => {
@@ -42,7 +46,8 @@ sensors.track = (event_name, data, callback) => {
   if (!callback) {
     callback = () => { };
   }
-
+  return
+  /*
   const events = event_name.split("/");
   event_name = events.map(item => item.toUpperCaseFirst()).join("");
 
@@ -56,5 +61,6 @@ sensors.track = (event_name, data, callback) => {
     }
 
   }
+  */
 };
 window.wbySensors = wby;
