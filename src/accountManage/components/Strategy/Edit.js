@@ -25,6 +25,7 @@ export default class StrategyEdit extends Component {
     const { data: { account } } = this.props;
     values['id'] = account.id;
     // values.base['platformId'] = platformId;
+    values['strategyInfo'] = values['strategyInfo'] || {};
     let strategy = { ...values.strategyInfo.strategy || {} };
     const { isFinite, isLeave } = values['_client'];
     if (!isFinite) {

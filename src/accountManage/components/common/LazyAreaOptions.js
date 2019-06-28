@@ -95,6 +95,7 @@ export default class LazyAreaOptions extends Component {
           value: 'id',
           children: 'childrenList'
         }}
+        allowClear={false}
         onChange={this.onChange}
         options={this.state.option}
         placeholder="请选择地域！" />

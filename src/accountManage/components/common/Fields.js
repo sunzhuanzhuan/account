@@ -50,7 +50,7 @@ const checkForSensitiveWord = (rule, value, callback) => {
     callback();
   }).catch(({ data, code, errorMsg }) => {
     if (code === '110502') {
-      const errorWords = (data.words || []).join('，')
+      const errorWords = (data.sensitiveWords || []).join('，')
       callback(`${rule.name || '内容'}包含敏感词${errorWords}，请修订`);
     } else {
       callback(errorMsg);
@@ -1976,7 +1976,7 @@ export const Birthday = (props) => {
       {getFieldDecorator('personalInfo.birthDate', {
         initialValue: moment(birthDate)
       })(
-        <DatePicker style={{ width: '100%' }} placeholder='请选择您的生日' disabledDate={date => {
+        <DatePicker allowClear={false} style={{ width: '100%' }} placeholder='请选择您的生日' disabledDate={date => {
           return date.isBefore(moment().subtract(150, 'y'))
         }} />
       )}
@@ -2001,7 +2001,7 @@ export const Nationality = (props) => {
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='国籍'>
       {getFieldDecorator('personalInfo.nationalityId', {
-        initialValue: nationalityId
+        initialValue: nationalityId === -1 ? undefined : nationalityId
       })(
         options.length > 0 ? <Select style={{ width: "100%" }} placeholder='请选择'>
           {
