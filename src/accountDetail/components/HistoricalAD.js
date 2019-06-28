@@ -24,7 +24,6 @@ class HistoricalAD extends Component {
     };
   }
   componentDidMount = () => {
-    console.log('加载数据哈哈哈HistoricalAD')
     const { accountId } = this.props
     this.onChangeIndustryCode()
     this.props.getQueryIndustryInfoList({ accountId })
