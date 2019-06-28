@@ -38,13 +38,13 @@ class WrapPanelForm extends React.Component {
         action({ ...onSave(values), id }).then(() => {
           if (refresh) {
             setTimeout(() => {
-              refresh({accountId: id}).then(() => {
+              refresh({ accountId: id }).then(() => {
                 this.setState({ bodyLoading: true });
                 message.success('更新账号成功');
                 this.setState({ isLoading: false, bodyLoading: false });
               })
-            },1000);
-          }else {
+            }, 1000);
+          } else {
             message.success('更新账号成功');
             this.setState({ isLoading: false });
           }

@@ -5,110 +5,110 @@ import { createAction } from 'redux-actions'
 /**
  * 获取账号信息
  */
-// 获取平台信息(图标, 名称)
+  // 获取平台信息(图标, 名称)
 export const {
-	getPlatformInfo,
-	getPlatformInfo_success
-} = createHttpAction('getPlatformInfo', Interface.common.platform);
+    getPlatformInfo,
+    getPlatformInfo_success
+  } = createHttpAction('getPlatformInfo', Interface.common.platform);
 
 
 // 获取账号基本信息
 export const {
-	getAccountInfo,
-	getAccountInfo_success
+  getAccountInfo,
+  getAccountInfo_success
 } = createHttpAction('getAccountInfo', Interface.getAccountInfo);
 
 // 获取账号ab端上下架信息
 export const {
-	getAccountOnShelfStatus,
-	getAccountOnShelfStatus_success
+  getAccountOnShelfStatus,
+  getAccountOnShelfStatus_success
 } = createHttpAction('getAccountOnShelfStatus', Interface.getAccountOnShelfStatus, {
-	ignoreToast: true,
+  ignoreToast: true
 });
 
 // 获取受众画像信息
 export const {
-	getAudiencePortrait,
-	getAudiencePortrait_success
+  getAudiencePortrait,
+  getAudiencePortrait_success
 } = createHttpAction('getAudiencePortrait', Interface.getAudiencePortrait);
 
 
 // 获取主账号信息
 export const {
-	getPrimaryAccountInfo,
-	getPrimaryAccountInfo_success
+  getPrimaryAccountInfo,
+  getPrimaryAccountInfo_success
 } = createHttpAction('getPrimaryAccountInfo', Interface.getPrimaryAccountInfo, {
-	method: 'get',
+  method: 'get'
 });
 
 // 获取主账号发票信息
 export const {
-	getUserInvoiceInfo,
-	getUserInvoiceInfo_success
+  getUserInvoiceInfo,
+  getUserInvoiceInfo_success
 } = createHttpAction('getUserInvoiceInfo', Interface.getUserInvoiceInfo, {
-	method: 'get',
+  method: 'get'
 });
 // 获取上传图片token
 export const {
-	getUploadToken,
-	getUploadToken_success
+  getUploadToken,
+  getUploadToken_success
 } = createHttpAction('getUploadToken', Interface.getUploadToken, {
-	method: 'get',
+  method: 'get'
 });
 
 
 // 编辑账号时，获取报价信息
 export const {
-	getSkuList,
-	getSkuList_success
+  getSkuList,
+  getSkuList_success
 } = createHttpAction('getSkuList', Interface.getSkuList, {
-	method: 'get',
+  method: 'get'
 });
 
 // 获取报价项信息
 export const {
-	getSkuTypeList,
-	getSkuTypeList_success
+  getSkuTypeList,
+  getSkuTypeList_success
 } = createHttpAction('getSkuTypeList', Interface.getSkuTypeList, {
-	method: 'get',
+  method: 'get'
 });
 
 // 抓取账号信息
 export const {
-	fetchAccountBaseInfo,
-	fetchAccountBaseInfo_request,
-	fetchAccountBaseInfo_success
+  fetchAccountBaseInfo,
+  fetchAccountBaseInfo_request,
+  fetchAccountBaseInfo_success
 } = createHttpAction('fetchAccountBaseInfo', Interface.fetchAccountBaseInfo, {
-	method: 'get',
+  method: 'get'
 });
 
 // 更新页面抓取账号信息
 export const {
-	fetchAccountBaseInfoByUpdate,
-	fetchAccountBaseInfoByUpdate_request
+  fetchAccountBaseInfoByUpdate,
+  fetchAccountBaseInfoByUpdate_request
 } = createHttpAction('fetchAccountBaseInfoByUpdate', Interface.fetchAccountBaseInfo, {
-	method: 'get',
+  method: 'get'
 });
 // 维护 - 修改数据
 export const updateFetchInfo = createAction('updateFetchInfo', (data) => {
-	return { data };
+  return { data };
 })
 // 添加 - 修改数据
 export const addFetchInfo = createAction('addFetchInfo', (data) => {
-	return { data };
+  return { data };
 })
 
 // 使得添加页面提交可用
 export const setAddSubmit = createAction('setAddSubmit', (data) => {
-	return data;
+  return data;
 })
 
 // 入库页面提交
 export const {
-	saveAccountInfo
+  saveAccountInfo
 } = createHttpAction('saveAccountInfo', Interface.saveAccountInfo, {
-	method: 'post',
-	ignoreToast: true,
+  method: 'post',
+  ignoreToast: true
 });
 // 维护页面提交
 /*export const {
@@ -120,88 +120,88 @@ export const {
 
 // 获取 国家 -> 省 -> 市 -> 区 四级级联
 export const {
-	getRegionCode,
-	getRegionCode_success
+  getRegionCode,
+  getRegionCode_success
 } = createHttpAction('getRegionCode', Interface.common.areas)
 
 //获取行业信息
 export const {
-	getIndustryListForAccount,
-	getIndustryListForAccount_success
+  getIndustryListForAccount,
+  getIndustryListForAccount_success
 } = createHttpAction('getIndustryListForAccount', Interface.common.industries)
 //敏感词判别
 export const {
-	sensitiveWordsFilter,
-	sensitiveWordsFilter_success
+  sensitiveWordsFilter,
+  sensitiveWordsFilter_success
 } = createHttpAction('sensitiveWordsFilter', Interface.sensitiveWordsFilter, {
-	method: 'post',
+  method: 'post'
 })
 
 /**
  * 更新账号信息 - new
  */
-// 基础信息
+  // 基础信息
 export const {
-	updateAccountBase
-} = createHttpAction('updateAccountBase', Interface.update.accountBase, {
-	method: 'post'
-});
+    updateAccountBase
+  } = createHttpAction('updateAccountBase', Interface.update.accountBase, {
+    method: 'post'
+  });
 // 粉丝信息
 export const {
-	updateAccountFans
+  updateAccountFans
 } = createHttpAction('updateAccountFans', Interface.update.accountFans, {
-	method: 'post'
+  method: 'post'
 });
 // 账号特征
 export const {
-	updateAccountFeature
+  updateAccountFeature
 } = createHttpAction('updateAccountFeature', Interface.update.accountFeature, {
-	method: 'post'
+  method: 'post'
 });
 // 合作信息
 export const {
-	updateAccountCooperation
+  updateAccountCooperation
 } = createHttpAction('updateAccountCooperation', Interface.update.accountCooperation, {
-	method: 'post'
+  method: 'post'
 });
 // 上下架信息
 export const {
-	updateAccountOnSale
+  updateAccountOnSale
 } = createHttpAction('updateAccountOnSale', Interface.update.accountOnSale, {
-	method: 'post'
+  method: 'post'
 });
 // 策略信息
 export const {
-	updateAccountStrategy
+  updateAccountStrategy
 } = createHttpAction('updateAccountStrategy', Interface.update.accountStrategy, {
-	method: 'post'
+  method: 'post'
 });
 // 其他信息
 export const {
-	updateAccountOther
+  updateAccountOther
 } = createHttpAction('updateAccountOther', Interface.update.accountOther, {
-	method: 'post'
+  method: 'post'
 });
 // 维护页面报价信息提交
 export const {
-	saveSku,
+  saveSku
 } = createHttpAction('saveSku', Interface.update.saveSku, {
-	method: 'post',
+  method: 'post'
 });
 // 修改受众画像
 export const {
-	updateAccountAudiencePortrait
+  updateAccountAudiencePortrait
 } = createHttpAction('updateAccountAudiencePortrait', Interface.update.accountAudiencePortrait, {
-	method: 'post'
+  method: 'post'
 });
 
 /**
  * 内容分类反馈
  */
-// 判断当前账号是否有内容分类反馈信息
+  // 判断当前账号是否有内容分类反馈信息
 export const {
-  isExistClassify
-} = createHttpAction('isExistClassify', Interface.classify.isExistClassify)
+    isExistClassify
+  } = createHttpAction('isExistClassify', Interface.classify.isExistClassify)
 
 // 查看分类反馈进度
 export const {
@@ -219,4 +219,8 @@ export const {
   addCustomClassify
 } = createHttpAction('addCustomClassify', Interface.classify.addCustomClassify, {
   method: 'post'
+})
+// 维护 - 清除账号数据
+export const clearAccountInfo = createAction('clearAccountInfo', () => {
+  return null
 })

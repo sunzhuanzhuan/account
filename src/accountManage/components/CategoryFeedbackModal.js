@@ -32,15 +32,17 @@ export class FeedbackCreate extends Component {
   }
 
   render() {
-    const { form, hasReason, accountInfo } = this.props
+    const { form, hasReason, account } = this.props
     const { getFieldDecorator } = form
     const {
-      accountId,
-      snsName,
-      platformId,
-      url,
-      classificationList
-    } = accountInfo
+      id,
+      base: {
+        snsName,
+        platformId,
+        url,
+        classificationList
+      }
+    } = account
     return <Modal
       visible
       title='分类错误反馈'
@@ -104,7 +106,7 @@ export class FeedbackCreate extends Component {
         >
           未找到分类名称?
         </a>
-        {getFieldDecorator('accountId', { initialValue: accountId })(<input type="hidden" />)}
+        {getFieldDecorator('accountId', { initialValue: id })(<input type="hidden" />)}
         {getFieldDecorator('snsName', { initialValue: snsName })(<input type="hidden" />)}
         {getFieldDecorator('platformId', { initialValue: platformId })(<input type="hidden" />)}
         {getFieldDecorator('url', { initialValue: url })(<input type="hidden" />)}
@@ -133,14 +135,16 @@ export class FeedbackMini extends Component {
   };
 
   render() {
-    const { form, accountInfo } = this.props
+    const { form, account } = this.props
     const { getFieldDecorator } = form
     const {
-      accountId,
-      snsName,
-      platformId,
-      url
-    } = accountInfo
+      id,
+      base: {
+        snsName,
+        platformId,
+        url
+      }
+    } = account
     return <Modal
       visible
       title='没有找到您期望的内容分类？请填写告诉我们'
@@ -165,7 +169,7 @@ export class FeedbackMini extends Component {
             )
           }
         </Form.Item>
-        {getFieldDecorator('accountId', { initialValue: accountId })(
+        {getFieldDecorator('accountId', { initialValue: id })(
           <input type="hidden" />)}
         {getFieldDecorator('snsName', { initialValue: snsName })(
           <input type="hidden" />)}
@@ -224,7 +228,7 @@ export class FeedbackDetail extends Component {
       wrongReasonType,
       newClassifyName,
       auditType = 1,
-      classifyAuditDialogList = [],
+      classifyAuditDialogList = []
     } = this.state
     return <Modal
       visible

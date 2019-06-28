@@ -4,11 +4,13 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Layout, Button, Icon } from 'antd';
+import { Layout, Button, Icon, message } from 'antd';
 import SiderMenu from '../components/SiderMenu'
 import { getUserLoginInfo, getUserConfigKey } from '../login/actions'
 import { resetSiderAuth, getAuthorizations } from '../actions'
 import { sensors } from '@/util/sensor/sensors'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 const { Header, Content } = Layout;
 const Cookies = require('js-cookie');
 window.Cookies = Cookies;
@@ -32,8 +34,21 @@ class App extends Component {
 		window.myHistory = this.props.history
 		//重新获取页面尺寸，以防继承前一浏览页面的滚动条
 		window.onresize = null
-		await this.props.actions.getAuthorizations();
-		let Info = await this.props.actions.getUserLoginInfo();
+    NProgress.start()
+    try {
+      await this.props.actions.getAuthorizations();
+    }catch (e) {
+      NProgress.done()
+      return message.error('权限接口错误!')
+    }
+    NProgress.inc()
+		let Info;
+		try {
+      Info = await this.props.actions.getUserLoginInfo();
+    }catch (e) {
+      NProgress.done()
+      return message.error('获取用户信息错误!')
+    }
 		let userInfoId = Info.data.user_info.user_id
 		//神策的代码不应该阻塞，去掉await, 使用then的成功回调。
 		this.props.actions.getUserConfigKey({ keys: 'shence_base_url_for_b,babysitter_host' }).then((res) => {
@@ -44,7 +59,7 @@ class App extends Component {
 
 		this.setState({
 			isLoaded: true
-		})
+		},NProgress.done)
 		window.addEventListener('resize', this.setHeight);
 	}
 	setHeight = () => {
@@ -58,6 +73,7 @@ class App extends Component {
 	}
 	render() {
 		const height = this.state.heightLayout
+		const isLoaded = this.state.isLoaded
 		let layStyle = {
 			height: height,
 			minWidth: 1200
@@ -85,7 +101,7 @@ class App extends Component {
 
 		const { loginReducer: { userLoginInfo, UserConfigKey }, siderMenuAuth = [] } = this.props;
     const { babysitter_host = {} } = UserConfigKey;
-		return userLoginInfo['X-Access-Token'] ? <Layout style={layStyle}>
+		return isLoaded && userLoginInfo['X-Access-Token'] ? <Layout style={layStyle}>
 			<Header style={headerStyle}>
 				<span>NB</span>
 				<div className="user-name">

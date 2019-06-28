@@ -45,7 +45,7 @@ render(
         <Switch>
           {
             process.env.NODE_ENV === 'development' ?
-              <Route exact path="/" render={() => <Redirect to="/account/view/detail" />} /> : null
+              <Route exact path="/" render={() => <Redirect to="/account/manage/package/1?account_id=1" />} /> : null
           }
           <Route path="/account" render={routes} />
           <Route render={redirectToOtherProjects} />
