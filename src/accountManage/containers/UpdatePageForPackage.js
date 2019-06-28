@@ -151,7 +151,8 @@ class UpdatePageForPackage extends Component {
     }
     // 根据account_id获取账号信息, 错误error, 平台不对修改平台
     if (base.platformId && base.platformId !== this.state.platformId) {
-      window.location.href = window.location.href.replace(/\/(\d)+\?/i, `/${base.platformId}?`)
+      let _url = window.location.href.replace(/\/(\d)+\?/i, `/${base.platformId}?`)
+      window.location.replace(_url)
       return null
     }
     return (!fullLoading && !isError) ? <div className='update-package-page-container'>
