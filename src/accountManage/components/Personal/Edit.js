@@ -33,7 +33,7 @@ export default class PersonalEdit extends Component {
       submitLoading: false
     }
     // window注入组件
-    window.__UpdateAccountReactComp__.personal = this
+    // window.__UpdateAccountReactComp__.personal = this
   }
 
   componentDidMount() {
