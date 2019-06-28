@@ -720,7 +720,7 @@ export const configOptions = {
     { key: 1, text: '初中' },
     { key: 2, text: '高中' },
     { key: 3, text: '中技' },
-    { key: 4, text: '中转' },
+    { key: 4, text: '中专' },
     { key: 5, text: '大专' },
     { key: 6, text: '本科' },
     { key: 7, text: '硕士' },
