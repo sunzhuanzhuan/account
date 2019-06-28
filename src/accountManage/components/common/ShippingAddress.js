@@ -117,7 +117,7 @@ export default class ShippingAddress extends Component {
   render() {
     const isEmpty = Object.keys(this.state.value).length === 0
     const { receiver, phoneNumber, country, province, city, county, addressDetail } = this.state.value
-    const area = [country, province, city, county].filter(Boolean)
+    const area = [country, province, city, county].filter(item => item && item.id)
     return (
       <div>
         {isEmpty ? <div>

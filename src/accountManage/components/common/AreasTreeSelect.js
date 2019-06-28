@@ -282,7 +282,7 @@ export default class AreasTreeSelect extends Component {
     return <div>
       {
         value.map((item, index) => {
-          const area = areasMap[item] || {}
+          const area = areasMap[item] || {areaName: '--', areaId: index}
           return <CheckTag checked key={area.id}>
             {area.areaName}
             <Icon

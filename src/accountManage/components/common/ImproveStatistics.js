@@ -28,7 +28,7 @@ export default class ImproveStatistics extends Component {
           '100%': '#108ee9'
         }}
         size='small'
-        percent={percent}
+        percent={parseInt(percent)}
       />
       {done ? <div className='tips-text'>账号的曝光率提升了100%</div> :
         <div className='tips-text'>立即完善将提升账号的曝光率哦~</div>}
