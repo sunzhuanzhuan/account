@@ -1,8 +1,8 @@
 import React from "react";
-import { Row, Col, Popover, Checkbox, Button } from 'antd';
-import DiscountRule from "./DiscountRule";
+import { Row, Col, Input } from 'antd';
 import AddBtn from "./AddBtn";
 import PopoverComp from "./PopoverComp";
+import Platform from "./Platform";
 
 class RuleContent extends React.Component {
 	constructor(props) {
@@ -32,50 +32,88 @@ class RuleContent extends React.Component {
 		});
 	}
 
-	getDiscountRuleItem = () => {
-		const { finalChecked } = this.state;
+	handleChangeValue = (value, itemInfo) => {
+		itemInfo.discount = value;
+		this.forceUpdate();
+	}
 
-		return finalChecked.map((item, index) => (
-				<DiscountRule 
-					key={+new Date() + Math.random()} 
-					ruleType={item}
-					handleRemove={() => {this.handleRemoveRuleItem(index)}}
-				/>
-			)
+	getDiscountComp = (isEdit, itemInfo) => {
+		return (
+			<div key='sign'>
+				<span>刊例价</span>
+				<span key='signFirst' className='commonSign'>X</span>
+				{
+					isEdit ? 
+					<Input 
+						key='inputComp' 
+						className='commonIptWidth' 
+						value={itemInfo.discount}
+						onChange={({target: {value}}) => {this.handleChangeValue(value, itemInfo)}} 
+					/> : <span>{itemInfo.discount}</span>
+				}
+				<span key='signSec'> %</span>
+				<span key='signThir' className='commonSign'>=</span>
+				<span key='name'>渠道价</span>
+			</div>
 		)
 	}
 
 	render() {
+		const { itemInfo = {}, rangeValue, isOperate, single, onClick, handleDel } = this.props;
 		const { finalChecked } = this.state;
-		console.log('lsdkjflskdflkj', finalChecked)
-		return (
-			<div className='ruleWrapper'>
-				<div className='ruleTitle'>规则1</div>
-				<div className='ruleContent'>
-					<Row>
-						<Col span={1}>平台</Col>
-						<Col span={20}>值</Col>
-					</Row>
-					<Row>
-						<Col span={1}>折扣</Col>
-						<Col span={22}>
-							{ this.getDiscountRuleItem() }
+		const editComp = (
+			<div className='ruleContent staticContent'>
+				<Row>
+					<Col span={2}>平台</Col>
+					<Col span={18}><Platform itemInfo={itemInfo} /></Col>
+				</Row>
+				<Row>
+					<Col span={2}>折扣</Col>
+					<Col span={20}>
+						{ this.getDiscountComp(true, itemInfo) }
+						{
+							!single ? 
 							<PopoverComp 
-								className=''
+								className='ruleModal'
 								checkedValues={finalChecked}
 								checkOption={this.checkOption}
 								handleSave={this.handlePopoverSave}
 								entryComp={<AddBtn title='添加折扣'/>}
-							>
-							</PopoverComp>
-						</Col>
-					</Row>
-					<Row>
-						<Col span={1}>返点</Col>
-						<Col span={22}>值</Col>
-					</Row>
-				</div>
+							/> : null
+						}
+					</Col>
+				</Row>
 			</div>
+		);
+		const staticDiscount = (
+			<div className='ruleContent staticContent'>
+				<Row>
+					<Col span={1}>平台</Col>
+					<Col span={20}>{itemInfo.platform}</Col>
+				</Row>
+				<Row>
+					<Col span={1}>折扣</Col>
+					<Col span={22}>
+						{this.getDiscountComp(false, itemInfo)}
+					</Col>
+				</Row>
+			</div>
+		)
+
+		return (
+			!isOperate ? <div className='ruleWrapper'>
+				<div className='ruleTitle'>
+					<div>{`规则${rangeValue}`}</div>
+					<div className='ruleOperate'>
+						<span onClick={() => {onClick(itemInfo, 'edit')}}>编辑</span>
+						<span onClick={() => {handleDel(itemInfo)}}>删除</span>
+					</div>
+				</div>
+				{
+					staticDiscount
+				}
+			</div>
+			: editComp
 		)
 	}
 }

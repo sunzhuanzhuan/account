@@ -103,7 +103,7 @@ class DiscountRule extends React.Component {
 		return (
 			<div className='ruleItem'>
 				<Row>
-					<Col span={1}>
+					<Col span={2} className='modalAfterCon'>
 						类型
 					</Col>
 					<Col span={14}>
@@ -111,10 +111,10 @@ class DiscountRule extends React.Component {
 					</Col>
 				</Row>
 				<Row>
-					<Col span={1}>
+					<Col span={2} className='modalAfterCon'>
 						公式
 					</Col>
-					<Col span={14}>
+					<Col span={16}>
 					{ ruleType === 1 ? this.getStaticComp() : this.getStepComp() }
 					</Col>
 				</Row>

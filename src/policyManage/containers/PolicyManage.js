@@ -1,7 +1,7 @@
 import React from "react"
 import { Badge, Tooltip, Icon, Form, DatePicker, Radio, Input } from 'antd'
 import CommonTitle from "../components/CommonTitle";
-import PolicyRulesComp from "../components/PolicyRulesWrapper";
+import RulesWrapper from "../components/RulesWrapper";
 import WhiteList from "../components/WhiteList";
 
 import './PolicyManage.less';
@@ -57,11 +57,11 @@ class PolicyManage extends React.Component {
 					</FormItem>
 					<CommonTitle title='全局账号设置'/>
 					<FormItem label='政策规则' {...formItemLayout}>
-						<PolicyRulesComp />
+						<RulesWrapper />
 					</FormItem>
 					<CommonTitle title='特殊账号设置'/>
 					<FormItem label='政策规则' {...formItemLayout}>
-						<PolicyRulesComp />
+						<RulesWrapper />
 					</FormItem>
 					<CommonTitle title='白名单'/>
 					<WhiteList />

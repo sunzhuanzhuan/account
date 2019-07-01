@@ -2,6 +2,7 @@
 @borderColor: #d9d9d9;
 .policyWrapper {
   .policyHeader {
+    margin-bottom: 20px;
     font-size: 16px;
     font-weight: 400;
     .anticon {
@@ -9,12 +10,22 @@
     }
   }
   .commonTitle {
+    width: 90px;
     padding-left: 10px;
-    margin-bottom: 8px;
+    margin: 10px 0;
     border-left: 5px solid @textColor;
+  }
+  .operateText {
+    color: @textColor;
+  }
+  .remarksText {
+    resize: none;
+    width: 400px;
+    height: 100px;
   }
   .appRules {
     width: 100px;
+    margin: 10px 0;
     cursor: pointer;
     color: @textColor;
     .anticon {
@@ -24,15 +35,28 @@
   .ruleWrapper {
     border: 1px solid @borderColor;
     border-radius: 4px;
+    margin-bottom: 15px;
     .ruleTitle {
+      display: flex;
+      justify-content: space-between;
       border-bottom: 1px solid @borderColor;
+      .ruleOperate span {
+        color: @textColor;
+        cursor: pointer;
+        &:nth-child(1) {
+          margin-right: 15px;
+        }
+      }
     }
     .ruleTitle, .ruleContent {
-      padding: 0 20px;
+      padding: 10px 20px;
     }
     .ruleContent {
       .ant-col-1::after{
         content: ' :';
+      }
+      .ant-row:not(:last-child) {
+        margin-bottom: 10px;
       }
     }
     .commonIptWidth {
@@ -53,25 +77,6 @@
       cursor: pointer;
     }
   }
-  .ruleItem {
-    padding: 10px 20px;
-    background: #f5f5f5;
-    position: relative;
-    .ruleRemoveBtn {
-      cursor: pointer;
-      position: absolute;
-      color: @textColor;      
-      right: -50px;
-      top: 0;
-    }
-  }
-  .operateText {
-    color: @textColor;
-  }
-  .remarksText {
-    resize: none;
-    height: 100px;
-  }
 }
 .disCountPopover {
   .ant-popover-title {
@@ -91,3 +96,82 @@
   }
 }
 
+.discountWrapper {
+  .discountItem {
+    .ant-form-item-label {
+      width: 90px;
+      text-align: left;
+      & > label {
+        padding-left: 10px;
+        border-left: 5px solid @textColor;
+      }
+    }
+  }
+}
+
+.ruleModal {
+  .platformTag {
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+  }
+  .addTag {
+    width: 60px;
+  }
+  .ruleContent {
+    .ant-col-2::after{
+      content: ' :';
+    }
+  }
+  .staticContent {
+    .ant-row {
+      display: flex;
+      align-items: baseline;
+      margin-bottom: 15px;
+    }
+  }
+  .commonIptWidth {
+    width: 100px;
+  }
+  .commonSign {
+    margin: 0 10px;
+  }
+  .rightMargin {
+    margin-right: 10px;
+  }
+  .leftMargin {
+    margin-left: 10px;
+  }
+  .removeBtn {
+    margin-left: 30px;
+    color: @textColor;
+    cursor: pointer;
+  }
+  .ruleItem {
+    padding: 10px 20px;
+    background: #f5f5f5;
+    position: relative;
+    .ruleRemoveBtn {
+      cursor: pointer;
+      position: absolute;
+      color: @textColor;      
+      right: -50px;
+      top: 0;
+    }
+  }
+  .appRules {
+    width: 100px;
+    cursor: pointer;
+    color: @textColor;
+    .anticon {
+      margin-right: 5px;
+    }
+  }
+  .modalAfterCon
+  {
+    width: 40px;
+    &::after {
+      content: ' :'
+    }
+  }
+}

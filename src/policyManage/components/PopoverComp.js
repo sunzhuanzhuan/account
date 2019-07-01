@@ -1,10 +1,9 @@
 import React from "react";
 import { Popover, Checkbox, Button } from 'antd';
-import { equarArr } from "../../util";
 
 const CheckboxGroup = Checkbox.Group;
 
-class PopoverComp extends React.Component {
+class PopoverComp extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		const { checkOption, checkedValues = [] } = props;
@@ -12,25 +11,9 @@ class PopoverComp extends React.Component {
 			visible: false,
 			indeterminate: !!checkedValues.length && checkedValues.length < checkOption.length,
 			checkAll: false,
-			checkedValues: [],
-			propsChecked: []
+			checkedValues,
 		};
 		this.checkOption = checkOption || [];
-	}
-
-	static getDerivedStateFromProps(nextProps, prevState){
-		const { checkedValues, checkOption } = nextProps;
-		const { propsChecked } = prevState;
-
-		if(!equarArr(checkedValues, propsChecked)) {
-			return {
-				propsChecked: checkedValues,
-				checkedValues: [...checkedValues],
-				indeterminate: !!checkedValues.length && checkedValues.length < checkOption.length
-			}
-		}
-			
-		return null
 	}
 
 	isShowPopover = () => {
@@ -60,7 +43,7 @@ class PopoverComp extends React.Component {
 		const { checkedValues, indeterminate, checkAll, visible } = this.state;
 		const { className, entryComp } = this.props;
 		const title = () => (
-			<CheckboxGroup value={checkedValues} options={this.checkOption} onChange={this.handleChangeChecked}/>
+			<CheckboxGroup value={[...checkedValues]} options={this.checkOption} onChange={this.handleChangeChecked}/>
 		);
 		const content = () => ([
 			<Checkbox 
@@ -72,7 +55,7 @@ class PopoverComp extends React.Component {
 			<Button key='cancel' className='cancelBtn' onClick={this.isShowPopover}>取消</Button>,
 		]);
 
-		console.log('lskdjflksdflksdjf', checkedValues)
+		console.log('lsdkjflsdkjflkjsd', checkedValues)
 
 		return (
 			<Popover 
@@ -90,6 +73,4 @@ class PopoverComp extends React.Component {
 	}
 }
 
-
-
-export default PopoverComp;
+export default PopoverComp
