@@ -14,6 +14,11 @@ import {
 import intersection from 'lodash/intersection'
 import update from 'immutability-helper'
 import { platformView } from "@/accountManage/constants/platform";
+import {
+  cooperateBrandPlaceHolderMap,
+  cooperateContentPlaceHolderMap,
+  cooperateLinkPlaceHolderMap
+} from "./platformConfigureSubDiff";
 
 export const modulesMap = {
   'owner': {
@@ -680,8 +685,15 @@ export const platformToType = Object.entries(diffByTypes).reduce((obj, [key, ite
       key,
       platformId: i,
       platformName: platformView[i] || '未知平台',
-      ...item
+      ...item,
+      configure: {
+        ...item.configure,
+        cooperateContentPlaceHolder: cooperateContentPlaceHolderMap[i],
+        cooperateBrandPlaceHolder: cooperateBrandPlaceHolderMap[i],
+        cooperateLinkPlaceHolder: cooperateLinkPlaceHolderMap[i]
+      }
     }
+
     delete obj[i].platforms
   })
   // 添加一个未知平台

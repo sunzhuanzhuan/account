@@ -44,7 +44,7 @@ const { Option, OptGroup } = Select;
 const { RangePicker } = DatePicker;
 
 // 敏感词校验
-const checkForSensitiveWord = (rule, value, callback) => {
+export const checkForSensitiveWord = (rule, value, callback) => {
   if (!value) return callback()
   api.post(commonInterface.common.checkSensitiveWord, { word: value }).then(() => {
     callback();
@@ -725,7 +725,7 @@ export const Verified = (props) => {
       <FormItem {...layout.full} label='认证类型'>
         {getFieldDecorator('base.verifiedStatus', {
           rules: [{ required: false }],
-          initialValue: verifiedStatus || 2
+          initialValue: (verifiedStatus && verifiedStatus !== 1) || 2
         })(
           <RadioGroup disabled={verifiedStatusFrom === 2}>
             {

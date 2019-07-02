@@ -7,6 +7,7 @@ import {
   Popconfirm,
   message
 } from 'antd';
+import { checkForSensitiveWord } from "./Fields";
 
 const uuid = require('uuid/v1');
 const FormItem = Form.Item;
@@ -76,20 +77,6 @@ export default class CooperationCasesCore extends React.Component {
           <Popconfirm placement="topRight" title={'是否删除案例?'} onConfirm={() => this.remove(index)}>
             <a>删除</a>
           </Popconfirm>} value={1} style={{ margin: '5px 0' }}>
-          <FormItem label="合作品牌" {...formItemLayout}>
-            {getFieldDecorator(`_case.${item.uuid}.brand`, {
-              validateTrigger: ['onBlur'],
-              rules: [
-                { required: true, message: '品牌不能为空' }
-              ],
-              initialValue: item.brand
-            })(
-              <TextArea
-                style={{ width: '100%' }}
-                placeholder='品牌：该链接所涉及的品牌名称 主题：如某品牌的线上直播活动、原创视频作品；或该视频的主要内容'
-              />
-            )}
-          </FormItem>
           <FormItem label="案例链接" {...formItemLayout}>
             {getFieldDecorator(`_case.${item.uuid}.link`, {
               validateTrigger: ['onChange', 'onBlur'],
@@ -99,14 +86,36 @@ export default class CooperationCasesCore extends React.Component {
               }],
               initialValue: item.link
             })(
-              <Input style={{ width: '100%' }} placeholder="请填写曾合作的广告案例链接；若无案例可添加曾发布的视频、直播回放或微博链接" />
+              <Input style={{ width: '100%' }} placeholder={configurePlatform.configure.cooperateLinkPlaceHolder} />
             )}
           </FormItem>
-          <FormItem label="合作效果" {...formItemLayout}>
-            {getFieldDecorator(`_case.${item.uuid}.content`, {
+          <FormItem label="品牌名称" {...formItemLayout}>
+            {getFieldDecorator(`_case.${item.uuid}.brand`, {
               validateTrigger: ['onBlur'],
-              rules: [{ required: true, message: '合作效果不能为空' }],
-              initialValue: item.content
+              validateFirst: true,
+              rules: [
+                { required: true, message: '品牌不能为空' },
+                { max: 20, message: '品牌不能超过20字' },
+                { validator: checkForSensitiveWord, name: '品牌名称' }
+              ],
+              initialValue: item.brand
+            })(
+              <TextArea
+                style={{ width: '100%' }}
+                placeholder={configurePlatform.configure.cooperateBrandPlaceHolder}
+              />
+            )}
+          </FormItem>
+          <FormItem label="数据/效果" {...formItemLayout}>
+            {getFieldDecorator(`_case.${item.uuid}.content`, {
+              initialValue: item.content,
+              validateTrigger: ['onBlur'],
+              validateFirst: true,
+              rules: [
+                { max: 1000, message: '数据/效果不能超过1000字' },
+                { required: true, message: '数据/效果不能为空' },
+                { validator: checkForSensitiveWord, name: '数据效果' }
+              ]
             })(
               <TextArea
                 style={{ width: '100%' }}
