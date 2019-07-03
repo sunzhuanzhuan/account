@@ -3,7 +3,7 @@
  */
 import React, { Component } from "react"
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
-import { Button, Form, Tag } from "antd";
+import { Button, Form, Tag, Icon } from "antd";
 import FieldView from "@/accountManage/base/FeildView";
 
 @Form.create()
@@ -41,7 +41,11 @@ export default class ContentView extends Component {
     } = this.state
     const right = <div className='wrap-panel-right-content'>
       <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>
-      <Button type='primary' onClick={() => onModuleStatusChange('edit')}>编辑</Button>
+      <a onClick={() => onModuleStatusChange('edit')} style={{fontSize: '14px'}}>
+        <Icon type="edit" style={{marginRight: '6px'}}/>
+        编辑
+      </a>
+      {/*<Button type='primary' onClick={() => onModuleStatusChange('edit')}>编辑</Button>*/}
     </div>;
 
     let viewForms = [].concat(forms, customForm).map(item => item.name || item)
