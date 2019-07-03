@@ -98,7 +98,7 @@ export default class LazyAreaOptions extends Component {
         allowClear={false}
         onChange={this.onChange}
         options={this.state.option}
-        placeholder="请选择地域！" />
+        placeholder={this.props.placeholder || "请选择地域！"} />
     );
   }
 }

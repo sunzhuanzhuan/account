@@ -2,7 +2,7 @@
  * 账号基本信息 - 展示态
  */
 import React, { Component } from "react"
-import { Button, Divider, Icon, Form, Popover, Radio } from 'antd'
+import { Button, Divider, Icon, Form, Popover } from 'antd'
 import { WBYPlatformIcon } from 'wbyui'
 import update from "immutability-helper";
 import numeral from "@/util/numeralExpand";
@@ -69,7 +69,11 @@ export default class MainView extends Component {
     </div>;
     const right = <div className='wrap-panel-right-content'>
       <span className='gray-text'>最近更新于: {baseModifiedAt || '--'}</span>
-      <Button type='primary' onClick={() => onModuleStatusChange('edit')}>编辑</Button>
+      <a onClick={() => onModuleStatusChange('edit')} style={{fontSize: '14px'}}>
+        <Icon type="edit" style={{marginRight: '6px'}}/>
+        编辑
+      </a>
+      {/*<Button type='primary' onClick={() => onModuleStatusChange('edit')}>编辑</Button>*/}
     </div>;
 
     return <div className='module-item-container'>

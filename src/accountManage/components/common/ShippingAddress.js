@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Cascader, Form, Input, Modal } from 'antd';
+import { Cascader, Form, Input, Modal, Popconfirm } from 'antd';
 import areas from "@/constants/areas";
 import { analyzeAreaCode } from "@/util/analyzeAreaCode";
 import LazyAreaOptions from "@/accountManage/components/common/LazyAreaOptions";
@@ -29,7 +29,7 @@ class EditModal extends Component {
     const { getFieldDecorator } = form;
     return <Modal
       visible
-      title='填写收货地址信息'
+      title={data.receiver ? '编辑收货地址信息' : '填写收货地址信息'}
       onOk={this.submit}
       onCancel={() => this.props.setModal()}
       maskClosable={false}
@@ -60,13 +60,19 @@ class EditModal extends Component {
             initialValue: data.area,
             rules: [{ required: true, message: '请选择所在地区!' }]
           })(
-            <LazyAreaOptions />
+            <LazyAreaOptions placeholder="请选择所在地区" />
           )}
         </Form.Item>
         <Form.Item label='详细地址'>
           {getFieldDecorator('addressDetail', {
             initialValue: data.addressDetail,
-            rules: [{ required: true, min: 4, max: 200, message: '请输入4~200字的详细地址!' }]
+            rules: [{
+              required: true,
+              min: 4,
+              max: 200,
+              message: '请输入4~200字的详细地址!',
+              whitespace: true
+            }]
           })(
             <Input.TextArea placeholder='详细地址：如道路、门牌号、小区、楼栋号、单元室等' />
           )}
@@ -128,11 +134,13 @@ export default class ShippingAddress extends Component {
         </div> : <div className='shipping-card-item'>
           <span className='actions'>
             <a onClick={() => this.setModal(true)}>编辑</a>
-            <a onClick={() => this.onChange({})}>删除</a>
+            <Popconfirm placement="topRight" title="是否删除收货地址？" onConfirm={() => this.onChange({})}>
+              <a>删除</a>
+            </Popconfirm>
           </span>
           <p>收货人： {receiver}</p>
           <p>手机号： {phoneNumber}</p>
-          <p>收货地址： {area.map(item => item.areaName || item.name).join('/')} {addressDetail}</p>
+          <p style={{ wordBreak: "break-all" }}>收货地址： {area.map(item => item.areaName || item.name).join('/')} {addressDetail}</p>
         </div>}
         {this.state.modal &&
         <EditModal data={{

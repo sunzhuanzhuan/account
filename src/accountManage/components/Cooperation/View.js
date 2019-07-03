@@ -3,7 +3,7 @@
  */
 import React, { Component } from "react"
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
-import { Button, Divider, Form, Tag } from "antd";
+import { Button, Divider, Form, Tag, Icon } from "antd";
 import FieldView from "@/accountManage/base/FeildView";
 import SimpleTag from "@/accountManage/base/SimpleTag";
 import CooperationCasesView from "@/accountManage/components/common/CooperationCasesView";
@@ -59,7 +59,11 @@ export default class CooperationView extends Component {
     }
     const right = <div className='wrap-panel-right-content'>
       <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>
-      <Button type='primary' onClick={() => onModuleStatusChange('edit')}>编辑</Button>
+      <a onClick={() => onModuleStatusChange('edit')} style={{fontSize: '14px'}}>
+        <Icon type="edit" style={{marginRight: '6px'}}/>
+        编辑
+      </a>
+      {/*<Button type='primary' onClick={() => onModuleStatusChange('edit')}>编辑</Button>*/}
     </div>;
     return <div className='module-item-container'>
       <ModuleHeader title={configureModule.title} right={right} />
@@ -72,11 +76,11 @@ export default class CooperationView extends Component {
           <div className='subclass-content'>
             <div className="view-fields-container">
               <div className='right-wrap'>
-                {asyncVisibility.isAcceptHardAd && asyncVisibility.isAcceptProductUse &&
+                {(asyncVisibility.isAcceptHardAd || asyncVisibility.isAcceptProductUse) &&
                 <FieldView width={130} title="拒绝项" value={
                   <div>
-                    <span>{isAcceptHardAd === 2 ? '不接受硬广' : '接硬广'}</span>、
-                    <span>{isAcceptProductUse === 2 ? '不接受产品试用' : '接受产品试用'}</span>
+                    {asyncVisibility.isAcceptHardAd && <span>{isAcceptHardAd === 2 ? '不接受硬广、' : '接硬广、'}</span>}
+                    {asyncVisibility.isAcceptProductUse && <span>{isAcceptProductUse === 2 ? '不接受产品试用' : '接受产品试用'}</span>}
                   </div>
                 } />}
                 {asyncVisibility.refuseBrands &&

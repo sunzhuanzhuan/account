@@ -3,11 +3,11 @@
  */
 import React, { Component } from "react"
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
-import { Button, Form, Tag } from "antd";
+import { Button, Form, Tag, Icon } from "antd";
 import FieldView from "@/accountManage/base/FeildView";
 import ChildrenListView from "@/accountManage/components/common/ChildrenListView";
 import { configOptions } from "@/accountManage/constants/packageConfig";
-import { findStatusText } from '../../util'
+import { date2moment, findStatusText } from '../../util'
 
 @Form.create()
 export default class PersonalView extends Component {
@@ -56,7 +56,11 @@ export default class PersonalView extends Component {
     let skillsList = [].concat(skills, customSkills)
     const right = <div className='wrap-panel-right-content'>
       <span className='gray-text'>最近更新于: {personalInfoModifiedAt || '--'}</span>
-      <Button type='primary' onClick={() => onModuleStatusChange('edit')}>编辑</Button>
+      <a onClick={() => onModuleStatusChange('edit')} style={{fontSize: '14px'}}>
+        <Icon type="edit" style={{marginRight: '6px'}}/>
+        编辑
+      </a>
+      {/*<Button type='primary' onClick={() => onModuleStatusChange('edit')}>编辑</Button>*/}
     </div>;
 
     return <div className='module-item-container'>
@@ -82,7 +86,7 @@ export default class PersonalView extends Component {
                     <p>收货地址： {shippingArea.map(item => item.areaName).join('')} {shipping.addressDetail}</p>
                   </div>
                 } />
-                <FieldView width={70} title="生日" value={birthDate} />
+                <FieldView width={70} title="生日" value={date2moment(birthDate) && date2moment(birthDate).format('YYYY-MM-DD')} />
                 <FieldView width={70} title="国籍" value={nationalityName} />
                 <FieldView width={70} title="行业" value={industryName} />
                 <FieldView width={70} title="职业" value={occupations.map(n => n.occupationName).join('、')} />

@@ -72,11 +72,11 @@ export default class MainMini extends Component {
     return <div className='module-item-container' onSubmit={this.submit}>
       <header className='mini-fields-header clearfix'>
         <div>
-          <span className='gray-text'>最近更新于: {baseModifiedAt || '--'}</span>
-          <span onClick={() => onModuleStatusChange('edit')}>
-            <Icon type="edit" />
+          <span style={{marginRight: '20px'}} className='gray-text'>最近更新于: {baseModifiedAt || '--'}</span>
+          <a onClick={() => onModuleStatusChange('edit')} style={{fontSize: '14px'}}>
+            <Icon type="edit" style={{marginRight: '6px'}}/>
             编辑
-          </span>
+          </a>
         </div>
       </header>
       <main className='content-wrap mini-fields-content'>

@@ -3,7 +3,7 @@
  */
 import React, { Component } from "react"
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
-import { Button, Divider, Form, Tag } from "antd";
+import { Button, Icon, Form, Tag } from "antd";
 import FieldView from "@/accountManage/base/FeildView";
 import {
   FamousPrice, FamousPriceView,
@@ -46,7 +46,11 @@ export default class PriceView extends Component {
     } = data.priceInfo || {};
     const right = <div className='wrap-panel-right-content'>
       <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>
-      <Button type='primary' onClick={() => onModuleStatusChange('edit')}>编辑</Button>
+      <a onClick={() => onModuleStatusChange('edit')} style={{fontSize: '14px'}}>
+        <Icon type="edit" style={{marginRight: '6px'}}/>
+        编辑
+      </a>
+      {/*<Button type='primary' onClick={() => onModuleStatusChange('edit')}>编辑</Button>*/}
     </div>;
     const priceKeys = skuList ? skuList.map(({ skuTypeId, skuTypeName }) => ({
       key: skuTypeId, name: skuTypeName
