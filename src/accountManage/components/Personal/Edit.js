@@ -131,7 +131,7 @@ export default class PersonalEdit extends Component {
       <ul className='content-wrap'>
         <li className='subclass-item-wrap'>
           <h4 className='subclass-head'>
-            <span className='text'>播主信息</span>
+            <span className='text'>博主信息</span>
             <small className='line' />
           </h4>
           <div className='subclass-content'>

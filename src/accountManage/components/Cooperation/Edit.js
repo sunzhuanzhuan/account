@@ -123,8 +123,8 @@ export default class CooperationEdit extends Component {
             <small className='line' />
           </h4>
           <div className='subclass-content'>
-            {asyncVisibility.isAcceptHardAd && asyncVisibility.isAcceptProductUse &&
-            <DirectItems {...fieldProps} />}
+            {(asyncVisibility.isAcceptHardAd || asyncVisibility.isAcceptProductUse) &&
+            <DirectItems {...fieldProps} visibility={asyncVisibility}/>}
             {asyncVisibility.refuseBrands && <RefuseBrands {...fieldProps} />}
             {asyncVisibility.manuscriptModificationLimit &&
             <ManuscriptModificationLimit {...fieldProps} />}

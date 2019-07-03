@@ -90,10 +90,10 @@ export default class StrategyEdit extends Component {
     const fieldProps = { layout, data, form, actions }
     const {
       isFamous,
-      strategyInfo: { modifiedAt } // 信息修改时间
+      strategyInfo: { strategyModifiedAt } // 信息修改时间
     } = data.account || {}
     const right = <div className='wrap-panel-right-content'>
-      <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>
+      <span className='gray-text'>最近更新于: {strategyModifiedAt || '--'}</span>
       <Button htmlType='submit' type='primary' loading={this.state.submitLoading}>保存</Button>
     </div>;
     return <Form className='module-item-container' onSubmit={this.submit} colon={false} hideRequiredMark>

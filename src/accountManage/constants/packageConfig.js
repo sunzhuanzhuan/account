@@ -728,7 +728,6 @@ export const configOptions = {
     "4": " 内容号-不具有人的属性特征、仅以内容存在"
   },
   educationQualification: [
-    { key: -1, text: '无' },
     { key: 1, text: '初中' },
     { key: 2, text: '高中' },
     { key: 3, text: '中技' },
@@ -741,7 +740,6 @@ export const configOptions = {
     { key: 10, text: '博士' }
   ],
   relationshipStatus: [
-    { value: -1, label: '无' },
     { value: 1, label: '单身' },
     { value: 2, label: '情侣' },
     { value: 3, label: '已婚' },

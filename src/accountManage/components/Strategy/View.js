@@ -37,11 +37,11 @@ export default class StrategyView extends Component {
         strategy = {},
         maxOrderCount,
         maxOrderCountNote,
-        modifiedAt // 信息修改时间
+        strategyModifiedAt // 信息修改时间
       }
     } = data.account || {}
     const right = <div className='wrap-panel-right-content'>
-      <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>
+      <span className='gray-text'>最近更新于: {strategyModifiedAt || '--'}</span>
       <Button type='primary' onClick={() => onModuleStatusChange('edit')}>编辑</Button>
     </div>;
 

@@ -22,7 +22,7 @@ import WordList from "./WordList";
 import AreasTreeSelect from "./AreasTreeSelect";
 import CooperationCasesCore from "./CooperationCasesCore";
 import DefaultAndCustomTag from "./DefaultAndCustomTag";
-import { createRange, handleReason, handleWeeks } from "@/accountManage/util";
+import { createRange, date2moment, handleReason, handleWeeks } from "@/accountManage/util";
 import {
   FeedbackCreate,
   FeedbackDetail,
@@ -272,10 +272,10 @@ export const AvatarUrl = (props) => {
           authToken={authToken}
           rule={{
             bizzCode: 'F_IMG_0001',
-            max: 50,
+            max: 25,
             suffix: 'bmp,jpg,png,tif,gif,pcx,tga,exif,fpx,svg,cdr,pcd,dxf,ufo,eps,raw,wmf,webp,flic,ico'
           }}
-          tipContent='请上传50M以内的图片'
+          tipContent='请上传25M以内的图片'
           showUploadList={{
             showPreviewIcon: true,
             showRemoveIcon: !(avatarUrlFrom === 2)
@@ -325,10 +325,10 @@ export const QrCodeUrl = (props) => {
             authToken={authToken}
             rule={{
               bizzCode: 'F_IMG_0001',
-              max: 50,
+              max: 25,
               suffix: 'bmp,jpg,png,tif,gif,pcx,tga,exif,fpx,svg,cdr,pcd,dxf,ufo,eps,raw,wmf,webp,flic,ico'
             }}
-            tipContent='请上传50M以内的图片'
+            tipContent='请上传25M以内的图片'
             showUploadList={{
               showPreviewIcon: true,
               showRemoveIcon: !(qrCodeUrlFrom === 2)
@@ -575,10 +575,10 @@ export const FollowerCountScreenshotUrl = (props) => {
           authToken={authToken}
           rule={{
             bizzCode: 'F_IMG_0001',
-            max: 50,
+            max: 25,
             suffix: 'bmp,jpg,png,tif,gif,pcx,tga,exif,fpx,svg,cdr,pcd,dxf,ufo,eps,raw,wmf,webp,flic,ico'
           }}
-          tipContent='请上传50M以内的图片'
+          tipContent='请上传25M以内的图片'
           showUploadList={{
             showPreviewIcon: true,
             showRemoveIcon: !(disabled === 2)
@@ -644,7 +644,7 @@ export const Level = (props) => {
         initialValue: level || undefined
       })(
         options ?
-          <Select style={{ width: "100%" }} placeholder='请选择'>
+          <Select style={{ width: "100%" }} placeholder='请输入平台等级'>
             {
               Object.entries(options).map(([key, text]) =>
                 <Option key={key} value={parseInt(key)}>{text}</Option>)
@@ -843,7 +843,8 @@ export const DirectItems = (props) => {
   const {
     form: { getFieldDecorator },
     layout,
-    data: { account }
+    data: { account },
+    visibility
   } = props;
   const {
     isAcceptHardAd = 1,
@@ -851,7 +852,7 @@ export const DirectItems = (props) => {
   } = account.cooperation;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='拒绝项'>
-      {getFieldDecorator('cooperation.isAcceptHardAd', {
+      {visibility.isAcceptHardAd && getFieldDecorator('cooperation.isAcceptHardAd', {
         initialValue: isAcceptHardAd,
         valuePropName: 'checked',
         getValueFromEvent: e => {
@@ -860,7 +861,7 @@ export const DirectItems = (props) => {
       })(
         <CheckedWrap>不接受硬广</CheckedWrap>
       )}
-      {getFieldDecorator('cooperation.isAcceptProductUse', {
+      {visibility.isAcceptProductUse && getFieldDecorator('cooperation.isAcceptProductUse', {
         initialValue: isAcceptProductUse,
         valuePropName: 'checked',
         getValueFromEvent: e => {
@@ -1926,7 +1927,7 @@ export const Area = (props) => {
       {getFieldDecorator('personalInfo.area', {
         initialValue: area
       })(
-        <LazyAreaOptions level={3} disabled={areaIdFrom === 2} />
+        <LazyAreaOptions level={3} disabled={areaIdFrom === 2} placeholder="请选择您所处常住地" />
       )}
     </FormItem>
     {getFieldDecorator('personalInfo.areaIdFrom', { initialValue: areaIdFrom })(
@@ -1974,10 +1975,10 @@ export const Birthday = (props) => {
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='生日'>
       {getFieldDecorator('personalInfo.birthDate', {
-        initialValue: moment(birthDate)
+        initialValue: date2moment(birthDate) || undefined
       })(
-        <DatePicker allowClear={false} style={{ width: '100%' }} placeholder='请选择您的生日' disabledDate={date => {
-          return date.isBefore(moment().subtract(150, 'y'))
+        <DatePicker allowClear={true} style={{ width: '100%' }} placeholder='请选择您的生日' disabledDate={date => {
+          return date.isBefore(moment().subtract(150, 'y')) || date.isAfter(moment())
         }} />
       )}
     </FormItem>
@@ -2032,7 +2033,7 @@ export const Industry = (props) => {
       {getFieldDecorator('personalInfo.industryId', {
         initialValue: industryId || undefined
       })(
-        options.length > 0 ? <Select style={{ width: "100%" }} placeholder='请选择'>
+        options.length > 0 ? <Select style={{ width: "100%" }} placeholder='请选择您所处行业'>
           {
             options.map(({ value, label }) =>
               <Option key={value} value={parseInt(value)}>{label}</Option>)
@@ -2088,7 +2089,7 @@ export const EducationQualification = (props) => {
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='学历/学位'>
       {getFieldDecorator('personalInfo.educationQualification', {
-        initialValue: educationQualification
+        initialValue: educationQualification === -1 ? undefined : educationQualification
       })(
         options.length > 0 ? <Select style={{ width: "100%" }} placeholder='请选择'>
           {
@@ -2309,7 +2310,7 @@ export const CustomSkills = (props) => {
 };
 
 
-/* endregion personalInfo - 播主个人信息 */
+/* endregion personalInfo - 博主个人信息 */
 
 /* region  trinity 三方报价相关  */
 

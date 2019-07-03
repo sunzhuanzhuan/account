@@ -72,11 +72,11 @@ export default class CooperationView extends Component {
           <div className='subclass-content'>
             <div className="view-fields-container">
               <div className='right-wrap'>
-                {asyncVisibility.isAcceptHardAd && asyncVisibility.isAcceptProductUse &&
+                {(asyncVisibility.isAcceptHardAd || asyncVisibility.isAcceptProductUse) &&
                 <FieldView width={130} title="拒绝项" value={
                   <div>
-                    <span>{isAcceptHardAd === 2 ? '不接受硬广' : '接硬广'}</span>、
-                    <span>{isAcceptProductUse === 2 ? '不接受产品试用' : '接受产品试用'}</span>
+                    {asyncVisibility.isAcceptHardAd && <span>{isAcceptHardAd === 2 ? '不接受硬广、' : '接硬广、'}</span>}
+                    {asyncVisibility.isAcceptProductUse && <span>{isAcceptProductUse === 2 ? '不接受产品试用' : '接受产品试用'}</span>}
                   </div>
                 } />}
                 {asyncVisibility.refuseBrands &&

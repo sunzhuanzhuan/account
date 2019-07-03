@@ -7,7 +7,7 @@ import { Button, Form, Tag } from "antd";
 import FieldView from "@/accountManage/base/FeildView";
 import ChildrenListView from "@/accountManage/components/common/ChildrenListView";
 import { configOptions } from "@/accountManage/constants/packageConfig";
-import { findStatusText } from '../../util'
+import { date2moment, findStatusText } from '../../util'
 
 @Form.create()
 export default class PersonalView extends Component {
@@ -82,7 +82,7 @@ export default class PersonalView extends Component {
                     <p>收货地址： {shippingArea.map(item => item.areaName).join('')} {shipping.addressDetail}</p>
                   </div>
                 } />
-                <FieldView width={70} title="生日" value={birthDate} />
+                <FieldView width={70} title="生日" value={date2moment(birthDate).format('YYYY-MM-DD')} />
                 <FieldView width={70} title="国籍" value={nationalityName} />
                 <FieldView width={70} title="行业" value={industryName} />
                 <FieldView width={70} title="职业" value={occupations.map(n => n.occupationName).join('、')} />
