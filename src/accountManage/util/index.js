@@ -58,6 +58,9 @@ export function handleReason(reason = '') {
  */
 export function date2moment(date) {
   // 判断 date 是否为一个有效值
+  if (date === '1970-01-01 08:00:00') {
+    return false
+  }
   return date ? moment(date) : moment.invalid()
 }
 

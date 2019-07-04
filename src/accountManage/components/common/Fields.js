@@ -160,11 +160,11 @@ export const Name = (props) => {
         initialValue: snsName,
         first: true,
         rules: [{ required: true, message: '账号名称不能为空' }, {
-          pattern: /^(.){0,40}$/,
+          pattern: /^(.){0,80}$/,
           message: '账号名称最多可输入80个字符'
         }]
       })(
-        <InputCount placeholder="账号名称" showCount disabled={snsNameFrom === 2} max={40} />
+        <InputCount placeholder="账号名称" showCount disabled={snsNameFrom === 2} max={80} />
       )}
     </FormItem>
     {getFieldDecorator('base.snsNameFrom', { initialValue: snsNameFrom })(
@@ -276,10 +276,6 @@ export const AvatarUrl = (props) => {
             suffix: 'bmp,jpg,png,tif,gif,pcx,tga,exif,fpx,svg,cdr,pcd,dxf,ufo,eps,raw,wmf,webp,flic,ico'
           }}
           tipContent='请上传25M以内的图片'
-          showUploadList={{
-            showPreviewIcon: true,
-            showRemoveIcon: !(avatarUrlFrom === 2)
-          }}
           len={1}
           disabled={avatarUrlFrom === 2}
           listType='picture-card'
@@ -329,10 +325,6 @@ export const QrCodeUrl = (props) => {
               suffix: 'bmp,jpg,png,tif,gif,pcx,tga,exif,fpx,svg,cdr,pcd,dxf,ufo,eps,raw,wmf,webp,flic,ico'
             }}
             tipContent='请上传25M以内的图片'
-            showUploadList={{
-              showPreviewIcon: true,
-              showRemoveIcon: !(qrCodeUrlFrom === 2)
-            }}
             disabled={qrCodeUrlFrom === 2}
             len={1}
             listType='picture-card'
@@ -579,10 +571,6 @@ export const FollowerCountScreenshotUrl = (props) => {
             suffix: 'bmp,jpg,png,tif,gif,pcx,tga,exif,fpx,svg,cdr,pcd,dxf,ufo,eps,raw,wmf,webp,flic,ico'
           }}
           tipContent='请上传25M以内的图片'
-          showUploadList={{
-            showPreviewIcon: true,
-            showRemoveIcon: !(disabled === 2)
-          }}
           disabled={disabled === 2}
           len={1}
           listType='picture-card'
@@ -644,13 +632,13 @@ export const Level = (props) => {
         initialValue: level || undefined
       })(
         options ?
-          <Select style={{ width: "100%" }} placeholder='请输入平台等级'>
+          <Select style={{ width: "100%" }} placeholder='请选择平台等级'>
             {
               Object.entries(options).map(([key, text]) =>
                 <Option key={key} value={parseInt(key)}>{text}</Option>)
             }
           </Select> :
-          <InputNumber placeholder='请输入' style={{ width: "100%" }} precision={0} min={1} max={99999} disabled={levelFrom === 2} />
+          <InputNumber placeholder='请输入平台等级' style={{ width: "100%" }} precision={0} min={1} max={99999} disabled={levelFrom === 2} />
       )}
     </FormItem>
     {getFieldDecorator('base.levelFrom', { initialValue: levelFrom })(
@@ -725,7 +713,7 @@ export const Verified = (props) => {
       <FormItem {...layout.full} label='认证类型'>
         {getFieldDecorator('base.verifiedStatus', {
           rules: [{ required: false }],
-          initialValue: (verifiedStatus && verifiedStatus !== 1) || 2
+          initialValue: verifiedStatus === 1 ? 2 : (verifiedStatus || 2)
         })(
           <RadioGroup disabled={verifiedStatusFrom === 2}>
             {
@@ -1977,7 +1965,7 @@ export const Birthday = (props) => {
       {getFieldDecorator('personalInfo.birthDate', {
         initialValue: date2moment(birthDate) || undefined
       })(
-        <DatePicker allowClear={true} style={{ width: '100%' }} placeholder='请选择您的生日' disabledDate={date => {
+        <DatePicker allowClear={false} style={{ width: '100%' }} placeholder='请选择您的生日' disabledDate={date => {
           return date.isBefore(moment().subtract(150, 'y')) || date.isAfter(moment())
         }} />
       )}
