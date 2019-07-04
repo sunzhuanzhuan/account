@@ -8,6 +8,7 @@ import numeral from "@/util/numeralExpand";
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
 import FieldView from "@/accountManage/base/FeildView";
 import SimpleTag from "@/accountManage/base/SimpleTag";
+import { dateDisplay } from "../../util";
 
 
 export default class MainMini extends Component {
@@ -72,9 +73,9 @@ export default class MainMini extends Component {
     return <div className='module-item-container' onSubmit={this.submit}>
       <header className='mini-fields-header clearfix'>
         <div>
-          <span style={{marginRight: '20px'}} className='gray-text'>最近更新于: {baseModifiedAt || '--'}</span>
-          <a onClick={() => onModuleStatusChange('edit')} style={{fontSize: '14px'}}>
-            <Icon type="edit" style={{marginRight: '6px'}}/>
+          <span style={{ marginRight: '20px' }} className='gray-text'>最近更新于: {dateDisplay(baseModifiedAt, 16) || '--'}</span>
+          <a onClick={() => onModuleStatusChange('edit')} style={{ fontSize: '14px' }}>
+            <Icon type="edit" style={{ marginRight: '6px' }} />
             编辑
           </a>
         </div>
@@ -110,7 +111,7 @@ export default class MainMini extends Component {
             <span>{configurePlatform.platformName}</span>
           </div>
           <div>
-            {introduction || '暂无简介'}
+            {introduction || '您还没有添加账号简介哦~'}
           </div>
           {/*<div className='line' style={{ borderBottom: '1px solid #e8e8e8', margin: '10px 0' }} />
           <div className='gray-text'>

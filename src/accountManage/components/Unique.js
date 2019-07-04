@@ -53,8 +53,7 @@ export const QCCodeUpload = (props) => {
           }} disabled={qrCodeUrlFrom == 2} />
         )}
       </div>
-      <p className='input-desc-bottom'>请上传25M以内的图片
-      </p>
+      <p className='input-desc-bottom'>请上传25M以内的图片</p>
     </FormItem>
     {/* 隐藏域提交 */}
     {getFieldDecorator('base.qrCodeUrlFrom', { initialValue: qrCodeUrlFrom })(

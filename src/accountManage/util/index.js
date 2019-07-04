@@ -116,6 +116,22 @@ export const weeksToNames = (weeks) => {
   let _data = handleWeeks(weeks)
   return _data.map(key => weekSource[key])
 }
+export function initialMoment(date) {
+  // 判断 date 是否为一个有效值
+  if (date === '1970-01-01 08:00:00') {
+    return
+  }
+  return date && moment(date)
+}
+/**
+ * 时间展示态
+ */
+export const dateDisplay = (date, len = 16) => {
+  return date ? date.slice(0, len) : ''
+}
+
+
+
 
 export const findStatusText = (status, sources, keys = ["id", 'name']) => {
   let _data = sources.find(item => item[keys[0]] === status) || {}

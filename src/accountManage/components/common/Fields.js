@@ -22,7 +22,13 @@ import WordList from "./WordList";
 import AreasTreeSelect from "./AreasTreeSelect";
 import CooperationCasesCore from "./CooperationCasesCore";
 import DefaultAndCustomTag from "./DefaultAndCustomTag";
-import { createRange, date2moment, handleReason, handleWeeks } from "@/accountManage/util";
+import {
+  createRange,
+  date2moment,
+  handleReason,
+  handleWeeks,
+  initialMoment
+} from "@/accountManage/util";
 import {
   FeedbackCreate,
   FeedbackDetail,
@@ -366,7 +372,7 @@ export const Introduction = (props) => {
           message: '账号简介不能超过1000字'
         }, { validator: checkForSensitiveWord, name: '账号简介' }]
       })(
-        <TextArea placeholder={placeholder || '请输入账号简介'} autosize={{ minRows: 2, maxRows: 4 }} />
+        <TextArea placeholder={placeholder || '请输入账号简介'} autosize={{ minRows: 4, maxRows: 6 }} />
       )}
     </FormItem>
     {getFieldDecorator('base.introductionFrom', { initialValue: introductionFrom })(
@@ -632,7 +638,7 @@ export const Level = (props) => {
         initialValue: level || undefined
       })(
         options ?
-          <Select style={{ width: "100%" }} placeholder='请选择平台等级'>
+          <Select style={{ width: "100%" }} placeholder='请选择平台等级' optionFilterProp='children'>
             {
               Object.entries(options).map(([key, text]) =>
                 <Option key={key} value={parseInt(key)}>{text}</Option>)
@@ -906,12 +912,12 @@ export const ManuscriptModificationLimit = (props) => {
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='稿件/大纲修改次数'>
       {getFieldDecorator('cooperation.manuscriptModificationLimit', {
-        initialValue: manuscriptModificationLimit || -1
+        initialValue: manuscriptModificationLimit === -1 ? undefined : manuscriptModificationLimit
       })(
         <Select style={{ width: '100%' }}>
           <Option value={-1}>不限</Option>
           {
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => <Option key={n} value={n}>{n}</Option>)
+            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => <Option key={n} value={n}>{n}</Option>)
           }
         </Select>
       )}
@@ -936,7 +942,7 @@ export const VideoShotArea = (props) => {
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='视频拍摄地点'>
       {getFieldDecorator('cooperation.videoShotAreaType', {
-        initialValue: videoShotAreaType || 1
+        initialValue: videoShotAreaType
       })(
         <RadioGroup>
           <Radio value={1}>不限地点</Radio>
@@ -1113,7 +1119,7 @@ export const PostPlatform = (props) => {
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='分发平台'>
       {getFieldDecorator('cooperation.supportMultiPlatformOriginalPost', {
-        initialValue: supportMultiPlatformOriginalPost || 1
+        initialValue: supportMultiPlatformOriginalPost
       })(
         <RadioGroup style={{ width: '100%' }}>
           <Radio value={1}>可分发</Radio>
@@ -1963,7 +1969,7 @@ export const Birthday = (props) => {
   return <div className='field-wrap-item'>
     <FormItem {...layout.half} label='生日'>
       {getFieldDecorator('personalInfo.birthDate', {
-        initialValue: date2moment(birthDate) || undefined
+        initialValue: initialMoment(birthDate)
       })(
         <DatePicker allowClear={false} style={{ width: '100%' }} placeholder='请选择您的生日' disabledDate={date => {
           return date.isBefore(moment().subtract(150, 'y')) || date.isAfter(moment())
@@ -2050,7 +2056,7 @@ export const Occupations = (props) => {
       {getFieldDecorator('personalInfo.occupationIds', {
         initialValue: occupations.map(item => item.id || item)
       })(
-        options.length > 0 ? <Select mode='multiple' style={{ width: "100%" }} placeholder='请选择'>
+        options.length > 0 ? <Select mode='multiple' style={{ width: "100%" }} placeholder='请选择' optionFilterProp='children'>
           {
             options.map(({ value, label }) =>
               <Option key={value} value={parseInt(value)}>{label}</Option>)
@@ -2243,6 +2249,7 @@ export const Skills = (props) => {
           placeholder='添加您的特长或才艺，将提升您的竞争力，在同类账号中更加突出哦~'
           allowClear
           showArrow
+          optionFilterProp='children'
         >
           {
             options.map(item => <OptGroup label={item.label} key={item.value}>

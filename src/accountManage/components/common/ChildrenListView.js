@@ -11,7 +11,7 @@ const ChildrenListView = ({ list = [] }) => {
         </section>
       )
     }
-  </div> : '暂无信息'
+  </div> : null
 }
 
 

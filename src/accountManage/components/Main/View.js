@@ -2,14 +2,18 @@
  * 账号基本信息 - 展示态
  */
 import React, { Component } from "react"
-import { Button, Divider, Icon, Form, Popover } from 'antd'
+import { Button, Divider, Icon, Form, Popover, Radio, Typography } from 'antd'
 import { WBYPlatformIcon } from 'wbyui'
 import update from "immutability-helper";
 import numeral from "@/util/numeralExpand";
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
 import FieldView from "@/accountManage/base/FeildView";
 import SimpleTag from "@/accountManage/base/SimpleTag";
-import { configItemKeyToField, configOptions } from "@/accountManage/constants/packageConfig";
+import {
+  configItemKeyToField,
+  configOptions
+} from "@/accountManage/constants/packageConfig";
+import { dateDisplay } from "../../util";
 
 
 export default class MainView extends Component {
@@ -68,9 +72,9 @@ export default class MainView extends Component {
       <span>{configurePlatform.platformName}</span>
     </div>;
     const right = <div className='wrap-panel-right-content'>
-      <span className='gray-text'>最近更新于: {baseModifiedAt || '--'}</span>
-      <a onClick={() => onModuleStatusChange('edit')} style={{fontSize: '14px'}}>
-        <Icon type="edit" style={{marginRight: '6px'}}/>
+      <span className='gray-text'>最近更新于: {dateDisplay(baseModifiedAt) || '--'}</span>
+      <a onClick={() => onModuleStatusChange('edit')} style={{ fontSize: '14px' }}>
+        <Icon type="edit" style={{ marginRight: '6px' }} />
         编辑
       </a>
       {/*<Button type='primary' onClick={() => onModuleStatusChange('edit')}>编辑</Button>*/}
@@ -94,17 +98,23 @@ export default class MainView extends Component {
               <div className='right-wrap'>
                 <FieldView title="账号名称" value={snsName} />
                 <FieldView title="账号ID" value={snsId} />
-                {configurePlatform.visibility.fields.url && <FieldView title="主页链接" value={url} />}
+                {configurePlatform.visibility.fields.url &&
+                <FieldView title="主页链接" value={
+                  url ? <a href={url} target="_blank" className='ellipsis-text'>
+                    {url}
+                  </a> : '请完善主页链接'
+                } />}
                 {configurePlatform.visibility.fields.weiboUrl &&
                 <FieldView title="微博链接" value={weiboUrl} />}
-                {configurePlatform.visibility.fields.qcCode && <FieldView title="二维码" value={
+                {configurePlatform.visibility.fields.qcCode &&
+                <FieldView title="二维码" value={
                   <Popover placement="bottomLeft" arrowPointAtCenter trigger="hover" content={
                     <img alt='二维码' src={qrCodeUrl} width={120} height={120} />
                   }>
                     <Icon style={{ fontSize: '16px' }} type="qrcode" />
                   </Popover>}
                 />}
-                <FieldView title="账号简介" value={introduction} />
+                <FieldView title="账号简介" value={introduction || "您还没有添加账号简介哦~"} />
               </div>
             </div>
           </div>
@@ -128,7 +138,7 @@ export default class MainView extends Component {
             </div>
           </div>
         </li>
-        <li className='subclass-item-wrap'>
+        {classificationList.length > 0 && <li className='subclass-item-wrap'>
           <h4 className='subclass-head'>
             <span className='text'>内容分类</span>
             <small className='line' />
@@ -137,14 +147,14 @@ export default class MainView extends Component {
             <div className='view-fields-container'>
               <div className='right-wrap'>
                 {
-                  classificationList.length > 0 ? classificationList.map(({ name }) =>
-                    <SimpleTag key={name}>{name}</SimpleTag>) : '暂无分类'
+                  classificationList.map(({ name }) =>
+                    <SimpleTag key={name}>{name}</SimpleTag>)
                 }
               </div>
             </div>
           </div>
-        </li>
-        <li className='subclass-item-wrap'>
+        </li>}
+        {configOptions.mediaTypeMap[mediaType] && <li className='subclass-item-wrap'>
           <h4 className='subclass-head'>
             <span className='text'>账号类属</span>
             <small className='line' />
@@ -158,7 +168,7 @@ export default class MainView extends Component {
               </div>
             </div>
           </div>
-        </li>
+        </li>}
         <li className='subclass-item-wrap'>
           <h4 className='subclass-head'>
             <span className='text'>账号特权</span>
@@ -168,8 +178,10 @@ export default class MainView extends Component {
             <div className='view-fields-container'>
               <div className='right-wrap'>
                 <FieldView title="是否认证" value={isVerified === 1 ? '已认证' : '未认证'} />
-                {isVerified === 1 && <FieldView title="认证信息" value={verifiedStatusName} />}
-                {isVerified === 1 && <FieldView title="认证说明" value={verificationInfo} />}
+                {isVerified === 1 &&
+                <FieldView title="认证信息" value={verifiedStatusName} />}
+                {isVerified === 1 &&
+                <FieldView title="认证说明" value={verificationInfo} />}
                 {asyncVisibility.showWindow &&
                 <FieldView title="橱窗/店铺" value={showWindow === 1 ? '已开通' : '未开通'} />}
                 {asyncVisibility.isSupportLive &&
