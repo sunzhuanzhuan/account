@@ -108,7 +108,7 @@ export class BaseInfo extends Component {
             }] : [],
             rules: [{ required: true, message: '头像不能为空' }]
           })(
-            <WBYUploadFile tok={actions.getNewToken} uploadUrl='/api/common-file/file/v1/uploadPubBucket' accept={'bmp,jpg,png,tif,gif,pcx,tga,exif,fpx,svg,cdr,pcd,dxf,ufo,eps,raw,wmf,webp,flic,ico'} showUploadList={{
+            <WBYUploadFile tok={actions.getNewToken} uploadUrl='/api/common-file/file/v1/uploadPubBucket' accept={'.bmp,.jpg,.png,.tif,.gif,.pcx,.tga,.exif,.fpx,.svg,.cdr,.pcd,.dxf,.ufo,.eps,.raw,.wmf,.webp,.flic,.ico'} showUploadList={{
               showPreviewIcon: true,
               showRemoveIcon: !(avatarUrlFrom == 2)
             }} uploadText={'点击上传'} size={25} disabled={avatarUrlFrom == 2} />
