@@ -146,7 +146,7 @@ class UpdatePageForPackage extends Component {
       // 找到当前tab的第一个未完善模块
       moduleId: activeTab.warp.find(key => {
         let perKey = modulesMap[key].perfectionDegreeKey
-        return (perKey && perfectionDegree[perKey] < 100)
+        return (perKey && perfectionDegree[perKey] < 1)
       })
     }
     // 根据account_id获取账号信息, 错误error, 平台不对修改平台

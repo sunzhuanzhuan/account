@@ -47,13 +47,13 @@ export const QCCodeUpload = (props) => {
           }] : [],
           rules: [{ required: true, message: '二维码不能为空' }]
         })(
-          <WBYUploadFile tok={actions.getNewToken} accept={'.bmp, .gif, image/jpeg'} uploadUrl='/api/common-file/file/v1/uploadPubBucket' uploadText={'点击上传'} size={5} showUploadList={{
+          <WBYUploadFile tok={actions.getNewToken} accept={'.bmp,.jpg,.png,.tif,.gif,.pcx,.tga,.exif,.fpx,.svg,.cdr,.pcd,.dxf,.ufo,.eps,.raw,.wmf,.webp,.flic,.ico'} uploadUrl='/api/common-file/file/v1/uploadPubBucket' uploadText={'点击上传'} size={25} showUploadList={{
             showPreviewIcon: true,
             showRemoveIcon: !(qrCodeUrlFrom == 2)
           }} disabled={qrCodeUrlFrom == 2} />
         )}
       </div>
-      <p className='input-desc-bottom'>请上传bmp, jpeg, jpg, gif;5M以内的图片</p>
+      <p className='input-desc-bottom'>请上传25M以内的图片</p>
     </FormItem>
     {/* 隐藏域提交 */}
     {getFieldDecorator('base.qrCodeUrlFrom', { initialValue: qrCodeUrlFrom })(

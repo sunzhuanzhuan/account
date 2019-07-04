@@ -6,6 +6,7 @@ import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
 import { Button, Form, Tooltip, Icon } from "antd";
 import FieldView from "@/accountManage/base/FeildView";
 import { handleReason, weeksToNames } from "@/accountManage/util";
+import { dateDisplay } from "../../util";
 
 @Form.create()
 export default class StrategyView extends Component {
@@ -41,9 +42,9 @@ export default class StrategyView extends Component {
       }
     } = data.account || {}
     const right = <div className='wrap-panel-right-content'>
-      <span className='gray-text'>最近更新于: {strategyModifiedAt || '--'}</span>
-      <a onClick={() => onModuleStatusChange('edit')} style={{fontSize: '14px'}}>
-        <Icon type="edit" style={{marginRight: '6px'}}/>
+      <span className='gray-text'>最近更新于: {dateDisplay(strategyModifiedAt) || '--'}</span>
+      <a onClick={() => onModuleStatusChange('edit')} style={{ fontSize: '14px' }}>
+        <Icon type="edit" style={{ marginRight: '6px' }} />
         编辑
       </a>
       {/*<Button type='primary' onClick={() => onModuleStatusChange('edit')}>编辑</Button>*/}
@@ -76,7 +77,8 @@ export default class StrategyView extends Component {
             <div className="view-fields-container">
               <div className='right-wrap'>
                 <FieldView width={70} title="审核状态" value={approvedText} />
-                <FieldView width={70} title="是否上架" value={aOnShelfStatus && <div>
+                <FieldView width={70} title="是否上架" value={aOnShelfStatus &&
+                <div>
                   {aOnShelfStatus === 2 && <span>否</span>}
                   {aOnShelfStatus === 2 && aOffShelfReasonStringList &&
                   <Tooltip title={handleReason(aOffShelfReasonStringList)}>
@@ -97,33 +99,37 @@ export default class StrategyView extends Component {
           </h4>
           <div className='subclass-content'>
             <div className="view-fields-container">
-              <div className='right-wrap'>
-                <FieldView width={70} title="暂离策略" value={
-                  Object.keys(strategy).length > 0 ? <div>
-                    <div style={{ paddingBottom: "8px" }}>
-                      暂离
-                      {strategy.type === 1 && "（每日）"}
-                      {strategy.type === 2 && `（每周：${weeksToNames(strategy.weeks).join('，')}）`}
-                    </div>
-                    {(strategy.type === 1 || strategy.type === 2) &&
-                    <FieldView width={70} title="暂离时间" value={
-                      `${strategy.startTimeOfTime} - ${strategy.endTimeOfTime}`
-                    } />}
-                    {strategy.type === 3 && <FieldView width={70} title="暂离时间" value={
-                      `${strategy.startTimeOfDate} - ${strategy.endTimeOfDate}`
-                    } />}
-                    <FieldView width={70} title="备注" value={strategy.comment} />
-                  </div> : '无'
-                } />
-                <FieldView width={70} title="接单策略" value={
-                  maxOrderCount > 0 ? <div>
-                    <div style={{ paddingBottom: "8px" }}>
-                      每日最大接单数 {maxOrderCount}
-                    </div>
-                    <FieldView width={70} title="备注" value={maxOrderCountNote} />
-                  </div> : '无'
-                } />
-              </div>
+              {
+                (Object.keys(strategy).length > 0 || maxOrderCount > 0) ?
+                  <div className='right-wrap'>
+                    <FieldView width={70} title="暂离策略" value={
+                      Object.keys(strategy).length > 0 ? <div>
+                        <div style={{ paddingBottom: "8px" }}>
+                          暂离
+                          {strategy.type === 1 && "（每日）"}
+                          {strategy.type === 2 && `（每周：${weeksToNames(strategy.weeks).join('，')}）`}
+                        </div>
+                        {(strategy.type === 1 || strategy.type === 2) &&
+                        <FieldView width={70} title="暂离时间" value={
+                          `${strategy.startTimeOfTime} - ${strategy.endTimeOfTime}`
+                        } />}
+                        {strategy.type === 3 &&
+                        <FieldView width={70} title="暂离时间" value={
+                          `${strategy.startTimeOfDate} - ${strategy.endTimeOfDate}`
+                        } />}
+                        <FieldView width={40} title="备注" value={strategy.comment} />
+                      </div> : ''
+                    } />
+                    <FieldView width={70} title="接单策略" value={
+                      maxOrderCount > 0 ? <div>
+                        <div style={{ paddingBottom: "8px" }}>
+                          每日最大接单数 {maxOrderCount}
+                        </div>
+                        <FieldView width={40} title="备注" value={maxOrderCountNote} />
+                      </div> : ''
+                    } />
+                  </div> : <div className='right-wrap'>您可在此设置账号的接单上限、暂离时间</div>
+              }
             </div>
           </div>
         </li>

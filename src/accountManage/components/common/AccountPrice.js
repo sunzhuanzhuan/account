@@ -14,7 +14,7 @@ import {
 import PriceInput from '../../base/PriceInput';
 import { priceTitle } from '../../constants/price';
 import moment from 'moment';
-import { handleReason, date2moment } from '../../util';
+import { handleReason, date2moment, dateDisplay } from '../../util';
 import FieldView from "@/accountManage/base/FeildView";
 
 const RadioGroup = Radio.Group;
@@ -574,7 +574,7 @@ class NamelessStatus extends Component {
   }
 }
 
-// 派单报价展示态
+// 预约报价展示态
 export class FamousPriceView extends Component {
   constructor(props) {
     super(props);
@@ -603,27 +603,29 @@ export class FamousPriceView extends Component {
     return <div>
       <FieldView width={80} title="本期有效期" value={
         <div>
-          <span>{priceValidFrom}</span>
+          <span>{dateDisplay(priceValidFrom, 10)}</span>
           <span className='m10-e'>至</span>
-          <span>{priceValidTo}</span>
+          <span>{dateDisplay(priceValidTo, 10)}</span>
         </div>
       } />
       <FieldView width={80} title="账号报价" value={
         <PriceTable style={{ lineHeight: '40px' }} isEdit={false} priceKeys={priceKeys} value={nowVal} />
       } />
-      <FieldView width={80} title="下期有效期" value={
-        <div>
-          <span>{nextPriceValidFrom || '-'}</span>
-          <span className='m10-e'>至</span>
-          <span>{nextPriceValidTo || '-'}</span>
-        </div>
-      } />
-      <FieldView width={80} title="账号报价" value={
-        <PriceTable style={{ lineHeight: '40px' }} isEdit={false} priceKeys={priceKeys} value={nextVal} />
-      } />
-      <FieldView width={80} title="审核状态" value={
-        approvalStatus(reviewStatus, reviewFailReason)
-      } />
+      {nextPriceValidFrom ? <div>
+        <FieldView width={80} title="下期有效期" value={
+          <div>
+            <span>{nextPriceValidFrom || '-'}</span>
+            <span className='m10-e'>至</span>
+            <span>{nextPriceValidTo || '-'}</span>
+          </div>
+        } />
+        <FieldView width={80} title="账号报价" value={
+          <PriceTable style={{ lineHeight: '40px' }} isEdit={false} priceKeys={priceKeys} value={nextVal} />
+        } />
+        <FieldView width={80} title="审核状态" value={
+          approvalStatus(reviewStatus, reviewFailReason)
+        } />
+      </div> : <FieldView width={80} title="下期报价" value={'添加【下个报价】将提升您的账号曝光率哦~'} />}
       <Divider dashed />
       {children}
     </div>;

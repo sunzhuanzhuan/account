@@ -8,6 +8,7 @@ import {
   message, Radio, DatePicker
 } from 'antd';
 import moment from "moment";
+import { initialMoment } from "@/accountManage/util";
 
 const uuid = require('uuid/v1');
 const FormItem = Form.Item;
@@ -86,10 +87,10 @@ export default class ChildrenList extends React.Component {
           </FormItem>
           <FormItem label="生日" {...formItemLayout}>
             {getFieldDecorator(`_children.${item.uuid}.birthDate`, {
-              initialValue: item.birthDate && moment(item.birthDate),
+              initialValue: initialMoment(item.birthDate),
               rules: [{ required: true, message: '请选择宝宝的生日' }]
             })(
-              <DatePicker style={{ width: '100%' }} placeholder='请选择您的生日' disabledDate={date => {
+              <DatePicker allowClear={false} style={{ width: '100%' }} placeholder='请选择生日' disabledDate={date => {
                 return date.isBefore(moment().subtract(150, 'y')) || date.isAfter(moment())
               }} />
             )}

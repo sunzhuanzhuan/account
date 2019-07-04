@@ -108,13 +108,13 @@ export class BaseInfo extends Component {
             }] : [],
             rules: [{ required: true, message: '头像不能为空' }]
           })(
-            <WBYUploadFile tok={actions.getNewToken} uploadUrl='/api/common-file/file/v1/uploadPubBucket' accept={'.bmp, .gif, image/jpeg'} showUploadList={{
+            <WBYUploadFile tok={actions.getNewToken} uploadUrl='/api/common-file/file/v1/uploadPubBucket' accept={'.bmp,.jpg,.png,.tif,.gif,.pcx,.tga,.exif,.fpx,.svg,.cdr,.pcd,.dxf,.ufo,.eps,.raw,.wmf,.webp,.flic,.ico'} showUploadList={{
               showPreviewIcon: true,
               showRemoveIcon: !(avatarUrlFrom == 2)
-            }} uploadText={'点击上传'} size={5} disabled={avatarUrlFrom == 2} />
+            }} uploadText={'点击上传'} size={25} disabled={avatarUrlFrom == 2} />
           )}
         </div>
-        <p className='input-desc-bottom'>请上传bmp, jpeg, jpg, gif;5M以内的图片</p>
+        <p className='input-desc-bottom'>请上传25M以内的图片</p>
       </FormItem>
       {/* 隐藏域提交 */}
       {getFieldDecorator('base.snsNameFrom', { initialValue: snsNameFrom })(
