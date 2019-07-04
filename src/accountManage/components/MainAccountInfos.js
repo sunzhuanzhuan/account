@@ -7,7 +7,7 @@ export default class MainAccountInfos extends Component {
 	render() {
 		const { identityName, userId, ownerAdminRealName, volAdminRealName} = this.props.accountInfo
 		const { babysitter_host = {} } = window.bentleyConfig || {}
-		const babysitterHost = babysitter_host.value || 'http://192.168.100.90:8072'
+		const babysitterHost = babysitter_host.value || 'http://toufang.weiboyi.com'
 		return <article className='account-info-module main-account-infos'>
 			<section className='common-infos'>
 				<Row>
