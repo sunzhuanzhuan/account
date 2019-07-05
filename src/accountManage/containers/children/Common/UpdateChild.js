@@ -11,8 +11,8 @@ import {
   FetchInfoForm,
   OnSaleInfoForm,
   OrderTakeStrategyfoForm,
-  OtherInfoForm
-} from '../UpdateForms'
+  OtherInfoForm, AgentConfigAndPriceForm
+} from '../UpdateForms';
 import { Fans } from '../../../components/Fans'
 import { FansCount } from '../../../components/FansCount'
 import { WrapPanelForm } from "../../../components/index";
@@ -60,7 +60,7 @@ export default class UpdateChild extends Component {
     const { actions: { getSkuList }, data: { accountInfo } } = params
     const {
       accountId,
-      isFamous
+      isFamous,
     } = accountInfo
     this.setState({ isLoading: true })
     return getSkuList({
@@ -68,20 +68,31 @@ export default class UpdateChild extends Component {
       itemTypeId: 1,
       itemId: accountId,
       platformId
-    }).then(() => {
+    }).finally(() => {
       this.setState({ isLoading: false })
-    }).catch(() => {
-      this.setState({ isLoading: false })
+    })
+  }
+  getTrinitySkuActions = () => {
+    const { params } = this.props
+    const { actions: { getAccountTrinitySkuInfo }, data: { accountInfo } } = params
+    const {
+      accountId,
+      platformId
+    } = accountInfo
+    return getAccountTrinitySkuInfo({
+      accountId,
+      platformId
     })
   }
 
   componentWillMount() {
     this.getSkuActions()
+    this.getTrinitySkuActions()
   }
 
   render() {
     const { params, addQuote, platformDiff } = this.props
-    const { pid, data: { accountInfo, priceInfo }, actions: { updateAccountFans, getAccountOnShelfStatus } } = params;
+    const { pid, data: { accountInfo, priceInfo, trinityPriceInfo: { cooperationPlatformResVOS: vos = [] } }, actions: { updateAccountFans, getAccountOnShelfStatus } } = params;
     const {
       priceValidTo
     } = priceInfo
@@ -127,8 +138,10 @@ export default class UpdateChild extends Component {
           <span>报价信息{((isFamous == 1) && hasRedDot(priceValidTo)) ?
             <Badge dot><b style={{ visibility: 'hidden' }}>_</b></Badge> : null}</span>}>
           {!this.state.isLoading ?
-            <AccountPriceForm params={params} diff={price} getSkuActions={this.getSkuActions} /> :
-            <Skeleton active />}
+            <div className='price_scroll_container' style={{ paddingRight: '10px' }}>
+              <AccountPriceForm params={params} diff={price} getSkuActions={this.getSkuActions} />
+              {(isFamous == 1 && vos.length) ? <AgentConfigAndPriceForm reload={this.getTrinitySkuActions} params={params} diff={price} /> : null}
+            </div> : <Skeleton active />}
         </TabPane>
         <TabPane tab="受众画像" key="3">
           <AudiencePortraitForm params={params} />

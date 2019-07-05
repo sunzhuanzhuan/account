@@ -19,6 +19,8 @@ export default {
   getPrimaryAccountInfo: prefix + '/account/v1/getUserNameWithAdmin',
   getUserInvoiceInfo: prefix + '/account/v1/getUserInvoiceInfo',
   sensitiveWordsFilter: oldPreFix + '/sensitiveWordsFilter',
+  getAccountTrinitySkuInfo: '/operator-gateway/trinitySku/v1/getAccountTrinitySkuInfo',
+  addOrUpdateAccountTrinitySkuInfo: '/operator-gateway/trinitySku/v1/AddOrUpdateAccountTrinitySkuInfo',
   update: {
     saveSku: prefix + '/sku/v1/updateSku',
     accountBase: prefix + '/account/v1/updateBase',

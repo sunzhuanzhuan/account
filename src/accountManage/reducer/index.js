@@ -12,6 +12,7 @@ import {
   fetchAccountBaseInfo_request,
   fetchAccountBaseInfoByUpdate_request,
   getAccountOnShelfStatus_success,
+  getAccountTrinitySkuInfo_success,
   updateFetchInfo,
   addFetchInfo,
   getSkuList_success,
@@ -135,6 +136,15 @@ export const priceInfo = handleActions({
     return {
       ...state,
       ...item
+    }
+  }
+}, {})
+
+export const trinityPriceInfo = handleActions({
+  [combineActions(getAccountTrinitySkuInfo_success)]: (state, action) => {
+    return {
+      ...state,
+      ...action.payload.data
     }
   }
 }, {})
@@ -268,5 +278,6 @@ export default combineReducers({
   regionCode,
   industryListForAccount,
   sensitiveWordsFilter,
+  trinityPriceInfo,
   moduleStatus
 })
