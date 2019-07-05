@@ -11,7 +11,7 @@ import {
   FetchInfoForm,
   OnSaleInfoForm,
   OrderTakeStrategyfoForm,
-  OtherInfoForm, AgentConfigAndPriceForm
+  OtherInfoForm
 } from '../UpdateForms';
 import { Fans } from '../../../components/Fans'
 import { FansCount } from '../../../components/FansCount'
@@ -140,7 +140,6 @@ export default class UpdateChild extends Component {
           {!this.state.isLoading ?
             <div className='price_scroll_container' style={{ paddingRight: '10px' }}>
               <AccountPriceForm params={params} diff={price} getSkuActions={this.getSkuActions} />
-              {(isFamous == 1 && vos.length) ? <AgentConfigAndPriceForm reload={this.getTrinitySkuActions} params={params} diff={price} /> : null}
             </div> : <Skeleton active />}
         </TabPane>
         <TabPane tab="受众画像" key="3">
