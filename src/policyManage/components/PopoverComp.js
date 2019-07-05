@@ -1,5 +1,6 @@
 import React from "react";
 import { Popover, Checkbox, Button } from 'antd';
+import { shallowEqual } from "../../util";
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -16,8 +17,26 @@ class PopoverComp extends React.PureComponent {
 		this.checkOption = checkOption || [];
 	}
 
+	static getDerivedStateFromProps(nextProps, prevState) {
+		const { checkedValues = [], checkOption = [] } = nextProps;
+		const { propsValues = [] } = prevState;
+		if(!shallowEqual(checkedValues, propsValues)) {
+			return {
+				propsValues: checkedValues,
+				checkedValues: checkedValues,
+				indeterminate: !!checkedValues.length && checkedValues.length < checkOption.length,
+				checkAll: checkedValues.length === checkOption.length
+			}
+		}
+		return null;
+	}
+
 	isShowPopover = () => {
-		this.setState({visible: !this.state.visible})
+		const { checkedValues } = this.props;
+		this.setState({
+			visible: !this.state.visible,
+			checkedValues
+		})
 	}
 
 	handleChangeChecked = checkedValues => {
@@ -29,8 +48,10 @@ class PopoverComp extends React.PureComponent {
 	}
 
 	handleSelectAll = ({target: {checked}}) => {
-		const checkedValues = checked ? this.checkOption.map(item => item.value) : [];
-		this.setState({ checkAll: checked, checkedValues });
+		const checkedValues = checked ? 
+			this.checkOption.filter(item => !item.disabled)
+				.map(item => item.id) : [];
+		this.setState({ checkAll: checked, indeterminate: false, checkedValues });
 	}
 
 	handleSaveResult = () => {
@@ -39,23 +60,39 @@ class PopoverComp extends React.PureComponent {
 		this.isShowPopover();
 	}
 
+	getOptionDisabled = () => {
+		const { selectedPlatform = [] } = this.props;
+		this.checkOption.forEach(item => {
+			item.disabled = selectedPlatform.includes(item.id);
+			item.label = item.platformName,
+			item.value = item.id
+		});
+
+		return this.checkOption
+	}
+
 	render() {
 		const { checkedValues, indeterminate, checkAll, visible } = this.state;
-		const { className, entryComp } = this.props;
+		const { className, entryComp, selectedPlatform } = this.props;
 		const title = () => (
-			<CheckboxGroup value={[...checkedValues]} options={this.checkOption} onChange={this.handleChangeChecked}/>
+			<CheckboxGroup 
+				value={checkedValues} 
+				options={this.getOptionDisabled()} 
+				onChange={this.handleChangeChecked}
+			/>
 		);
 		const content = () => ([
 			<Checkbox 
 				key='checkbox' className='selectAll' 
+				disabled={selectedPlatform.length === this.checkOption.length}
 				indeterminate={indeterminate} 
 				checked={checkAll} onChange={this.handleSelectAll}
 			>全选</Checkbox>,
-			<Button key='ok' type='primary' onClick={this.handleSaveResult}>确定</Button>,
-			<Button key='cancel' className='cancelBtn' onClick={this.isShowPopover}>取消</Button>,
+			<div key='operate'>
+				<Button type='primary' onClick={this.handleSaveResult}>确定</Button>
+				<Button className='cancelBtn' onClick={this.isShowPopover}>取消</Button>
+			</div>
 		]);
-
-		console.log('lsdkjflsdkjflkjsd', checkedValues)
 
 		return (
 			<Popover 
@@ -68,7 +105,6 @@ class PopoverComp extends React.PureComponent {
 			>
 				{ entryComp }
 			</Popover>
-
 		)
 	}
 }

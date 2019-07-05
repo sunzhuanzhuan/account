@@ -1,8 +1,11 @@
 import React from "react";
-import { Row, Col, Input } from 'antd';
-import AddBtn from "./AddBtn";
-import PopoverComp from "./PopoverComp";
+import { connect } from 'react-redux';
+import { Row, Col, Input, Checkbox, message, Popconfirm, Icon } from 'antd';
+// import AddBtn from "./AddBtn";
+// import PopoverComp from "./PopoverComp";
 import Platform from "./Platform";
+
+// const CheckboxGroup = Checkbox.Group;
 
 class RuleContent extends React.Component {
 	constructor(props) {
@@ -11,75 +14,108 @@ class RuleContent extends React.Component {
 			checkedValues: [],
 			finalChecked: []
 		};
-		this.checkOption = [
-			{ label: '固定', value: 1 },
-			{ label: '阶梯', value: 2 },
-		];
+		// this.checkOption = [
+		// 	{ label: '固定', value: 1 },
+		// 	{ label: '阶梯', value: 2 },
+		// ];
 	}
 
-	handlePopoverSave = value => {
-		this.setState({finalChecked: value});
-	}
+	// handlePopoverSave = value => {
+	// 	this.setState({finalChecked: value});
+	// }
 
-	handleRemoveRuleItem = index => {
-		const { finalChecked } = this.state;
-		
-		finalChecked.splice(index, 1);
+	getErrorTips = msg => {
+        try {
+            if (typeof message.destroy === 'function') {
+                message.destroy();
+            }
+            message.error(msg);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
-		this.setState({
-			finalChecked, 
-			checkedValues: [...finalChecked], 
-		});
-	}
+	handleChangeValue = (value, valueType) => {
+		const { isSubmitOk, itemInfo = {} } = this.props;
+		itemInfo[valueType] = value;
+		const isNum = /^\d+$/.test(value);
+		const valueOk = isNum && parseInt(value) > 0 && parseInt(value) <= 100
 
-	handleChangeValue = (value, itemInfo) => {
-		itemInfo.discount = value;
+		if(!valueOk) 
+			this.getErrorTips('请输入1~100的百分比');
+
+		isSubmitOk(valueOk, 'discount')
 		this.forceUpdate();
 	}
 
 	getDiscountComp = (isEdit, itemInfo) => {
+		const { publicationRate, discountType = [1] } = itemInfo;
 		return (
 			<div key='sign'>
-				<span>刊例价</span>
-				<span key='signFirst' className='commonSign'>X</span>
-				{
+				{/* {
 					isEdit ? 
-					<Input 
-						key='inputComp' 
-						className='commonIptWidth' 
-						value={itemInfo.discount}
-						onChange={({target: {value}}) => {this.handleChangeValue(value, itemInfo)}} 
-					/> : <span>{itemInfo.discount}</span>
+					<CheckboxGroup 
+						options={this.checkOption} 
+						value={discountType} 
+						onChange={value => {this.handleChangeValue(value, 'discountType')}} 
+					/> :
+					<div>固定</div>
+				} */}
+				{
+					discountType.length ? 
+						<div className='discountRuleItem'>
+							{/* <span>公式：</span> */}
+							<span>刊例价</span>
+							<span key='signFirst' className='commonSign'>X</span>
+							{
+								isEdit ? 
+								<Input 
+									key='inputComp' 
+									className='commonIptWidth' 
+									value={publicationRate}
+									onChange={({target: {value}}) => {this.handleChangeValue(value, 'publicationRate')}} 
+								/> : <span>{publicationRate}</span>
+							}
+							<span key='signSec'> %</span>
+							<span key='signThir' className='commonSign'>=</span>
+							<span key='name'>渠道价</span>
+						</div> : null
 				}
-				<span key='signSec'> %</span>
-				<span key='signThir' className='commonSign'>=</span>
-				<span key='name'>渠道价</span>
 			</div>
 		)
 	}
 
 	render() {
-		const { itemInfo = {}, rangeValue, isOperate, single, onClick, handleDel } = this.props;
-		const { finalChecked } = this.state;
+		const { itemInfo = {}, rangeValue, isOperate, onClick, handleDel, isSubmitOk, selectedPlatform, availablePlatforms = [] } = this.props;
+		const { platformIds = [] } = itemInfo;
 		const editComp = (
 			<div className='ruleContent staticContent'>
 				<Row>
 					<Col span={2}>平台</Col>
-					<Col span={18}><Platform itemInfo={itemInfo} /></Col>
+					<Col span={18}>
+						<Platform 
+							platformList={availablePlatforms}
+							selectedPlatform={selectedPlatform}
+							getErrorTips={this.getErrorTips}
+							platform={platformIds}
+							itemInfo={itemInfo} 
+							isSubmitOk={isSubmitOk}
+						/>
+					</Col>
 				</Row>
 				<Row>
-					<Col span={2}>折扣</Col>
+					<Col span={2}>公式</Col>
 					<Col span={20}>
 						{ this.getDiscountComp(true, itemInfo) }
 						{
-							!single ? 
-							<PopoverComp 
-								className='ruleModal'
-								checkedValues={finalChecked}
-								checkOption={this.checkOption}
-								handleSave={this.handlePopoverSave}
-								entryComp={<AddBtn title='添加折扣'/>}
-							/> : null
+							// !single ? 
+							// <PopoverComp 
+							// 	className='ruleModal'
+							// 	checkedValues={finalChecked}
+							// 	checkOption={this.checkOption}
+							// 	handleSave={this.handlePopoverSave}
+							// 	entryComp={<AddBtn title='添加折扣'/>}
+							// /> : null
 						}
 					</Col>
 				</Row>
@@ -87,12 +123,19 @@ class RuleContent extends React.Component {
 		);
 		const staticDiscount = (
 			<div className='ruleContent staticContent'>
-				<Row>
+				<Row className='platformWrapper'>
 					<Col span={1}>平台</Col>
-					<Col span={20}>{itemInfo.platform}</Col>
+					<Col span={20}>
+						{platformIds.map(item => {
+							const itemInfo = availablePlatforms.find(opItem => opItem.id === item);
+							if(itemInfo)
+								return <div className='platformShowTag' key={itemInfo.id}>{itemInfo.platformName}</div>
+							return null;
+						})}
+					</Col>
 				</Row>
 				<Row>
-					<Col span={1}>折扣</Col>
+					<Col span={1}>公式</Col>
 					<Col span={22}>
 						{this.getDiscountComp(false, itemInfo)}
 					</Col>
@@ -106,7 +149,16 @@ class RuleContent extends React.Component {
 					<div>{`规则${rangeValue}`}</div>
 					<div className='ruleOperate'>
 						<span onClick={() => {onClick(itemInfo, 'edit')}}>编辑</span>
-						<span onClick={() => {handleDel(itemInfo)}}>删除</span>
+						<Popconfirm
+							title={`是否删除【规则${rangeValue}】？`}
+							icon={<Icon type="question-circle-o" style={{ color: 'red' }} />} 
+							okText='确认' 
+							cancelText='取消' 
+							onConfirm={() => {handleDel(itemInfo)}}
+						>
+							<span>删除</span>
+						</Popconfirm>
+
 					</div>
 				</div>
 				{
@@ -118,4 +170,14 @@ class RuleContent extends React.Component {
 	}
 }
 
-export default RuleContent;
+const mapStateToProps = (state) => {
+    const { commonReducers = {} } = state;
+    const { availablePlatforms = [] } = commonReducers;
+
+    return { availablePlatforms };
+}
+
+export default connect(
+    mapStateToProps,
+    null
+)(RuleContent)

@@ -1,12 +1,38 @@
 @textColor: #1890ff;
 @borderColor: #d9d9d9;
+.policyHeader {
+  margin-bottom: 20px;
+  font-size: 16px;
+  font-weight: 400;
+  .anticon {
+    margin-right: 10px;
+  }
+}
 .policyWrapper {
-  .policyHeader {
+  height: calc(100% - 85px);
+  overflow: auto;
+  padding-bottom: 10px;
+  .policyTime {
+    width: 400px;
+  }
+  .ant-spin-nested-loading, .ant-spin-container {
+    position: unset;
+  }
+  .accountName {
+    margin-bottom: 10px;
+  }
+  .pageInfo {
+    display: flex;
+    width: 700px;
+    padding: 15px 25px;
     margin-bottom: 20px;
-    font-size: 16px;
-    font-weight: 400;
-    .anticon {
-      margin-right: 10px;
+    background: #F7F7F7;
+    justify-content: space-between;
+    .status {
+      color: @textColor;
+    }
+    .withTooltip {
+      cursor: pointer;
     }
   }
   .commonTitle {
@@ -77,9 +103,26 @@
       cursor: pointer;
     }
   }
+  .policyFooter {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 10px;
+    margin: 0;
+    box-shadow: 0 2px 8px #d9d9d9;
+    background: #fff;
+    .ant-btn {
+      margin-right: 10px;
+    }
+  }
 }
 .disCountPopover {
   .ant-popover-title {
+    height: 200px;
+    overflow: auto;
     padding: 16px;
   }
   .ant-checkbox-group-item {
@@ -88,11 +131,24 @@
       margin-bottom: 16px;
     }
   }
+  .ant-popover-inner-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   .selectAll {
     margin-right: 20px;
   }
   .cancelBtn {
     margin-left: 10px;
+  }
+}
+
+.rulePopover {
+  width: 400px;
+  .ant-checkbox-group-item {
+    display: inline-block;
+    width: calc(50% - 16px);
   }
 }
 
@@ -107,6 +163,21 @@
       }
     }
   }
+  .platformWrapper {
+    display: flex;
+    align-items: center;
+  }
+  .platformShowTag {
+    display: inline-block;
+    padding: 0 10px;
+    line-height: 32px;
+    margin-right: 10px;
+    text-align: center;
+    background: #F7F7F7;
+  }
+  // .discountRuleItem {
+  //   margin-top: 10px;
+  // }
 }
 
 .ruleModal {
@@ -128,6 +199,9 @@
       display: flex;
       align-items: baseline;
       margin-bottom: 15px;
+    }
+    .discountRuleItem {
+      margin-top: 10px;
     }
   }
   .commonIptWidth {
@@ -173,5 +247,9 @@
     &::after {
       content: ' :'
     }
+  }
+  .remarksText {
+    resize: none;
+    height: 100px;
   }
 }
