@@ -3,6 +3,7 @@ import { Cascader, Form, Input, Modal, Popconfirm } from 'antd';
 import areas from "@/constants/areas";
 import { analyzeAreaCode } from "@/util/analyzeAreaCode";
 import LazyAreaOptions from "@/accountManage/components/common/LazyAreaOptions";
+import { checkForSensitiveWord } from "@/accountManage/components/common/Fields";
 
 @Form.create()
 class EditModal extends Component {
@@ -38,7 +39,12 @@ class EditModal extends Component {
         <Form.Item label='收货人'>
           {getFieldDecorator('receiver', {
             initialValue: data.receiver,
-            rules: [{ required: true, min: 2, max: 30, message: '收货人姓名需在2~30个字符之间!' }]
+            validateFirst: true,
+            validateTrigger: 'onBlur',
+            rules: [
+              { required: true, min: 2, max: 30, message: '收货人姓名需在2~30个字符之间!' },
+              { validator: checkForSensitiveWord, name: '收货人' }
+            ]
           })(
             <Input />
           )}
@@ -66,13 +72,18 @@ class EditModal extends Component {
         <Form.Item label='详细地址'>
           {getFieldDecorator('addressDetail', {
             initialValue: data.addressDetail,
-            rules: [{
-              required: true,
-              min: 4,
-              max: 200,
-              message: '请输入4~200字的详细地址!',
-              whitespace: true
-            }]
+            validateFirst: true,
+            validateTrigger: 'onBlur',
+            rules: [
+              {
+                required: true,
+                min: 4,
+                max: 200,
+                message: '请输入4~200字的详细地址!',
+                whitespace: true
+              },
+              { validator: checkForSensitiveWord, name: '详细地址' }
+            ]
           })(
             <Input.TextArea placeholder='详细地址：如道路、门牌号、小区、楼栋号、单元室等' />
           )}

@@ -105,9 +105,27 @@ export const skills = handleActions({
         label: item.itemValue
       }
       if (item.childrenList) {
-        obj.children = item.childrenList.map(n => ({ value: parseInt(n.itemKey), label: n.itemValue }))
+        obj.children = item.childrenList.map(n => ({
+          value: parseInt(n.itemKey),
+          label: n.itemValue
+        }))
       }
       return obj
+    })
+    return newData
+  }
+}, [])
+export const skillReduce = handleActions({
+  [combineActions(getSkill_success)]: (state, action) => {
+    const data = action.payload.data
+    let newData = []
+    data.forEach(item => {
+      if (item.childrenList) {
+        newData = newData.concat(item.childrenList.map(n => ({
+          value: parseInt(n.itemKey),
+          label: n.itemValue
+        })))
+      }
     })
     return newData
   }
@@ -123,6 +141,7 @@ export default combineReducers({
   platforms,
   pets,
   skills,
+  skillReduce,
   occupations,
   nationality
 })

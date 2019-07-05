@@ -74,6 +74,15 @@ const checkDefaultAndCustomTagRepeat = getSource => (rule, value, callback) => {
     callback()
   }
 };
+// WordList 重复校验
+const checkWordListTagRepeat = (rule, value, callback) => {
+  let isRepeat = rule.source.some(name => value === name)
+  if (isRepeat) {
+    callback('添加内容已存在，请修订');
+  } else {
+    callback()
+  }
+};
 
 // 处理三方提交提示
 export const trinityIsPreventShieldingTip = (value, callback) => {
@@ -164,7 +173,7 @@ export const Name = (props) => {
     <FormItem {...layout.full} label='账号名称'>
       {getFieldDecorator('base.snsName', {
         initialValue: snsName,
-        first: true,
+        validateFirst: true,
         rules: [{ required: true, message: '账号名称不能为空' }, {
           pattern: /^(.){0,80}$/,
           message: '账号名称最多可输入80个字符'
@@ -198,7 +207,7 @@ export const Id = (props) => {
     <FormItem {...layout.full} label='账号ID'>
       {getFieldDecorator('base.snsId', {
         initialValue: snsId,
-        first: true,
+        validateFirst: true,
         rules: [{ required: true, message: '账号ID不能为空' }, {
           pattern: /^.{0,100}$/,
           message: '账号ID最多可输入100个字符'
@@ -231,7 +240,7 @@ export const Url = (props) => {
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='主页链接'>
       {getFieldDecorator('base.url', {
-        first: true,
+        validateFirst: true,
         initialValue: url,
         rules: [{ required: true, message: '主页链接不能为空' }, {
           pattern: /^((htt(p|ps))|weixin):\/\//,
@@ -365,7 +374,7 @@ export const Introduction = (props) => {
     <FormItem {...layout.full} label='账号简介'>
       {getFieldDecorator('base.introduction', {
         initialValue: introduction,
-        first: true,
+        validateFirst: true,
         validateTrigger: 'onBlur',
         rules: [{
           max: 1000,
@@ -873,7 +882,7 @@ export const DirectItems = (props) => {
  */
 export const RefuseBrands = (props) => {
   const {
-    form: { getFieldDecorator },
+    form: { getFieldDecorator, getFieldValue },
     layout,
     data: { account }
   } = props;
@@ -887,11 +896,12 @@ export const RefuseBrands = (props) => {
       })(
         <WordList
           placeholder='请输入2~20字的品牌名称'
-          message='请输入2~20字的品牌名称'
           label='添加品牌'
-          validator={value => {
-            return /^[^\s]{2,20}$/.test(value)
-          }} />
+          rules={[
+            { required: true, pattern: /^[^\s]{2,20}$/, message: '请输入2~20字的品牌名称' },
+            { validator: checkForSensitiveWord, name: '品牌名称' },
+            { validator: checkWordListTagRepeat, source: getFieldValue("cooperation.refuseBrands") }
+          ]} />
       )}
     </FormItem>
   </div>
@@ -2056,12 +2066,13 @@ export const Occupations = (props) => {
       {getFieldDecorator('personalInfo.occupationIds', {
         initialValue: occupations.map(item => item.id || item)
       })(
-        options.length > 0 ? <Select mode='multiple' style={{ width: "100%" }} placeholder='请选择' optionFilterProp='children'>
-          {
-            options.map(({ value, label }) =>
-              <Option key={value} value={parseInt(value)}>{label}</Option>)
-          }
-        </Select> : <FieldsOptionsLoading />
+        options.length > 0 ?
+          <Select mode='multiple' style={{ width: "100%" }} placeholder='请选择' optionFilterProp='children'>
+            {
+              options.map(({ value, label }) =>
+                <Option key={value} value={parseInt(value)}>{label}</Option>)
+            }
+          </Select> : <FieldsOptionsLoading />
       )}
     </FormItem>
   </div>
@@ -2236,7 +2247,7 @@ export const Skills = (props) => {
     data: { account }
   } = props;
   const {
-    skills
+    skills = []
   } = account.personalInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='技能'>
@@ -2271,7 +2282,7 @@ export const CustomSkills = (props) => {
   const {
     form: { getFieldDecorator, getFieldValue },
     layout,
-    options = [],
+    sources = [],
     data: { account }
   } = props;
   const {
@@ -2279,23 +2290,18 @@ export const CustomSkills = (props) => {
   } = account.personalInfo;
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='其他技能'>
-      {getFieldDecorator('_client.skills', {
-        initialValue: {
-          defaultItems: [],
-          custom: customSkills || []
-        }
+      {getFieldDecorator('_client.skills.custom', {
+        initialValue: customSkills,
+        validateFirst: true,
       })(
-        <DefaultAndCustomTag
-          options={options}
+        <WordList
           placeholder='请输入1~10字'
           rules={[
             { required: true, pattern: /^[^\s]{1,10}$/, message: '请输入1~10个中英文数字符号' },
             { validator: checkForSensitiveWord, name: '添加内容' },
             {
-              validator: checkDefaultAndCustomTagRepeat(() => {
-                let { custom } = getFieldValue('_client.skills')
-                return [].concat(options.map(item => item.name), custom)
-              })
+              validator: checkWordListTagRepeat,
+              source: [].concat(sources.map(item => item.label), getFieldValue('_client.skills').custom)
             }
           ]}
         />
