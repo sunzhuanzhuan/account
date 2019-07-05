@@ -64,7 +64,7 @@ export default class AddChild extends Component {
 				<OnSaleInfoForAdd {...params} />
 			</WrapPanel>
 			<WrapPanel header='账号报价' navId='priceInfos'>
-				<NamelessPrice {...params} {...form} priceKeys={priceKeys}>
+				<NamelessPrice {...params} {...form} priceKeys={priceKeys} priceList={priceTypeList}>
 					<Orderable {...params} {...form} />
 				</NamelessPrice>
 			</WrapPanel>

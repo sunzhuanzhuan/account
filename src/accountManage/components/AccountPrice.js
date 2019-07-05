@@ -17,6 +17,8 @@ import './AccountPrice.less';
 import moment from 'moment';
 import { AccountPriceHelp } from './Unique';
 import { handleReason, date2moment } from '../util';
+import debounce from 'lodash/debounce';
+
 
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
@@ -50,6 +52,14 @@ const checkPrice = (onOff, otherCheck) => (rule, value = {}, callback) => {
     if (otherCheck) {
       return otherCheck(rule, value, callback);
     }
+    return callback();
+  }
+  callback('报价项最少填写一项');
+};
+// 检查最少一项报价 new
+const checkPriceList = (rule, value, callback) => {
+  if (!rule.on || Object.values(value).filter(Boolean).length) {
+
     return callback();
   }
   callback('报价项最少填写一项');
@@ -187,7 +197,7 @@ function handlePriceTitle(tax, type) {
 export class NamelessPrice extends Component {
   render() {
     const {
-      getFieldDecorator, formItemLayout, children, isUpdate, priceKeys, data: { accountInfo, priceInfo }
+      getFieldDecorator, formItemLayout, children, isUpdate, priceKeys, priceList, data: { accountInfo, priceInfo }
     } = this.props;
     const {
       skuList,
@@ -200,14 +210,16 @@ export class NamelessPrice extends Component {
     });
     return <div className=''>
       <FormItem {...formItemLayout} label='账号报价'>
-        {getFieldDecorator('price_now', {
-          initialValue: val,
-          rules: [{
-            required: true,
-            message: '最少需填写一个报价项'
-          }, { validator: checkPrice(true) }]
+        {priceList.length > 0 ? getFieldDecorator('price_now', {
+          initialValue: priceList,
+          rules: [
+            { required: true, message: '最少需填写一个报价项' },
+            { validator: checkPriceList, on: true }
+          ]
         })(
-          <PriceTable desc={handlePriceTitle(taxInPrice == 1, partnerType)} isEdit={true} priceKeys={priceKeys} />)}
+          <PriceTable desc={handlePriceTitle(taxInPrice == 1, partnerType)} data={this.props.data} isEdit priceKeys={priceKeys} />
+        ) : null
+        }
         <AccountPriceHelp />
       </FormItem>
       {isUpdate ? <NamelessStatus {...{
@@ -234,6 +246,7 @@ export class FamousPrice extends Component {
       orderStatusReason: offShelfReason // 强制可下单原因
     };
   }
+
   //
 
   // 价格有效期联动校验 -- 时间
@@ -290,7 +303,7 @@ export class FamousPrice extends Component {
   setDefaultValue = (value) => () => {
     const { setFields, getFieldValue } = this.props;
     let date = getFieldValue('nextPriceValidTo');
-    if(!date){
+    if (!date) {
       setFields({
         'nextPriceValidTo': { value: value }
       });
@@ -448,47 +461,103 @@ export class FamousPrice extends Component {
 class PriceTable extends Component {
   constructor(props) {
     super(props);
-    this.priceKeys = props.priceKeys || [];
-    this._keys = this.priceKeys.reduce((obj, item) => {
-      obj[item['key']] = '';
-      return obj;
-    }, {});
-    this.state = { ...assiginPriceKeys(this._keys, this.props.value) };
+    this.state = {
+      value: []
+    }
+    this.calculatePrice = debounce(this.calculatePrice, 300)
   }
 
-  onChange = key => value => {
-    this.setState({ [key]: value }, () => {
-      this.props.onChange(filterEmptyPrice({ ...this.state }));
-    });
+  static getDerivedStateFromProps(nextProps) {
+    if ('value' in nextProps) {
+      let value = nextProps.value || []
+      return {
+        value
+      };
+    }
+    return null
+  }
+
+  triggerChange = (changedValue) => {
+    const onChange = this.props.onChange;
+    if (onChange) {
+      onChange(changedValue);
+    }
+  }
+
+  calculatePrice = (value, index) => {
+    const { accountInfo: { accountId } } = this.props.data
+    console.log('---');
+    setTimeout(() => {
+      this.onChange(value* 200, index, 'costPriceRaw2')
+    },1000);
+  }
+
+  onChange = (value, index, priceKey) => {
+    let newValue = this.state.value.map(item => ({ ...item }))
+    // 调用价格项计算接口
+    if(value && priceKey === 'costPriceRaw1'){
+      this.calculatePrice(value, index)
+    }
+    newValue[index][priceKey] = Number(value)
+    if (!('value' in this.props)) {
+      this.setState({ value: newValue });
+    }
+    this.triggerChange(newValue)
   };
 
   render() {
     const { isEdit, desc = '' } = this.props;
-    return this.priceKeys.length ? <div>
+    const { value } = this.state;
+    return <div>
       {desc ? <span>请填写<span style={{ color: 'red' }}>{desc}</span></span> : null}
       <div className='price-table'>
         <div className='price-table-head'>
           <Row gutter={8}>
-            <Col span={10}><p className='price-table-title'>服务项</p></Col>
-            <Col span={14}><p className='price-table-title'>报价(元)</p></Col>
+            <Col span={6}><p className='price-table-title'>服务项</p></Col>
+            <Col span={6}><p className='price-table-title'>报价(元)</p></Col>
+            <Col span={6}><p className='price-table-title'>渠道价(元)</p></Col>
+            <Col span={6}><p className='price-table-title'>刊例价(元)</p></Col>
           </Row>
         </div>
         <div className='price-table-body'>
           {
-            this.priceKeys.map(({ key, name }) => <Row key={key} gutter={8}>
-              <Col span={10}>
-                <p className='price-table-title'>{name}</p>
-              </Col>
-              <Col span={14}>
-                <div className='price-table-input'>
-                  <PriceInput isEdit={isEdit} value={this.state[key]} onChange={this.onChange(key)} />
-                </div>
-              </Col>
-            </Row>)
+            value.map(({ skuTypeId, skuTypeName, costPriceRaw, costPriceRaw1, costPriceRaw2 }, index) =>
+              <Row key={skuTypeId} gutter={8}>
+                <Col span={6}>
+                  <p className='price-table-title'>{skuTypeName}</p>
+                </Col>
+                <Col span={6}>
+                  <div className='price-table-input'>
+                    <PriceInput
+                      isEdit={isEdit}
+                      value={costPriceRaw}
+                      onChange={(value) => this.onChange(value, index, 'costPriceRaw')}
+                    />
+                  </div>
+                </Col>
+                <Col span={6}>
+                  <div className='price-table-input'>
+                    <PriceInput
+                      isEdit={isEdit}
+                      value={costPriceRaw1}
+                      onChange={(value) => this.onChange(value, index, 'costPriceRaw1')}
+                    />
+                  </div>
+                </Col>
+                <Col span={6}>
+                  <div className='price-table-input'>
+                    <PriceInput
+                      isEdit={isEdit}
+                      value={costPriceRaw2}
+                      onChange={(value) => this.onChange(value, index, 'costPriceRaw2')}
+                    />
+                  </div>
+                </Col>
+              </Row>)
           }
         </div>
       </div>
-    </div> : null;
+    </div>;
   }
 }
 
