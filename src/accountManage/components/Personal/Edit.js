@@ -23,7 +23,7 @@ import {
 import { Alert, Button, Form, message } from "antd";
 import { configItemKeyToField, configOptions } from "@/accountManage/constants/packageConfig";
 import update from "immutability-helper";
-import { industry } from "@/accountManage/reducer/options";
+import { industry, skillReduce } from "@/accountManage/reducer/options";
 
 @Form.create()
 export default class PersonalEdit extends Component {
@@ -135,7 +135,7 @@ export default class PersonalEdit extends Component {
             <small className='line' />
           </h4>
           <div className='subclass-content'>
-            <Alert message="您填写的信息仅用于广告主筛选账号使用。我们承诺：不会将您的个人信息用于其它途径，微播易将保障您的信息安全。" closable/>
+            <Alert message="您填写的信息仅用于广告主筛选账号使用。我们承诺：不会将您的个人信息用于其它途径，微播易将保障您的信息安全。" closable />
             <SexualOrientation {...fieldProps} />
             <Gender {...fieldProps} />
             <Area {...fieldProps} />
@@ -155,7 +155,7 @@ export default class PersonalEdit extends Component {
             <small className='line' />
           </h4>
           <div className='subclass-content'>
-            <Alert message="主要为母婴、宠物、洗护类广告主的关注重点，填写后可提高此类广告接单概率" closable/>
+            <Alert message="主要为母婴、宠物、洗护类广告主的关注重点，填写后可提高此类广告接单概率" closable />
             <Children {...fieldProps} />
             <Pets {...fieldProps} options={asyncOptions.pets} />
           </div>
@@ -166,9 +166,9 @@ export default class PersonalEdit extends Component {
             <small className='line' />
           </h4>
           <div className='subclass-content'>
-            <Alert message="添加您的特长或才艺，将提升您的竞争力，在同类账号中更加突出哦~" closable/>
+            <Alert message="添加您的特长或才艺，将提升您的竞争力，在同类账号中更加突出哦~" closable />
             <Skills {...fieldProps} options={asyncOptions.skills} />
-            <CustomSkills {...fieldProps} />
+            <CustomSkills {...fieldProps} sources={asyncOptions.skillReduce} />
           </div>
         </li>
       </ul>

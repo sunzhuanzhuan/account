@@ -219,6 +219,7 @@ export class AccountPriceForm extends Component {
       isFamous,
       platformId
     } = accountInfo;
+    this.props.form.validateFields()
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         let { price_now, price_next } = values;
@@ -237,7 +238,7 @@ export class AccountPriceForm extends Component {
   showConfirm = (values) => {
     const { actions: { saveSku }, data: { accountInfo } } = this.props.params;
     const { getSkuActions } = this.props;
-    const { isFamous } = accountInfo;
+    const { isFamous, platformId } = accountInfo;
     confirm({
       title: '提交价格信息?',
       content: (isFamous == 1) ? '提交成功后，下个价格有效期和报价将无法修改' : '',

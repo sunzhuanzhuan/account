@@ -65,7 +65,7 @@ export default class PersonalView extends Component {
       {/*<Button type='primary' onClick={() => onModuleStatusChange('edit')}>编辑</Button>*/}
     </div>;
 
-    return Object.keys(data.account.personalInfo).length > 0 ?
+    return Object.keys(data.account.personalInfo).length > 2 ?
       <div className='module-item-container'>
         <ModuleHeader title={configureModule.title} right={right} />
         <ul className='content-wrap'>
