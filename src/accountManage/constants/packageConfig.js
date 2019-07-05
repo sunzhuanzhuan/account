@@ -148,7 +148,7 @@ export const diffByClient = {
       "other",
       "price",
       "dashboard",
-      "personal"
+      "personal",
       // "trinity"
     ]
   },
