@@ -1,7 +1,7 @@
 import React from "react";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Icon, Form, DatePicker, Spin, Input, Modal } from 'antd';
+import { Button, Icon, Form, DatePicker, Spin, Input, message } from 'antd';
 // import CommonTitle from "../components/CommonTitle";
 // import RulesWrapper from "../components/RulesWrapper";
 // import WhiteList from "../components/WhiteList";
@@ -20,7 +20,8 @@ class PolicyManage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			stopModal: false
+			stopModal: false, 
+			isEdit: true
 		}
 		// this.rateOption = [
 		// 	{ label: '未知', value: 0 },
@@ -32,8 +33,30 @@ class PolicyManage extends React.Component {
 	}
 
 	componentDidMount() {
-		this.props.getPolicyDetail();
+		this.props.getPolicyDetail(1);
 	}
+
+	componentDidUpdate(prevProps) {
+        const { progress: prevProgress } = prevProps;
+        const { errorMsg = '操作失败', progress } = this.props;
+
+        if(prevProgress !== progress && progress === 'fail') {
+            this.getErrorTips(errorMsg, 'error');
+        }else if(prevProgress !== progress && progress === 'saveSuccess') {
+			this.getErrorTips('保存成功', 'success');
+		}
+	}
+
+	getErrorTips = (msg, type = 'error') => {
+        try {
+            if (typeof message.destroy === 'function') {
+                message.destroy();
+            }
+            message[type](msg);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
 	getDisabledDate = (current) => {
 		const { timeRange = [] } = this.state; 
@@ -46,8 +69,8 @@ class PolicyManage extends React.Component {
 
 	handleSavePolicy = () => {
 		const { form, policyDetail= {}, userId='需要路由取出userid' } = this.props;
+		const { isEdit } = this.state;
 		const { id, policyStatus } = policyDetail;
-		const isEdit = false;
 
 		form.validateFields((err, values) => {
 			if(err) return;
@@ -97,7 +120,7 @@ class PolicyManage extends React.Component {
 		const { id, policyStatus } = policyDetail;
 		Object.assign(value, {id, policyStatus});
 
-		this.props.updatePriceInfo(value);
+		this.props.updatePriceInfo(value, 'stopPolicy');
 	}
 
 	handleCancel = () => {
@@ -105,9 +128,9 @@ class PolicyManage extends React.Component {
 	}
 
 	render() {
-		const { form, policyDetail = {} } = this.props;
-		const { stopModal } = this.state;
-		const { policyStatus, illustration, validStartTime, validEndTime, modifyName='未知', id, modifiedAt, stopReason } = policyDetail;
+		const { form, policyDetail = {}, progress } = this.props;
+		const { isEdit, stopModal } = this.state;
+		const { policyStatus, identityName, illustration, validStartTime, validEndTime, modifyName='未知', id, modifiedAt, stopReason } = policyDetail;
 		const { getFieldDecorator } = form;
 		const formItemLayout = {
             labelCol: {span: 2},
@@ -117,11 +140,11 @@ class PolicyManage extends React.Component {
 		return [
 			<div key='policyHeader' className='policyHeader'><Icon type="left-circle" />新增政策</div>,
 			<div key='policyWrapper' className='policyWrapper'>
-				<Spin spinning={false}>
-					<PageInfo policyId={id} status={policyStatus} stopReason={stopReason} editor={modifyName} editTime={moment(modifiedAt).format('YYYY-MM-DD')} />
+				<Spin spinning={progress === 'loading'}>
+					{ isEdit ? <PageInfo policyId={id} status={policyStatus} stopReason={stopReason} editor={modifyName} editTime={moment(modifiedAt).format('YYYY-MM-DD')} /> : null }
 					<Form>
 						<FormItem label='主账号名称' {...formItemLayout}>
-							主账号名称
+							{identityName}
 						</FormItem>
 						<FormItem label="政策有效期"  {...formItemLayout}>
 							{getFieldDecorator('policyTime', {
@@ -185,9 +208,9 @@ class PolicyManage extends React.Component {
 
 const mapStateToProps = (state) => {
     const { pricePolicyReducer = {} } = state;
-    const { policyDetail, progress } = pricePolicyReducer;
+    const { policyDetail, progress, errorMsg } = pricePolicyReducer;
 
-    return { policyDetail, progress };
+    return { policyDetail, progress, errorMsg };
 }
 
 const mapDispatchToProps = (dispatch) => (

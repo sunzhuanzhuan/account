@@ -7,9 +7,10 @@ class Platform extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		const {itemInfo = {}, selectedPlatform = []} = props;
+
 		this.state = {
 			selectedTag: [...itemInfo.platformIds] || [],
-			selectedPlatform: this.getSelectedWithoutCurrent([...selectedPlatform], itemInfo.platformIds)
+			selectedPlatform: this.getSelectedWithoutCurrent(selectedPlatform, itemInfo.platformIds)
 		};
 	}
 
@@ -29,7 +30,8 @@ class Platform extends React.PureComponent {
 		currentArr.forEach(item => {
 			const currentIndex = selected.findIndex(cItem => cItem === item);
 			selected.splice(currentIndex, 1);
-		})
+		});
+
 		return selected;
 	}
 
@@ -53,6 +55,7 @@ class Platform extends React.PureComponent {
 		if(!isPlatformOk)
 			getErrorTips('请选择平台');
 		isSubmitOk(selectedTag.length > 0, 'platform');
+
 		this.setState({
 			selectedTag,
 			selectedPlatform: this.getUniqueArr(updateAllSelected)

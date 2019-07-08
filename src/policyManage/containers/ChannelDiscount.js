@@ -10,6 +10,7 @@ import RuleContent from "../components/RuleContent";
 import PageInfo from "../components/PageInfo";
 import StopReasonModal from "../components/StopReasonModal";
 import { shallowEqual } from "../../util";
+import qs from 'qs';
 
 const { TextArea } = Input;
 
@@ -19,12 +20,17 @@ class ChannelDiscount extends React.Component {
 		this.state = {
 			ruleVisible: false,
 			ruleItems: [],
-			selectedPlatform: []
+			selectedPlatform: [],
+			isEdit: false
 		};
 	}
 
 	componentDidMount() {
-		this.props.getDiscountDetail();
+		let path = this.props.location.pathname.split('/');
+		const search = this.props.location.search.substring(1);
+		let userId = qs.parse(this.props.location.search.substring(1))['user_id'];
+
+		this.props.getDiscountDetail({userId: 1});
 		this.props.getAvailablePlatformList();
 	}
 
@@ -47,6 +53,17 @@ class ChannelDiscount extends React.Component {
 			}
 		}
 		return null;
+	}
+
+	componentDidUpdate(prevProps) {
+        const { progress: prevProgress } = prevProps;
+        const { errorMsg = '操作失败', progress } = this.props;
+
+        if(prevProgress !== progress && progress === 'fail') {
+            this.getErrorTips(errorMsg, 'error');
+        }else if(prevProgress !== progress && progress === 'saveSuccess') {
+			this.getErrorTips('保存成功', 'success');
+		}
 	}
 
 	handleAddRule = () => {
@@ -112,16 +129,17 @@ class ChannelDiscount extends React.Component {
 	}
 
 	handleStopDiscount = stopReason => {
+		const { discountDetail = {} } = this.props;
+		const { id } = discountDetail;
 
-		this.props.updatePriceInfo(stopReason, 'stopDiscount');
+		this.props.updatePriceInfo({...stopReason, id}, 'stopDiscount');
 	}
 
 	handleSaveDiscount = () => {
 		const { discountDetail = {} } = this.props;
+		const { isEdit } = this.state;
 		const { rules = [] } = discountDetail;
-		const isEdit = false;
 		const method = isEdit ? 'editDiscount' : 'addDiscount';
-
 
 		if( !rules.length )
 		{
@@ -136,6 +154,7 @@ class ChannelDiscount extends React.Component {
 
 	render() {
 		const { 
+			isEdit,
 			ruleVisible, 
 			stopModal, 
 			ruleItems, 
@@ -144,17 +163,21 @@ class ChannelDiscount extends React.Component {
 			discountStatus, 
 			platformStatus, 
 			selectedPlatform,
+			
 		} = this.state;
+		const pageTitle = isEdit ? '修改' : '新建';
 		const { discountDetail = {} } = this.props;
 		const { channelDiscountStatus, username='未知', stopReason, modifiedAt, modifiedPerson } = discountDetail;
 
 		return [
-			<div key='policyHeader' className='policyHeader'><Icon type="left-circle" />新建渠道折扣</div>,
+			<div key='policyHeader' className='policyHeader'><Icon type="left-circle" />{pageTitle}渠道折扣</div>,
 			<div key='policyWrapper' className='policyWrapper discountWrapper'>
 				<Spin spinning={false} style={{position: 'unset'}}>
 					<Row>
 						<div className='accountName'>主账号名称：{username}</div>
-						<PageInfo status={channelDiscountStatus} stopReason={stopReason} editor={modifiedPerson} editTime={modifiedAt} />
+						{
+							isEdit ? <PageInfo status={channelDiscountStatus} stopReason={stopReason} editor={modifiedPerson} editTime={modifiedAt} /> : null
+						}
 					</Row>
 					<Row>
 						<Col span={2} className='commonTitle'>渠道折扣</Col>
@@ -186,7 +209,7 @@ class ChannelDiscount extends React.Component {
 					className='ruleModal'
 					title={modalType === 'add' ? "添加规则" : '编辑规则'}
 					width={700}
-					destroyOnClose
+					// destroyOnClose
 					visible={ruleVisible}
 					onCancel={this.isShowRuleModal}
 					footer={[
