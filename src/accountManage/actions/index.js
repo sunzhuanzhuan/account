@@ -235,3 +235,12 @@ export const {
 } = createHttpAction('addCustomClassify', Interface.classify.addCustomClassify, {
   method: 'post'
 })
+
+
+/**
+ * 获取政策ID和渠道折扣
+ */
+export const {
+  getPolicyIdAndDiscount,
+  getPolicyIdAndDiscount_success,
+} = createHttpAction('getPolicyIdAndDiscount', Interface.getPolicyIdAndDiscount)

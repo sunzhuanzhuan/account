@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button, message, Divider, Modal } from 'antd';
+import { Form, Button, message, Divider, Modal, Alert } from 'antd';
 import { WrapPanel, WrapPanelForm } from '../../components';
 import AffixNav from '../../components/AffixNav';
 import MainAccountInfos from '../../components/MainAccountInfos';
@@ -20,6 +20,7 @@ import { OtherInfo } from '@/accountManage/components/OtherInfo';
 import { FetchInfo } from '@/accountManage/components/FetchInfo';
 import { uploadUrl, checkVal } from '../../util';
 import { sensors } from '@/util/sensor/sensors'
+import numeral from '@/util/numeralExpand'
 
 const FetchHead = (<span>信息自动抓取</span>);
 const confirm = Modal.confirm;
@@ -270,7 +271,8 @@ export class AccountPriceForm extends Component {
     } = accountInfo;
     const {
       skuList,
-      modifiedAt
+      modifiedAt,
+      publicationRate,
     } = priceInfo;
     const priceKeys = skuList ? skuList.map(({ skuTypeId, skuTypeName }) => ({
       key: skuTypeId, name: skuTypeName
@@ -283,6 +285,7 @@ export class AccountPriceForm extends Component {
     </div>;
     return <Form>
       <WrapPanel header='账号报价' right={rightC}>
+        {publicationRate && <Alert message={`渠道价默认为刊例价的${numeral(publicationRate).format('0%')}`}/>}
         {_isFamous ?
           <FamousPrice {...params} {...form} priceKeys={priceKeys}>
             {diff.priceInclude ? <PriceInclude  {...params} {...form} /> :

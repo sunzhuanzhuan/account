@@ -18,6 +18,7 @@ export default {
 	sensitiveWordsFilter: oldPreFix + '/sensitiveWordsFilter',
   getAccountTrinitySkuInfo: '/operator-gateway/trinitySku/v1/getAccountTrinitySkuInfo',
   addOrUpdateAccountTrinitySkuInfo: '/operator-gateway/trinitySku/v1/AddOrUpdateAccountTrinitySkuInfo',
+  getPolicyIdAndDiscount: '/operator-gateway/policy/v1/getPolicyIdAndDiscount',
 	update: {
 		saveSku: prefix + '/sku/v1/updateSku',
 		accountBase: prefix + '/account/v1/updateBase',
