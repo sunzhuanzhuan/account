@@ -507,7 +507,7 @@ class PriceTable extends Component {
     const hide = message.loading('价格计算中...')
     setTimeout(() => {
       hide()
-      this.onChange(value * 200, index, channelPriceKey)
+      this.onChange(Math.floor(value * 0.5), index, channelPriceKey)
     }, 1000);
   }
 
