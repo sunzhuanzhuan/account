@@ -17,7 +17,7 @@ const fields = {
   "转发微博平均点赞数": "indirectMediaLikeAv",
   "平均点赞数": "mediaLikeAvg",
   "视频平均点赞数": "mediaLikeAvg",
-  "平均评论数": "mediaCommentAvg",
+  "平均评论数": "directMediaCommentAvg",
   "视频平均评论数": "mediaCommentAvg",
   "平均播放数": "mediaPlayAvg",
   "平均观看数": "mediaPlayAvg",
