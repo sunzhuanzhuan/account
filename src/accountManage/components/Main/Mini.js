@@ -2,14 +2,14 @@
  * 账号基本信息 - 摘要
  */
 import React, { Component } from "react"
-import { Button, Divider, Icon, Form, Popover, Radio } from 'antd'
+import { Button, Divider, Icon, Form, Popover, Radio, Typography } from 'antd'
 import { WBYPlatformIcon } from 'wbyui'
 import numeral from "@/util/numeralExpand";
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
 import FieldView from "@/accountManage/base/FeildView";
 import SimpleTag from "@/accountManage/base/SimpleTag";
 import { dateDisplay } from "../../util";
-
+const { Text } = Typography;
 
 export default class MainMini extends Component {
   constructor(props) {
@@ -111,7 +111,12 @@ export default class MainMini extends Component {
             <span>{configurePlatform.platformName}</span>
           </div>
           <div>
-            {introduction || '您还没有添加账号简介哦~'}
+            {
+              introduction ?
+                <Text style={{ wordBreak: "break-all" , width: 620}} ellipsis >
+                  {introduction}
+                </Text> : '您还没有添加账号简介哦~'
+            }
           </div>
           {/*<div className='line' style={{ borderBottom: '1px solid #e8e8e8', margin: '10px 0' }} />
           <div className='gray-text'>

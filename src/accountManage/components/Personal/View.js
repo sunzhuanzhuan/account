@@ -88,7 +88,7 @@ export default class PersonalView extends Component {
                         <div className='shipping-card-item' style={{ width: "300px" }}>
                           <p>收货人： {shipping.receiver}</p>
                           <p>手机号： {shipping.phoneNumber}</p>
-                          <p>收货地址： {shippingArea.map(item => item.name).join('/')} {shipping.addressDetail}</p>
+                          <p style={{ wordBreak: "break-all" }}>收货地址： {shippingArea.map(item => item.name).join('/')} {shipping.addressDetail}</p>
                         </div>
                       } />
                       <FieldView width={70} title="生日" value={birthDate && birthDate.slice(0, 10)} />
