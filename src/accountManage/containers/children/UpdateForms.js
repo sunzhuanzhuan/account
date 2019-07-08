@@ -199,12 +199,13 @@ export class BaseInfoForm extends Component {
  */
 @Form.create()
 export class AccountPriceForm extends Component {
-  handlePrice = (skuList, price_now = {}, price_next = {}) => {
-    return skuList.map(item => {
+  handlePrice = (skuList, price_now = [], price_next = []) => {
+    return price_now.map((item,index) => {
       let obj = { ...item };
-      let key = obj['skuTypeId'];
-      obj.costPriceRaw = price_now[key] || 0;
-      obj.nextCostPriceRaw = price_next[key] || 0;
+      let nextPrice = price_next[index] || {}
+      obj.nextCostPriceRaw = nextPrice.nextCostPriceRaw || 0;
+      obj.nextChannelPrice = nextPrice.nextChannelPrice || 0;
+      obj.nextPublicationPrice = nextPrice.nextPublicationPrice || 0;
       return obj;
     });
   };
@@ -289,7 +290,7 @@ export class AccountPriceForm extends Component {
             <OrderStrategy {...params} {...form} />
           </FamousPrice>
           :
-          <NamelessPrice isUpdate={true} {...params} {...form} priceKeys={priceKeys}>
+          <NamelessPrice isUpdate={true} {...params} {...form} priceList={skuList}>
             {diff.referencePrice ? <ReferencePrice  {...params} {...form} /> :
               <i style={{ display: 'none' }} />}
             <OrderStrategy {...params} {...form} />

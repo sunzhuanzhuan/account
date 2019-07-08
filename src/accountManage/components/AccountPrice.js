@@ -9,7 +9,7 @@ import {
   Divider,
   DatePicker,
   Alert,
-  Tooltip
+  Tooltip, message
 } from 'antd';
 import PriceInput from '../base/PriceInput';
 import { priceTitle } from '../constants/price';
@@ -58,8 +58,7 @@ const checkPrice = (onOff, otherCheck) => (rule, value = {}, callback) => {
 };
 // 检查最少一项报价 new
 const checkPriceList = (rule, value, callback) => {
-  if (!rule.on || Object.values(value).filter(Boolean).length) {
-
+  if (!rule.on || value.some(item => item.costPriceRaw)) {
     return callback();
   }
   callback('报价项最少填写一项');
@@ -197,7 +196,7 @@ function handlePriceTitle(tax, type) {
 export class NamelessPrice extends Component {
   render() {
     const {
-      getFieldDecorator, formItemLayout, children, isUpdate, priceKeys, priceList, data: { accountInfo, priceInfo }
+      getFieldDecorator, formItemLayout, children, isUpdate, priceList, data: { accountInfo, priceInfo }
     } = this.props;
     const {
       skuList,
@@ -217,7 +216,12 @@ export class NamelessPrice extends Component {
             { validator: checkPriceList, on: true }
           ]
         })(
-          <PriceTable desc={handlePriceTitle(taxInPrice == 1, partnerType)} data={this.props.data} isEdit priceKeys={priceKeys} />
+          <PriceTable
+            desc={handlePriceTitle(taxInPrice == 1, partnerType)}
+            data={this.props.data}
+            isEdit
+            priceKeys={['costPriceRaw', 'channelPrice', 'publicationPrice']}
+          />
         ) : null
         }
         <AccountPriceHelp />
@@ -253,7 +257,7 @@ export class FamousPrice extends Component {
   checkDateAndPrice = (rule, value, callback) => {
     const { getFieldValue, setFields } = this.props;
     let price = getFieldValue('price_next') || {};
-    if (Object.values(price).filter(Boolean).length) {
+    if (price.some(item => item.nextCostPriceRaw)) {
       if (!value) {
         return callback('请填写下期有效期结束时间');
       }
@@ -274,7 +278,7 @@ export class FamousPrice extends Component {
   checkPriceAndDate = (rule, value, callback) => {
     const { getFieldValue, setFields } = this.props;
     let date = getFieldValue('nextPriceValidTo');
-    let flag = Object.values(value).filter(Boolean).length > 0;
+    let flag = value.some(item => item.nextCostPriceRaw);
     if (date) {
       if (!flag) {
         return callback('报价项最少填写一项');
@@ -373,9 +377,17 @@ export class FamousPrice extends Component {
       </FormItem>
       <FormItem {...formItemLayout} label='账号报价'>
         {getFieldDecorator('price_now', {
-          initialValue: nowVal,
-          rules: [{ validator: checkPrice(_data.right) }]
-        })(<PriceTable isEdit={_data.right} priceKeys={priceKeys} />)}
+          initialValue: skuList,
+          rules: [
+            { validator: checkPriceList, on: _data.right }
+          ]
+        })(
+          <PriceTable
+            isEdit={_data.right}
+            priceKeys={['costPriceRaw', 'channelPrice', 'publicationPrice']}
+            data={this.props.data}
+          />
+        )}
       </FormItem>
       <Divider dashed />
       <FormItem {...formItemLayout} label='下期有效期' style={{ display: 'none' }}>
@@ -405,7 +417,7 @@ export class FamousPrice extends Component {
       </FormItem>
       <FormItem {...formItemLayout} label='账号报价'>
         {getFieldDecorator('price_next', {
-          initialValue: nextVal,
+          initialValue: skuList,
           validateFirst: true,
           rules: [{
             required: require,
@@ -413,7 +425,12 @@ export class FamousPrice extends Component {
           }]
 
         })(
-          <PriceTable desc={handlePriceTitle(taxInPrice == 1, partnerType)} isEdit={canEditPrice} priceKeys={priceKeys} />)}
+          <PriceTable
+            desc={handlePriceTitle(taxInPrice == 1, partnerType)}
+            data={this.props.data}
+            isEdit={canEditPrice}
+            priceKeys={['nextCostPriceRaw', 'nextChannelPrice', 'nextPublicationPrice']}
+          />)}
         <AccountPriceHelp />
       </FormItem>
       {hasPass ? <FormItem {...formItemLayout} label='审核状态'>
@@ -485,17 +502,20 @@ class PriceTable extends Component {
   }
 
   calculatePrice = (value, index) => {
+    const { priceKeys: [, channelPriceKey] } = this.props;
     const { accountInfo: { accountId } } = this.props.data
-    console.log('---');
+    const hide = message.loading('价格计算中...')
     setTimeout(() => {
-      this.onChange(value* 200, index, 'costPriceRaw2')
-    },1000);
+      hide()
+      this.onChange(value * 200, index, channelPriceKey)
+    }, 1000);
   }
 
   onChange = (value, index, priceKey) => {
+    const { priceKeys: [,,publicationPriceKey] } = this.props;
     let newValue = this.state.value.map(item => ({ ...item }))
     // 调用价格项计算接口
-    if(value && priceKey === 'costPriceRaw1'){
+    if (value && priceKey === publicationPriceKey) {
       this.calculatePrice(value, index)
     }
     newValue[index][priceKey] = Number(value)
@@ -506,7 +526,7 @@ class PriceTable extends Component {
   };
 
   render() {
-    const { isEdit, desc = '' } = this.props;
+    const { isEdit, desc = '', priceKeys } = this.props;
     const { value } = this.state;
     return <div>
       {desc ? <span>请填写<span style={{ color: 'red' }}>{desc}</span></span> : null}
@@ -521,8 +541,9 @@ class PriceTable extends Component {
         </div>
         <div className='price-table-body'>
           {
-            value.map(({ skuTypeId, skuTypeName, costPriceRaw, costPriceRaw1, costPriceRaw2 }, index) =>
-              <Row key={skuTypeId} gutter={8}>
+            value.map((item, index) => {
+              const { skuTypeId, skuTypeName } = item
+              return <Row key={skuTypeId} gutter={8}>
                 <Col span={6}>
                   <p className='price-table-title'>{skuTypeName}</p>
                 </Col>
@@ -530,30 +551,31 @@ class PriceTable extends Component {
                   <div className='price-table-input'>
                     <PriceInput
                       isEdit={isEdit}
-                      value={costPriceRaw}
-                      onChange={(value) => this.onChange(value, index, 'costPriceRaw')}
+                      value={item[priceKeys[0]]}
+                      onChange={(value) => this.onChange(value, index, priceKeys[0])}
                     />
                   </div>
                 </Col>
                 <Col span={6}>
-                  <div className='price-table-input'>
+                  <div className='price-table-input no-error'>
                     <PriceInput
                       isEdit={isEdit}
-                      value={costPriceRaw1}
-                      onChange={(value) => this.onChange(value, index, 'costPriceRaw1')}
+                      value={item[priceKeys[1]]}
+                      onChange={(value) => this.onChange(value, index, priceKeys[1])}
                     />
                   </div>
                 </Col>
                 <Col span={6}>
-                  <div className='price-table-input'>
+                  <div className='price-table-input no-error'>
                     <PriceInput
                       isEdit={isEdit}
-                      value={costPriceRaw2}
-                      onChange={(value) => this.onChange(value, index, 'costPriceRaw2')}
+                      value={item[priceKeys[2]]}
+                      onChange={(value) => this.onChange(value, index, priceKeys[2])}
                     />
                   </div>
                 </Col>
-              </Row>)
+              </Row>
+            })
           }
         </div>
       </div>
