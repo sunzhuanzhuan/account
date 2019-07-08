@@ -53,7 +53,7 @@ export default class ContentView extends Component {
     let viewForms = [].concat(forms, customForm).map(item => item.name || item)
     let viewFeatures = [].concat(features, customFeature).map(item => item.name || item)
     let viewStyles = [].concat(styles, customStyle).map(item => item.name || item)
-    return Object.keys(data.account.cooperation).length > 0 ? <div className='module-item-container'>
+    return Object.keys(data.account.content).length > 0 ? <div className='module-item-container'>
       <ModuleHeader title={configureModule.title} right={right} />
       <section className='content-wrap'>
         <div className="view-fields-container">

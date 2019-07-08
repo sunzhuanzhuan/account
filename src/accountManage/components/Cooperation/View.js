@@ -80,7 +80,7 @@ export default class CooperationView extends Component {
             <div className='subclass-content'>
               <div className="view-fields-container">
                 {
-                  (isAcceptHardAd || isAcceptProductUse || refuseBrands.length || manuscriptModificationLimit || videoShotAreaType) ?
+                  (isAcceptHardAd === 2 || isAcceptProductUse ===2 || refuseBrands.length || manuscriptModificationLimit || videoShotAreaType) ?
                     <div className='right-wrap'>
                       {(asyncVisibility.isAcceptHardAd || asyncVisibility.isAcceptProductUse) &&
                       <FieldView width={130} title="拒绝项" value={
@@ -102,13 +102,13 @@ export default class CooperationView extends Component {
                       } />}
                       {asyncVisibility.videoShotArea &&
                       <FieldView width={130} title="视频拍摄地点" value={
-                        <div>
+                        videoShotAreaType ? <div>
                           <span style={{ marginRight: '8px' }}>{videoShotAreaType === 2 ? '部分地区' : '不限地点'}</span>
                           {
                             videoShotAreas.map(area =>
                               <Tag key={area.id}>{area.areaName}</Tag>)
                           }
-                        </div>
+                        </div> : null
                       } />}
                       {asyncVisibility.liveArea &&
                       <FieldView width={130} title="直播形式" value={

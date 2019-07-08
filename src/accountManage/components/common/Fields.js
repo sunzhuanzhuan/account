@@ -728,7 +728,7 @@ export const Verified = (props) => {
       <FormItem {...layout.full} label='认证类型'>
         {getFieldDecorator('base.verifiedStatus', {
           rules: [{ required: false }],
-          initialValue: verifiedStatus === 1 ? 2 : (verifiedStatus || 2)
+          initialValue: (verifiedStatus && verifiedStatus !== 1) ? verifiedStatus : 2
         })(
           <RadioGroup disabled={verifiedStatusFrom === 2}>
             {
