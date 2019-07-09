@@ -19,8 +19,7 @@ export default class Trinity extends Component {
       submitLoading: false,
       loading: true
     }
-    // window注入组件
-    window.__UpdateAccountReactComp__.other = this
+
   }
 
   reload = (cb) => {
@@ -48,7 +47,6 @@ export default class Trinity extends Component {
     const { data: { account } } = this.props;
     values['id'] = account.id;
     // values.base['platformId'] = platformId;
-    delete values['_case']
     return values;
   };
 
@@ -122,7 +120,7 @@ export default class Trinity extends Component {
     </div>;
 
     return this.state.loading ?
-      <LoadingBlock loading /> : (isFamous === 1 && cooperationPlatformResVOS.length) ?
+      <LoadingBlock loading /> : (isFamous === 1 ) ?
         <Form className='module-item-container' onSubmit={this.submit} colon={false}>
           <ModuleHeader title={configureModule.title} right={right} />
           <section className='content-wrap'>
