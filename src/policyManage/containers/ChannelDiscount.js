@@ -70,15 +70,13 @@ class ChannelDiscount extends React.Component {
 	}
 
 	handleAddRule = () => {
-		const { itemInfo = {}, ruleItems = [], modalType } = this.state;
+		const { itemInfo = {}, ruleIndex, ruleItems = [], modalType } = this.state;
 		let selectedPlatform = []
 
 		if(modalType === 'add') {
 			ruleItems.push(itemInfo)
 		}else {
-			const editIndex = ruleItems.findIndex(item => item.channelDiscountId === itemInfo.channelDiscountId);
-			if(editIndex > -1)
-				ruleItems.splice(editIndex, 1, itemInfo)
+			ruleItems.splice(ruleIndex, 1, itemInfo)
 		}
 
 		ruleItems.forEach(item => {
@@ -103,10 +101,11 @@ class ChannelDiscount extends React.Component {
 		this.setState({ ruleItems, selectedPlatform });
 	}
 
-	isShowRuleModal = (itemInfo, modalType) => {
+	isShowRuleModal = (itemInfo, modalType, ruleIndex) => {
 		const isEdit = modalType === 'edit';
 		this.setState({ 
 			itemInfo: {...itemInfo}, 
+			ruleIndex,
 			modalType, 
 			ruleVisible: !this.state.ruleVisible,
 			discountStatus: isEdit,

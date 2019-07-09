@@ -148,7 +148,7 @@ class RuleContent extends React.Component {
 				<div className='ruleTitle'>
 					<div>{`规则${rangeValue + 1}`}</div>
 					<div className='ruleOperate'>
-						<span onClick={() => {onClick(itemInfo, 'edit')}}>编辑</span>
+						<span onClick={() => {onClick(itemInfo, 'edit', rangeValue)}}>编辑</span>
 						<Popconfirm
 							title={`是否删除【规则${rangeValue + 1}】？`}
 							icon={<Icon type="question-circle-o" style={{ color: 'red' }} />} 
