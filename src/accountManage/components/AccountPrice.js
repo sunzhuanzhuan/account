@@ -221,6 +221,7 @@ export class NamelessPrice extends Component {
             data={this.props.data}
             isEdit
             priceKeys={['costPriceRaw', 'channelPrice', 'publicationPrice']}
+            action={this.props.actions.calculatePrice}
           />
         ) : null
         }
@@ -386,6 +387,7 @@ export class FamousPrice extends Component {
             isEdit={_data.right}
             priceKeys={['costPriceRaw', 'channelPrice', 'publicationPrice']}
             data={this.props.data}
+            action={this.props.actions.calculatePrice}
           />
         )}
       </FormItem>
@@ -430,6 +432,7 @@ export class FamousPrice extends Component {
             data={this.props.data}
             isEdit={canEditPrice}
             priceKeys={['nextCostPriceRaw', 'nextChannelPrice', 'nextPublicationPrice']}
+            action={this.props.actions.calculatePrice}
           />)}
         <AccountPriceHelp />
       </FormItem>
@@ -502,17 +505,21 @@ class PriceTable extends Component {
   }
 
   calculatePrice = (value, index) => {
-    const { priceKeys: [, channelPriceKey] } = this.props;
-    const { accountInfo: { accountId } } = this.props.data
+    const { priceKeys: [, channelPriceKey], action, data } = this.props;
+    const { accountInfo: { accountId } } = data
     const hide = message.loading('价格计算中...')
-    setTimeout(() => {
+    action({
+      accountId,
+      publicationPrice: value
+    }).then(({ data }) => {
+      const { channelPrice } = data
       hide()
-      this.onChange(Math.floor(value * 0.5), index, channelPriceKey)
-    }, 1000);
+      this.onChange(Math.floor(channelPrice), index, channelPriceKey)
+    })
   }
 
   onChange = (value, index, priceKey) => {
-    const { priceKeys: [,,publicationPriceKey] } = this.props;
+    const { priceKeys: [, , publicationPriceKey] } = this.props;
     let newValue = this.state.value.map(item => ({ ...item }))
     // 调用价格项计算接口
     if (value && priceKey === publicationPriceKey) {

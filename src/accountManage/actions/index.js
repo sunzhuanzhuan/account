@@ -244,3 +244,9 @@ export const {
   getPolicyIdAndDiscount,
   getPolicyIdAndDiscount_success,
 } = createHttpAction('getPolicyIdAndDiscount', Interface.getPolicyIdAndDiscount)
+// 计算刊例价
+export const {
+  calculatePrice,
+} = createHttpAction('calculatePrice', Interface.calculatePrice, {
+  method: 'post'
+})
