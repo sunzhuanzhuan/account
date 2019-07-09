@@ -925,7 +925,6 @@ export const ManuscriptModificationLimit = (props) => {
         initialValue: manuscriptModificationLimit === -1 ? undefined : manuscriptModificationLimit
       })(
         <Select style={{ width: '100%' }}>
-          <Option value={-1}>不限</Option>
           {
             [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => <Option key={n} value={n}>{n}</Option>)
           }

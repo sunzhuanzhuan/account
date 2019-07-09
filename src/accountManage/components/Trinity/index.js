@@ -4,9 +4,8 @@
 import React, { Component } from "react"
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
 import {
-  IsLowQuality,
-  MediaTeamNote,
-  TrinityConfigAndPrice, trinityIsPreventShieldingTip
+  TrinityConfigAndPrice,
+  trinityIsPreventShieldingTip
 } from "@/accountManage/components/common/Fields";
 import { Button, Form, message } from "antd";
 import LoadingBlock from "@/accountManage/base/LoadingBlock";
@@ -19,8 +18,7 @@ export default class Trinity extends Component {
       submitLoading: false,
       loading: true
     }
-    // window注入组件
-    window.__UpdateAccountReactComp__.other = this
+
   }
 
   reload = (cb) => {
@@ -46,10 +44,25 @@ export default class Trinity extends Component {
   // 处理提交数据
   handleSubmitValues = (values) => {
     const { data: { account } } = this.props;
-    values['id'] = account.id;
-    // values.base['platformId'] = platformId;
-    delete values['_case']
-    return values;
+    let trinitySkuInfoVOS = values.trinitySkuInfoVOS.reduce((ary, cur) => {
+      (cur.list || []).forEach(sku => {
+        (sku.publicCostPrice === 0 || sku.publicCostPrice) && ary.push({
+          ...sku,
+          trinityPlatformCode: cur.trinityPlatformCode,
+          publicCostPrice: sku.publicCostPrice
+        });
+      });
+      return ary;
+    }, []);
+    let trinityIsPreventShieldingManual = values.trinityIsPreventShieldingManual || 0;
+    return {
+      trinityPlaceOrderType: 2,
+      ...values,
+      trinitySkuInfoVOS,
+      trinityIsPreventShieldingManual,
+      platformId: account.base.platformId,
+      itemId: account.id
+    }
   };
 
   submit = (e) => {
@@ -58,45 +71,29 @@ export default class Trinity extends Component {
       actions,
       form,
       reload,
-      onModuleStatusChange,
-      data: { account, priceInfo: { isPreventShielding } }
+      // onModuleStatusChange,
+      data: { priceInfo: { isPreventShielding } }
     } = this.props
-    this.setState({ submitLoading: true });
     form.validateFieldsAndScroll((err, fieldsValue) => {
       if (!err) {
-        let trinitySkuInfoVOS = fieldsValue.trinitySkuInfoVOS.reduce((ary, cur) => {
-          (cur.list || []).forEach(sku => {
-            (sku.publicCostPrice === 0 || sku.publicCostPrice) && ary.push({
-              ...sku,
-              trinityPlatformCode: cur.trinityPlatformCode,
-              publicCostPrice: sku.publicCostPrice
-            });
-          });
-          return ary;
-        }, []);
-        let trinityIsPreventShieldingManual = fieldsValue.trinityIsPreventShieldingManual || 0;
+        let values = this.handleSubmitValues(fieldsValue)
+        let trinityIsPreventShieldingManual = values.trinityIsPreventShieldingManual;
         trinityIsPreventShieldingTip({
           accountValue: trinityIsPreventShieldingManual > 0 ? trinityIsPreventShieldingManual :
-            fieldsValue.trinityIsPreventShieldingAutomated,
+            values.trinityIsPreventShieldingAutomated,
           skuValue: isPreventShielding,
-          platformId: account.base.platformId
+          platformId: values.platformId
         }, () => {
-          return actions.addOrUpdateAccountTrinitySkuInfo({
-            trinityPlaceOrderType: 2,
-            ...fieldsValue,
-            trinitySkuInfoVOS,
-            trinityIsPreventShieldingManual,
-            platformId: account.base.platformId,
-            itemId: account.id
-          }).then(() => {
-            const { reload } = this.props;
+          this.setState({ submitLoading: true });
+          return actions.addOrUpdateAccountTrinitySkuInfo(values).then(() => {
             message.success('保存成功!', 1.3, () => {
               reload();
             });
-          });
+          }).finally(() => {
+            this.setState({ submitLoading: false });
+          })
         });
       }
-
     });
   }
 
@@ -110,19 +107,20 @@ export default class Trinity extends Component {
     } = this.props
     const fieldProps = { layout, data, form, actions }
     const {
-      isFamous,
+      account: {
+        base: { isFamous }
+      },
       trinityPriceInfo: {
         cooperationPlatformResVOS = []
       } = {}
       // 信息修改时间
-    } = data.account || {}
+    } = data
     const right = <div className='wrap-panel-right-content'>
       {/*<span className='gray-text'>最近更新于: {otherInfoModifiedAt || '--'}</span>*/}
       <Button htmlType='submit' type='primary' loading={this.state.submitLoading}>保存</Button>
     </div>;
-
     return this.state.loading ?
-      <LoadingBlock loading /> : (isFamous === 1 && cooperationPlatformResVOS.length) ?
+      <LoadingBlock loading /> : (isFamous === 1 && cooperationPlatformResVOS.length > 0) ?
         <Form className='module-item-container' onSubmit={this.submit} colon={false}>
           <ModuleHeader title={configureModule.title} right={right} />
           <section className='content-wrap'>

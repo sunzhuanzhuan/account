@@ -149,7 +149,7 @@ export const diffByClient = {
       "price",
       "dashboard",
       "personal",
-      // "trinity"
+      "trinity"
     ]
   },
   "NC": {
