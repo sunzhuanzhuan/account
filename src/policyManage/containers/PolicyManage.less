@@ -2,8 +2,9 @@
 @borderColor: #d9d9d9;
 .policyHeader {
   margin-bottom: 20px;
-  font-size: 16px;
-  font-weight: 400;
+  span {
+    cursor: pointer;
+  }
   .anticon {
     margin-right: 10px;
   }
@@ -150,6 +151,12 @@
     display: inline-block;
     width: calc(50% - 16px);
   }
+  .platformIcon {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    vertical-align: sub;
+  }
 }
 
 .discountWrapper {
@@ -253,4 +260,8 @@
     resize: none;
     height: 100px;
   }
+}
+
+.stopPopover {
+  max-width: 300px;
 }

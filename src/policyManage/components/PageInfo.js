@@ -1,5 +1,5 @@
 import React from "react";
-import { Badge, Tooltip } from 'antd';
+import { Badge, Tooltip, Popover } from 'antd';
 
 class PageInfo extends React.Component {
 	render() {
@@ -16,9 +16,14 @@ class PageInfo extends React.Component {
 		}
 		const normalStatus = text => <span className='status'>{text}</span>;
 		const toolTipStatus = text => (
-			<Tooltip placement="top" trigger='click' title={stopReason}>
+			<Popover 
+				overlayClassName='stopPopover'
+				content={stopReason} 
+				title='停用原因' 
+				trigger="click" 
+			>
 				<span className='status withTooltip'>{text}</span>
-			</Tooltip>
+			</Popover>
 		)
 		const getPolicyStatusComp = status => {
 			switch(parseInt(status)) {
@@ -48,7 +53,8 @@ class PageInfo extends React.Component {
 			<div className='pageInfo'>
 				{policyId ? <div>政策ID：{policyId}</div> : null}
 				<div>
-					<Badge offset={[-10, -4]} count={5}><span>状态：</span></Badge>
+					{/* <Badge offset={[-10, -4]} count={5}><span>状态：</span></Badge> */}
+					<span>状态：</span>
 					{ policyId ? getPolicyStatusComp(status) : getDiscountStatusComp(status) }
 				</div>
 				<div>最后修订人：{editor}</div>

@@ -2,6 +2,20 @@ import Interface from '../constants/Interface'
 import api from '../../api/index';
 import { GET_PROGRESS, GET_DISCOUNT_DETAIL, GET_POLICY_DETAIL } from '../constants/ActionTypes';
 
+function getSaveMsg(urlName) {
+  switch(urlName) {
+    case 'addDiscount':
+    case 'editDiscount':
+    case 'addPolicy':
+    case 'editPolicy':
+      return '保存成功';
+
+    case 'stopDiscount':
+    case 'stopPolicy':
+      return '停用成功';
+    default: return '';
+  }
+}
 // 更新渠道折扣及政策信息
 export function updatePriceInfo(payload, urlName) {
   return dispatch => {
@@ -10,8 +24,9 @@ export function updatePriceInfo(payload, urlName) {
       .then(() => {
           dispatch({
               type:GET_PROGRESS,
-              progress: 'saveSuccess'
-          })
+              progress: 'saveSuccess',
+              msg: getSaveMsg(urlName)
+          });
       })
       .catch( ({errorMsg}) => {
           dispatch({
@@ -24,35 +39,32 @@ export function updatePriceInfo(payload, urlName) {
 }
 
 // 获取渠道折扣详情
-export function getDiscountDetail(isEdit, payload) {
+export function getDiscountDetail(payload) {
   return dispatch => {
     dispatch({ type:GET_PROGRESS, progress: 'loading' });
 
-    // return api.post(Interface.getDiscount, payload)
-    // .then(() => {
-    //     dispatch({
-    //         type:GET_DISCOUNT_DETAIL,
-    //         progress: 'success'
-    //     })
-    // })
-    // .catch( ({errorMsg}) => {
-    //     dispatch({
-    //         type:GET_DISCOUNT_DETAIL,
-    //         progress: 'fail',
-    //         errorMsg
-    //     })
-    // });
-    
+    if(payload)
+      return api.post(Interface.getDiscount, payload)
+      .then(result => {
+          dispatch({
+              type:GET_DISCOUNT_DETAIL,
+              progress: 'success',
+              discountDetail: result.data
+          })
+      })
+      .catch( ({errorMsg}) => {
+          dispatch({
+              type:GET_DISCOUNT_DETAIL,
+              progress: 'fail',
+              errorMsg
+          })
+      });
+
     dispatch({
       type: GET_DISCOUNT_DETAIL,
       discountDetail: {
-        "channelDiscountStatus": 1,
-        "id": 1,
         "remark": "",
-        "rules": [],
-        "stopReason": "",
-        "userId": 1,
-        "username": "主账号名称"
+        "ruleDTOS": [],
       }
     });
   }
@@ -65,7 +77,6 @@ export function getPolicyDetail(id) {
 
     return api.get(`${Interface.getPolicy}?id=${id}`)
     .then(result => {
-      console.log('lskfjlskdjf', result)
         dispatch({
             type:GET_POLICY_DETAIL,
             policyDetail: result.data,

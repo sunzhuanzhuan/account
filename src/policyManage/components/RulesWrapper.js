@@ -10,7 +10,7 @@ class RulesWrapper extends React.Component {
 				return ruleItems.map((item, index) => {
 					return <RuleContent 
 						key={+new Date() + Math.random()} 
-						rangeValue={index + 1} 
+						rangeValue={index} 
 						itemInfo={item} 
 						onClick={onClick} 
 						handleDel={handleDel}
@@ -19,7 +19,7 @@ class RulesWrapper extends React.Component {
 		};
 
 		return [
-			<AddBtn key='addBtn' title='添加' onClick={() => {onClick({platformIds: [], channelDiscountId: Math.random()}, 'add')}} />, 
+			<AddBtn key='addBtn' title='添加' onClick={() => {onClick({platformIds: []}, 'add')}} />, 
 			ruleItemsComp()
 		]
 	}

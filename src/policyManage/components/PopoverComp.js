@@ -64,7 +64,10 @@ class PopoverComp extends React.PureComponent {
 		const { selectedPlatform = [] } = this.props;
 		this.checkOption.forEach(item => {
 			item.disabled = selectedPlatform.includes(item.id);
-			item.label = item.platformName,
+			item.label = <span>
+				<img align='middle' className='platformIcon' src={item.platformIcon}/>
+				<span>{item.platformName}</span>
+				</span>,
 			item.value = item.id
 		});
 

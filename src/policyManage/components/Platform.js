@@ -35,20 +35,15 @@ class Platform extends React.PureComponent {
 		return selected;
 	}
 
-	handleClose = (index, id) => {
-		const { selectedTag, selectedPlatform = [] } = this.state;
-		const delIndex = selectedPlatform.findIndex(item => item === id);
+	handleClose = index => {
+		const { selectedTag } = this.state;
 
 		selectedTag.splice(index, 1);
-		selectedPlatform.splice(delIndex, 1);
-
-		this.handleChangeItemInfo(selectedTag, selectedPlatform);
+		this.handleChangeItemInfo(selectedTag);
 	}
 
-	handleChangeItemInfo = (selectedTag, allSelected) => {
+	handleChangeItemInfo = selectedTag => {
 		const { itemInfo = {}, isSubmitOk, getErrorTips } = this.props;
-		const { selectedPlatform = [] } = this.state;
-		const updateAllSelected = allSelected ? allSelected : selectedPlatform.concat(selectedTag);
 		const isPlatformOk = selectedTag.length > 0;
 		itemInfo.platformIds = selectedTag;
 
@@ -56,13 +51,10 @@ class Platform extends React.PureComponent {
 			getErrorTips('请选择平台');
 		isSubmitOk(selectedTag.length > 0, 'platform');
 
-		this.setState({
-			selectedTag,
-			selectedPlatform: this.getUniqueArr(updateAllSelected)
-		});
+		this.setState({ selectedTag });
 	}
 
-	getUniqueArr = (arr = []) => arr.filter((item, index, self) => self.indexOf(item) === index)
+	// getUniqueArr = (arr = []) => arr.filter((item, index, self) => self.indexOf(item) === index)
 
 	render() {
 		const { selectedTag, selectedPlatform } = this.state;

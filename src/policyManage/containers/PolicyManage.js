@@ -10,6 +10,7 @@ import StopReasonModal from "../components/StopReasonModal";
 import moment from 'moment';
 import * as actions from '../actions/pricePolicy';
 import './PolicyManage.less';
+import qs from 'qs';
 
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
@@ -20,8 +21,7 @@ class PolicyManage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			stopModal: false, 
-			isEdit: true
+			stopModal: false
 		}
 		// this.rateOption = [
 		// 	{ label: '未知', value: 0 },
@@ -33,17 +33,24 @@ class PolicyManage extends React.Component {
 	}
 
 	componentDidMount() {
-		this.props.getPolicyDetail(1);
+		const search = this.props.location.search.substring(1);
+		const userId = qs.parse(search)['userId'];
+		const policyId = qs.parse(search)['id'];
+		const userName= qs.parse(search)['name'];
+
+		if(policyId !== undefined)
+			this.props.getPolicyDetail(policyId);
+		this.setState({policyId, userName, userId})
 	}
 
 	componentDidUpdate(prevProps) {
         const { progress: prevProgress } = prevProps;
-        const { errorMsg = '操作失败', progress } = this.props;
+        const { errorMsg = '操作失败', progress, msg = '保存成功' } = this.props;
 
         if(prevProgress !== progress && progress === 'fail') {
             this.getErrorTips(errorMsg, 'error');
         }else if(prevProgress !== progress && progress === 'saveSuccess') {
-			this.getErrorTips('保存成功', 'success');
+			this.getErrorTips(msg, 'success');
 		}
 	}
 
@@ -62,24 +69,24 @@ class PolicyManage extends React.Component {
 		const { timeRange = [] } = this.state; 
 
 		if(timeRange[0])
-			return !(!(current && current <= moment().subtract(1, 'days').endOf('day')) && current.diff(timeRange[0], 'days') > 60);
-
-		return current && current < moment().subtract(1, 'days').endOf('day')
+			// return !(!(current && current <= moment().subtract(1, 'days').endOf('day')) && current.diff(timeRange[0], 'days') > 60); //60天内不可选
+			return current && current <= moment().subtract(1, 'days').endOf('day');
 	}
 
 	handleSavePolicy = () => {
 		const { form, policyDetail= {}, userId='需要路由取出userid' } = this.props;
-		const { isEdit } = this.state;
+		const { policyId } = this.state;
 		const { id, policyStatus } = policyDetail;
 
 		form.validateFields((err, values) => {
 			if(err) return;
 			const { policyTime = [], illustration } = values;
 			const updateObj = {
-				validStartTime: policyTime[0].valueOf(),
-				validEndTime: policyTime[1].valueOf(),
+				validStartTime: policyTime[0].format('YYYY-MM-DD HH:mm:ss'),
+				validEndTime: policyTime[1].format('YYYY-MM-DD HH:mm:ss'),
 				illustration
 			};
+			const isEdit = policyId !== undefined;
 			let method = isEdit ? 'editPolicy' : 'addPolicy';
 
 			if(isEdit) {
@@ -88,7 +95,10 @@ class PolicyManage extends React.Component {
 				Object.assign(updateObj, {userId})
 			}
 
-			this.props.updatePriceInfo(updateObj, method);
+			this.props.updatePriceInfo(updateObj, method).then(() => {
+				if(isEdit)
+					this.props.getPolicyDetail(policyId);
+			});
 
 		})
 	}
@@ -117,19 +127,21 @@ class PolicyManage extends React.Component {
 
 	handleStopPolicy = (value) => {
 		const { policyDetail = {} } = this.props;
+		const { policyId } = this.state;
 		const { id, policyStatus } = policyDetail;
 		Object.assign(value, {id, policyStatus});
 
-		this.props.updatePriceInfo(value, 'stopPolicy');
-	}
-
-	handleCancel = () => {
-
+		this.props.updatePriceInfo(value, 'stopPolicy').then(() => {
+			if( policyId !== undefined )
+				this.props.getPolicyDetail(policyId);
+		});
+		this.isShowStopModal();
 	}
 
 	render() {
 		const { form, policyDetail = {}, progress } = this.props;
-		const { isEdit, stopModal } = this.state;
+		const { stopModal, policyId, userName } = this.state;
+		const isEdit = policyId !== undefined;
 		const { policyStatus, identityName, illustration, validStartTime, validEndTime, modifyName='未知', id, modifiedAt, stopReason } = policyDetail;
 		const { getFieldDecorator } = form;
 		const formItemLayout = {
@@ -138,13 +150,15 @@ class PolicyManage extends React.Component {
 		};
 
 		return [
-			<div key='policyHeader' className='policyHeader'><Icon type="left-circle" />新增政策</div>,
+			<h2 key='policyHeader' className='policyHeader'>
+				{isEdit ? '修改政策' : '新增政策'}
+			</h2>,
 			<div key='policyWrapper' className='policyWrapper'>
 				<Spin spinning={progress === 'loading'}>
 					{ isEdit ? <PageInfo policyId={id} status={policyStatus} stopReason={stopReason} editor={modifyName} editTime={moment(modifiedAt).format('YYYY-MM-DD')} /> : null }
 					<Form>
 						<FormItem label='主账号名称' {...formItemLayout}>
-							{identityName}
+							{isEdit ? identityName : userName || '未知'}
 						</FormItem>
 						<FormItem label="政策有效期"  {...formItemLayout}>
 							{getFieldDecorator('policyTime', {
@@ -191,12 +205,7 @@ class PolicyManage extends React.Component {
 								policyStatus == 1 || policyStatus == 2 ? 
 									<Button type='primary' onClick={this.isShowStopModal}>停用</Button> : null 
 							}
-							{ 
-								policyStatus == 4 ? 
-									<Button type='primary' onClick={this.handleSavePolicy}>启用</Button> : 
-									<Button type='primary' onClick={this.handleSavePolicy}>提交</Button>
-							}
-							<Button onClick={this.handleCancel}>取消</Button>
+							<Button type='primary' onClick={this.handleSavePolicy}>{ policyStatus == 4 ? '启用' : '提交'}</Button>
 						</FormItem>
 					</Form>
 				</Spin>
@@ -208,9 +217,9 @@ class PolicyManage extends React.Component {
 
 const mapStateToProps = (state) => {
     const { pricePolicyReducer = {} } = state;
-    const { policyDetail, progress, errorMsg } = pricePolicyReducer;
+    const { policyDetail, progress, errorMsg, msg } = pricePolicyReducer;
 
-    return { policyDetail, progress, errorMsg };
+    return { policyDetail, progress, errorMsg, msg };
 }
 
 const mapDispatchToProps = (dispatch) => (
@@ -223,4 +232,3 @@ export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(Form.create()(PolicyManage))
-

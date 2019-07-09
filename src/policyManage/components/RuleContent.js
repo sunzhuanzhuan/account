@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from 'react-redux';
-import { Row, Col, Input, Checkbox, message, Popconfirm, Icon } from 'antd';
+import { Row, Col, Input, message, Popconfirm, Icon } from 'antd';
 // import AddBtn from "./AddBtn";
 // import PopoverComp from "./PopoverComp";
 import Platform from "./Platform";
@@ -37,13 +37,13 @@ class RuleContent extends React.Component {
 
 	handleChangeValue = (value, valueType) => {
 		const { isSubmitOk, itemInfo = {} } = this.props;
-		itemInfo[valueType] = value;
 		const isNum = /^\d+$/.test(value);
 		const valueOk = isNum && parseInt(value) > 0 && parseInt(value) <= 100
 
-		if(!valueOk) 
+		if(!valueOk)
 			this.getErrorTips('请输入1~100的百分比');
 
+		itemInfo[valueType] = value ? Number(value) / 100 : undefined;
 		isSubmitOk(valueOk, 'discount')
 		this.forceUpdate();
 	}
@@ -72,9 +72,9 @@ class RuleContent extends React.Component {
 								<Input 
 									key='inputComp' 
 									className='commonIptWidth' 
-									value={publicationRate}
+									value={publicationRate ? Number(publicationRate) * 100 : null}
 									onChange={({target: {value}}) => {this.handleChangeValue(value, 'publicationRate')}} 
-								/> : <span>{publicationRate}</span>
+								/> : <span>{publicationRate ? Number(publicationRate) * 100 : null}</span>
 							}
 							<span key='signSec'> %</span>
 							<span key='signThir' className='commonSign'>=</span>
@@ -146,15 +146,15 @@ class RuleContent extends React.Component {
 		return (
 			!isOperate ? <div className='ruleWrapper'>
 				<div className='ruleTitle'>
-					<div>{`规则${rangeValue}`}</div>
+					<div>{`规则${rangeValue + 1}`}</div>
 					<div className='ruleOperate'>
 						<span onClick={() => {onClick(itemInfo, 'edit')}}>编辑</span>
 						<Popconfirm
-							title={`是否删除【规则${rangeValue}】？`}
+							title={`是否删除【规则${rangeValue + 1}】？`}
 							icon={<Icon type="question-circle-o" style={{ color: 'red' }} />} 
 							okText='确认' 
 							cancelText='取消' 
-							onConfirm={() => {handleDel(itemInfo)}}
+							onConfirm={() => {handleDel(rangeValue)}}
 						>
 							<span>删除</span>
 						</Popconfirm>
