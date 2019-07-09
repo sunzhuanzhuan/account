@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import './AudienceAttribute.less'
-import { CharTitle, PieChart, Landscape, HistogramLine, ChinaMap } from "./chart";
+import { CharTitle, PieChart, Landscape, HistogramLine, ChinaMap, } from "./chart";
 import numeral from 'numeral'
-import { Empty } from 'antd';
+import ButtonTab from '../base/ButtonTab'
+import { Empty, Progress } from 'antd';
 class AudienceAttribute extends Component {
   constructor(props) {
     super(props);
@@ -34,7 +35,7 @@ class AudienceAttribute extends Component {
             <div className='left-three-two'>
               <div className='one-line-item'>
                 <CharTitle title='性别分布' />
-                <PieChart data={kolVisitorGenderDrawList} />
+                <SexList list={kolVisitorGenderDrawList} />
               </div>
               <div className='one-line-item' >
                 <CharTitle title='年龄分布' />
@@ -56,7 +57,8 @@ class AudienceAttribute extends Component {
           <div className='right-two'>
             <div className='right-two-item' >
               <CharTitle title='消费能力分布' />
-              <PieChart data={kolVisitorConsumptionDrawList} isThree={true} />
+              <PieChart data={kolVisitorConsumptionDrawList} />
+
             </div>
             <div className='right-two-equit'>
               <CharTitle title='设备分布' />
@@ -71,10 +73,16 @@ class AudienceAttribute extends Component {
             <ChinaMap area={kolVisitorProvinceDrawList} />
           </div>
           <div className='ranking'>
-            <CharTitle title='城市' />
-            <div style={{ marginTop: 24 }}>
-              <Rnking list={kolVisitorProvinceDrawList.slice(0, 6)} />
-            </div>
+            <ButtonTab buttonList={[{ key: 1, name: '城市线级' }, { key: 2, name: '城市排行' }]}
+              contentMap={{
+                1: <div style={{ marginTop: 24 }}>
+                  <Rnking list={kolVisitorProvinceDrawList.slice(0, 6)} />
+                </div>,
+                2: <div style={{ marginTop: 24 }}>
+                  <Rnking list={kolVisitorProvinceDrawList.slice(0, 6)} />
+                </div>
+              }}
+            />
           </div>
         </div> : <div className='region-img' style={{ display: 'block' }}>
             <CharTitle title='访问地区分布图' />
@@ -91,4 +99,28 @@ const Rnking = ({ list = [] }) => {
     <div className={index < 3 ? 'city-name-blod' : 'city-name'}>{numeral(one.value || 0).format('0.0%')}</div>
   </div>)
 }
+
+const SexList = ({ list = [] }) => {
+  return <div className='sex-list'>
+    {list.map((one, index) => {
+      const girl = index == 1
+      return <div key={one.name}>
+        <div className='sex-item'>
+          <Progress type="circle" percent={one.value * 100} format={() => <div>男</div>} />
+        </div>
+        <div className='sex-name'>{girl ? '女' : '男'}性用户</div>
+        <div className='sex-data'>
+          <div>占比：</div>
+          <div>{numeral(one.value).format('0%')}</div>
+        </div>
+        <div className='sex-data'>
+          <div>TGI：</div>
+          <div>126</div>
+        </div>
+      </div>
+    })}
+  </div>
+}
+
+
 export default AudienceAttribute;

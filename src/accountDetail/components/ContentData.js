@@ -2,8 +2,10 @@ import React, { Component } from 'react'
 import './ContentData.less'
 import { CharTitle, CurveLine, HistogramLine, DataBox } from "./chart";
 import { Radio, Row, Col, Empty } from 'antd';
+import ButtonTab from '../base/ButtonTab'
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
+
 class ContentData extends Component {
   constructor(props) {
     super(props);
@@ -26,12 +28,11 @@ class ContentData extends Component {
     })
   }
 
-  setDataBoxProps = (e) => {
+  setDataBoxProps = (checkedKey) => {
     const { trendInfo } = this.props
-    const type = e.target.value
     const data = trendInfo.boxContent
     this.setState({
-      dataBoxProps: { data: [this.dataFormate(data, type, 90), this.dataFormate(data, type, 28)] }
+      dataBoxProps: { data: [this.dataFormate(data, checkedKey, 90), this.dataFormate(data, checkedKey, 28)] }
     })
   }
 
@@ -55,55 +56,79 @@ class ContentData extends Component {
       <div className='content-data'>
         <div className='title-big' >内容数据服务</div>
         <div className='content-char-box'>
-          {/* 粉丝累计数+粉丝净增数 */}
-          <div className='content-char'>
-            <CharTitle title='粉丝累计和净增趋势图' content='可观察最近90天账号粉丝累计和净增变化趋势' />
-            <CurveLine data={contentSum}
-              BluelineText='粉丝累计数'
-              BluelineName='followerCountFull'
-              GreenlineText='粉丝净增数'
-              GreenlineName='followerCountIncre'
+          <div>
+            <ButtonTab
+              buttonList={[
+                { key: 1, name: '粉丝趋势' },
+                { key: 2, name: '传播趋势', },
+                { key: 3, name: '互动趋势', }
+              ]}
+              contentMap={{
+
+                1: <div className='content-char'>
+                  <CharTitle title='粉丝累计和净增趋势图' content='可观察最近90天账号粉丝累计和净增变化趋势' />
+                  <CurveLine data={contentSum}
+                    BluelineText='粉丝累计数'
+                    BluelineName='followerCountFull'
+                    GreenlineText='粉丝净增数'
+                    GreenlineName='followerCountIncre'
+                  />
+                </div>,
+                2: <div className='content-char'>
+                  <CharTitle title='平均点赞数和发布数趋势图' content='可观察最近90天内平均点赞数和发布数变化趋势' />
+                  <CurveLine data={like}
+                    BluelineText='平均点赞数'
+                    BluelineName='mediaLikeAvgFull'
+                    GreenlineText='视频发布数'
+                    GreenlineName='mediaCountIncre'
+                  />
+                </div>,
+                3: <div className='content-char'>
+                  <CharTitle title='平均互动数和互动率趋势图' content='可观察最近90天内平均互动数和互动率变化趋势' />
+                  <CurveLine data={interactive}
+                    BluelineText='平均互动数'
+                    BluelineName='mediaInteractionAvgFull'
+                    GreenlineText={platformId == 115 ? '' : '平均互动率'}
+                    GreenlineName={platformId == 115 ? '' : 'interactionProportionIncre'}
+                  />
+                </div>
+              }}
             />
           </div>
-          {/* 平均点赞数+视频发布数 */}
-          <div className='content-char'>
-            <CharTitle title='平均点赞数和发布数趋势图' content='可观察最近90天内平均点赞数和发布数变化趋势' />
-            <CurveLine data={like}
-              BluelineText='平均点赞数'
-              BluelineName='mediaLikeAvgFull'
-              GreenlineText='视频发布数'
-              GreenlineName='mediaCountIncre'
-            />
-          </div>
-          {/* 平均互动数+当周平均互动率 */}
-          <div className='content-char'>
-            <CharTitle title='平均互动数和互动率趋势图' content='可观察最近90天内平均互动数和互动率变化趋势' />
-            <CurveLine data={interactive}
-              BluelineText='平均互动数'
-              BluelineName='mediaInteractionAvgFull'
-              GreenlineText={platformId == 115 ? '' : '平均互动率'}
-              GreenlineName={platformId == 115 ? '' : 'interactionProportionIncre'}
-            />
-          </div>
+
           <div className='content-char'>
             <CharTitle title='内容数据箱线图' />
             <div className='last-box-decide'>
               <div className='data-box-left'>
-                <div style={{ marginTop: 16, textAlign: "center" }}>
-                  <RadioGroup defaultValue="Like" onChange={this.setDataBoxProps}>
-                    <RadioButton value="Like">点赞</RadioButton>
-                    <RadioButton value="Comment">评论</RadioButton>
-                    <RadioButton value="Repost">转发</RadioButton>
-                  </RadioGroup>
-                </div>
-                <DataBox {...dataBoxProps} />
+                <ButtonTab
+                  buttonList={[
+                    { key: 'Like', name: '点赞' },
+                    { key: 'Comment', name: '评论', },
+                    { key: 'Repost', name: '转发', }
+                  ]}
+                  onChange={this.setDataBoxProps}
+                  contentMap={{
+                    Like: <DataBox {...dataBoxProps} />,
+                    Comment: <DataBox {...dataBoxProps} />,
+                    Repost: <DataBox {...dataBoxProps} />
+                  }}
+                />
+
               </div>
               <div className='right-decide'>
-                <DecideBox img='up' leftText='呈' middleText='上升' middleText2='趋势' rightText='有上升' />
-                <div className='line-middle'></div>
-                <DecideBox img='horiz' leftText='间越' middleText='平缓' middleText2='' rightText='越稳定' />
-                <div className='line-middle'></div>
-                <DecideBox img='down' leftText='呈' middleText='下降' middleText2='趋势' rightText='有下降' />
+                <div>
+                  <div className='right-title'><a>箱线图分析说明</a></div>
+                  <div className='left-content'>
+                    <p>内容表现：</p>
+                    <p>近90天视频： 平均播放量410万，数据集中分布在240万 - 510万</p>
+                    <p> 近28天视频： 平均播放量470万，数据集中分布在280万 - 520万</p>
+                  </div>
+                  <div className='left-content'>
+                    <p>趋势说明：</p>
+                    <p>1.近期内容整体质量提升</p>
+                    <p>2.视频的内容质量的更趋于稳定</p>
+                  </div>
+                </div>
               </div>
             </div>
 

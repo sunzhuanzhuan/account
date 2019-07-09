@@ -14,12 +14,12 @@
     }
 
     .data-box-left {
-        min-width: calc(100% - 400px);
+        min-width: calc(100% - 430px);
         flex: 2;
     }
 
     .right-decide {
-        min-width: 400px;
+        min-width: 430px;
         border-left: @border-left-line;
         padding-left: 20px;
         margin-bottom: 20px;
@@ -27,6 +27,16 @@
         flex-direction: column;
         display: flex;
         justify-content: space-between;
+
+        .right-title {
+            text-align: right;
+            padding-bottom: 20px;
+            padding-right: 20px;
+        }
+
+        .left-content {
+            margin: 20px 0px 40px;
+        }
 
         .line-middle {
             border-bottom: @border-left-line;
