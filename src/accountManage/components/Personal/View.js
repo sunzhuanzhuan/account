@@ -132,14 +132,15 @@ export default class PersonalView extends Component {
             <div className='subclass-content'>
               <div className="view-fields-container">
                 <div className='right-wrap'>
-                  {
+                  <FieldView width={40} title="宝宝" value={
                     children.length > 0 ?
                       <ChildrenListView list={children} /> : '添加您宝宝的相关信息，会更受【母婴、生活、洗护类】广告主的亲睐哦~'
-                  }
-                  {petsList.length > 0 ? <FieldView width={70} title="宠物" value={
-                    petsList.map((item, n) =>
-                      <Tag key={n}>{item.petName || item}</Tag>)
-                  } /> : <div>添加您宠物的相关信息，会更受【宠物类】广告主的亲睐哦~</div>}
+                  } />
+                  <FieldView width={40} title="宠物" value={
+                    petsList.length  > 0 ? petsList.map((item, n) =>
+                        <Tag key={n}>{item.petName || item}</Tag>)
+                      : <div>添加您宠物的相关信息，会更受【宠物类】广告主的亲睐哦~</div>
+                  } />
                 </div>
               </div>
             </div>
