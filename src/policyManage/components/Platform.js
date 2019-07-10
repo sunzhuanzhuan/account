@@ -10,7 +10,7 @@ class Platform extends React.PureComponent {
 
 		this.state = {
 			selectedTag: [...itemInfo.platformIds] || [],
-			selectedPlatform: this.getSelectedWithoutCurrent(selectedPlatform, itemInfo.platformIds)
+			selectedPlatform: this.getSelectedWithoutCurrent([...selectedPlatform], itemInfo.platformIds)
 		};
 	}
 
@@ -52,6 +52,7 @@ class Platform extends React.PureComponent {
 		isSubmitOk(selectedTag.length > 0, 'platform');
 
 		this.setState({ selectedTag });
+		this.forceUpdate();
 	}
 
 	// getUniqueArr = (arr = []) => arr.filter((item, index, self) => self.indexOf(item) === index)
