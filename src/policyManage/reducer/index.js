@@ -7,9 +7,9 @@ export default function pricePolicyReducer(state = {}, action) {
         case GET_PROGRESS:
             return { ...state, progress, errorMsg, msg}
         case GET_DISCOUNT_DETAIL:
-            return { ...state, discountDetail, progress}
+            return { ...state, discountDetail, errorMsg, progress}
         case GET_POLICY_DETAIL:
-            return { ...state, policyDetail, progress}
+            return { ...state, policyDetail, errorMsg, progress}
         default:
             return state;
     }

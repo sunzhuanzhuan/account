@@ -28,7 +28,7 @@ export function updatePriceInfo(payload, urlName) {
               msg: getSaveMsg(urlName)
           });
       })
-      .catch( ({errorMsg}) => {
+      .catch(({errorMsg}) => {
           dispatch({
               type:GET_PROGRESS,
               progress: 'fail',
