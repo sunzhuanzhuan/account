@@ -60,18 +60,23 @@ class ChannelDiscount extends React.Component {
 
 	componentDidUpdate(prevProps) {
         const { progress: prevProgress } = prevProps;
-        const { errorMsg = '操作失败', progress, msg } = this.props;
+		const { errorMsg = '操作失败', progress, msg } = this.props;
+		const { isEdit, userId } = this.state;
 
         if(prevProgress !== progress && progress === 'fail') {
             this.getErrorTips(errorMsg, 'error');
         }else if(prevProgress !== progress && progress === 'saveSuccess') {
 			this.getErrorTips(msg, 'success');
+			if(!isEdit) {
+				this.props.history.push(`/account/discount?userId=${userId}`)
+				window.location.reload();
+			}
 		}
 	}
 
 	handleAddRule = () => {
 		const { itemInfo = {}, ruleIndex, ruleItems = [], modalType } = this.state;
-		let selectedPlatform = []
+		let selectedPlatform = [];
 
 		if(modalType === 'add') {
 			ruleItems.push(itemInfo)

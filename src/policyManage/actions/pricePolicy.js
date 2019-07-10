@@ -21,10 +21,11 @@ export function updatePriceInfo(payload, urlName) {
   return dispatch => {
     dispatch({ type:GET_PROGRESS, progress: 'loading' });
     return api.post(Interface[urlName], payload)
-      .then(() => {
+      .then(result => {
           dispatch({
               type:GET_PROGRESS,
               progress: 'saveSuccess',
+              newPolicyId: urlName === 'addPolicy' ? result.data : null, 
               msg: getSaveMsg(urlName)
           });
       })

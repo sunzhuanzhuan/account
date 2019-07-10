@@ -45,12 +45,16 @@ class PolicyManage extends React.Component {
 
 	componentDidUpdate(prevProps) {
         const { progress: prevProgress } = prevProps;
-        const { errorMsg = '操作失败', progress, msg = '操作成功' } = this.props;
+		const { errorMsg = '操作失败', newPolicyId, progress, msg = '操作成功' } = this.props;
 
         if(prevProgress !== progress && progress === 'fail') {
             this.getErrorTips(errorMsg, 'error');
         }else if(prevProgress !== progress && progress === 'saveSuccess') {
 			this.getErrorTips(msg, 'success');
+			if(newPolicyId) {
+				this.props.history.replace(`/account/policy?id=${newPolicyId}`)
+				window.location.reload();
+			}
 		}
 	}
 
@@ -220,9 +224,9 @@ class PolicyManage extends React.Component {
 
 const mapStateToProps = (state) => {
     const { pricePolicyReducer = {} } = state;
-    const { policyDetail, progress, errorMsg, msg } = pricePolicyReducer;
+    const { policyDetail, newPolicyId, progress, errorMsg, msg } = pricePolicyReducer;
 
-    return { policyDetail, progress, errorMsg, msg };
+    return { policyDetail, newPolicyId, progress, errorMsg, msg };
 }
 
 const mapDispatchToProps = (dispatch) => (
