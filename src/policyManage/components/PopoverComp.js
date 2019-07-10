@@ -54,7 +54,11 @@ class PopoverComp extends React.PureComponent {
 		const checkedValues = checked ? 
 			this.checkOption.filter(item => !item.disabled)
 				.map(item => item.id) : [];
-		this.setState({ checkAll: checked, indeterminate: false, checkedValues });
+		this.setState({ 
+			checkAll: checked, 
+			indeterminate: !!checkedValues.length && checkedValues.length < this.checkOption.length,
+			checkedValues 
+		});
 	}
 
 	handleSaveResult = () => {
