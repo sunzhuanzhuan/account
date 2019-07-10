@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from '../actions/pricePolicy';
 import { getAvailablePlatformList } from "../../actions";
-import { Modal, Icon, Input, Row, Col, Spin, Button, message } from 'antd';
+import { Modal, Input, Row, Col, Spin, Button, message } from 'antd';
 import './PolicyManage.less';
 import RulesWrapper from "../components/RulesWrapper";
 import RuleContent from "../components/RuleContent";

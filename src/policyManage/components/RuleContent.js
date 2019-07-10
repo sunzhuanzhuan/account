@@ -72,9 +72,9 @@ class RuleContent extends React.Component {
 								<Input 
 									key='inputComp' 
 									className='commonIptWidth' 
-									value={publicationRate ? Number(publicationRate) * 100 : null}
+									value={publicationRate ? Number(publicationRate * 100).toFixed(0) : null}
 									onChange={({target: {value}}) => {this.handleChangeValue(value, 'publicationRate')}} 
-								/> : <span>{publicationRate ? Number(publicationRate) * 100 : null}</span>
+								/> : <span>{publicationRate ? Number(publicationRate * 100).toFixed(0) : null}</span>
 							}
 							<span key='signSec'> %</span>
 							<span key='signThir' className='commonSign'>=</span>

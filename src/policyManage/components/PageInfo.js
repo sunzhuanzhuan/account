@@ -1,5 +1,5 @@
 import React from "react";
-import { Badge, Tooltip, Popover } from 'antd';
+import { Popover } from 'antd';
 
 class PageInfo extends React.Component {
 	render() {
