@@ -56,6 +56,18 @@
     justify-content: space-between;
 }
 
+.back-white {
+    background: #fff
+}
+
+.flex-between {
+    @flex-between();
+}
+
+.flex-between-column {
+    flex-direction: column;
+}
+
 @flex-between-column: {
     @flex-between();
     flex-direction: column;
@@ -78,4 +90,8 @@
 
 .hover-theme:hover {
     color: @primary-color;
+}
+
+.mt20 {
+    margin-top: 20px;
 }

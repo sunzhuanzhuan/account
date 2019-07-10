@@ -25,7 +25,7 @@ class ButtonTab extends Component {
     return (
       <div className='button-group-tab-box'>
         <div className='button-group-box'>
-          <Radio.Group defaultValue={checkedKey} onChange={this.onClickButton} buttonStyle="solid">
+          <Radio.Group defaultValue={checkedKey} onChange={this.onClickButton} >
             {buttonList.map(one => <Radio.Button key={one.key} value={one.key}>{one.name}</Radio.Button>)}
           </Radio.Group>
         </div>

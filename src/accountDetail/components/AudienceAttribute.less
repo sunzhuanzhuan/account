@@ -7,46 +7,21 @@
 }
 
 .audience-attribute {
+    .fans-line-two {
+        width: 100%;
+        display: flex;
 
-    .audience-attribute-charts {
-
-        @flex-between();
-        flex: 1
-    }
-
-    .left-three {
-        flex: 2;
-
-
-        .left-three-two {
-            @flex-between();
-            min-width: 600px;
-
-            .one-line-item {
-                .flex1-right-white;
-            }
-        }
-
-        .two-line-item {
-            min-width: 580px;
-            .flex1-right-white;
-            margin-top: 20px;
+        .fans-line-item {
+            width: calc(100%/2)
         }
     }
 
-    .right-two {
-        flex: 1;
-        min-width: 400px;
+    .flex4 {
+        flex: 4;
+    }
 
-        .right-two-item {
-            .flex1-right-white;
-        }
-
-        .right-two-equit {
-            .flex1-right-white;
-            margin-top: 20px;
-            padding-bottom: 14px;
-        }
+    .flex7 {
+        flex: 7
     }
 
     .region-img {
@@ -135,5 +110,23 @@
     .high {
         .trapezoid(180px, 50px, 80px, #ff0);
         height: 30px;
+    }
+}
+
+.city-table {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+
+    .title {
+        color: #999;
+        font-size: 13px;
+        height: 40px;
+    }
+
+    .content {
+        color: #333;
+        font-size: 14px;
+        height: 40px;
     }
 }

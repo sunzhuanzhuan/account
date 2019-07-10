@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './AudienceAttribute.less'
-import { CharTitle, PieChart, Landscape, HistogramLine, ChinaMap, } from "./chart";
+
+import { CharTitle, LandscapeType, Landscape, Histogram, ChinaMap, RingPie } from "./chart";
 import numeral from 'numeral'
 import ButtonTab from '../base/ButtonTab'
 import { Empty, Progress } from 'antd';
@@ -31,43 +32,24 @@ class AudienceAttribute extends Component {
       <div className='audience-attribute'>
         <div className='title-big'>受众属性<span style={{ fontSize: 13, color: '#999', fontWeight: 'none' }}>（数据取活跃粉丝分布数据）</span></div>
         <div className='audience-attribute-charts'>
-          <div className='left-three'>
-            <div className='left-three-two'>
-              <div className='one-line-item'>
-                <CharTitle title='性别分布' />
-                <SexList list={kolVisitorGenderDrawList} />
-              </div>
-              <div className='one-line-item' >
-                <CharTitle title='年龄分布' />
-                <Landscape data={kolVisitorAgeDrawList} />
-              </div>
+          <div className='flex-between'>
+            <div className='flex1-right-white' >
+              <CharTitle title='年龄分布' />
+              <Landscape data={kolVisitorAgeDrawList} />
             </div>
-            <div className='two-line-item'>
-              <CharTitle title='TGI' />
-              <HistogramLine height={300} data={kolVisitorInterestDrawList}
-                positionConfig='name*tgiValue'
-                positionIntervalConfig='name*value'
-                lineText='TGI'
-                boxText='兴趣爱好'
-                boxLeft={30}
-                boxRight={70} />
+            <div className='flex1-right-white'>
+              <CharTitle title='性别分布' />
+              <RingPie data={kolVisitorGenderDrawList} />
             </div>
-
-          </div>
-          <div className='right-two'>
-            <div className='right-two-item' >
+            <div className='flex1-right-white' >
               <CharTitle title='消费能力分布' />
-              <PieChart data={kolVisitorConsumptionDrawList} />
-
-            </div>
-            <div className='right-two-equit'>
-              <CharTitle title='设备分布' />
-              <PieChart data={kolVisitorOSDrawList} />
+              <RingPie data={kolVisitorGenderDrawList} />
             </div>
           </div>
+
+
         </div>
         {kolVisitorProvinceDrawList.length > 0 ? <div className='region-img'>
-
           <div className='china-map'>
             <CharTitle title='访问地区分布图' />
             <ChinaMap area={kolVisitorProvinceDrawList} />
@@ -75,9 +57,7 @@ class AudienceAttribute extends Component {
           <div className='ranking'>
             <ButtonTab buttonList={[{ key: 1, name: '城市线级' }, { key: 2, name: '城市排行' }]}
               contentMap={{
-                1: <div style={{ marginTop: 24 }}>
-                  <Rnking list={kolVisitorProvinceDrawList.slice(0, 6)} />
-                </div>,
+                1: <CityTable />,
                 2: <div style={{ marginTop: 24 }}>
                   <Rnking list={kolVisitorProvinceDrawList.slice(0, 6)} />
                 </div>
@@ -88,6 +68,48 @@ class AudienceAttribute extends Component {
             <CharTitle title='访问地区分布图' />
             <Empty style={{ height: 500, paddingTop: '20%' }} />
           </div>}
+
+        <div className='flex1-right-white mt20'>
+          <CharTitle title='粉丝兴趣' />
+          <Histogram height={400}
+            data={kolVisitorInterestDrawList}
+            positionConfig='name*tgiValue' />
+        </div>
+
+        <div className='flex-between flex1-right-white mt20'>
+          <div className='flex4'>
+            <div className=''>
+              <CharTitle title='手机系统分布' />
+              <RingPie data={kolVisitorOSDrawList} />
+            </div>
+            <div className=''>
+              <CharTitle title='手机价格分布' />
+              <RingPie data={kolVisitorOSDrawList} />
+            </div>
+          </div>
+          <div className='flex7'>
+            <CharTitle title='App偏好TOP10' />
+            <LandscapeType data={kolVisitorAgeDrawList} />
+          </div>
+        </div>
+        <div className='flex1-right-white mt20'>
+          <CharTitle title='粉丝活跃' />
+          <div className='fans-line-two'>
+            <div className='fans-line-item'>
+              <Histogram
+                height={400}
+                data={kolVisitorInterestDrawList}
+                positionConfig='name*tgiValue' />
+            </div>
+            <div className='fans-line-item'>
+              <Histogram
+                height={400}
+                data={kolVisitorInterestDrawList}
+                positionConfig='name*tgiValue' />
+            </div>
+          </div>
+        </div>
+
       </div >
     );
   }
@@ -122,5 +144,36 @@ const SexList = ({ list = [] }) => {
   </div>
 }
 
+const CityTable = ({ list = [{ name: '北京', age: 22 }, { name: '北京', age: 32 }] }) => {
 
+  const columns = [
+    {
+      title: '城市县级',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: '占比',
+      dataIndex: 'age',
+      key: 'age',
+    },
+    {
+      title: 'TGI',
+      dataIndex: 'address',
+      key: 'address',
+    },
+  ];
+
+
+  return <div className='city-table'>
+    {columns.map(one => {
+      return <div key={one.key} >
+        <div className='title'>{one.title}</div>
+        {list.map((item, index) => {
+          return <div key={index} className='content'>{item[one.dataIndex]}</div>
+        })}
+      </div>
+    })}
+  </div>
+}
 export default AudienceAttribute;

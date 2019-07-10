@@ -78,7 +78,9 @@ class AccountDetail extends Component {
       trendInfo,
       getTrend,
       accountId,
-      baseInfo
+      baseInfo,
+      getNewVideo,
+      newVideoList
     }
     const historicalADProps = {
       getQueryOrderCooperationList,
@@ -103,10 +105,7 @@ class AccountDetail extends Component {
           <LazyLoad once overflow>
             <ContentData {...contentDataProps} />
           </LazyLoad>
-          {/* 最新视频 */}
-          <LazyLoad once overflow>
-            <NewVideo getNewVideo={getNewVideo} newVideoList={newVideoList} accountId={accountId} />
-          </LazyLoad>
+        
           {/* 受众画像 */}
           <LazyLoad once overflow>
             <AudienceAttribute accountId={accountId}

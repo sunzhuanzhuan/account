@@ -121,7 +121,12 @@ class CompositeRadar extends Component {
               alternateColor: "rgba(0, 0, 0, 0.04)"
             }}
           />
-          <Legend name="user" marker="circle" offsetY={-30} position='top-center' data={['环节一', '环节二']} />
+          <Legend name="user"
+            marker="circle"
+            position='right-bottom'
+            data={['环节一', '环节二']}
+            offsetX={-130}
+            offsetY={40} />
           <Geom type="line"
             position="name*score"
             tooltip={false}

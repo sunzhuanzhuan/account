@@ -2,12 +2,28 @@
 @import '../../indexNbTheme.less';
 
 .new-video {
+    .video-list-box {
+        display: flex;
+        width: 100%;
+        align-items: center;
+
+        .arrow {
+            width: 50px;
+            height: 40px;
+            background: #ff0;
+            cursor: pointer;
+        }
+
+        .left-direction {}
+
+    }
 
     .video-list {
         background: #fff;
         @flex-between();
         @margin-left-right-10();
         justify-content: start;
+        width: calc(100% - 100px);
 
         .video-item {
             padding: 30px 15px 10px;

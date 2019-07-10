@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import './ContentData.less'
-import { CharTitle, CurveLine, HistogramLine, DataBox } from "./chart";
-import { Radio, Row, Col, Empty } from 'antd';
+import { CharTitle, CurveLine, GroupedColumn, DataBox } from "./chart";
 import ButtonTab from '../base/ButtonTab'
-const RadioButton = Radio.Button;
-const RadioGroup = Radio.Group;
+import NewVideo from './NewVideo'
+import LazyLoad from 'react-lazyload';
+
 
 class ContentData extends Component {
   constructor(props) {
@@ -47,55 +47,57 @@ class ContentData extends Component {
     }
   }
   render() {
-    const { trendInfo = {}, baseInfo = {} } = this.props
+    const { trendInfo = {}, baseInfo = {}, getNewVideo,
+      newVideoList, accountId } = this.props
     const { base = {} } = baseInfo
     const { platformId } = base
     const { dataBoxProps } = this.state
     const { contentSum = [], like = [], interactive = [] } = trendInfo
     return (
       <div className='content-data'>
-        <div className='title-big' >内容数据服务</div>
-        <div className='content-char-box'>
-          <div>
-            <ButtonTab
-              buttonList={[
-                { key: 1, name: '粉丝趋势' },
-                { key: 2, name: '传播趋势', },
-                { key: 3, name: '互动趋势', }
-              ]}
-              contentMap={{
+        <div className='title-big' >数据趋势</div>
+        <div className='content-char'>
+          <ButtonTab
+            buttonList={[
+              { key: 1, name: '粉丝趋势' },
+              { key: 2, name: '传播趋势', },
+              { key: 3, name: '互动趋势', }
+            ]}
+            contentMap={{
 
-                1: <div className='content-char'>
-                  <CharTitle title='粉丝累计和净增趋势图' content='可观察最近90天账号粉丝累计和净增变化趋势' />
-                  <CurveLine data={contentSum}
-                    BluelineText='粉丝累计数'
-                    BluelineName='followerCountFull'
-                    GreenlineText='粉丝净增数'
-                    GreenlineName='followerCountIncre'
-                  />
-                </div>,
-                2: <div className='content-char'>
-                  <CharTitle title='平均点赞数和发布数趋势图' content='可观察最近90天内平均点赞数和发布数变化趋势' />
-                  <CurveLine data={like}
-                    BluelineText='平均点赞数'
-                    BluelineName='mediaLikeAvgFull'
-                    GreenlineText='视频发布数'
-                    GreenlineName='mediaCountIncre'
-                  />
-                </div>,
-                3: <div className='content-char'>
-                  <CharTitle title='平均互动数和互动率趋势图' content='可观察最近90天内平均互动数和互动率变化趋势' />
-                  <CurveLine data={interactive}
-                    BluelineText='平均互动数'
-                    BluelineName='mediaInteractionAvgFull'
-                    GreenlineText={platformId == 115 ? '' : '平均互动率'}
-                    GreenlineName={platformId == 115 ? '' : 'interactionProportionIncre'}
-                  />
-                </div>
-              }}
-            />
-          </div>
+              1: <div className='content-char'>
+                <CharTitle title='粉丝累计和净增趋势图' content='可观察最近90天账号粉丝累计和净增变化趋势' />
+                <CurveLine data={contentSum}
+                  BluelineText='粉丝累计数'
+                  BluelineName='followerCountFull'
+                  GreenlineText='粉丝净增数'
+                  GreenlineName='followerCountIncre'
+                />
+              </div>,
+              2: <div className='content-char'>
+                <CharTitle title='平均点赞数和发布数趋势图' content='可观察最近90天内平均点赞数和发布数变化趋势' />
+                <CurveLine data={like}
+                  BluelineText='平均点赞数'
+                  BluelineName='mediaLikeAvgFull'
+                  GreenlineText='视频发布数'
+                  GreenlineName='mediaCountIncre'
+                />
+              </div>,
+              3: <div className='content-char'>
+                <CharTitle title='平均互动数和互动率趋势图' content='可观察最近90天内平均互动数和互动率变化趋势' />
+                <CurveLine data={interactive}
+                  BluelineText='平均互动数'
+                  BluelineName='mediaInteractionAvgFull'
+                  GreenlineText={platformId == 115 ? '' : '平均互动率'}
+                  GreenlineName={platformId == 115 ? '' : 'interactionProportionIncre'}
+                />
+              </div>
+            }}
+          />
+        </div>
 
+        <div className='content-data'>
+          <div className='title-big' >内容质量</div>
           <div className='content-char'>
             <CharTitle title='内容数据箱线图' />
             <div className='last-box-decide'>
@@ -119,20 +121,27 @@ class ContentData extends Component {
                 <div>
                   <div className='right-title'><a>箱线图分析说明</a></div>
                   <div className='left-content'>
-                    <p>内容表现：</p>
-                    <p>近90天视频： 平均播放量410万，数据集中分布在240万 - 510万</p>
-                    <p> 近28天视频： 平均播放量470万，数据集中分布在280万 - 520万</p>
+                    <p>内容表现</p>
+                    <div>近90天视频： 平均播放量410万，数据集中分布在240万 - 510万</div>
+                    <div> 近28天视频： 平均播放量470万，数据集中分布在280万 - 520万</div>
                   </div>
-                  <div className='left-content'>
-                    <p>趋势说明：</p>
-                    <p>1.近期内容整体质量提升</p>
-                    <p>2.视频的内容质量的更趋于稳定</p>
+                  <div className='left-content '>
+                    <p>趋势说明</p>
+                    <div>1.近期内容整体质量提升</div>
+                    <div>2.视频的内容质量的更趋于稳定</div>
                   </div>
                 </div>
               </div>
             </div>
+            {/* 最新视频 */}
 
+            <CharTitle title='近10个视频数据表现' />
+            <GroupedColumn />
+            <LazyLoad once overflow>
+              <NewVideo getNewVideo={getNewVideo} newVideoList={newVideoList} accountId={accountId} />
+            </LazyLoad>
           </div>
+
         </div>
       </div>
     );
