@@ -74,8 +74,8 @@ class PolicyManage extends React.Component {
 	}
 
 	handleSavePolicy = () => {
-		const { form, policyDetail= {}, userId } = this.props;
-		const { policyId } = this.state;
+		const { form, policyDetail= {} } = this.props;
+		const { policyId, userId } = this.state;
 		const { id, policyStatus } = policyDetail;
 
 		form.validateFields((err, values) => {
@@ -94,12 +94,11 @@ class PolicyManage extends React.Component {
 			}else {
 				Object.assign(updateObj, {userId})
 			}
-			
+
 			this.props.updatePriceInfo(updateObj, method).then(() => {
 				if(isEdit)
 					this.props.getPolicyDetail(policyId);
 			});
-
 		})
 	}
 
