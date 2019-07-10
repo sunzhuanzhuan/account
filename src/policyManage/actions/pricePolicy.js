@@ -8,7 +8,7 @@ function getSaveMsg(urlName) {
     case 'editDiscount':
     case 'addPolicy':
     case 'editPolicy':
-      return '保存成功';
+      return '操作成功';
 
     case 'stopDiscount':
     case 'stopPolicy':

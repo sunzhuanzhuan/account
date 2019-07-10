@@ -45,7 +45,7 @@ class PolicyManage extends React.Component {
 
 	componentDidUpdate(prevProps) {
         const { progress: prevProgress } = prevProps;
-        const { errorMsg = '操作失败', progress, msg = '保存成功' } = this.props;
+        const { errorMsg = '操作失败', progress, msg = '操作成功' } = this.props;
 
         if(prevProgress !== progress && progress === 'fail') {
             this.getErrorTips(errorMsg, 'error');
@@ -82,8 +82,8 @@ class PolicyManage extends React.Component {
 			if(err) return;
 			const { policyTime = [], illustration } = values;
 			const updateObj = {
-				validStartTime: policyTime[0].format('YYYY-MM-DD HH:mm:ss'),
-				validEndTime: policyTime[1].format('YYYY-MM-DD HH:mm:ss'),
+				validStartTime: policyTime[0].format('YYYY-MM-DD 00:00:00'),
+				validEndTime: policyTime[1].format('YYYY-MM-DD 00:00:00'),
 				illustration
 			};
 			const isEdit = policyId !== undefined;
@@ -94,7 +94,7 @@ class PolicyManage extends React.Component {
 			}else {
 				Object.assign(updateObj, {userId})
 			}
-
+			
 			this.props.updatePriceInfo(updateObj, method).then(() => {
 				if(isEdit)
 					this.props.getPolicyDetail(policyId);
@@ -112,12 +112,12 @@ class PolicyManage extends React.Component {
 	}
 
 	judgeInputLenth = (_, value, callback) => {
-		if(value && value.length <= 200) {
+		if(value && value.length <= 2000) {
 			callback();
 		}else if(!value) {
-			callback('请输入停用原因')
+			callback('请输入政策说明')
 		}else if(value.length > 200) {
-			callback('停用原因最多可输入200字')
+			callback('政策说明最多可输入2000字')
 		}
 	}
 
@@ -195,7 +195,11 @@ class PolicyManage extends React.Component {
 						<WhiteList /> */}
 						<FormItem label="政策说明"  {...formItemLayout}>
 							{getFieldDecorator('illustration', {
-								initialValue: illustration
+								initialValue: illustration,
+								rules: [
+									{required: true, message: ' '},
+									{validator: this.judgeInputLenth}
+								],
 							})(
 								<TextArea className='remarksText' />
 							)}
