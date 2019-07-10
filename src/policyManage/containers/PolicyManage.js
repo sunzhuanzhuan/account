@@ -74,7 +74,7 @@ class PolicyManage extends React.Component {
 	}
 
 	handleSavePolicy = () => {
-		const { form, policyDetail= {}, userId='需要路由取出userid' } = this.props;
+		const { form, policyDetail= {}, userId } = this.props;
 		const { policyId } = this.state;
 		const { id, policyStatus } = policyDetail;
 
@@ -155,7 +155,7 @@ class PolicyManage extends React.Component {
 			</h2>,
 			<div key='policyWrapper' className='policyWrapper'>
 				<Spin spinning={progress === 'loading'}>
-					{ isEdit ? <PageInfo policyId={id} status={policyStatus} stopReason={stopReason} editor={modifyName} editTime={moment(modifiedAt).format('YYYY-MM-DD')} /> : null }
+					{ isEdit ? <PageInfo policyId={id} status={policyStatus} stopReason={stopReason} editor={modifyName} editTime={moment(modifiedAt).format('YYYY-MM-DD HH:mm:ss')} /> : null }
 					<Form>
 						<FormItem label='主账号名称' {...formItemLayout}>
 							{isEdit ? identityName : userName || '未知'}
