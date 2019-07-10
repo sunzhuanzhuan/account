@@ -105,7 +105,11 @@ export default class MainView extends Component {
                   </a> : '请完善主页链接'
                 } />}
                 {configurePlatform.visibility.fields.weiboUrl &&
-                <FieldView title="微博链接" value={weiboUrl} />}
+                <FieldView title="微博链接" value={
+                  weiboUrl ? <a href={weiboUrl} target="_blank" className='ellipsis-text'>
+                    {weiboUrl}
+                  </a> : null
+                } />}
                 {configurePlatform.visibility.fields.qcCode &&
                 <FieldView title="二维码" value={
                   <Popover placement="bottomLeft" arrowPointAtCenter trigger="hover" content={
@@ -131,7 +135,7 @@ export default class MainView extends Component {
                 {configurePlatform.visibility.fields.isFansNumberImg &&
                 <FieldView title="粉丝数截图" value={
                   followerCountScreenshotUrl ?
-                    <img alt='粉丝数截图' src={followerCountScreenshotUrl} width={100} height={100} /> : '暂无截图'
+                    <img alt='粉丝数截图' src={followerCountScreenshotUrl} width={100} height={100} /> : '请添加粉丝数截图'
                 } />}
                 <FieldView title="平台等级" value={level === 0 ? '' : (configurePlatform.configure.levelText ? configurePlatform.configure.levelText[level] : level)} />
               </div>
@@ -163,7 +167,7 @@ export default class MainView extends Component {
             <div className='view-fields-container'>
               <div className='right-wrap'>
                 {
-                  configOptions.mediaTypeMap[mediaType] || '未知'
+                  configOptions.mediaTypeMap[mediaType] || '请选择账号类属'
                 }
               </div>
             </div>
