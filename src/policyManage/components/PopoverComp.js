@@ -10,9 +10,9 @@ class PopoverComp extends React.PureComponent {
 		const { checkOption, checkedValues = [] } = props;
 		this.state = {
 			visible: false,
+			checkedValues,
 			indeterminate: !!checkedValues.length && checkedValues.length < checkOption.length,
 			checkAll: false,
-			checkedValues,
 		};
 		this.checkOption = checkOption || [];
 	}
@@ -23,7 +23,7 @@ class PopoverComp extends React.PureComponent {
 		if(!shallowEqual(checkedValues, propsValues)) {
 			return {
 				propsValues: checkedValues,
-				checkedValues: checkedValues,
+				checkedValues,
 				indeterminate: !!checkedValues.length && checkedValues.length < checkOption.length,
 				checkAll: checkedValues.length === checkOption.length
 			}
@@ -32,18 +32,21 @@ class PopoverComp extends React.PureComponent {
 	}
 
 	isShowPopover = () => {
-		const { checkedValues } = this.props;
+		const { checkedValues, checkOption } = this.props;
+
 		this.setState({
 			visible: !this.state.visible,
-			checkedValues
+			checkedValues, 
+			indeterminate: !!checkedValues.length && checkedValues.length < checkOption.length, 
+			checkAll: checkedValues.length === checkOption.length
 		})
 	}
 
 	handleChangeChecked = checkedValues => {
 		this.setState({
+			checkedValues,
 			indeterminate: !!checkedValues.length && checkedValues.length < this.checkOption.length,
 			checkAll: checkedValues.length === this.checkOption.length,
-			checkedValues
 		})
 	}
 
