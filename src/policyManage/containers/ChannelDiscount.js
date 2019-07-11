@@ -226,7 +226,7 @@ class ChannelDiscount extends React.Component {
 					</Row>
 					<Row className='policyFooter'>
 						{ channelDiscountStatus == 1 ? <Button type='primary' onClick={this.isShowStopModal}>停用</Button> : null}
-						<Button type='primary' onClick={this.handleSaveDiscount}>{channelDiscountStatus == 2 ? '启用' : '保存'}</Button>
+						<Button type='primary' onClick={this.handleSaveDiscount}>{channelDiscountStatus == 2 ? '启用' : '提交'}</Button>
 					</Row>
 				</Spin>
 				<Modal

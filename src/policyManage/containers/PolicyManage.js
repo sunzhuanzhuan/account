@@ -175,7 +175,7 @@ class PolicyManage extends React.Component {
 									className='policyTime' 
 									onCalendarChange={this.handleChangeDate} 
 									onChange={this.handleChangeDateRange}
-									disabledDate={this.getDisabledDate} 
+									// disabledDate={this.getDisabledDate} 
 								/>
 							)}
 						</FormItem>
