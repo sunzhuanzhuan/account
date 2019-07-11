@@ -8,24 +8,22 @@ import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
 export default class Owner extends Component {
 
   render() {
-    const { babysitter_host = {} } = window.bentleyConfig || {};
     const {
       module: configureModule,
-      platform: configurePlatform,
-      data: { account, adminAccount, auth = {} },
-      actions
+      data: { account, adminAccount, auth, userConfig },
     } = this.props
+    const { babysitter_host = {} } = userConfig;
     const {
       identityName,
       userId,
       ownerAdminRealName,
-      volAdminRealName,
-      platformId
+      volAdminRealName
     } = adminAccount
     const {
-      id: accountId
+      id: accountId,
+      base: { platformId }
     } = account
-    const babysitterHost = babysitter_host.value /*|| 'http://toufang.weiboyi.com'*/;
+    const babysitterHost = babysitter_host.value || 'http://toufang.weiboyi.com';
     let isOwner = auth['account.manage.update.change.main.account'];
     let href = isOwner ? `${babysitterHost}/user/index/type/huanma/account_id/${accountId}/weibo_type/${platformId}` : `${babysitterHost}/user/chowner/account_id/${accountId}`;
 
