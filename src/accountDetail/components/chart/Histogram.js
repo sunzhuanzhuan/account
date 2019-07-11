@@ -15,10 +15,11 @@ import {
   Util
 } from "bizcharts";
 import { formatW } from "../../util";
+import { Empty } from "antd";
 
 class Histogram extends React.Component {
   render() {
-    const { data, positionConfig, height = 300 } = this.props
+    const { data = [], positionConfig, height = 300 } = this.props
     const scale = {
       tgiValue: {
         // min: 0,
@@ -29,7 +30,7 @@ class Histogram extends React.Component {
       }
     }
     return (
-      <div>
+      data.length > 0 ? <div>
         <Chart
           height={height}
           data={data}
@@ -50,7 +51,7 @@ class Histogram extends React.Component {
             color="#3AA1FF"
           />
         </Chart>
-      </div>
+      </div> : <Empty style={{ height: height + 18, paddingTop: 80 }} />
     );
   }
 }

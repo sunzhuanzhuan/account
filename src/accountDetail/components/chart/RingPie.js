@@ -16,11 +16,13 @@ import {
 } from "bizcharts";
 import DataSet from "@antv/data-set";
 import numeral from 'numeral'
+import { Empty } from "antd";
+
 
 
 class RingPie extends React.Component {
   render() {
-    const { data = [] } = this.props
+    const { data = [], height = 300 } = this.props
     const { DataView } = DataSet;
     const { Html } = Guide;
     const dv = new DataView();
@@ -39,15 +41,15 @@ class RingPie extends React.Component {
       }
     };
     return (
-      <div>
-        <Chart
-          height={300}
+      <div >
+        {data.length > 0 ? <Chart
+          height={height}
           data={dv}
           scale={cols}
-          padding={[20, 100, 50, 50]}
+          padding={[80, 100, 50, 50]}
           forceFit
         >
-          <Coord type={"theta"} radius={0.65} innerRadius={0.6} />
+          <Coord type={"theta"} radius={1} innerRadius={0.8} />
           <Axis name="percent" />
           <Legend
             position="right-top"
@@ -58,14 +60,14 @@ class RingPie extends React.Component {
             showTitle={false}
             itemTpl="<li><span style=&quot;background-color:{color};&quot; class=&quot;g2-tooltip-marker&quot;></span>{name}: {value}</li>"
           />
-          <Guide>
+          {/* <Guide>
             <Html
               position={["50%", "50%"]}
               html="<div style=&quot;color:#8c8c8c;font-size:1.16em;text-align: center;width: 10em;&quot;>年龄分布</div>"
               alignX="middle"
               alignY="middle"
             />
-          </Guide>
+          </Guide> */}
           <Geom
             type="intervalStack"
             position="percent"
@@ -95,7 +97,7 @@ class RingPie extends React.Component {
               }}
             />
           </Geom>
-        </Chart>
+        </Chart> : <Empty style={{ height: height + 18, paddingTop: 80 }} />}
       </div>
     );
   }

@@ -63,14 +63,14 @@ class DataIndicator extends Component {
               <div className='head-center'>
                 <div className='left-index'>
                   <div className='text'>
-                    <CharTitle title='综合指数' color='#999' content='基于互动指数、黑马指数、内容传播指数、服务指数、配合指数、SNBT这6个指标加权计算综合指标。' />
+                    <CharTitle title='SNBT' color='#999' content='基于互动指数、黑马指数、内容传播指数、服务指数、配合指数、SNBT这6个指标加权计算综合指标。' />
                   </div>
                   <div className='score'>{numeral(wholeIndex).format('0')}</div>
                 </div>
                 <Divider type="vertical" style={{ height: 40, margin: '0px 20px' }} />
                 <div className='left-index'>
                   <div className='text' style={{ marginTop: 7 }}>
-                    <CharTitle title={`${legend[1]}分类排名`} color='#999' />
+                    <CharTitle title={`${legend[1] || '-'}分类排名`} color='#999' />
                   </div>
                   <div>NO.<span className='score'>{wholeRankOnClassification || '-'}</span></div>
                 </div>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { HeadInfo, DataIndicator, HistoricalAD, ContentData, AudienceAttribute, NewVideo, AccountRecommend } from "../components";
+import { HeadInfo, DataIndicator, HistoricalAD, ContentData, AudienceAttribute, BaseInfo, AccountRecommend } from "../components";
 import './AccountDetail.less'
 import { Modal, message, Spin } from 'antd';
 import LazyLoad from 'react-lazyload';
@@ -9,7 +9,6 @@ import { connect } from "react-redux";
 import * as action from '../actions/index'
 import * as commonAction from "@/actions";
 import { platformView } from "../../accountManage/constants/platform";
-
 import qs from "qs";
 class AccountDetail extends Component {
   constructor(props) {
@@ -93,8 +92,10 @@ class AccountDetail extends Component {
     return (
       <div className="account-view-detail" id='Js-account-view-detail-Id'>
         <Spin spinning={isLoading}>
+          {/* <BaseInfo selectCarEdit={this.selectCarEdit} isExistCar={isExistCar} /> */}
           {/* 头部基础信息 */}
           <HeadInfo setShowModal={this.setShowModal} baseInfo={baseInfo} selectCarEdit={this.selectCarEdit} isExistCar={isExistCar} accountDetail={accountDetail} actions={actions} />
+
           {/* 数据指标 */}
           <DataIndicator baseInfo={baseInfo} />
           {/* 历史案例 */}
@@ -105,7 +106,7 @@ class AccountDetail extends Component {
           <LazyLoad once overflow>
             <ContentData {...contentDataProps} />
           </LazyLoad>
-        
+
           {/* 受众画像 */}
           <LazyLoad once overflow>
             <AudienceAttribute accountId={accountId}

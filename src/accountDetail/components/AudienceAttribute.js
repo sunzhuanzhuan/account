@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './AudienceAttribute.less'
 
-import { CharTitle, LandscapeType, Landscape, Histogram, ChinaMap, RingPie } from "./chart";
+import { CharTitle, LandscapeType, Landscape, Histogram, HistogramLine, ChinaMap, RingPie } from "./chart";
 import numeral from 'numeral'
 import ButtonTab from '../base/ButtonTab'
 import { Empty, Progress } from 'antd';
@@ -32,16 +32,23 @@ class AudienceAttribute extends Component {
       <div className='audience-attribute'>
         <div className='title-big'>受众属性<span style={{ fontSize: 13, color: '#999', fontWeight: 'none' }}>（数据取活跃粉丝分布数据）</span></div>
         <div className='audience-attribute-charts'>
-          <div className='flex-between'>
-            <div className='flex1-right-white' >
+          <div className='flex-between  flex1-right-white'>
+            <div className='age-sex-gender' >
               <CharTitle title='年龄分布' />
-              <Landscape data={kolVisitorAgeDrawList} />
+              <HistogramLine data={kolVisitorAgeDrawList}
+                positionConfig='name*tgiValue'
+                height={260}
+                positionIntervalConfig='name*value'
+                lineText='TGL'
+                boxText='占比'
+                boxLeft={40}
+                boxRight={40} />
             </div>
-            <div className='flex1-right-white'>
+            <div className='age-sex-gender'>
               <CharTitle title='性别分布' />
               <RingPie data={kolVisitorGenderDrawList} />
             </div>
-            <div className='flex1-right-white' >
+            <div className='age-sex-gender' >
               <CharTitle title='消费能力分布' />
               <RingPie data={kolVisitorGenderDrawList} />
             </div>
@@ -76,7 +83,7 @@ class AudienceAttribute extends Component {
             positionConfig='name*tgiValue' />
         </div>
 
-        <div className='flex-between flex1-right-white mt20'>
+        <div className='flex-between flex1-right-white mt20 '>
           <div className='flex4'>
             <div className=''>
               <CharTitle title='手机系统分布' />

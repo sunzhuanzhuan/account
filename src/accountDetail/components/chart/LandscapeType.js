@@ -1,16 +1,18 @@
 import React from 'react';
 import { Chart, Geom, Axis, Tooltip, Coord, Label } from 'bizcharts';
 import numeral from 'numeral';
+import { Empty } from 'antd';
 
 // CDN START
 
 class LandscapeType extends React.Component {
   render() {
-    const { data } = this.props
+    const { data = [], height = 600 } = this.props
     const cols = {};
     return (
-      <div>
-        <Chart height={600} width={800} data={data} scale={cols} padding={['auto', 100, 'auto']}>
+      data.length > 0 ? <div>
+        <Chart height={height} data={data} scale={cols}
+          padding={['auto', 100, 'auto']}>
           <Coord transpose />
           <Axis name="name" />
           <Axis name="value" visible={false} />
@@ -20,7 +22,7 @@ class LandscapeType extends React.Component {
             <Label content={['name*value', (name, value) => numeral(value || 0).format('0.0%')]} />{' '}
           </Geom>
         </Chart>
-      </div>
+      </div> : <Empty style={{ height: height + 18, paddingTop: height / 2 }} />
     );
   }
 }

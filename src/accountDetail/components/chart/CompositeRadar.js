@@ -56,9 +56,9 @@ class CompositeRadar extends Component {
     return (
       <div>
         <Chart
-          height={240}
+          height={220}
           data={dv}
-          padding={[70, 30, 40, 30]}
+          padding={[40, 20, 60]}
           scale={scale}
           forceFit
 
@@ -123,10 +123,9 @@ class CompositeRadar extends Component {
           />
           <Legend name="user"
             marker="circle"
-            position='right-bottom'
+            position='bottom-right'
             data={['环节一', '环节二']}
-            offsetX={-130}
-            offsetY={40} />
+            offsetY={20} />
           <Geom type="line"
             position="name*score"
             tooltip={false}
