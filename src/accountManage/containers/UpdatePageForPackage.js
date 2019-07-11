@@ -194,7 +194,8 @@ class UpdatePageForPackage extends Component {
                 actions={this.props.actions}
                 data={{
                   ...this.props.accountManage,
-                  auth: this.props.auth
+                  auth: this.props.auth,
+                  userConfig: this.props.userConfig
                 }}
                 reload={this.reload}
               />
@@ -238,7 +239,8 @@ class UpdatePageForPackage extends Component {
 const mapStateToProps = (state) => {
   return {
     accountManage: state.accountManageReducer,
-    auth: state.authorizationsReducers.authVisibleList
+    auth: state.authorizationsReducers.authVisibleList,
+    userConfig: state.loginReducer.UserConfigKey,
   }
 }
 
