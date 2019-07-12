@@ -90,7 +90,7 @@ export default class ChildrenList extends React.Component {
               initialValue: initialMoment(item.birthDate),
               rules: [{ required: true, message: '请选择宝宝的生日' }]
             })(
-              <DatePicker allowClear={false} style={{ width: '100%' }} placeholder='请选择生日' disabledDate={date => {
+              <DatePicker allowClear={false} style={{ width: '100%' }} placeholder='请选择宝宝的生日' disabledDate={date => {
                 return date.isBefore(moment().subtract(150, 'y')) || date.isAfter(moment())
               }} />
             )}
