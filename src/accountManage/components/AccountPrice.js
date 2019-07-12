@@ -525,10 +525,13 @@ class PriceTable extends Component {
   }
 
   onChange = (value, index, priceKey) => {
-    const { priceKeys: [, , publicationPriceKey] } = this.props;
+    const { priceKeys: [, , publicationPriceKey], data } = this.props;
+    const {
+      publicationRate,
+    } = data.priceInfo;
     let newValue = this.state.value.map(item => ({ ...item }))
     // 调用价格项计算接口
-    if (priceKey === publicationPriceKey) {
+    if (publicationRate && priceKey === publicationPriceKey) {
       this.calculatePrice(value, index)
     }
     newValue[index][priceKey] = Number(value)
