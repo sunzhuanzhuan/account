@@ -6,12 +6,11 @@ const { TextArea } = Input;
 class StopReasonModal extends React.Component {
 
 	judgeInputLenth = (_, value, callback) => {
-		const trimVal = value.trim();
-		if(trimVal && trimVal.length <= 200) {
+		if(value && value.trim() !== "" && value.length <= 200) {
 			callback();
-		}else if(!trimVal) {
+		}else if(!value || !(value.trim())) {
 			callback('请输入停用原因')
-		}else if(trimVal.length > 200) {
+		}else if(value.length > 200) {
 			callback('停用原因最多可输入200字')
 		}
 	}
@@ -25,7 +24,7 @@ class StopReasonModal extends React.Component {
 	}
 
 	render() {
-		const { onCancel, onOk, form } = this.props;
+		const { onCancel, form } = this.props;
 		const { getFieldDecorator } = form;
 
 		return (
