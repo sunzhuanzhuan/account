@@ -222,6 +222,7 @@ export class NamelessPrice extends Component {
             isEdit
             priceKeys={['costPriceRaw', 'channelPrice', 'publicationPrice']}
             action={this.props.actions.calculatePrice}
+            pid={this.props.pid}
           />
         ) : null
         }
@@ -506,10 +507,15 @@ class PriceTable extends Component {
 
   calculatePrice = (value, index) => {
     const { priceKeys: [, channelPriceKey], action, data } = this.props;
-    const { accountInfo: { accountId } } = data
+    const { accountInfo: { platformId, userId } } = data
+    if(!value){
+      return this.onChange(0, index, channelPriceKey)
+    }
     const hide = message.loading('价格计算中...')
+    let pid = this.props.pid
     action({
-      accountId,
+      platformId: platformId || pid,
+      userId,
       publicationPrice: value
     }).then(({ data }) => {
       const { channelPrice } = data
@@ -522,7 +528,7 @@ class PriceTable extends Component {
     const { priceKeys: [, , publicationPriceKey] } = this.props;
     let newValue = this.state.value.map(item => ({ ...item }))
     // 调用价格项计算接口
-    if (value && priceKey === publicationPriceKey) {
+    if (priceKey === publicationPriceKey) {
       this.calculatePrice(value, index)
     }
     newValue[index][priceKey] = Number(value)
