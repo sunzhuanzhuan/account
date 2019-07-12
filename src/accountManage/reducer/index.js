@@ -23,6 +23,7 @@ import {
 	getUserInvoiceInfo_success,
 	sensitiveWordsFilter_success,
   getPolicyIdAndDiscount_success,
+  getInfoIdsByUserIdAndPlatformId_success,
 	setAddSubmit
 } from '../actions'
 
@@ -140,6 +141,12 @@ export const priceInfo = handleActions({
     }
   },
   [combineActions(getPolicyIdAndDiscount_success)]: (state, action) => {
+    return {
+      ...state,
+      ...action.payload.data
+    }
+  },
+  [combineActions(getInfoIdsByUserIdAndPlatformId_success)]: (state, action) => {
     return {
       ...state,
       ...action.payload.data

@@ -19,6 +19,7 @@ export default {
   getAccountTrinitySkuInfo: '/operator-gateway/trinitySku/v1/getAccountTrinitySkuInfo',
   addOrUpdateAccountTrinitySkuInfo: '/operator-gateway/trinitySku/v1/AddOrUpdateAccountTrinitySkuInfo',
   getPolicyIdAndDiscount: '/operator-gateway/policy/v1/getPolicyIdAndDiscount',
+  getInfoIdsByUserIdAndPlatformId: '/operator-gateway/policy/v1/getInfoIdsByUserIdAndPlatformId',
   calculatePrice: '/operator-gateway/channel/discount/v1/calculate',
 	update: {
 		saveSku: prefix + '/sku/v1/updateSku',

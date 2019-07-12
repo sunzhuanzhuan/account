@@ -118,7 +118,13 @@ class AddPage extends Component {
 			return;
 		}
 		let pid = this.pid = path[path.length - 1]
-		const { getPrimaryAccountInfo, getSkuTypeList, getPlatformInfo,getUserInvoiceInfo } = this.props.actions
+		const {
+      getPrimaryAccountInfo,
+      getSkuTypeList,
+      getPlatformInfo,
+      getUserInvoiceInfo,
+      getInfoIdsByUserIdAndPlatformId
+		} = this.props.actions
 		Promise.all([getPrimaryAccountInfo({
 			userId: userId,
 			platformId: pid
@@ -127,6 +133,7 @@ class AddPage extends Component {
 		})
 		getPlatformInfo({ id: pid })
 		getUserInvoiceInfo({ userIds: userId })
+    getInfoIdsByUserIdAndPlatformId({ userId: userId, platformId: pid })
 	}
 	// 立即添加报价
 	addQuote = () => {
