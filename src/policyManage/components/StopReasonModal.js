@@ -6,11 +6,12 @@ const { TextArea } = Input;
 class StopReasonModal extends React.Component {
 
 	judgeInputLenth = (_, value, callback) => {
-		if(value && value.length <= 200) {
+		const trimVal = value.trim();
+		if(trimVal && trimVal.length <= 200) {
 			callback();
-		}else if(!value) {
+		}else if(!trimVal) {
 			callback('请输入停用原因')
-		}else if(value.length > 200) {
+		}else if(trimVal.length > 200) {
 			callback('停用原因最多可输入200字')
 		}
 	}
