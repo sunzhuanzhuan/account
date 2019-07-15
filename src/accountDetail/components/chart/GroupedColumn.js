@@ -5,68 +5,84 @@ import {
   Geom,
   Axis,
   Tooltip,
-  Region,
+  Coord,
   Label,
   Legend,
   View,
   Guide,
   Shape,
   Facet,
-  Line
+  Util
 } from "bizcharts";
-import DataSet from "@antv/data-set";
+import { formatW } from "../../util";
 
-class Groupedcolumn extends React.Component {
+import DataSet from "@antv/data-set";
+const { Line } = Guide;
+export default class GroupedColumn extends React.Component {
+  getAvgNumber = (data = [], key) => {
+    if (data.length > 0) {
+      return data.reduce((pre, next) => pre + next[key], 0) / data.length;
+    }
+  }
   render() {
     const data = [
       {
-        name: "London",
-        "Jan.": 18.9,
-        "Feb.": 28.8,
-        "Mar.": 39.3,
-        "Apr.": 81.4,
-        May: 47,
-        "Jun.": 20.3,
-        "Jul.": 24,
-        "Aug.": 35.6
+        label: "Monday",
+        series1: 2800,
+        series2: 2260
       },
       {
-        name: "Berlin",
-        "Jan.": 12.4,
-        "Feb.": 23.2,
-        "Mar.": 34.5,
-        "Apr.": 99.7,
-        May: 52.6,
-        "Jun.": 35.5,
-        "Jul.": 37.4,
-        "Aug.": 42.4
+        label: "Tuesday",
+        series1: 1800,
+        series2: 1300
+      },
+      {
+        label: "Wednesday",
+        series1: 950,
+        series2: 900
+      },
+      {
+        label: "Thursday",
+        series1: 500,
+        series2: 390
+      },
+      {
+        label: "Friday",
+        series1: 170,
+        series2: 100
       }
     ];
     const ds = new DataSet();
     const dv = ds.createView().source(data);
     dv.transform({
       type: "fold",
-      fields: ["Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.", "Jul.", "Aug."],
+      fields: ["series1", "series2"],
       // 展开字段集
-      key: "月份",
+      key: "type",
       // key字段
-      value: "月均降雨量" // value字段
+      value: "value" // value字段
     });
+    const scale = {
+      type: { formatter: d => ({ series1: '点赞', series2: '评论' }[d]) },
+    };
     return (
       <div>
-        <Chart height={400} data={dv} forceFit>
-          <Axis name="月份" />
-          <Axis name="月均降雨量" />
-          <Legend />
-          <Tooltip
-            crosshairs={{
-              type: "y"
+        <Chart height={400} data={dv} scale={scale}
+          padding={[40, 80]}
+          forceFit>
+          <Legend position='right-top' />
+          <Coord />
+          <Axis
+            name="label"
+            label={{
+              offset: 12
             }}
           />
+          <Tooltip />
           <Geom
             type="interval"
-            position="月份*月均降雨量"
-            color={"name"}
+            position="label*value"
+            color={"type"}
             adjust={[
               {
                 type: "dodge",
@@ -74,29 +90,34 @@ class Groupedcolumn extends React.Component {
               }
             ]}
           />
-
-          {/* <Guide>
-            <Line
-              top={true} // 指定 guide 是否绘制在 canvas 最上层，默认为 false, 即绘制在最下层
-              start={{ Jan: 12 }} // 辅助线起始位置，值为原始数据值，支持 callback
-              end={{ Jan: 25 }} // 辅助线结束位置，值为原始数据值，支持 callback
-              lineStyle={{
-                stroke: '#999', // 线的颜色
-                lineDash: [0, 2, 2], // 虚线的设置
-                lineWidth: 3 // 线的宽度
-              }} // 图形样式配置
-              text={{
-                position: 'end', // 文本的显示位置
-                content: 'xxx', // 文本的内容
-                // offsetX: { number }, // x 方向的偏移量
-                //offsetY: { number } // y 方向的偏移量
-              }}
-            />
-          </Guide> */}
+          <Guide>
+            <GuideLine content='近30条视频平均评论' middle={this.getAvgNumber(data, 'series1')} />
+            <GuideLine content='近30条视频平均点赞' middle={this.getAvgNumber(data, 'series2')} color='#3AA1FF' />
+          </Guide>
         </Chart>
       </div>
     );
   }
 }
 
-export default Groupedcolumn;
+
+const GuideLine = ({ middle, color = '#2fc25b', content = '平均' }) => {
+  return <Line
+    top
+    start={{ label: "Monday", value: middle }}
+    end={{ label: "Friday", value: middle }}
+    lineStyle={{
+      stroke: color,
+      lineDash: [0, 1, 1],
+      lineWidth: 1,
+    }}
+    text={{
+      position: 'end',
+      style: {
+        fill: color,
+      },
+      content: content,
+    }}
+  />
+
+}
