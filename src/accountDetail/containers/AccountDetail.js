@@ -92,7 +92,11 @@ class AccountDetail extends Component {
     return (
       <div className="account-view-detail" id='Js-account-view-detail-Id'>
         <Spin spinning={isLoading}>
-          {/* <BaseInfo selectCarEdit={this.selectCarEdit} isExistCar={isExistCar} /> */}
+          <BaseInfo selectCarEdit={this.selectCarEdit}
+            setShowModal={this.setShowModal}
+            isExistCar={isExistCar}
+            baseInfo={baseInfo}
+          />
           {/* 头部基础信息 */}
           <HeadInfo setShowModal={this.setShowModal} baseInfo={baseInfo} selectCarEdit={this.selectCarEdit} isExistCar={isExistCar} accountDetail={accountDetail} actions={actions} />
 
