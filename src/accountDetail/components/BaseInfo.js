@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Avatar, Button, Icon } from "antd";
 import './BaseInfo.less'
 import { WBYPlatformIcon } from "wbyui"
+import numeralExpand from '../../util/numeralExpand'
 import { platformView } from "../../accountManage/constants/platform";
 class BaseInfo extends Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class BaseInfo extends Component {
                   weibo_type={platformId}
                   widthSize={16}
                 /> </span>{snsName}</div>
-              <div className='fans'>粉丝数：{followerCount}</div>
+              <div className='fans'>粉丝数：{followerCount ? numeralExpand(followerCount).format('0aw') : '-'}</div>
             </div>
           </div>
           <div className='floating-base-info-flex'>

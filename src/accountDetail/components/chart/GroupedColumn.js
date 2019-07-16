@@ -107,7 +107,7 @@ export default class GroupedColumn extends React.Component {
           <Geom
             type="point"
             position="label*series1"
-            size={50}
+            size={40}
             shape={[
               "label",
               function (name) {
