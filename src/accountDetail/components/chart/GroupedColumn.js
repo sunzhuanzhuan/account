@@ -15,7 +15,7 @@ import {
   Util
 } from "bizcharts";
 import { formatW } from "../../util";
-
+import './GroupedColumn.less'
 import DataSet from "@antv/data-set";
 const { Line } = Guide;
 export default class GroupedColumn extends React.Component {
@@ -65,18 +65,32 @@ export default class GroupedColumn extends React.Component {
     const scale = {
       type: { formatter: d => ({ series1: '点赞', series2: '评论' }[d]) },
     };
+    var imageMap = {
+      Wednesday: require("../img/fire.png"),
+    };
     return (
       <div>
+        <div className='legend-customize'>
+          <div>
+            <div className='block-legend fire'></div>
+            <div>最火视频</div>
+          </div>
+          <div>
+            <div className='block-legend blue'></div>
+            <div>点赞</div>
+          </div>
+          <div>
+            <div className='block-legend green'></div>
+            <div>评论</div>
+          </div>
+        </div>
         <Chart height={400} data={dv} scale={scale}
           padding={[40, 80]}
           forceFit>
-          <Legend position='right-top' />
           <Coord />
-          <Axis
-            name="label"
-            label={{
-              offset: 12
-            }}
+          <Axis name="label" label={{
+            offset: 12
+          }}
           />
           <Tooltip />
           <Geom
@@ -90,9 +104,21 @@ export default class GroupedColumn extends React.Component {
               }
             ]}
           />
+          <Geom
+            type="point"
+            position="label*series1"
+            size={50}
+            shape={[
+              "label",
+              function (name) {
+                return ["image", imageMap[name]];
+              }
+            ]}
+          />
           <Guide>
             <GuideLine content='近30条视频平均评论' middle={this.getAvgNumber(data, 'series1')} />
             <GuideLine content='近30条视频平均点赞' middle={this.getAvgNumber(data, 'series2')} color='#3AA1FF' />
+
           </Guide>
         </Chart>
       </div>
