@@ -36,7 +36,7 @@ class Histogram extends React.Component {
           data={data}
           scale={scale}
           forceFit
-          padding={[50, 80]}
+          padding={[80, 100]}
         >
           <Axis name="sales" />
           <Axis name="name" visible={true} />
