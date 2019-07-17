@@ -14,6 +14,9 @@ import {
   Facet,
   Util
 } from "bizcharts";
+import {
+  g2Tooltip, getMinNumber, getMaxNumber
+} from "./config";
 import { formatW } from "../../util";
 import './GroupedColumn.less'
 import DataSet from "@antv/data-set";
@@ -28,28 +31,28 @@ export default class GroupedColumn extends React.Component {
     const data = [
       {
         label: "Monday",
-        series1: 2800,
-        series2: 2260
+        series1: 12800,
+        series2: 12260
       },
       {
         label: "Tuesday",
-        series1: 1800,
-        series2: 1300
+        series1: 11800,
+        series2: 11300
       },
       {
         label: "Wednesday",
-        series1: 950,
-        series2: 900
+        series1: 14950,
+        series2: 13900
       },
       {
         label: "Thursday",
-        series1: 500,
-        series2: 390
+        series1: 14500,
+        series2: 10390
       },
       {
         label: "Friday",
-        series1: 170,
-        series2: 100
+        series1: 10170,
+        series2: 10100
       }
     ];
     const ds = new DataSet();
@@ -60,10 +63,22 @@ export default class GroupedColumn extends React.Component {
       // 展开字段集
       key: "type",
       // key字段
-      value: "value" // value字段
+      value: "value", // value字段
+      callback: obj => {
+        obj.value = [obj.series1, obj.series2];
+        return obj;
+      }
     });
     const scale = {
       type: { formatter: d => ({ series1: '点赞', series2: '评论' }[d]) },
+      value: {
+        min: getMinNumber('series1', data) > getMinNumber('series2', data) ? getMinNumber('series2', data) : getMinNumber('series1', data),
+        max: getMaxNumber('series1', data) > getMaxNumber('series2', data) ? getMaxNumber('series1', data) : getMaxNumber('series2', data),
+        formatter: val => {
+          return formatW(val);
+        }
+      }
+
     };
     var imageMap = {
       Wednesday: require("../img/fire.png"),
@@ -85,18 +100,19 @@ export default class GroupedColumn extends React.Component {
           </div>
         </div>
         <Chart height={400} data={dv} scale={scale}
-          padding={[40, 80]}
+          padding={60}
           forceFit>
           <Coord />
           <Axis name="label" label={{
             offset: 12
           }}
           />
-          <Tooltip />
+          <Axis name="value" />
+          <Tooltip g2-tooltip={g2Tooltip} />
           <Geom
             type="interval"
             position="label*value"
-            color={"type"}
+            color={'type'}
             adjust={[
               {
                 type: "dodge",
@@ -106,15 +122,19 @@ export default class GroupedColumn extends React.Component {
           />
           <Geom
             type="point"
-            position="label*series1"
+            position="label*value"
             size={40}
             shape={[
-              "label",
-              function (name) {
-                return ["image", imageMap[name]];
+              ['label', 'type'],
+              function (name, type) {
+                if (type == 'series1') {
+                  return ["image", imageMap[name]];
+                }
+                return ['image', null];
               }
             ]}
           />
+
           <Guide>
             <GuideLine content='近30条视频平均评论' middle={this.getAvgNumber(data, 'series1')} />
             <GuideLine content='近30条视频平均点赞' middle={this.getAvgNumber(data, 'series2')} color='#3AA1FF' />

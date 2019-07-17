@@ -17,6 +17,11 @@ import {
 import DataSet from "@antv/data-set";
 import numeral from 'numeral'
 import { Empty } from "antd";
+import {
+  blueColor,
+  greenColor,
+  pinkColor
+} from "./config";
 
 
 
@@ -49,7 +54,7 @@ class RingPie extends React.Component {
           padding={[80, 100, 50, 50]}
           forceFit
         >
-          <Coord type={"theta"} radius={1} innerRadius={0.8} />
+          <Coord type={"theta"} radius={1} innerRadius={0.85} />
           <Axis name="percent" />
           <Legend
             position="right-top"
@@ -71,7 +76,7 @@ class RingPie extends React.Component {
           <Geom
             type="intervalStack"
             position="percent"
-            color="name"
+            color={['name', [pinkColor, blueColor, greenColor]]}
             tooltip={[
               "name*percent",
               (item, percent) => {

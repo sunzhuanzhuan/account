@@ -8,6 +8,8 @@ import {
 import DataSet from "@antv/data-set";
 import { g2Tooltip, } from "./config";
 import { Empty } from 'antd';
+import { formatW } from "../../util";
+import './CompositeRadar.less'
 
 class DataBox extends Component {
   render() {
@@ -46,7 +48,12 @@ class DataBox extends Component {
           forceFit
         >
           <Axis name="x" />
-          <Axis name="range" />
+          <Axis name="range" label={{
+            formatter(text, item, index) {
+              let arr = text.split(' ');
+              return `${formatW(arr[0])}`;
+            }
+          }} />
           <Tooltip
             showTitle={false}
             g2-tooltip={g2Tooltip}
@@ -57,7 +64,29 @@ class DataBox extends Component {
                 fillOpacity: 0.43
               }
             }}
-            itemTpl="<li data-index={index} style=&quot;margin-bottom:4px;&quot;><span style=&quot;background-color:{color};&quot; class=&quot;g2-tooltip-marker&quot;></span>{name}<br/><span style=&quot;padding-left: 16px&quot;>最大值：{high}</span><br/><span style=&quot;padding-left: 16px&quot;>上四分位数：{q3}</span><br/><span style=&quot;padding-left: 16px&quot;>中位数：{median}</span><br/><span style=&quot;padding-left: 16px&quot;>下四分位数：{q1}</span><br/><span style=&quot;padding-left: 16px&quot;>最小值：{low}</span><br/></li>"
+            htmlContent={function (title, items) {
+              const { name, high, q3, median, q1, low } = items && items[0]
+              return `<div class='custom-tooltip' style='width:160px;padding:10px'>
+              <li data-index={index} style=&quot;margin-bottom:2px;&quot;>
+              ${name}<br/>
+              <span style=&quot;padding-left: 16px&quot;>
+                最大值：${formatW(high)}
+              </span><br/>
+              <span style=&quot;padding-left: 16px&quot;>
+                上四分位数：${formatW(q3)}
+              </span><br/>
+              <span style=&quot;padding-left: 16px&quot;>
+                中位数：${formatW(median)}</span>
+              <br/>
+              <span style=&quot;padding-left: 16px&quot;>
+                下四分位数：${formatW(q1)}
+              </span><br/>
+              <span style=&quot;padding-left: 16px&quot;>
+                最小值：${formatW(low)}
+              </span><br/>
+              </li></div>`
+            }}
+
           />
 
           <Geom
