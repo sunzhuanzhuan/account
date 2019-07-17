@@ -42,7 +42,8 @@ export default class PriceInput extends Component {
 	}
 
 	render() {
-		const { value = '', isEdit = false, ...others } = this.props;
+		let { value = '', isEdit = false, ...others } = this.props;
+		value =  value || ''
 		const [_title, _content] = formatNumber(value)
 		const title = value ? (
 			<span className="price-bold-unit">

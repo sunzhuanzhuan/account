@@ -235,3 +235,22 @@ export const {
 } = createHttpAction('addCustomClassify', Interface.classify.addCustomClassify, {
   method: 'post'
 })
+
+
+/**
+ * 获取政策ID和渠道折扣
+ */
+export const {
+  getPolicyIdAndDiscount,
+  getPolicyIdAndDiscount_success,
+} = createHttpAction('getPolicyIdAndDiscount', Interface.getPolicyIdAndDiscount)
+export const {
+  getInfoIdsByUserIdAndPlatformId,
+  getInfoIdsByUserIdAndPlatformId_success,
+} = createHttpAction('getInfoIdsByUserIdAndPlatformId', Interface.getInfoIdsByUserIdAndPlatformId)
+// 计算刊例价
+export const {
+  calculatePrice,
+} = createHttpAction('calculatePrice', Interface.calculatePrice, {
+  method: 'post'
+})

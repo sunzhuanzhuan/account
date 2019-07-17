@@ -46,13 +46,10 @@ class AddPage extends Component {
 		addQuoteData: {}
 	}
 	handlePrice = (price_now, moreKeys = {}) => {
-		let { accountManage: { priceTypeList = [] } } = this.props;
-		return priceTypeList.map(item => {
-			let obj = { ...item, ...moreKeys}
-			let key = obj['skuTypeId']
-			obj['costPriceRaw'] = price_now[key]
-			delete obj['skuTypeName']
-			return obj
+		return price_now.map(item => {
+      item = { ...item, ...moreKeys}
+			delete item['skuTypeName']
+			return item
 		})
 	}
 	handleSubmit = (e) => {
@@ -121,7 +118,13 @@ class AddPage extends Component {
 			return;
 		}
 		let pid = this.pid = path[path.length - 1]
-		const { getPrimaryAccountInfo, getSkuTypeList, getPlatformInfo,getUserInvoiceInfo } = this.props.actions
+		const {
+      getPrimaryAccountInfo,
+      getSkuTypeList,
+      getPlatformInfo,
+      getUserInvoiceInfo,
+      getInfoIdsByUserIdAndPlatformId
+		} = this.props.actions
 		Promise.all([getPrimaryAccountInfo({
 			userId: userId,
 			platformId: pid
@@ -130,6 +133,7 @@ class AddPage extends Component {
 		})
 		getPlatformInfo({ id: pid })
 		getUserInvoiceInfo({ userIds: userId })
+    getInfoIdsByUserIdAndPlatformId({ userId: userId, platformId: pid })
 	}
 	// 立即添加报价
 	addQuote = () => {
