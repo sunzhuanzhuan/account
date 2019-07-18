@@ -80,7 +80,7 @@ export default class CooperationView extends Component {
             <div className='subclass-content'>
               <div className="view-fields-container">
                 {
-                  (isAcceptHardAd === 2 || isAcceptProductUse ===2 || refuseBrands.length || manuscriptModificationLimit || manuscriptModificationLimit === 0 || videoShotAreaType) ?
+                  (isAcceptHardAd === 2 || isAcceptProductUse ===2 || refuseBrands.length || manuscriptModificationLimit || manuscriptModificationLimit === 0 || videoShotAreaType || liveAreaType) ?
                     <div className='right-wrap'>
                       {(asyncVisibility.isAcceptHardAd || asyncVisibility.isAcceptProductUse) &&
                       <FieldView width={130} title="拒绝项" value={
@@ -179,7 +179,7 @@ export default class CooperationView extends Component {
                         <div>
                           <span style={{ marginRight: '8px' }}>{supportMultiPlatformOriginalPost === 1 ? '可分发' : '不可分发'}</span>
                           {
-                            supportMultiPlatformOriginalPost === 2 && postPlatforms.map(item =>
+                            supportMultiPlatformOriginalPost === 1 && postPlatforms.map(item =>
                               <Tag key={item.id}>{item.platformName}</Tag>)
                           }
                         </div>
