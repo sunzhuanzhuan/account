@@ -80,7 +80,7 @@ export default class CooperationView extends Component {
             <div className='subclass-content'>
               <div className="view-fields-container">
                 {
-                  (isAcceptHardAd === 2 || isAcceptProductUse ===2 || refuseBrands.length || manuscriptModificationLimit || videoShotAreaType) ?
+                  (isAcceptHardAd === 2 || isAcceptProductUse ===2 || refuseBrands.length || manuscriptModificationLimit || manuscriptModificationLimit === 0 || videoShotAreaType) ?
                     <div className='right-wrap'>
                       {(asyncVisibility.isAcceptHardAd || asyncVisibility.isAcceptProductUse) &&
                       <FieldView width={130} title="拒绝项" value={

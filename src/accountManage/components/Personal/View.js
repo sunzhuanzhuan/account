@@ -163,6 +163,6 @@ export default class PersonalView extends Component {
           </li>
         </ul>
       </div> :
-      <EmptyModule title={configureModule.title} desc={'您的信息完善将提升您的曝光率，更利于账号的接单转化率提升哦~'} />
+      <EmptyModule title={configureModule.title} desc={'您的信息完善将提升您的曝光率，更利于账号的接单转化率提升哦~'} onChange={onModuleStatusChange}/>
   }
 }
