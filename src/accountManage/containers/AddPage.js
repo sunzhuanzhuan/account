@@ -48,6 +48,9 @@ class AddPage extends Component {
 	handlePrice = (price_now, moreKeys = {}) => {
 		return price_now.map(item => {
       item = { ...item, ...moreKeys}
+      item.channelPrice = item.channelPrice || 0
+      item.costPriceRaw = item.costPriceRaw || 0
+      item.publicationPrice = item.publicationPrice || 0
 			delete item['skuTypeName']
 			return item
 		})
