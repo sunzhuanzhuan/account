@@ -999,7 +999,7 @@ export const LiveArea = (props) => {
       )}
       {getFieldValue('cooperation.liveAreaType') === 3 && <div>
         <FormItem {...layout.full}>
-          {getFieldDecorator('cooperation.liveAreas', {
+          {getFieldDecorator('cooperation.liveAreaIds', {
             rules: [{ required: true, message: '请选择视频拍摄地点' }],
             initialValue: liveAreas.map(area => area.id || area)
           })(

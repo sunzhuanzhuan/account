@@ -179,7 +179,7 @@ export default class CooperationView extends Component {
                         <div>
                           <span style={{ marginRight: '8px' }}>{supportMultiPlatformOriginalPost === 1 ? '可分发' : '不可分发'}</span>
                           {
-                            postPlatforms.map(item =>
+                            supportMultiPlatformOriginalPost === 2 && postPlatforms.map(item =>
                               <Tag key={item.id}>{item.platformName}</Tag>)
                           }
                         </div>
