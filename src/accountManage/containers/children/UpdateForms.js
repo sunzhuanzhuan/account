@@ -204,6 +204,9 @@ export class AccountPriceForm extends Component {
     return price_now.map((item,index) => {
       let obj = { ...item };
       let nextPrice = price_next[index] || {}
+      obj.channelPrice = obj.channelPrice || 0
+      obj.costPriceRaw = obj.costPriceRaw || 0
+      obj.publicationPrice = obj.publicationPrice || 0
       obj.nextCostPriceRaw = nextPrice.nextCostPriceRaw || 0;
       obj.nextChannelPrice = nextPrice.nextChannelPrice || 0;
       obj.nextPublicationPrice = nextPrice.nextPublicationPrice || 0;
