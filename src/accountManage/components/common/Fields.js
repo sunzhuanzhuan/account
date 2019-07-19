@@ -2430,7 +2430,7 @@ export const TrinityConfigAndPrice = (props) => {
                           {sku.publicCostPriceMaintainedTime || '--'}
                         </td>
                         <td>
-                          {sku.publicCostPriceFrom === 2 ? '系统' : sku.modifiedName}
+                          {sku.publicCostPriceFrom === 2 ? '系统' : (sku.modifiedName || '--')}
                         </td>
                         {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].trinitySkuTypeId`, {
                           initialValue: sku.trinitySkuTypeId
