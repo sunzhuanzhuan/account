@@ -13,6 +13,8 @@ import { Fans } from '../../../components/Fans'
 import { WrapPanel } from '../../../components/index'
 import { NamelessPrice } from "../../../components/AccountPrice";
 import { OnSaleInfoForAdd } from "../../../components/OnSaleInfo";
+import { Alert } from "antd";
+import numeral from "@/util/numeralExpand";
 
 export default class AddChild extends Component {
   static contextTypes = {
@@ -29,8 +31,9 @@ export default class AddChild extends Component {
   render() {
     const { params, form, platformDiff } = this.props
     const { refresh } = this.context
-    let { data: { priceTypeList = [], accountInfo } } = params;
+    let { data: { priceTypeList = [], accountInfo, priceInfo } } = params;
     const { platformName, platformIcon } = accountInfo
+    const { publicationRate } = priceInfo
     params.refresh = refresh
     //price_item_list
     const priceKeys = priceTypeList.map(({ skuTypeId, skuTypeName }) => ({
@@ -64,7 +67,8 @@ export default class AddChild extends Component {
         <OnSaleInfoForAdd {...params} />
       </WrapPanel>
       <WrapPanel header='账号报价' navId='priceInfos'>
-        <NamelessPrice {...params} {...form} priceKeys={priceKeys}>
+        {publicationRate && <Alert message={`渠道价默认为刊例价的${numeral(publicationRate).format('0%')}`} />}
+        <NamelessPrice {...params} {...form} priceKeys={priceKeys} priceList={priceTypeList}>
           <Orderable {...params} {...form} />
         </NamelessPrice>
       </WrapPanel>

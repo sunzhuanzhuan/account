@@ -21,6 +21,9 @@ export default {
   sensitiveWordsFilter: oldPreFix + '/sensitiveWordsFilter',
   getAccountTrinitySkuInfo: prefix + '/trinitySku/v1/getAccountTrinitySkuInfo',
   addOrUpdateAccountTrinitySkuInfo: prefix + '/trinitySku/v1/AddOrUpdateAccountTrinitySkuInfo',
+  getPolicyIdAndDiscount: prefix + '/policy/v1/getPolicyIdAndDiscount',
+  getInfoIdsByUserIdAndPlatformId: prefix + '/policy/v1/getInfoIdsByUserIdAndPlatformId',
+  calculatePrice: prefix + '/channel/discount/v1/calculate',
   update: {
     saveSku: prefix + '/sku/v1/updateSku',
     accountBase: prefix + '/account/v1/updateBase',

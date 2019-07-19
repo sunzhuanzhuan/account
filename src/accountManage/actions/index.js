@@ -5,11 +5,11 @@ import { createAction } from 'redux-actions'
 /**
  * 获取账号信息
  */
-  // 获取平台信息(图标, 名称)
+// 获取平台信息(图标, 名称)
 export const {
-    getPlatformInfo,
-    getPlatformInfo_success
-  } = createHttpAction('getPlatformInfo', Interface.common.platform);
+  getPlatformInfo,
+  getPlatformInfo_success
+} = createHttpAction('getPlatformInfo', Interface.common.platform);
 
 
 // 获取账号基本信息
@@ -155,12 +155,12 @@ export const {
 /**
  * 更新账号信息 - new
  */
-  // 基础信息
+// 基础信息
 export const {
-    updateAccountBase
-  } = createHttpAction('updateAccountBase', Interface.update.accountBase, {
-    method: 'post'
-  });
+  updateAccountBase
+} = createHttpAction('updateAccountBase', Interface.update.accountBase, {
+  method: 'post'
+});
 // 粉丝信息
 export const {
   updateAccountFans
@@ -213,10 +213,10 @@ export const {
 /**
  * 内容分类反馈
  */
-  // 判断当前账号是否有内容分类反馈信息
+// 判断当前账号是否有内容分类反馈信息
 export const {
-    isExistClassify
-  } = createHttpAction('isExistClassify', Interface.classify.isExistClassify)
+  isExistClassify
+} = createHttpAction('isExistClassify', Interface.classify.isExistClassify)
 
 // 查看分类反馈进度
 export const {
@@ -238,4 +238,22 @@ export const {
 // 维护 - 清除账号数据
 export const clearAccountInfo = createAction('clearAccountInfo', () => {
   return null
+})
+
+/**
+ * 获取政策ID和渠道折扣
+ */
+export const {
+  getPolicyIdAndDiscount,
+  getPolicyIdAndDiscount_success,
+} = createHttpAction('getPolicyIdAndDiscount', Interface.getPolicyIdAndDiscount)
+export const {
+  getInfoIdsByUserIdAndPlatformId,
+  getInfoIdsByUserIdAndPlatformId_success,
+} = createHttpAction('getInfoIdsByUserIdAndPlatformId', Interface.getInfoIdsByUserIdAndPlatformId)
+// 计算刊例价
+export const {
+  calculatePrice,
+} = createHttpAction('calculatePrice', Interface.calculatePrice, {
+  method: 'post'
 })

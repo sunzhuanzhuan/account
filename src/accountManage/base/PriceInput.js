@@ -42,7 +42,8 @@ export default class PriceInput extends Component {
   }
 
   render() {
-    const { value = '', isEdit = false, ...others } = this.props;
+    let { value = '', isEdit = false, ...others } = this.props;
+    value = value || ''
     const [_title, _content] = formatNumber(value)
     const title = value ? (
       <span className="price-bold-unit">
@@ -53,28 +54,28 @@ export default class PriceInput extends Component {
         {value !== '-' ? _content : '-'}
       </span>) : '请输入价格';
     return (isEdit ?
-        <Popover
-          trigger={['focus']}
-          title={title}
-          content={content}
-          placement="topLeft"
-          overlayClassName="price-bold-input"
-          getPopupContainer={() => document.querySelector('.price_scroll_container') || document.querySelector('#account-manage-container')}
-        >
-          <Input
-            value={value}
-            {...others}
-            onChange={this.onChange}
-            onBlur={this.onBlur}
-            placeholder="请输入价格"
-            maxLength={8}
-          />
-        </Popover> : <p style={{
-          textAlign: 'center',
-          margin: "0",
-          fontWeight: '500',
-          color: '#333'
-        }}>{value || '-'}</p>
+      <Popover
+        trigger={['focus']}
+        title={title}
+        content={content}
+        placement="topLeft"
+        overlayClassName="price-bold-input"
+        getPopupContainer={() => document.querySelector('.price_scroll_container') || document.querySelector('#account-manage-container')}
+      >
+        <Input
+          value={value}
+          {...others}
+          onChange={this.onChange}
+          onBlur={this.onBlur}
+          placeholder="请输入价格"
+          maxLength={8}
+        />
+      </Popover> : <p style={{
+        textAlign: 'center',
+        margin: "0",
+        fontWeight: '500',
+        color: '#333'
+      }}>{value || '-'}</p>
     );
   }
 }

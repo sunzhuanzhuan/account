@@ -14,9 +14,18 @@ const scrollConf = {
 @scroll(scrollConf)
 export default class AddPageCommonContainer extends Component {
   render() {
-    const { data: { accountInfo }, submitLoading } = this.props.params
+    const { data: { accountInfo, priceInfo }, submitLoading } = this.props.params
+    const {
+      policyInfoId
+    } = priceInfo;
     return <div className='account-info-container add-page'>
-      <h2>账号入库</h2>
+      <h2>
+        账号入库
+      {policyInfoId ?
+          <small className='policyInfo-id-display'>
+            价格政策ID: <a target='_blank' href={"/account/policy?id=" + policyInfoId}>{policyInfoId}</a></small>
+          : null}
+      </h2>
       <div>
         <WrapPanel header='主账号信息' navId='mainAccountInfos'>
           <MainAccountInfos accountInfo={accountInfo} />

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button, message, Divider, Modal } from 'antd';
+import { Form, Button, message, Divider, Modal, Alert } from 'antd';
 import { WrapPanel, WrapPanelForm } from '../../components';
 import AffixNav from '../../components/AffixNav';
 import MainAccountInfos from '../../components/MainAccountInfos';
@@ -20,6 +20,7 @@ import { OtherInfo } from '@/accountManage/components/OtherInfo';
 import { FetchInfo } from '@/accountManage/components/FetchInfo';
 import { uploadUrl, checkVal } from '../../util';
 import { sensors } from '@/util/sensor/sensors'
+import numeral from '@/util/numeralExpand'
 
 const FetchHead = (<span>信息自动抓取</span>);
 const confirm = Modal.confirm;
@@ -199,12 +200,16 @@ export class BaseInfoForm extends Component {
  */
 @Form.create()
 export class AccountPriceForm extends Component {
-  handlePrice = (skuList, price_now = {}, price_next = {}) => {
-    return skuList.map(item => {
+  handlePrice = (skuList, price_now = [], price_next = []) => {
+    return price_now.map((item,index) => {
       let obj = { ...item };
-      let key = obj['skuTypeId'];
-      obj.costPriceRaw = price_now[key] || 0;
-      obj.nextCostPriceRaw = price_next[key] || 0;
+      let nextPrice = price_next[index] || {}
+      obj.channelPrice = obj.channelPrice || 0
+      obj.costPriceRaw = obj.costPriceRaw || 0
+      obj.publicationPrice = obj.publicationPrice || 0
+      obj.nextCostPriceRaw = nextPrice.nextCostPriceRaw || 0;
+      obj.nextChannelPrice = nextPrice.nextChannelPrice || 0;
+      obj.nextPublicationPrice = nextPrice.nextPublicationPrice || 0;
       return obj;
     });
   };
@@ -269,7 +274,8 @@ export class AccountPriceForm extends Component {
     } = accountInfo;
     const {
       skuList,
-      modifiedAt
+      modifiedAt,
+      publicationRate,
     } = priceInfo;
     const priceKeys = skuList ? skuList.map(({ skuTypeId, skuTypeName }) => ({
       key: skuTypeId, name: skuTypeName
@@ -282,6 +288,7 @@ export class AccountPriceForm extends Component {
     </div>;
     return <Form>
       <WrapPanel header='账号报价' right={rightC}>
+        {publicationRate && <Alert message={`渠道价默认为刊例价的${numeral(publicationRate).format('0%')}`}/>}
         {_isFamous ?
           <FamousPrice {...params} {...form} priceKeys={priceKeys}>
             {diff.priceInclude ? <PriceInclude  {...params} {...form} /> :
@@ -289,7 +296,7 @@ export class AccountPriceForm extends Component {
             <OrderStrategy {...params} {...form} />
           </FamousPrice>
           :
-          <NamelessPrice isUpdate={true} {...params} {...form} priceKeys={priceKeys}>
+          <NamelessPrice isUpdate={true} {...params} {...form} priceList={skuList}>
             {diff.referencePrice ? <ReferencePrice  {...params} {...form} /> :
               <i style={{ display: 'none' }} />}
             <OrderStrategy {...params} {...form} />

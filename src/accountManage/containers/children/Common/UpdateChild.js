@@ -85,9 +85,21 @@ export default class UpdateChild extends Component {
     })
   }
 
+  getPolicyIdAndDiscount = () => {
+    const { params } = this.props
+    const { actions: { getPolicyIdAndDiscount }, data: { accountInfo } } = params
+    const {
+      accountId,
+    } = accountInfo
+    return getPolicyIdAndDiscount({
+      accountId,
+    })
+  }
+
   componentWillMount() {
     this.getSkuActions()
     this.getTrinitySkuActions()
+    this.getPolicyIdAndDiscount()
   }
 
   render() {
