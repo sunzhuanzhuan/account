@@ -118,6 +118,7 @@ class UpdatePageForPackage extends Component {
       if (userId) {
         actions.getPrimaryAccountInfo({ userId })
         actions.getUserInvoiceInfo({ userIds: userId })
+        actions.getPolicyIdAndDiscount({ accountId: data.id })
       }
       this.setState({
         fullLoading: false
@@ -138,7 +139,7 @@ class UpdatePageForPackage extends Component {
       submitLoading
     } = this.state
     const activeTab = tabs[active - 1] || {}
-    const { account: { perfectionDegree, base } } = this.props.accountManage
+    const { account: { perfectionDegree, base }, priceInfo } = this.props.accountManage
     const platform = platformToModules(base.platformId || this.state.platformId, activeTab.warp || [])
     const modulesList = platform.visibility.modules
     const statisticsProps = {
@@ -155,8 +156,15 @@ class UpdatePageForPackage extends Component {
       window.location.replace(_url)
       return null
     }
+    const { policyInfoId } = priceInfo;
     return (!fullLoading && !isError) ? <div className='update-package-page-container'>
-      <h2>账号维护</h2>
+      <h2>
+        账号维护
+        {policyInfoId ?
+          <small className='policyInfo-id-display'>
+            价格政策ID: <a target='_blank' href={"/account/policy?id=" + policyInfoId}>{policyInfoId}</a></small>
+          : null}
+      </h2>
       {process.env.REACT_APP_CLIENT === 'NB' && <Tabs
         activeKey={active}
         animated={{ inkBar: true, tabPane: false }}
