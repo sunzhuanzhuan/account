@@ -237,7 +237,7 @@ export class NamelessPrice extends Component {
             action={this.props.actions.calculatePrice}
             pid={this.props.pid}
           />
-          ) : null}
+        ) : null}
         <AccountPriceHelp />
       </FormItem>
       {isUpdate ? <NamelessStatus {...{
@@ -271,7 +271,7 @@ export class FamousPrice extends Component {
   checkDateAndPrice = (rule, value, callback) => {
     const { getFieldValue, setFields } = this.props;
     let price = getFieldValue('price_next') || {};
-    if (Object.values(price).filter(Boolean).length) {
+    if (price.some(item => item.nextCostPriceRaw)) {
       if (!value) {
         return callback('请填写下期有效期结束时间');
       }
@@ -292,7 +292,7 @@ export class FamousPrice extends Component {
   checkPriceAndDate = (rule, value, callback) => {
     const { getFieldValue, setFields } = this.props;
     let date = getFieldValue('nextPriceValidTo');
-    let flag = Object.values(value).filter(Boolean).length > 0;
+    let flag = value.some(item => item.nextCostPriceRaw);
     if (date) {
       if (!flag) {
         return callback('报价项最少填写一项');
@@ -428,7 +428,7 @@ export class FamousPrice extends Component {
       </FormItem>
       <FormItem {...layout.full} label='账号报价'>
         {getFieldDecorator('price_next', {
-          initialValue: nextVal,
+          initialValue: skuList,
           validateFirst: true,
           rules: [{
             required: require,
@@ -515,8 +515,8 @@ class PriceTable extends Component {
 
   calculatePrice = (value, index) => {
     const { priceKeys: [, channelPriceKey], action, data } = this.props;
-    const { accountInfo: { platformId, userId } } = data
-    if(!value){
+    const { base: { platformId, userId } } = data.account
+    if (!value) {
       return this.onChange(0, index, channelPriceKey)
     }
     const hide = message.loading('价格计算中...')
@@ -535,7 +535,7 @@ class PriceTable extends Component {
   onChange = (value, index, priceKey) => {
     const { priceKeys: [, , publicationPriceKey], data } = this.props;
     const {
-      publicationRate,
+      publicationRate
     } = data.priceInfo;
     let newValue = this.state.value.map(item => ({ ...item }))
     // 调用价格项计算接口
