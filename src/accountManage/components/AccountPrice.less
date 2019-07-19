@@ -1,5 +1,6 @@
+@import "../../indexNbTheme";
 .price-table {
-  width: 500px;
+  //width: 500px;
   background: #f8f8f8;
   border-radius: 3px;
   overflow: hidden;
@@ -21,6 +22,15 @@
 
   .price-table-input {
     margin: 0 10px;
+    &.no-error {
+      .ant-input, .ant-input:hover {
+        border-color: #d9d9d9;
+      }
+      .ant-input:focus {
+        border-color: @primary-color;
+        box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+      }
+    }
   }
 }
 

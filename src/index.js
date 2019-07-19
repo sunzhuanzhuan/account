@@ -16,6 +16,8 @@ import 'numeral/locales/chs';
 import App from './containers/App';
 import AccountManage from './accountManage';
 import AccountDetail from './accountDetail';
+import PolicyManage from './policyManage/containers/PolicyManage';
+import ChannelDiscount from './policyManage/containers/ChannelDiscount';
 
 import { linkTo } from '@/util/linkTo';
 // 设置语言包
@@ -33,6 +35,8 @@ const routes = () => (
     <Switch>
       <Route path="/account/manage" component={AccountManage} />
       <Route path="/account/view" component={AccountDetail} />
+      <Route path="/account/policy" component={PolicyManage} />
+      <Route path="/account/discount" component={ChannelDiscount} />
       <Route render={() => linkTo('/error')} />
     </Switch>
   </App>

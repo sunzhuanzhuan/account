@@ -1930,7 +1930,7 @@ export const Area = (props) => {
       {getFieldDecorator('personalInfo.area', {
         initialValue: area
       })(
-        <LazyAreaOptions level={3} disabled={areaIdFrom === 2} placeholder="请选择您所处常住地" />
+        <LazyAreaOptions level={3} placeholder="请选择您所处常住地" />
       )}
     </FormItem>
     {getFieldDecorator('personalInfo.areaIdFrom', { initialValue: areaIdFrom })(

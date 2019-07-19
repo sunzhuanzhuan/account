@@ -3,7 +3,7 @@
  */
 import React, { Component } from "react"
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
-import { Button, Form, message, Modal } from "antd";
+import { Alert, Button, Form, message, Modal } from "antd";
 import { FamousPrice, NamelessPrice } from "../common/AccountPrice";
 import {
   IsAcceptHardAd,
@@ -12,6 +12,7 @@ import {
   trinityIsPreventShieldingTip
 } from "../common/Fields";
 import { checkVal } from "@/accountManage/util";
+import numeral from '@/util/numeralExpand'
 
 @Form.create()
 export default class PriceEdit extends Component {
@@ -20,12 +21,16 @@ export default class PriceEdit extends Component {
     this.state = {}
   }
 
-  handlePrice = (skuList, price_now = {}, price_next = {}) => {
-    return skuList.map(item => {
+  handlePrice = (skuList, price_now = [], price_next = []) => {
+    return price_now.map((item,index) => {
       let obj = { ...item };
-      let key = obj['skuTypeId'];
-      obj.costPriceRaw = price_now[key] || 0;
-      obj.nextCostPriceRaw = price_next[key] || 0;
+      let nextPrice = price_next[index] || {}
+      obj.channelPrice = obj.channelPrice || 0
+      obj.costPriceRaw = obj.costPriceRaw || 0
+      obj.publicationPrice = obj.publicationPrice || 0
+      obj.nextCostPriceRaw = nextPrice.nextCostPriceRaw || 0;
+      obj.nextChannelPrice = nextPrice.nextChannelPrice || 0;
+      obj.nextPublicationPrice = nextPrice.nextPublicationPrice || 0;
       return obj;
     });
   };
@@ -99,6 +104,7 @@ export default class PriceEdit extends Component {
     } = data.account.base || {}
     const {
       skuList,
+      publicationRate,
       modifiedAt // 信息修改时间
     } = data.priceInfo || {};
     const priceKeys = skuList ? skuList.map(({ skuTypeId, skuTypeName }) => ({
@@ -112,6 +118,7 @@ export default class PriceEdit extends Component {
     return <Form className='module-item-container' onSubmit={this.submit} colon={false}>
       <ModuleHeader title={configureModule.title} right={right} />
       <section className='content-wrap'>
+        {publicationRate && <Alert message={`渠道价默认为刊例价的${numeral(publicationRate).format('0%')}`}/>}
         {isFamous === 1 ?
           <FamousPrice {...fieldProps} priceKeys={priceKeys}>
             {configurePlatform.visibility.fields.referencePrice &&
@@ -121,7 +128,7 @@ export default class PriceEdit extends Component {
             <IsAcceptHardAd {...fieldProps} />
           </FamousPrice>
           :
-          <NamelessPrice isUpdate={true} {...fieldProps} priceKeys={priceKeys}>
+          <NamelessPrice isUpdate={true} {...fieldProps} priceList={skuList}>
             {configurePlatform.visibility.fields.referencePrice &&
             <ReferencePrice  {...fieldProps} />}
             <IsAcceptHardAd {...fieldProps} />
