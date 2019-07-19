@@ -105,7 +105,7 @@ class SearchSelect extends Component {
       chinaCheckedKeys = [...this.state.chinaCheckedKeys]
     }
     let newKeys = [].concat(chinaCheckedKeys, otherCheckedKeys)
-      .filter((item, i, self) => item && self.indexOf(item) === i);
+      .filter((item, i, self) => item && self.indexOf(item) === i).map(item => Number(item));
     if (newKeys.length > 5) {
       message.destroy()
       message.warn('最多不超过5个地点!', 1.5)
