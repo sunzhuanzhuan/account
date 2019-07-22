@@ -17,7 +17,7 @@ class HeadInfo extends Component {
   render() {
     const { setShowModal, isExistCar, baseInfo = {}, selectCarEdit, actions, accountDetail } = this.props
     const { base = {}, feature = {}, skuList = [] } = baseInfo
-    const { isMale, consumptionLevel, systemType, avatarUrl,
+    const { isMale, consumptionLevel, systemType, avatarUrl, areaName,
       snsName, snsId, followerCount, introduction, platformId = 0,
       url, qrCodeUrl, classification = '-', cooperationTips
     } = base
@@ -54,21 +54,31 @@ class HeadInfo extends Component {
                 合作须知
                </div>
             </div>
-            <div className='account-code'>{platformView[platformId]}号：{snsId}</div>
+            <div className='account-code'>
+              <span>ID：{snsId}</span>
+              <img width='16' src={require(`./img/${isMale == 1 ? 'male' : 'famle'}.png`)} />
+              <span>{areaName || '北京'}</span>
+            </div>
+
           </div>
           <div className='info-bottom-three'>
             <div className='base-info'>
               <OneLine title='账号标签' content={
                 classification == '-' ? null : <FatLable backColor='#F3F8FD' color='#78A3CE' list={[classification]} />
               } />
+              <OneLine title='平台认证' content={
+                <div>
+                  {snsId}
+                </div>}
+              />
               {/* <OneLine title='功能标签' content={
                 <FatLable backColor='#FFEBEA' color='#FE6A60' list={['直播', '直播', '直播']} />
               } /> */}
-              <OneLine title='受众信息' content={<div className='content-font'>
+              {/* <OneLine title='受众信息' content={<div className='content-font'>
                 <span>{isMale ? isMale == 1 ? '男性' : '女性' : <PopoverFormat content='性别' text='-' />}</span> <Divider type="vertical" />
                 <span>{consumptionLevel ? `消费水平${consumptionLevel == 1 ? '低' : consumptionLevel == 2 ? '中' : '高'}` : <PopoverFormat content='消费水平' text='-' />}</span> <Divider type="vertical" />
                 <span>{systemType ? systemType == 1 ? '安卓' : 'IOS' : <PopoverFormat content='浏览端' text='-' />}</span>
-              </div>} />
+              </div>} /> */}
               <OneLine title='简介' content={
                 <div className='content-font' style={{ maxWidth: 300 }}>
                   <PopoverFormat popoverProps={{ overlayStyle: { width: 400 } }} text={<MultiClamp ellipsis="..." clamp={2}>{introduction}</MultiClamp>} content={introduction} />
@@ -84,7 +94,15 @@ class HeadInfo extends Component {
               <div className='type-info-row'>
                 <OneType title="历史服务最多分类" content={orderMajorIndustryCategory || '-'} />
                 <OneType title="接单率" content={FieldMap.getSegmentByFloat(orderAcceptanceRate)} last={orderAcceptanceRate ? numeral(orderAcceptanceRate).format('0%') : '-'} />
-                <OneType title="平均订单完结周期" content={orderCompleteDuration ? numeral(orderCompleteDuration / 3600 / 24).format('0.00') : '-'} last='天' />
+                <OneType title="平均订单完结周期" content={orderCompleteDuration ? `${numeral(orderCompleteDuration / 3600 / 24).format('0.00')}天` : '-'} last={
+                  <a style={{ fontSize: 13 }} onClick={() => setShowModal(true, {
+                    content: <RecentPrice />, title: `近期应约（${accountDetail.historyPriceCount}）`, width: 1000
+                  })}>
+                    近期应约（{accountDetail.historyPriceCount}）
+                </a>
+                }
+
+                />
               </div>
             </div>
             <div className='release-info'>
@@ -96,11 +114,7 @@ class HeadInfo extends Component {
               <div style={{ textAlign: 'center' }}>
                 {isExistCar ? <Button className='add-select-car-button' type='primary' onClick={() => selectCarEdit(true)}>加入选号车</Button> :
                   <Button className='remove-select-car-button' onClick={() => selectCarEdit(false)}>移出选号车</Button>}
-                <a onClick={() => setShowModal(true, {
-                  content: <RecentPrice />, title: `近期应约（${accountDetail.historyPriceCount}）`, width: 1000
-                })}>
-                  近期应约（{accountDetail.historyPriceCount}）
-                </a>
+
               </div>
               {/* <div style={{ textAlign: "center", marginTop: 12 }}>加入收藏<span className='collect'>（100人已收藏）</span></div> */}
             </div>
@@ -117,7 +131,7 @@ const OneLine = ({ title, content, last }) => {
     <div>{last}</div>
   </div>
 }
-const OneType = ({ title, content, last, color }) => {
+const OneType = ({ title, content, last, color, lastContent }) => {
   return <div className='type-info-flex'>
     <div className='title'>{title}</div>
     <div className='content' style={{ color: color }}>

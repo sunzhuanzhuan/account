@@ -49,9 +49,9 @@ class DataBox extends Component {
         >
           <Axis name="x" />
           <Axis name="range" label={{
-            formatter(text, item, index) {
+            formatter(text) {
               let arr = text.split(' ');
-              return `${formatW(arr[0])}`;
+              return formatW(arr[0]);
             }
           }} />
           <Tooltip
@@ -67,8 +67,7 @@ class DataBox extends Component {
             htmlContent={function (title, items) {
               const { name, high, q3, median, q1, low } = items && items[0]
               return `<div class='custom-tooltip' style='width:160px;padding:10px'>
-              <li data-index={index} style=&quot;margin-bottom:2px;&quot;>
-              ${name}<br/>
+              <div data-index={index} style=&quot;margin-bottom:2px;&quot;>
               <span style=&quot;padding-left: 16px&quot;>
                 最大值：${formatW(high)}
               </span><br/>
@@ -84,7 +83,8 @@ class DataBox extends Component {
               <span style=&quot;padding-left: 16px&quot;>
                 最小值：${formatW(low)}
               </span><br/>
-              </li></div>`
+              </div>
+              </div>`
             }}
 
           />

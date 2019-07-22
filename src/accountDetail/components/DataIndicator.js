@@ -6,7 +6,7 @@ import CompositeRadar from "./chart/CompositeRadar";
 import CharTitle from "./chart/CharTitle";
 import ValueFormat from "../base/ValueFormat";
 import numeral from 'numeral'
-import { Divider, Empty } from "antd";
+import { Divider, Empty, Tooltip } from "antd";
 class DataIndicator extends Component {
   constructor(props) {
     super(props);
@@ -63,7 +63,7 @@ class DataIndicator extends Component {
               <div className='head-center'>
                 <div className='left-index'>
                   <div className='text'>
-                    <CharTitle title='SNBT' color='#999' content='基于互动指数、黑马指数、内容传播指数、服务指数、配合指数、SNBT这6个指标加权计算综合指标。' />
+                    <CharTitle title='SNBT指数' color='#999' content='基于互动指数、内容传播指数、活跃度指数、健康指数、商业适应度指数、成长指数这6个指标加权计算综合指标。' />
                   </div>
                   <div className='score'>{numeral(wholeIndex).format('0')}</div>
                 </div>
@@ -96,6 +96,7 @@ class DataIndicator extends Component {
                     number={followerCountGrowthRate28d ? numeral(followerCountGrowthRate28d * 100).format('0.0') : '-'}
                     percent={10}
                     unit={'%'}
+                    typeContent='同分类同价格28天粉丝增长率均值'
                   />
                   <Divider type="vertical" className='height20-colorE3' />
                   <ThreeNumber
@@ -111,7 +112,7 @@ class DataIndicator extends Component {
                 <div className='fan-release-item'>
                   <ThreeNumber title='总发布数' number={mediaCount} unit='个' />
                   <Divider type="vertical" className='height20-colorE3' />
-                  <ThreeNumber title='爆款视频数' number={8} unit='个' />
+                  <ThreeNumber title='爆款视频数' number={8} unit='个' tips='近90天发布的爆款视频数' />
                   <Divider type="vertical" className='height20-colorE3' />
                   <ThreeNumber title='近28天发布频率' number={2.9} unit='个/周' />
                 </div>
@@ -163,9 +164,11 @@ const OperateItem = ({ typeText, numberAvg, percentAvg }) => {
     </div>
   </div>
 }
-const ThreeNumber = ({ title, number, unit, percent, typeContent }) => {
+const ThreeNumber = ({ title, number, unit, percent, typeContent, tips }) => {
   return <div>
-    <div className='font13-color9'>{title}</div>
+    <div className='font13-color9'>{tips ? <Tooltip title={tips}>
+      {title}
+    </Tooltip> : title}</div>
     <div className='font24-color3 text-center '>
       {number}
       <span className='font12-color3'>{unit}</span></div>
