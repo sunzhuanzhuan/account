@@ -20,7 +20,7 @@ import { Empty } from "antd";
 import {
   blueColor,
   greenColor,
-  pinkColor
+  pinkColor, g2Tooltip
 } from "./config";
 
 
@@ -54,14 +54,15 @@ class RingPie extends React.Component {
           padding={[80, 100, 50, 50]}
           forceFit
         >
-          <Coord type={"theta"} radius={1} innerRadius={0.85} />
+          <Coord type={"theta"} radius={1} innerRadius={0.8} />
           <Axis name="percent" />
-          <Legend
+          {/* <Legend
             position="right-top"
             //offsetY={-120}
             offsetX={30}
-          />
+          /> */}
           <Tooltip
+            g2-tooltip={g2Tooltip}
             showTitle={false}
             itemTpl="<li><span style=&quot;background-color:{color};&quot; class=&quot;g2-tooltip-marker&quot;></span>{name}: {value}</li>"
           />

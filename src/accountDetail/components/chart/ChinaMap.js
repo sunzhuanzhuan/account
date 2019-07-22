@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
-const { AMap, AMapUI } = window;
-
+import {
+  g2Tooltip
+} from "./config";
 import {
   Chart, Geom, Tooltip, Legend, Guide
 } from "bizcharts";
 import numeral from 'numeral'
-
 import DataSet from "@antv/data-set";
+const { AMap, AMapUI } = window;
+
 const constructGeoJSON = (features) => {
   if (!features) return false;
   if (Array.isArray(features)) {
@@ -123,7 +125,7 @@ class MapChart extends Component {
               }
             }]}
           >
-            <Tooltip showTitle={false} />
+            <Tooltip showTitle={false} g2-tooltip={g2Tooltip} />
             <Legend position='bottom-left'
               offsetY={-130}
               offsetX={-60}

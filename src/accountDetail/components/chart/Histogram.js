@@ -16,7 +16,9 @@ import {
 } from "bizcharts";
 import { formatW } from "../../util";
 import { Empty } from "antd";
-
+import {
+  g2Tooltip
+} from "./config";
 class Histogram extends React.Component {
   render() {
     const { data = [], positionConfig, height = 300 } = this.props
@@ -44,6 +46,7 @@ class Histogram extends React.Component {
             crosshairs={{
               type: "y"
             }}
+            g2-tooltip={g2Tooltip}
           />
           <Geom
             type="interval"

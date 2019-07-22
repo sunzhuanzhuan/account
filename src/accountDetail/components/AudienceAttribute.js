@@ -87,11 +87,11 @@ class AudienceAttribute extends Component {
           <div className='flex4'>
             <div className=''>
               <CharTitle title='手机系统分布' />
-              <RingPie data={kolVisitorOSDrawList} />
+              <RingPie data={kolVisitorOSDrawList} height={260} />
             </div>
             <div className=''>
               <CharTitle title='手机价格分布' />
-              <RingPie data={kolVisitorOSDrawList} />
+              <RingPie data={kolVisitorOSDrawList} height={260} />
             </div>
           </div>
           <div className='flex7'>

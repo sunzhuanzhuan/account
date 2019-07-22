@@ -1,27 +1,31 @@
 import React from 'react';
-import { Chart, Geom, Axis, Tooltip, Coord, Label } from 'bizcharts';
 import numeral from 'numeral';
 import { Empty } from 'antd';
+import './LandscapeType.less'
 
 // CDN START
 
 class LandscapeType extends React.Component {
   render() {
     const { data = [], height = 600 } = this.props
-    const cols = {};
     return (
       data.length > 0 ? <div>
-        <Chart height={height} data={data} scale={cols}
-          padding={['auto', 100, 'auto']}>
-          <Coord transpose />
-          <Axis name="name" />
-          <Axis name="value" visible={false} />
-          <Tooltip />
-          {/* 凸显类型 color={['name', '#E6F6C8-#3376CB']} */}
-          <Geom type="interval" position="name*value" color={['value', '#D8E7FF-#4786F5']}>
-            <Label content={['name*value', (name, value) => numeral(value || 0).format('0.0%')]} />{' '}
-          </Geom>
-        </Chart>
+        <div className='land-scape-type-item'>
+          <div className='name color9size12'>名称</div>
+          <div className='type color9size12'>分类</div>
+        </div>
+        <div className='land-scape-type'>
+          {data.map((one, index) => {
+            return <div key={one.key} className='land-scape-type-item'>
+              <div className='name'>{one.name}</div>
+              <div className='type'>{one.key}</div>
+              <div className='land-scape-box-value'>
+                <div className='land-scape-box' style={{ width: `calc(${100 * one.value}%)`, opacity: one.value + 0.2 }}></div>
+                <div className='unit-value'>{numeral(one.value).format('0.0%')}</div>
+              </div>
+            </div>
+          })}
+        </div>
       </div> : <Empty style={{ height: height + 18, paddingTop: height / 2 }} />
     );
   }
