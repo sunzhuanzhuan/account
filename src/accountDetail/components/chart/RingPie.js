@@ -51,7 +51,7 @@ class RingPie extends React.Component {
           height={height}
           data={dv}
           scale={cols}
-          padding={[80, 100, 50, 50]}
+          padding={[40, 50]}
           forceFit
         >
           <Coord type={"theta"} radius={1} innerRadius={0.8} />

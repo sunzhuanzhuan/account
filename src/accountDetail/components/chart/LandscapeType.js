@@ -16,7 +16,8 @@ class LandscapeType extends React.Component {
         </div>
         <div className='land-scape-type'>
           {data.map((one, index) => {
-            return <div key={one.key} className='land-scape-type-item'>
+            return <div key={one.key} className='land-scape-type-item' 
+            style={{height:450/data.length}}>
               <div className='name'>{one.name}</div>
               <div className='type'>{one.key}</div>
               <div className='land-scape-box-value'>
