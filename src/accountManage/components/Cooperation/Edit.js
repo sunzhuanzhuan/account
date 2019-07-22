@@ -18,7 +18,7 @@ import {
 import { Button, Divider, Form, message } from "antd";
 import update from "immutability-helper";
 import { configItemKeyToField } from "@/accountManage/constants/packageConfig";
-import { uploadUrl } from "@/accountManage/util";
+import { dateDisplay, uploadUrl } from "@/accountManage/util";
 import visibility, {
   advertisingFields,
   cooperateNoticeFields
@@ -111,7 +111,7 @@ export default class CooperationEdit extends Component {
       ...visibility.advertisingFields
     }
     const right = <div className='wrap-panel-right-content'>
-      <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>
+      <span className='gray-text'>最近更新于: {dateDisplay(modifiedAt,20) || '--'}</span>
       <Button htmlType='submit' type='primary' loading={submitLoading}>保存</Button>
     </div>;
     return <Form className='module-item-container' onSubmit={this.submit} colon={false}>

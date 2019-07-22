@@ -5,6 +5,7 @@ import React, { Component } from "react"
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
 import { IsLowQuality, MediaTeamNote } from "@/accountManage/components/common/Fields";
 import { Button, Form, message } from "antd";
+import { dateDisplay } from "@/accountManage/util";
 
 @Form.create()
 export default class Other extends Component {
@@ -62,7 +63,7 @@ export default class Other extends Component {
       // 信息修改时间
     } = data.account || {}
     const right = <div className='wrap-panel-right-content'>
-      <span className='gray-text'>最近更新于: {otherInfoModifiedAt || '--'}</span>
+      <span className='gray-text'>最近更新于: {dateDisplay(otherInfoModifiedAt,20) || '--'}</span>
       <Button htmlType='submit' type='primary' loading={this.state.submitLoading}>保存</Button>
     </div>;
 
