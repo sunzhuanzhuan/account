@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Row, Col } from 'antd'
 import { fansColumnsKeys } from "@/accountManage/constants";
 import { platformView } from "@/accountManage/constants/platform";
@@ -45,29 +45,31 @@ const fields = {
   "最近30条平均点赞数": "mediaAvgLikeNum"
 }
 
-const ContentStatistic = (props) => {
-  const columnsKeys = (fansColumnsKeys[platformView[props.pid] || ''] || []).map(key => {
-    if (fields[key]) {
-      return {
-        key: fields[key],
-        name: key
+export default class ContentStatistic extends Component {
+  render() {
+    const columnsKeys = (fansColumnsKeys[platformView[this.props.pid] || ''] || []).map(key => {
+      if (fields[key]) {
+        return {
+          key: fields[key],
+          name: key
+        }
       }
-    }
-  }).filter(Boolean)
-  const {
-    data = {}
-  } = props
-  return <div className='content-statistic-wrapper'>
-    <Row>
-      {
-        columnsKeys.map(({ key, name }) => <Col span={7} key={key}>
-          <div className='statistic-field'>
-            <span className='title'>{name}</span>
-            <span className='value'>{data[key] || '-'}</span>
-          </div>
-        </Col>)
-      }
-    </Row>
-  </div>
+    }).filter(Boolean)
+    const {
+      data = {}
+    } = this.props
+    this.show = columnsKeys.some(({ key }) => data[key])
+    return <div className='content-statistic-wrapper'>
+      <Row>
+        {
+          columnsKeys.map(({ key, name }) => <Col span={7} key={key}>
+            <div className='statistic-field'>
+              <span className='title'>{name}</span>
+              <span className='value'>{data[key] || '-'}</span>
+            </div>
+          </Col>)
+        }
+      </Row>
+    </div>
+  }
 }
-export default ContentStatistic
