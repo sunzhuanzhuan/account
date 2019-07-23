@@ -2256,7 +2256,7 @@ export const Skills = (props) => {
         options.length > 0 ? <Select
           mode='multiple'
           style={{ width: '100%' }}
-          placeholder='添加您的特长或才艺，将提升您的竞争力，在同类账号中更加突出哦~'
+          placeholder='请添加您的特长或才艺'
           allowClear
           showArrow
           optionFilterProp='children'
