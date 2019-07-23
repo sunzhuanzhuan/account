@@ -1,4 +1,5 @@
 @import "../indexNbTheme.less";
+
 .account-manage {
   position: relative;
   .policyInfo-id-display{
@@ -10,31 +11,38 @@
   .ant-row {
     margin-bottom: 10px !important;
   }
+
   .account-info-container {
     padding: 0 160px 0 0;
     background: #fff;
     overflow: hidden;
     position: relative;
   }
+
   ul, li {
     list-style: none;
     padding: 0;
     margin: 0;
   }
+
   .account-info-sidebar {
     position: absolute;
     top: 10px;
     right: 20px;
     user-select: none;
+
     .sidebar-nav {
       border-left: 1px solid #ddd;
       margin: 16px 0;
+
       h4 {
         margin-bottom: 4px;
         padding-left: 16px;
       }
+
       li {
         margin-bottom: 4px;
+
         a {
           display: block;
           padding-left: 16px;
@@ -48,6 +56,7 @@
           color: #314659;
           width: 110px;
         }
+
         a.current {
           color: @primary-color;
           border-color: @primary-color;
@@ -55,12 +64,15 @@
       }
     }
   }
+
   .has-error .input-suffix-text {
     color: #f5222d;
   }
+
   .input-suffix-text {
     color: rgb(191, 191, 191);
   }
+
   .input-desc-bottom {
     width: 100%;
     margin-bottom: 0;
@@ -68,12 +80,14 @@
     color: rgb(191, 191, 191);
   }
 }
+
 .price-bold-input {
   .price-bold-number {
     color: #888;
     font-size: 22px;
     font-weight: 500;
   }
+
   .price-bold-unit {
     display: block;
     position: absolute;
@@ -84,15 +98,24 @@
     border-radius: 0 0 3px 3px;
   }
 }
+
 .sina-reference-table {
   width: 300px;
   margin-bottom: 10px;
-  table {width: 100%}
+
+  table {
+    width: 100%
+  }
+
   table, tr, th, td {
     text-align: center;
     border: 1px solid #ccc;
   }
-  th, td {width: 50%}
+
+  th, td {
+    width: 50%
+  }
+
   th {
     font-weight: normal;
   }
@@ -113,21 +136,26 @@
 }
 .account-price-help-tips {
   width: 600px;
+
   img {
     width: 100%;
   }
 }
+
 .account-status-tabs {
   display: flex;
+
   & > div {
     cursor: pointer;
     margin-left: 16px;
   }
 }
+
 .block-submit-button {
   width: 400px;
   margin: 0 auto;
 }
+
 .fixed-btn-wrapper {
   position: relative;
   margin-left: -2px;
@@ -137,26 +165,100 @@
   width: 120px;
   overflow: hidden;
 }
-.price_scroll_container{
+
+.price_scroll_container {
   position: relative;
 }
 
 // B端固定tab
 .account-manage {
   height: 100%;
-  .update-page-container{
+
+  .update-package-page-container {
+    .tab-pane-common-box {
+      display: flex;
+
+      .tab-pane-modules {
+        flex: auto;
+        margin-right: 20px;
+      }
+    }
+
+    & > .ant-tabs.ant-tabs-top {
+      position: sticky;
+      top: -20px;
+      // background: '#fff',
+      z-index: 20;
+
+      .ant-tabs-bar.ant-tabs-top-bar {
+        background: #fff;
+      }
+    }
+
+    .ant-anchor-ink-ball.visible {
+      background: @primary-color;
+      border: 0;
+      border-radius: 0;
+      width: 4px;
+      height: 20px;
+      margin-top: -6px;
+    }
+
+    .nav-box-footer {
+      position: relative;
+      background: #fff;
+      margin-left: -2px;
+      padding: 10px 0;
+    }
+
+    .tab-bar-item-wrapper {
+      span {
+      }
+
+      b {
+        font-size: 12px;
+        margin-left: 10px;
+        font-weight: normal;
+        color: #999;
+      }
+    }
+
+    .nav-link-item-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      span {
+      }
+
+      b {
+        font-size: 12px;
+        margin-left: 10px;
+        font-weight: normal;
+        color: #999;
+        margin-right: 10px;
+      }
+    }
+  }
+
+  .update-page-container {
     height: 100%;
-    &>.ant-tabs{
+
+    & > .ant-tabs {
       display: flex;
       flex-direction: column;
       height: calc(100% - 40px);
-      &>.ant-tabs-bar{}
-      &>.ant-tabs-content{
+
+      & > .ant-tabs-bar {
+      }
+
+      & > .ant-tabs-content {
         height: calc(100% - 60px);
 
-        .ant-tabs-tabpane{
+        .ant-tabs-tabpane {
           height: 100%;
-          &>div,&>form{
+
+          & > div, & > form {
             height: 100%;
             overflow-y: auto;
           }
@@ -170,35 +272,42 @@
 .category-feedback-btn {
   margin-left: 10px;
 }
-.category-feedback-detail-wrapper{
-  header{
+
+.category-feedback-detail-wrapper {
+  header {
     font-size: 15px;
     font-weight: 500;
     color: #333;
   }
-  .category-content{
+
+  .category-content {
     border-radius: 4px;
-    box-shadow: 0 2px 12px rgba(0,0,0,.15);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, .15);
     padding: 16px;
     margin: 10px 0;
   }
-  .category-desc{
+
+  .category-desc {
     line-height: 32px;
     padding: 6px 0;
   }
+
   main {
     padding: 10px 16px;
     border: 1px solid #dddddd;
-    & .category-history-item:last-child{
+
+    & .category-history-item:last-child {
       border: none;
     }
   }
-  .category-history-item{
+
+  .category-history-item {
     border-bottom: 1px solid #dddddd;
     padding: 10px 0;
     min-height: 80px;
     display: flex;
-    .image-wrapper{
+
+    .image-wrapper {
       width: 40px;
       height: 40px;
       overflow: hidden;
@@ -209,11 +318,14 @@
         width: 100%;
       }
     }
-    .content-wrapper{
+
+    .content-wrapper {
       flex: auto;
     }
-    .name{
+
+    .name {
       font-weight: 700;
+
       b {
         float: right;
         font-weight: normal;
@@ -221,7 +333,8 @@
         font-size: 12px;
       }
     }
-    .info{
+
+    .info {
       word-break: break-all
     }
   }
