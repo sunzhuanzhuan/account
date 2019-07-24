@@ -82,6 +82,8 @@ export default class Dashboard extends Component {
                 </div>
               </div>
             </li>
+            <Empty style={{display: ((this.statistic && this.statistic.show) || sexs.length || ages.length || areas.length || interests.length || snbt || trueFansRate) ? "none" : "block"
+            }}/>
             {(sexs.length || ages.length || areas.length || interests.length) ?
               <li className='subclass-item-wrap'>
                 <h4 className='subclass-head'>
