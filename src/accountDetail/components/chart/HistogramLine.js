@@ -100,7 +100,7 @@ class HistogramLine extends Component {
         <Chart
           height={height}
           scale={scale}
-          padding={[60, 100, 60, 80]}
+          padding={[60, 40, 50, 60]}
           forceFit
           data={data}
           ref={node => this.chart = node}
@@ -113,7 +113,6 @@ class HistogramLine extends Component {
           <Legend
             {...legendPosition}
             offsetY={-30}
-            offsetX={70}
             custom={true}
             allowAllCanceled={true}
             items={[

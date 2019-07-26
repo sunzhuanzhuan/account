@@ -46,11 +46,11 @@ class AudienceAttribute extends Component {
             </div>
             <div className='age-sex-gender'>
               <CharTitle title='性别分布' />
-              <RingPie data={kolVisitorGenderDrawList} />
+              <RingPie data={kolVisitorGenderDrawList} padding={[70]} />
             </div>
             <div className='age-sex-gender' >
               <CharTitle title='消费能力分布' />
-              <RingPie data={kolVisitorGenderDrawList} />
+              <RingPie data={kolVisitorGenderDrawList} padding={[70]} />
             </div>
           </div>
 

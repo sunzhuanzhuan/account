@@ -27,7 +27,7 @@ import {
 
 class RingPie extends React.Component {
   render() {
-    const { data = [], height = 300 } = this.props
+    const { data = [], height = 300, padding = [40, 50] } = this.props
     const { DataView } = DataSet;
     const { Html } = Guide;
     const dv = new DataView();
@@ -51,7 +51,7 @@ class RingPie extends React.Component {
           height={height}
           data={dv}
           scale={cols}
-          padding={[40, 50]}
+          padding={padding}
           forceFit
         >
           <Coord type={"theta"} radius={1} innerRadius={0.8} />
