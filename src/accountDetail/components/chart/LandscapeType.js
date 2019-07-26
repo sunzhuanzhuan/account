@@ -16,12 +16,12 @@ class LandscapeType extends React.Component {
         </div>
         <div className='land-scape-type'>
           {data.map((one, index) => {
-            return <div key={one.key} className='land-scape-type-item' 
-            style={{height:450/data.length}}>
+            return <div key={one.key} className='land-scape-type-item'
+              style={{ height: 450 / data.length }}>
               <div className='name'>{one.name}</div>
               <div className='type'>{one.key}</div>
               <div className='land-scape-box-value'>
-                <div className='land-scape-box' style={{ width: `calc(${100 * one.value}%)`, opacity: one.value + 0.2 }}></div>
+                <div className='land-scape-box' style={{ width: `calc(${100 * one.value}%)`, opacity: one.value > 0.08 ? one.value : 0.08 }}></div>
                 <div className='unit-value'>{numeral(one.value).format('0.0%')}</div>
               </div>
             </div>

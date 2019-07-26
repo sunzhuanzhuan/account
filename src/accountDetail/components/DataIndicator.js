@@ -94,7 +94,6 @@ class DataIndicator extends Component {
                   <ThreeNumber
                     title='28天粉丝增长率'
                     number={followerCountGrowthRate28d ? numeral(followerCountGrowthRate28d * 100).format('0.0') : '-'}
-                    percent={10}
                     unit={'%'}
                     typeContent='同分类同价格28天粉丝增长率均值'
                   />
