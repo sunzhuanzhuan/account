@@ -28,52 +28,31 @@ export default class GroupedColumn extends React.Component {
     }
   }
   render() {
-    const data = [
-      {
-        label: "Monday",
-        series1: 12800,
-        series2: 12260
-      },
-      {
-        label: "Tuesday",
-        series1: 11800,
-        series2: 11300
-      },
-      {
-        label: "Wednesday",
-        series1: 14950,
-        series2: 13900
-      },
-      {
-        label: "Thursday",
-        series1: 14500,
-        series2: 10390
-      },
-      {
-        label: "Friday",
-        series1: 10170,
-        series2: 10100
-      }
-    ];
+    const { data, typeKey2 = 'mediaCommentNum' } = this.props
     const ds = new DataSet();
     const dv = ds.createView().source(data);
     dv.transform({
       type: "fold",
-      fields: ["series1", "series2"],
+      fields: ["mediaLikeNum", typeKey2],
       // 展开字段集
       key: "type",
       // key字段
       value: "value", // value字段
       callback: obj => {
-        obj.value = [obj.series1, obj.series2];
+        obj.value = [obj.mediaLikeNum, obj[typeKey2]];
         return obj;
       }
     });
     const scale = {
-      type: { formatter: d => ({ series1: '点赞', series2: '评论' }[d]) },
+      type: {
+        formatter: d => ({
+          mediaLikeNum: '点赞',
+          [typeKey2]: '评论'
+        }[d])
+      },
       value: {
-        min: getMinNumber('series1', data) > getMinNumber('series2', data) ? getMinNumber('series2', data) : getMinNumber('series1', data),
-        max: getMaxNumber('series1', data) > getMaxNumber('series2', data) ? getMaxNumber('series1', data) : getMaxNumber('series2', data),
+        min: getMinNumber('mediaLikeNum', data) > getMinNumber(typeKey2, data) ? getMinNumber(typeKey2, data) : getMinNumber('mediaLikeNum', data),
+        max: getMaxNumber('mediaLikeNum', data) > getMaxNumber(typeKey2, data) ? getMaxNumber('mediaLikeNum', data) : getMaxNumber(typeKey2, data),
         formatter: val => {
           return formatW(val);
         }
@@ -103,9 +82,7 @@ export default class GroupedColumn extends React.Component {
           padding={60}
           forceFit>
           <Coord />
-          <Axis name="label" label={{
-            offset: 12
-          }}
+          <Axis name="label" visible={false}
           />
           <Axis name="value" />
           <Tooltip g2-tooltip={g2Tooltip} />
@@ -127,7 +104,7 @@ export default class GroupedColumn extends React.Component {
             shape={[
               ['label', 'type'],
               function (name, type) {
-                if (type == 'series1') {
+                if (type == 'mediaLikeNum') {
                   return ["image", imageMap[name]];
                 }
                 return ['image', null];
@@ -136,8 +113,8 @@ export default class GroupedColumn extends React.Component {
           />
 
           <Guide>
-            <GuideLine content='近30条视频平均评论' middle={this.getAvgNumber(data, 'series1')} />
-            <GuideLine content='近30条视频平均点赞' middle={this.getAvgNumber(data, 'series2')} color='#3AA1FF' />
+            <GuideLine content='近30条视频平均评论' middle={this.getAvgNumber(data, 'mediaLikeNum')} />
+            <GuideLine content='近30条视频平均点赞' middle={this.getAvgNumber(data, typeKey2)} color='#3AA1FF' />
 
           </Guide>
         </Chart>
@@ -150,8 +127,8 @@ export default class GroupedColumn extends React.Component {
 const GuideLine = ({ middle, color = '#2fc25b', content = '平均' }) => {
   return <Line
     top
-    start={{ label: "Monday", value: middle }}
-    end={{ label: "Friday", value: middle }}
+    start={{ label: -0.5, value: middle }}
+    end={{ label: 4.2, value: middle }}
     lineStyle={{
       stroke: color,
       lineDash: [0, 1, 1],

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './ContentData.less'
-import { CharTitle, CurveLine, GroupedColumn, DataBox } from "./chart";
+import { CharTitle, CurveLine, DataBox } from "./chart";
 import ButtonTab from '../base/ButtonTab'
 import NewVideo from './NewVideo'
 import LazyLoad from 'react-lazyload';
@@ -136,7 +136,6 @@ class ContentData extends Component {
             {/* 最新视频 */}
 
             <CharTitle title='近10个视频数据表现' />
-            <GroupedColumn />
             <LazyLoad once overflow>
               <NewVideo getNewVideo={getNewVideo} newVideoList={newVideoList} accountId={accountId} />
             </LazyLoad>
