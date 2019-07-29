@@ -113,8 +113,8 @@ export default class GroupedColumn extends React.Component {
           />
 
           <Guide>
-            <GuideLine content='近30条视频平均评论' middle={this.getAvgNumber(data, 'mediaLikeNum')} />
-            <GuideLine content='近30条视频平均点赞' middle={this.getAvgNumber(data, typeKey2)} color='#3AA1FF' />
+            <GuideLine content='近30条视频平均点赞' middle={this.getAvgNumber(data, 'mediaLikeNum')} color='#3AA1FF' />
+            <GuideLine content={`近30条视频平均${typeText2}`} middle={this.getAvgNumber(data, typeKey2)} />
 
           </Guide>
         </Chart>
