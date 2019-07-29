@@ -1,3 +1,5 @@
+@import '../../index.less';
+
 .legend-customize {
     display: flex;
     justify-content: flex-end;
@@ -28,4 +30,42 @@
     .green {
         background: #2fc25b
     }
+
+
+}
+
+.label-box {
+    margin-top: 210px;
+    margin-left: 20px;
+
+    .img {
+        text-align: center;
+        margin: 0px auto;
+        position: relative;
+        width: 120px;
+
+        img {
+            height: 160px;
+            width: 120px;
+        }
+    }
+
+    .media-caption {
+        padding-top: 10px;
+        @nowrap-hidden-ellipsis();
+        @color333-font16();
+        font-size: 14px;
+        width: 150px
+    }
+
+    .media-created-time {
+
+        font-size: 12px;
+        color: #999;
+    }
+
+}
+
+.label-box:hover {
+    @hover-shadow();
 }

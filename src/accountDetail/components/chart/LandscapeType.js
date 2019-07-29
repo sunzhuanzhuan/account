@@ -14,6 +14,7 @@ class LandscapeType extends React.Component {
         <div className='land-scape-type-item'>
           <div className='name color9size12'>名称</div>
           <div className='type color9size12'>分类</div>
+          <div className='type color9size12'>占比</div>
         </div>
         <div className='land-scape-type'>
           {data.map((one, index) => {

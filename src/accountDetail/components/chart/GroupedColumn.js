@@ -17,10 +17,14 @@ import {
 import {
   g2Tooltip, getMinNumber, getMaxNumber
 } from "./config";
+import '../NewVideo.less'
 import { formatW } from "../../util";
 import './GroupedColumn.less'
 import DataSet from "@antv/data-set";
+import moment from "moment";
+
 const { Line } = Guide;
+
 export default class GroupedColumn extends React.Component {
   getAvgNumber = (data = [], key) => {
     if (data.length > 0) {
@@ -62,6 +66,25 @@ export default class GroupedColumn extends React.Component {
     var imageMap = {
       Wednesday: require("../img/fire.png"),
     };
+
+    // {
+    //   htmlTemplate(text, item, index) {
+    //     const dataItem = data.filter(one => one.label == text)[0]
+    //     return `<div class='label-box'
+    //             onClick="window.open(${dataItem.mediaUrl}, '_blank')">
+    //     <div>
+    //     <img 
+    //      width='120px'
+    //      height='160px'
+    //     src=${dataItem.mediaCoverUrl ? dataItem.mediaCoverUrl : require('../img/deafult-box.png')} onError=${(e) => e.target.src = require('../img/deafult-box.png')} />
+    //     </div>
+    //       <div class='media-caption'>${ dataItem.mediaCaption || '-'}</div>
+    //       <div class='media-created-time'>${
+    //       moment(dataItem.mediaCreatedTime).format('YYYY/MM/DD hh:mm:ss')
+    //       }</div>
+    //     </div>`
+    //   }
+    // }
     return (
       <div>
         <div className='legend-customize'>
@@ -79,10 +102,12 @@ export default class GroupedColumn extends React.Component {
           </div>
         </div>
         <Chart height={400} data={dv} scale={scale}
-          padding={[60]}
+          padding={[60, 60, 10, 60]}
           forceFit>
           <Coord />
           <Axis name="label" label={null}
+
+
           />
           <Axis name="value" />
           <Tooltip g2-tooltip={g2Tooltip} g2-tooltip-title={{ display: 'none' }} />
