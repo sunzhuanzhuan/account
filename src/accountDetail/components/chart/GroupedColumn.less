@@ -35,8 +35,9 @@
 }
 
 .label-box {
-    margin-top: 210px;
-    margin-left: 20px;
+    position: relative;
+    top: 120px;
+    left: 15px;
 
     .img {
         text-align: center;
@@ -64,6 +65,27 @@
         color: #999;
     }
 
+    .hover-img {
+        position: relative;
+    }
+
+    .hover-img-show {
+        width: 120px;
+        height: 100%;
+        display: none;
+        position: absolute;
+        background-image: url('../../base/img/play_open.png');
+        background-size: 100% 100%;
+        top: 0px;
+        left: 0px;
+        z-index: 999;
+    }
+
+    .hover-img:hover {
+        .hover-img-show {
+            display: block;
+        }
+    }
 }
 
 .label-box:hover {

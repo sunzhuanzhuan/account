@@ -91,5 +91,36 @@
         .video-item:hover {
             @hover-shadow();
         }
+
+    }
+}
+
+.new-video-box {
+    position: relative;
+
+    .grouped-right-direction,
+    .grouped-left-direction {
+        z-index: 999;
+        position: absolute;
+        width: 100px;
+        height: 40px;
+        cursor: pointer;
+        font-size: 24px;
+        color: rgba(0, 0, 0, 0.1);
+        bottom: 100px;
+
+        &:hover {
+            color: rgba(0, 0, 0, 0.3);
+        }
+    }
+
+    .grouped-right-direction {
+        right: -30px;
+        bottom: 104px;
+    }
+
+    .grouped-left-direction {
+        left: 30px;
+
     }
 }

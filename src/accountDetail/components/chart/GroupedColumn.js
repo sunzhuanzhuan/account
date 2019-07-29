@@ -67,24 +67,29 @@ export default class GroupedColumn extends React.Component {
       Wednesday: require("../img/fire.png"),
     };
 
-    // {
-    //   htmlTemplate(text, item, index) {
-    //     const dataItem = data.filter(one => one.label == text)[0]
-    //     return `<div class='label-box'
-    //             onClick="window.open(${dataItem.mediaUrl}, '_blank')">
-    //     <div>
-    //     <img 
-    //      width='120px'
-    //      height='160px'
-    //     src=${dataItem.mediaCoverUrl ? dataItem.mediaCoverUrl : require('../img/deafult-box.png')} onError=${(e) => e.target.src = require('../img/deafult-box.png')} />
-    //     </div>
-    //       <div class='media-caption'>${ dataItem.mediaCaption || '-'}</div>
-    //       <div class='media-created-time'>${
-    //       moment(dataItem.mediaCreatedTime).format('YYYY/MM/DD hh:mm:ss')
-    //       }</div>
-    //     </div>`
-    //   }
-    // }
+    const labelConfig = {
+      htmlTemplate(text, item, index) {
+        const dataItem = data.filter(one => one.label == text)[0]
+        return `<a class='label-box'
+                    href=${dataItem.mediaUrl}
+                    target="_blank">
+        <div class='hover-img'>
+          <div class='bottom-img'>
+             <img 
+               width='120px'
+               height='160px'
+               src=${dataItem.mediaCoverUrl ? dataItem.mediaCoverUrl : require('../img/deafult-box.png')} onError=${(e) => e.target.src = require('../img/deafult-box.png')} />
+          </div>
+          <div class='hover-img-show'>
+          </div>
+        </div>
+          <div class='media-caption'>${ dataItem.mediaCaption || '-'}</div>
+          <div class='media-created-time'>${
+          moment(dataItem.mediaCreatedTime).format('YYYY/MM/DD hh:mm:ss')
+          }</div>
+        </a>`
+      }
+    }
     return (
       <div>
         <div className='legend-customize'>
@@ -101,11 +106,11 @@ export default class GroupedColumn extends React.Component {
             <div>评论</div>
           </div>
         </div>
-        <Chart height={400} data={dv} scale={scale}
-          padding={[60, 60, 10, 60]}
+        <Chart height={600} data={dv} scale={scale}
+          padding={[60, 60, 260, 60]}
           forceFit>
           <Coord />
-          <Axis name="label" label={null}
+          <Axis name="label" label={labelConfig}
 
 
           />

@@ -29,21 +29,18 @@ class NewVideo extends Component {
       endIndex } = this.state
     const list = newVideoList.slice(startIndex, endIndex)
     return (
-      newVideoList.length > 0 ? <div className='new-video-box'>
-        <div className="grouped-left-direction">
-          <Icon type="left-circle" onClick={this.setData} />
-        </div>
+      newVideoList.length > 0 ? <>
         <GroupedColumn
           data={list.map((one, index) => ({ ...one, label: `${index + 1}` }))}
           typeKey2={platformId == 115 ? 'mediaCommentNum' : 'mediaCommentNum'}
           typeText2={platformId == 115 ? '评论' : '播放'}
         />
-        {/*   <div className='new-video' >
+        <div className='new-video' >
           <div className='video-list-box'>
             <div className="arrow left-direction">
               <Icon type="left-circle" onClick={this.setData} />
             </div>
-                 <div className='video-list'>
+            <div className='video-list'>
               {list.map((one, index) => <div className='video-item' key={index} onClick={() => { window.open(one.mediaUrl, "_blank") }}>
                 <div className='img'>
                   <HoverImg img={
@@ -56,25 +53,22 @@ class NewVideo extends Component {
                 </div>
                 <div className='text-center-time'>{
                   moment(one.mediaCreatedTime).format('YYYY/MM/DD hh:mm:ss')}</div>
-           <div className='last-box'>
+                {/* <div className='last-box'>
                 <div className='number'>
                   <DividerArr list={[
                     { icon: 'like-gray', number: one.mediaLikeNum },
                     { icon: 'comment-gray', number: one.mediaCommentNum },
                     { icon: 'share', number: one.mediaRepostNum }]} />
                 </div>
-              </div> 
+              </div> */}
               </div>)}
             </div>
             <div className="arrow right-direction">
               <Icon type="right-circle" onClick={this.setData} />
             </div>
           </div>
-        </div>*/}
-        <div className="grouped-right-direction">
-          <Icon type="right-circle" onClick={this.setData} />
         </div>
-      </div> : <Empty style={{ padding: "30px", margin: '0px auto' }} />
+      </> : <Empty style={{ padding: "30px", margin: '0px auto' }} />
     );
   }
 }
