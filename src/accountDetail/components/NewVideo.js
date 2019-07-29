@@ -24,13 +24,17 @@ class NewVideo extends Component {
     })
   }
   render() {
-    const { newVideoList = [] } = this.props
+    const { newVideoList = [], platformId } = this.props
     const { startIndex,
       endIndex } = this.state
     const list = newVideoList.slice(startIndex, endIndex)
     return (
       newVideoList.length > 0 ? <>
-        <GroupedColumn data={list.map((one, index) => ({ ...one, label: `${index + 1}` }))} />
+        <GroupedColumn
+          data={list.map((one, index) => ({ ...one, label: `${index + 1}` }))}
+          typeKey2={platformId == 115 ? 'mediaCommentNum' : 'mediaCommentNum'}
+          typeText2={platformId == 115 ? '评论' : '播放'}
+        />
         <div className='new-video' >
           <div className='video-list-box'>
             <div className="arrow left-direction">

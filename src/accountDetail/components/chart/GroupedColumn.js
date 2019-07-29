@@ -28,7 +28,7 @@ export default class GroupedColumn extends React.Component {
     }
   }
   render() {
-    const { data, typeKey2 = 'mediaCommentNum' } = this.props
+    const { data, typeKey2 = 'mediaPlayNum', typeText2 = '播放', } = this.props
     const ds = new DataSet();
     const dv = ds.createView().source(data);
     dv.transform({
@@ -47,7 +47,7 @@ export default class GroupedColumn extends React.Component {
       type: {
         formatter: d => ({
           mediaLikeNum: '点赞',
-          [typeKey2]: '评论'
+          [typeKey2]: typeText2
         }[d])
       },
       value: {
@@ -79,13 +79,13 @@ export default class GroupedColumn extends React.Component {
           </div>
         </div>
         <Chart height={400} data={dv} scale={scale}
-          padding={60}
+          padding={[60]}
           forceFit>
           <Coord />
-          <Axis name="label" visible={false}
+          <Axis name="label" label={null}
           />
           <Axis name="value" />
-          <Tooltip g2-tooltip={g2Tooltip} />
+          <Tooltip g2-tooltip={g2Tooltip} g2-tooltip-title={{ display: 'none' }} />
           <Geom
             type="interval"
             position="label*value"
@@ -128,7 +128,7 @@ const GuideLine = ({ middle, color = '#2fc25b', content = '平均' }) => {
   return <Line
     top
     start={{ label: -0.5, value: middle }}
-    end={{ label: 4.2, value: middle }}
+    end={{ label: 4.26, value: middle }}
     lineStyle={{
       stroke: color,
       lineDash: [0, 1, 1],

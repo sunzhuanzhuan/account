@@ -8,6 +8,7 @@ import './LandscapeType.less'
 class LandscapeType extends React.Component {
   render() {
     const { data = [], height = 600 } = this.props
+    let maxOpacity = 1
     return (
       data.length > 0 ? <div>
         <div className='land-scape-type-item'>
@@ -16,6 +17,9 @@ class LandscapeType extends React.Component {
         </div>
         <div className='land-scape-type'>
           {data.map((one, index) => {
+            if (index == 0) {
+              maxOpacity = one.value
+            }
             return <div key={one.key} className='land-scape-type-item'
               style={{ height: 450 / data.length }}>
               <div className='name'>{one.name}</div>
