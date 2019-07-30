@@ -80,7 +80,8 @@ class AudienceAttribute extends Component {
           <CharTitle title='粉丝兴趣' />
           <Histogram height={400}
             data={kolVisitorInterestDrawList}
-            positionConfig='name*tgiValue' />
+            positionConfig='name*tgiValue'
+            textTitle='TGI' />
         </div>
 
         <div className='flex-between flex1-right-white mt20 '>
@@ -95,7 +96,7 @@ class AudienceAttribute extends Component {
             </div>
           </div>
           <div className='flex7'>
-            <CharTitle title='App偏好TOP10' />
+            <CharTitle title='App偏好TOP10' content='为体现用户特征，排行中去掉了一些大众化的常用app' />
             <LandscapeType data={kolVisitorAgeDrawList} />
           </div>
         </div>
@@ -105,14 +106,18 @@ class AudienceAttribute extends Component {
             <div className='fans-line-item'>
               <Histogram
                 height={400}
-                data={kolVisitorInterestDrawList}
-                positionConfig='name*tgiValue' />
+                data={kolVisitorAgeDrawList}
+                positionConfig='name*value'
+                textTitle='活跃活跃时间分布 -- 天'
+              />
             </div>
             <div className='fans-line-item'>
               <Histogram
                 height={400}
-                data={kolVisitorInterestDrawList}
-                positionConfig='name*tgiValue' />
+                data={kolVisitorAgeDrawList}
+                positionConfig='name*value'
+                textTitle='活跃活跃时间分布 -- 周'
+              />
             </div>
           </div>
         </div>

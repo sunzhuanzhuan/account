@@ -35,7 +35,7 @@ class BarLabel extends React.Component {
         </div>`
       }
     }
-    return data.length > 0 ? <div>
+    return data.length > 0 ? <div style={{ marginLeft: 50, marginTop: 20, display: 'flow-root' }}>
       <div className='title-header'>
         <div className='title-box'>
           <div>名称</div>
@@ -43,7 +43,7 @@ class BarLabel extends React.Component {
           <div>占比</div>
         </div>
       </div>
-      <Chart height={500} forceFit data={data} scale={cols} padding={['auto', 100, 'auto', 200,]}>
+      <Chart height={440} forceFit data={data} scale={cols} padding={['auto', 100, 'auto', 200,]}>
         <Coord transpose />
         <Axis name="name" label={labelConfig} />
         <Axis name="value" label={null} />

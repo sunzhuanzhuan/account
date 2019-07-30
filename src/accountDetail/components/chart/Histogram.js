@@ -1,27 +1,20 @@
 import React from "react";
 import {
-  G2,
   Chart,
   Geom,
   Axis,
   Tooltip,
-  Coord,
-  Label,
-  Legend,
-  View,
   Guide,
-  Shape,
-  Facet,
-  Util
 } from "bizcharts";
 import { formatW } from "../../util";
 import { Empty } from "antd";
 import {
   g2Tooltip
 } from "./config";
+import numeral from 'numeral'
 class Histogram extends React.Component {
   render() {
-    const { data = [], positionConfig, height = 300 } = this.props
+    const { data = [], positionConfig, height = 300, textTitle, } = this.props
     const scale = {
       tgiValue: {
         // min: 0,
@@ -29,16 +22,25 @@ class Histogram extends React.Component {
         formatter: val => {
           return formatW(val);
         }
+      },
+      value: {
+        alias: 'TGI',
+        formatter: val => {
+          return numeral(val).format('0.0%')
+        }
       }
     }
     return (
       data.length > 0 ? <div>
+        <div style={{ fontSize: 12, color: '#999', marginLeft: 55, marginTop: 20 }}>
+          {textTitle}
+        </div>
         <Chart
           height={height}
           data={data}
           scale={scale}
           forceFit
-          padding={[80, 100]}
+          padding={[20, 100, 80]}
         >
           <Axis name="sales" />
           <Axis name="name" visible={true} />
