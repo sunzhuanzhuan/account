@@ -71,7 +71,7 @@ class CompositeRadar extends Component {
             label={{
               htmlTemplate(text, item, index) {
                 const value = numeral(dataForMap[text] || 0).format('0')
-                return `<div style='width:100px;text-align:center'>${text}  <span style="color:#333;font-size:14px;font-weight:400;">${value}</span></div>`
+                return `<div style='width:120px;text-align:center'>${text}  <span style="color:#333;font-size:14px;font-weight:400;">${value}</span></div>`
               }
             }}
             grid={{
