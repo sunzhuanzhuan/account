@@ -1,0 +1,72 @@
+import React from 'react';
+import numeral from 'numeral';
+import { Empty } from 'antd';
+import './Landscape.less'
+import {
+  Chart,
+  Geom,
+  Axis,
+  Tooltip,
+  Coord,
+  Label
+} from "bizcharts";
+import { g2Tooltip, } from "./config";
+class BarLabel extends React.Component {
+  render() {
+    const { data = [] } = this.props
+
+    const cols = {
+      percent: {
+        formatter: val => {
+          return numeral(val || 0).format('0.0%')
+        }
+      },
+    };
+    //自定义y轴label
+    const labelConfig = {
+      htmlTemplate(text, item, index) {
+        let dataItem = data.filter(one => one.name == text)[0]
+
+        return `<div  class='label-sex-type'>
+        <div class='sex-type'>
+          <div class='sex-box'>${dataItem && dataItem.name}</div>
+          <div class='type-box'>${dataItem && dataItem.value + dataItem && dataItem.key}</div>
+          </div>
+        </div>`
+      }
+    }
+    return <div>
+      <div className='title-header'>
+        <div className='title-box'>
+          <div>名称</div>
+          <div>分类</div>
+          <div>占比</div>
+        </div>
+      </div>
+      <Chart height={500} forceFit data={data} scale={cols} padding={['auto', 100, 'auto', 200,]}>
+        <Coord transpose />
+        <Axis name="name" label={labelConfig} />
+        <Axis name="value" label={null} />
+        <Tooltip g2-tooltip={g2Tooltip} />
+        {
+          /* 凸显类型 color={['age', '#E6F6C8-#3376CB']} */
+        }
+        <Geom type="interval" position="name*value"
+          color={['value', '#D8E7FF-#4786F5']}
+          tooltip={[
+            "name*value",
+            (name, value) => {
+              return {
+                name: name,
+                value: numeral(value || 0).format('0.0%')
+              };
+            }
+          ]}>
+          <Label content={['name*value', (name, value) => numeral(value || 0).format('0.0%')]} />{' '}
+        </Geom>
+      </Chart>
+    </div>;
+  }
+
+}
+export default BarLabel;

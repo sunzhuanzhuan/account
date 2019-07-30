@@ -32,7 +32,7 @@ export default class GroupedColumn extends React.Component {
     }
   }
   render() {
-    const { data, typeKey2 = 'mediaPlayNum', typeText2 = '播放', } = this.props
+    const { data, typeKey2 = 'mediaPlayNum', typeText2 = '播放', avgLine1, avgLine2 } = this.props
     const ds = new DataSet();
     const dv = ds.createView().source(data);
     dv.transform({
@@ -66,7 +66,7 @@ export default class GroupedColumn extends React.Component {
     var imageMap = {
       Wednesday: require("../img/fire.png"),
     };
-
+    //自定义x轴label
     const labelConfig = {
       htmlTemplate(text, item, index) {
         const dataItem = data.filter(one => one.label == text)[0]
@@ -107,7 +107,7 @@ export default class GroupedColumn extends React.Component {
           </div>
         </div>
         <Chart height={600} data={dv} scale={scale}
-          padding={[60, 60, 260, 60]}
+          padding={[60, 100, 260, 100]}
           forceFit>
           <Coord />
           <Axis name="label" label={labelConfig}
@@ -143,8 +143,8 @@ export default class GroupedColumn extends React.Component {
           />
 
           <Guide>
-            <GuideLine content='近30条视频平均点赞' middle={this.getAvgNumber(data, 'mediaLikeNum')} color='#3AA1FF' />
-            <GuideLine content={`近30条视频平均${typeText2}`} middle={this.getAvgNumber(data, typeKey2)} />
+            <GuideLine content='近30条视频平均点赞' middle={avgLine1} color='#3AA1FF' />
+            <GuideLine content={`近30条视频平均${typeText2}`} middle={avgLine2} />
 
           </Guide>
         </Chart>
@@ -158,7 +158,7 @@ const GuideLine = ({ middle, color = '#2fc25b', content = '平均' }) => {
   return <Line
     top
     start={{ label: -0.5, value: middle }}
-    end={{ label: 4.26, value: middle }}
+    end={{ label: 4.4, value: middle }}
     lineStyle={{
       stroke: color,
       lineDash: [0, 1, 1],

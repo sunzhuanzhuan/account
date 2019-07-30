@@ -24,7 +24,13 @@ class NewVideo extends Component {
     })
   }
   render() {
-    const { newVideoList = [], platformId } = this.props
+    const { newVideoList = [], platformId, baseInfo } = this.props
+    const { feature = {} } = baseInfo
+    const {
+      mediaCommentAvg, //近30评论平均值
+      mediaPlayAvg, //播放
+      mediaLikeAvg//点赞
+    } = feature
     const { startIndex,
       endIndex } = this.state
     const list = newVideoList.slice(startIndex, endIndex)
@@ -35,6 +41,8 @@ class NewVideo extends Component {
         </div>
         <GroupedColumn
           data={list.map((one, index) => ({ ...one, label: `${index + 1}` }))}
+          avgLine1={mediaLikeAvg}
+          avgLine2={platformId == 115 ? mediaCommentAvg : mediaPlayAvg}
           typeKey2={platformId == 115 ? 'mediaCommentNum' : 'mediaCommentNum'}
           typeText2={platformId == 115 ? '评论' : '播放'}
         />

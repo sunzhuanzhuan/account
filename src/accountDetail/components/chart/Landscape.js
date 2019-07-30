@@ -8,7 +8,7 @@ import {
   Label
 } from "bizcharts";
 import DataSet from "@antv/data-set";
-import { g2Tooltip, l } from "./config";
+import { g2Tooltip, } from "./config";
 import numeral from 'numeral'
 import { Empty } from "antd";
 

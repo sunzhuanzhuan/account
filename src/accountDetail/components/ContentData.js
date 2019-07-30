@@ -137,7 +137,7 @@ class ContentData extends Component {
 
             <CharTitle title='近10个视频数据表现' />
             <LazyLoad once overflow>
-              <NewVideo getNewVideo={getNewVideo} newVideoList={newVideoList} accountId={accountId} platformId={platformId} />
+              <NewVideo getNewVideo={getNewVideo} newVideoList={newVideoList} accountId={accountId} platformId={platformId} baseInfo={baseInfo} />
             </LazyLoad>
           </div>
 

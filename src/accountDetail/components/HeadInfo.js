@@ -56,8 +56,10 @@ class HeadInfo extends Component {
             </div>
             <div className='account-code'>
               <span>ID：{snsId}</span>
-              <img width='16' src={require(`./img/${isMale == 1 ? 'male' : 'famle'}.png`)} />
-              <span>{areaName || '北京'}</span>
+              {isMale ?
+                <img width='16' src={require(`./img/${isMale == 1 ? 'male' : 'famle'}.png`)} />
+                : null}
+              <span>{areaName}</span>
             </div>
 
           </div>
