@@ -35,7 +35,7 @@ class BarLabel extends React.Component {
         </div>`
       }
     }
-    return <div>
+    return data.length > 0 ? <div>
       <div className='title-header'>
         <div className='title-box'>
           <div>名称</div>
@@ -65,7 +65,7 @@ class BarLabel extends React.Component {
           <Label content={['name*value', (name, value) => numeral(value || 0).format('0.0%')]} />{' '}
         </Geom>
       </Chart>
-    </div>;
+    </div> : <Empty style={{ height: 500 + 18, paddingTop: 180 }} />;
   }
 
 }

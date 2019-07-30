@@ -78,15 +78,9 @@ class AudienceAttribute extends Component {
 
         <div className='flex1-right-white mt20'>
           <CharTitle title='粉丝兴趣' />
-          <HistogramLine height={300} data={kolVisitorInterestDrawList}
-            positionConfig='name*tgiValue'
-            positionIntervalConfig='name*value'
-            paddingConfig={[60, 90]}
-            lineText='TGI'
-            boxText='兴趣爱好'
-            boxLeft={40}
-            boxRight={60} />
-
+          <Histogram height={400}
+            data={kolVisitorInterestDrawList}
+            positionConfig='name*tgiValue' />
         </div>
 
         <div className='flex-between flex1-right-white mt20 '>
