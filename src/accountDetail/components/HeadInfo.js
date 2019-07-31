@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import LookIndex from "./LookIndex";
+import VerificationIcon from "../base/VerificationIcon";
 import { PopoverFormat } from "../base/TitleAndDecide";
 import "./HeadInfo.less"
 import { Avatar, Button, Divider, Empty, Icon, Popover } from 'antd';
@@ -43,7 +44,10 @@ class HeadInfo extends Component {
                 widthSize={16}
               /> </span> : null}
               <PopoverFormat text={<div className='account-name'>{snsName}</div>} content={snsName} />
-              {isVerified == 1 ? <PopoverFormat text={<img width='14px' style={{ marginLeft: 10, paddingBottom: 4 }} src={require(`./img/certification-${'other'}.png`)} />} content={verificationReason} /> : null}
+              {isVerified == 1 ? <PopoverFormat text={<VerificationIcon
+                platformId={platformId}
+                status={isVerified}
+              />} content={verificationReason} /> : null}
               <LookIndex url={url} qrCodeUrl={qrCodeUrl} platformName={platformName} />
               {/* <a style={{ marginLeft: 20, color: ' #1990FF' }} onClick={() => setShowModal(true, { content: <BloggerInfo />, title: '博主信息', width: 700 })}>
                 <Icon type='user' />查看博主信息</a> */}
