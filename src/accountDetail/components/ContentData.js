@@ -81,6 +81,7 @@ class ContentData extends Component {
                   BluelineName='mediaPlayAvgIncre'
                   GreenlineText={platformId == 115 ? '点赞增量' : '评论增量'}
                   GreenlineName={platformId == 115 ? 'mediaLikeAvgIncre' : 'mediaCommentAvgIncre'}
+                 
                 />
               </div>,
               3: <div className='content-char'>

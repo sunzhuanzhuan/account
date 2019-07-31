@@ -24,13 +24,13 @@ class CurveLine extends Component {
     } = this.props
     const cols = {
       followerCountFull: {
-        alias: '粉丝累计数',
+        alias: '粉丝累计量',
         formatter: val => {
           return formatW(val)
         }
       },
       followerCountIncre: {
-        alias: '粉丝净增数',
+        alias: '粉丝增量',
         formatter: val => {
           return formatW(val);
         }
@@ -48,17 +48,35 @@ class CurveLine extends Component {
         }
       },
       mediaInteractionAvgFull: {
-        alias: '平均互动数',
+        alias: '互动数',
         formatter: val => {
           return formatW(val);
         }
       },
       interactionProportionIncre: {
-        alias: '平均互动率',
+        alias: '互动率',
         formatter: val => {
           return numeral(val || 0).format('0.0%')
         }
       },
+      mediaLikeAvgIncre: {
+        alias: '点赞增量',
+        formatter: val => {
+          return formatW(val);
+        }
+      },
+      mediaCommentAvgIncre: {
+        alias: '评论增量',
+        formatter: val => {
+          return formatW(val);
+        }
+      },
+      mediaPlayAvgIncre: {
+        alias: '播放增量',
+        formatter: val => {
+          return formatW(val);
+        }
+      }
     };
     return (
       data.length > 0 ? <div className='histogram-line'>

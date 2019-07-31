@@ -27,6 +27,7 @@ class AudienceAttribute extends Component {
       kolVisitorBehaviorWeekDraw, //活跃活跃时间分布 -- 天（新增
       kolVisitorBehaviorHourDraw,//活跃活跃时间分布 （新增）
       kolVisitorAppDraw,//App Top10
+      kolProvinceLevelDraw
     } = audienceAttributeInfo
 
     return (
@@ -65,7 +66,7 @@ class AudienceAttribute extends Component {
           <div className='ranking'>
             <ButtonTab buttonList={[{ key: 1, name: '城市线级' }, { key: 2, name: '城市排行' }]}
               contentMap={{
-                1: <CityTable />,
+                1: <CityTable list={kolProvinceLevelDraw} />,
                 2: <div>
                   <div className='city-top-title'>城市Top10</div>
                   <CityTable list={kolVisitorProvinceDrawList.slice(0, 10)} />
@@ -159,7 +160,7 @@ const SexList = ({ list = [] }) => {
   </div>
 }
 
-const CityTable = ({ type, list = [{ name: '北京', age: 22 }, { name: '北京', age: 32 }] }) => {
+const CityTable = ({ type, list = [] }) => {
 
   const columns = [
     {
