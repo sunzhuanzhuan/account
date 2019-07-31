@@ -39,7 +39,7 @@ class HistogramLine extends Component {
     //     people: 2
     //   }
     // ];
-    const { data = [], positionConfig, lineText, boxText, positionIntervalConfig, type = 4, boxLeft, boxRight, paddingConfig = [60, 40, 50, 60] } = this.props
+    const { data = [], positionConfig, lineText, boxText, positionIntervalConfig, type = 4, boxLeft, boxRight, paddingConfig = [60, 60, 50, 60] } = this.props
 
     const scale = {
       followerCountFull: {

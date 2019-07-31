@@ -16,7 +16,7 @@ const getTime = (value) => {
   const hour = value / 60 / 60
   const day = value / 60 / 60 / 24
   if (value < 60) {
-    return min + '秒'
+    return numeral(value).format('0') + '秒'
   }
   else if (hour < 1) {
     return numeral(min).format('0.0') + '分钟'

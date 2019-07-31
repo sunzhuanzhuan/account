@@ -30,7 +30,7 @@ class BarLabel extends React.Component {
         return `<div  class='label-sex-type'>
         <div class='sex-type'>
           <div class='sex-box'>${dataItem && dataItem.name}</div>
-          <div class='type-box'>${dataItem && dataItem.value + dataItem && dataItem.key}</div>
+          <div class='type-box'>${dataItem && dataItem.type}</div>
           </div>
         </div>`
       }

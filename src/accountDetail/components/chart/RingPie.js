@@ -45,6 +45,7 @@ class RingPie extends React.Component {
         }
       }
     };
+
     return (
       <div >
         {data.length > 0 ? <Chart
@@ -97,9 +98,10 @@ class RingPie extends React.Component {
               content="percent"
               htmlTemplate={(text, item, index) => {
                 var point = item.point; // 每个弧度对应的点
-                var percentName = point.name;
-                return `<div style="width:80px;text-align:center"}>${percentName}<div>
-                        <div style="width:80px;text-align:center">${ text}<div>`
+                const { name, tgiValue } = point;
+                return `<div style="width:110px;text-align:left"}>${name}<div>
+                        <div style="width:110px;text-align:left">占比：${ text}<div>
+                        <div style="width:110px;text-align:left">${tgiValue ? `TGI：${tgiValue}` : ''}<div>`
               }}
             />
           </Geom>

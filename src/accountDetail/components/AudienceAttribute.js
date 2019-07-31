@@ -11,22 +11,23 @@ class AudienceAttribute extends Component {
     this.state = {};
   }
   componentDidMount = () => {
-    const { getAudienceAttribute, accountId, getQueryTgiList } = this.props
+    const { getAudienceAttribute, accountId } = this.props
     getAudienceAttribute({ accountId: accountId })
-    getQueryTgiList({ accountId: accountId })
   }
   render() {
-    const { audienceAttributeInfo = {}, queryTgiList = {} } = this.props
+    const { audienceAttributeInfo = {} } = this.props
     const {
       kolVisitorAgeDrawList,//年龄
       kolVisitorProvinceDrawList = [], //地域
-      kolVisitorGenderDrawList //性别
-    } = audienceAttributeInfo
-    const {
+      kolVisitorGenderDrawList,//性别
       kolVisitorConsumptionDrawList,//消费能力
       kolVisitorOSDrawList, //设备
+      kolVisitorOsPriceDraw,//手机价格
       kolVisitorInterestDrawList, //兴趣
-    } = queryTgiList
+      kolVisitorBehaviorWeekDraw, //活跃活跃时间分布 -- 天（新增
+      kolVisitorBehaviorHourDraw,//活跃活跃时间分布 （新增）
+      kolVisitorAppDraw,//App Top10
+    } = audienceAttributeInfo
 
     return (
       <div className='audience-attribute'>
@@ -50,7 +51,7 @@ class AudienceAttribute extends Component {
             </div>
             <div className='age-sex-gender' >
               <CharTitle title='消费能力分布' />
-              <RingPie data={kolVisitorGenderDrawList} padding={[70]} />
+              <RingPie data={kolVisitorConsumptionDrawList} padding={[70]} />
             </div>
           </div>
 
@@ -92,12 +93,12 @@ class AudienceAttribute extends Component {
             </div>
             <div className=''>
               <CharTitle title='手机价格分布' />
-              <RingPie data={kolVisitorOSDrawList} height={240} />
+              <RingPie data={kolVisitorOsPriceDraw} height={240} />
             </div>
           </div>
           <div className='flex7'>
             <CharTitle title='App偏好TOP10' content='为体现用户特征，排行中去掉了一些大众化的常用app' />
-            <LandscapeType data={kolVisitorAgeDrawList} />
+            <LandscapeType data={kolVisitorAppDraw} />
           </div>
         </div>
         <div className='flex1-right-white mt20'>
@@ -106,7 +107,7 @@ class AudienceAttribute extends Component {
             <div className='fans-line-item'>
               <Histogram
                 height={400}
-                data={kolVisitorAgeDrawList}
+                data={kolVisitorBehaviorHourDraw}
                 positionConfig='name*value'
                 textTitle='活跃活跃时间分布 -- 天'
               />
@@ -114,7 +115,7 @@ class AudienceAttribute extends Component {
             <div className='fans-line-item'>
               <Histogram
                 height={400}
-                data={kolVisitorAgeDrawList}
+                data={kolVisitorBehaviorWeekDraw}
                 positionConfig='name*value'
                 textTitle='活跃活跃时间分布 -- 周'
               />
@@ -130,7 +131,7 @@ const Rnking = ({ list = [] }) => {
   return list.map((one, index) => <div className='rnking-box' key={index}>
     <div className={index < 3 ? 'number-blue' : 'number-gray'}>{index + 1}</div>
     <div className={index < 3 ? 'city-name-blod' : 'city-name'}>{one.name}</div>
-    <div className={index < 3 ? 'city-name-blod' : 'city-name'}>{numeral(one.value || 0).format('0.0%')}</div>
+    <div className={index < 3 ? 'city-name-blod percent-width' : 'city-name percent-width'}>{numeral(one.value || 0).format('0.0%')}</div>
   </div>)
 }
 
