@@ -51,7 +51,8 @@ class DataIndicator extends Component {
       //     
       mediaCount90d = '-', //90天发布数	
       followerCountGrowthRate28d, //28天粉丝增长率	
-
+      hotMediaCount, // 爆款视频数
+      publishMediaCount28d, // 28天发布次数
     } = feature
     const { data, legend = ['', ''] } = composite
     return (
@@ -111,9 +112,9 @@ class DataIndicator extends Component {
                 <div className='fan-release-item'>
                   <ThreeNumber title='总发布数' number={mediaCount} unit='个' />
                   <Divider type="vertical" className='height20-colorE3' />
-                  <ThreeNumber title='爆款视频数' number={8} unit='个' tips='近90天发布的爆款视频数' />
+                  <ThreeNumber title='爆款视频数' number={hotMediaCount} unit='个' tips='近90天发布的爆款视频数' />
                   <Divider type="vertical" className='height20-colorE3' />
-                  <ThreeNumber title='近28天发布频率' number={2.9} unit='个/周' />
+                  <ThreeNumber title='近28天发布频率' number={publishMediaCount28d} unit='个/周' />
                 </div>
               </div>
             </div>

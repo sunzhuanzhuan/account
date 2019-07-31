@@ -66,8 +66,9 @@ class AudienceAttribute extends Component {
             <ButtonTab buttonList={[{ key: 1, name: '城市线级' }, { key: 2, name: '城市排行' }]}
               contentMap={{
                 1: <CityTable />,
-                2: <div style={{ marginTop: 24 }}>
-                  <Rnking list={kolVisitorProvinceDrawList.slice(0, 6)} />
+                2: <div>
+                  <div className='city-top-title'>城市Top10</div>
+                  <CityTable list={kolVisitorProvinceDrawList.slice(0, 10)} />
                 </div>
               }}
             />
@@ -132,6 +133,7 @@ const Rnking = ({ list = [] }) => {
     <div className={index < 3 ? 'number-blue' : 'number-gray'}>{index + 1}</div>
     <div className={index < 3 ? 'city-name-blod' : 'city-name'}>{one.name}</div>
     <div className={index < 3 ? 'city-name-blod percent-width' : 'city-name percent-width'}>{numeral(one.value || 0).format('0.0%')}</div>
+    <div className={index < 3 ? 'city-name-blod percent-width' : 'city-name percent-width'}>{one.tgiValue}</div>
   </div>)
 }
 
@@ -157,25 +159,29 @@ const SexList = ({ list = [] }) => {
   </div>
 }
 
-const CityTable = ({ list = [{ name: '北京', age: 22 }, { name: '北京', age: 32 }] }) => {
+const CityTable = ({ type, list = [{ name: '北京', age: 22 }, { name: '北京', age: 32 }] }) => {
 
   const columns = [
     {
-      title: '城市县级',
+      title: type == 1 ? '城市县级' : '城市',
       dataIndex: 'name',
       key: 'name',
     },
     {
       title: '占比',
-      dataIndex: 'age',
-      key: 'age',
+      dataIndex: 'value',
+      key: 'value',
+      render: (text) => {
+        return <div>{numeral(text).format('0.0%')}</div>
+      }
     },
     {
       title: 'TGI',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'tgiValue',
+      key: 'tgiValue',
     },
   ];
+
 
 
   return <div className='city-table'>
@@ -183,7 +189,7 @@ const CityTable = ({ list = [{ name: '北京', age: 22 }, { name: '北京', age:
       return <div key={one.key} >
         <div className='title'>{one.title}</div>
         {list.map((item, index) => {
-          return <div key={index} className='content'>{item[one.dataIndex]}</div>
+          return <div key={index} className='content'>{one.render ? one.render(item[one.dataIndex]) : item[one.dataIndex]}</div>
         })}
       </div>
     })}

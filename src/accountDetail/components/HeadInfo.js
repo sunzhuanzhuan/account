@@ -18,7 +18,7 @@ class HeadInfo extends Component {
   render() {
     const { setShowModal, isExistCar, baseInfo = {}, selectCarEdit, actions, accountDetail } = this.props
     const { base = {}, feature = {}, skuList = [] } = baseInfo
-    const { isMale, consumptionLevel, systemType, avatarUrl, areaName,
+    const { gender, consumptionLevel, systemType, avatarUrl, areaName,
       snsName, snsId, followerCount, introduction, platformId = 0,
       url, qrCodeUrl, classification = '-', cooperationTips
     } = base
@@ -60,8 +60,8 @@ class HeadInfo extends Component {
             </div>
             <div className='account-code'>
               <span>ID：{snsId}</span>
-              {isMale == 1 || isMale == 2 ?
-                <img width='16' src={require(`./img/${isMale == 1 ? 'male' : 'famle'}.png`)} />
+              {gender == 1 || gender == 2 ?
+                <img width='16' src={require(`./img/${gender == 1 ? 'male' : 'famle'}.png`)} />
                 : null}
               <span>{areaName}</span>
             </div>

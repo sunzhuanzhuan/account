@@ -77,6 +77,7 @@ class MapChart extends Component {
       dataValue.map((item) => {
         if (name.includes(item.name)) {
           one.value = item.value
+          one.tgiValue = item.tgiValue
         }
       })
     })
@@ -118,14 +119,21 @@ class MapChart extends Component {
             style={{ lineWidth: 1, stroke: "white" }}
             // color={['value', ['#31c5f8', '#61d3f8', '#89dcfd', '#b0e8f8', '#d8f3ff']]}
             color={['value', ['#d9f4ff', '#33c5f6']]}
-            tooltip={['name*value', (name, value) => {
-              return {
-                name: name,
-                value: numeral(value || 0).format('0.0%')
-              }
-            }]}
           >
-            <Tooltip showTitle={false} g2-tooltip={g2Tooltip} />
+            <Tooltip g2-tooltip={g2Tooltip} useHtml={true}
+              htmlContent={
+                function (title, items) {
+                  const { name, tgiValue, value } = items[0].point._origin
+                  const { color } = items[0].point
+                  return `<div class='custom-tooltip' style="width:160px;padding: 5px 10px">
+                <div>
+                <span style="background-color:${color};width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:6px;margin-bottom:2px;">
+                </span>${name}
+                </div>
+                <div>占比：${numeral(value).format('0.0%')}</div>
+                <div>TGI：${tgiValue}</div>
+                </div>`
+                }} />
             <Legend position='bottom-left'
               offsetY={-130}
               offsetX={-60}

@@ -52,7 +52,7 @@ class ContentData extends Component {
     const { base = {} } = baseInfo
     const { platformId } = base
     const { dataBoxProps } = this.state
-    const { contentSum = [], like = [], interactive = [] } = trendInfo
+    const { contentSum = [], spreadTrend = [], interactive = [] } = trendInfo
     return (
       <div className='content-data'>
         <div className='title-big' >数据趋势</div>
@@ -66,29 +66,29 @@ class ContentData extends Component {
             contentMap={{
 
               1: <div className='content-char'>
-                <CharTitle title='粉丝累计和净增趋势图' content='可观察最近90天账号粉丝累计和净增变化趋势' />
+                <CharTitle title='粉丝累计量和增量趋势图' content='可观察最近10周账号粉丝累计和增量变化趋势' />
                 <CurveLine data={contentSum}
-                  BluelineText='粉丝累计数'
+                  BluelineText='粉丝累计量'
                   BluelineName='followerCountFull'
-                  GreenlineText='粉丝净增数'
+                  GreenlineText='粉丝增量'
                   GreenlineName='followerCountIncre'
                 />
               </div>,
               2: <div className='content-char'>
-                <CharTitle title='平均点赞数和发布数趋势图' content='可观察最近90天内平均点赞数和发布数变化趋势' />
-                <CurveLine data={like}
-                  BluelineText='平均点赞数'
-                  BluelineName='mediaLikeAvgFull'
-                  GreenlineText='视频发布数'
-                  GreenlineName='mediaCountIncre'
+                <CharTitle title='播放增量和评论增量趋势图' content='可观察最近10周内点赞增量和评论增量变化趋势' />
+                <CurveLine data={spreadTrend}
+                  BluelineText='播放增量'
+                  BluelineName='mediaPlayAvgIncre'
+                  GreenlineText={platformId == 115 ? '点赞增量' : '评论增量'}
+                  GreenlineName={platformId == 115 ? 'mediaLikeAvgIncre' : 'mediaCommentAvgIncre'}
                 />
               </div>,
               3: <div className='content-char'>
-                <CharTitle title='平均互动数和互动率趋势图' content='可观察最近90天内平均互动数和互动率变化趋势' />
+                <CharTitle title='互动数和互动率趋势图' content='可观察最近10周内互动数和互动率变化趋势' />
                 <CurveLine data={interactive}
-                  BluelineText='平均互动数'
+                  BluelineText='互动数'
                   BluelineName='mediaInteractionAvgFull'
-                  GreenlineText={ '平均互动率'}
+                  GreenlineText={'互动率'}
                   GreenlineName={'interactionProportionIncre'}
                 />
               </div>
