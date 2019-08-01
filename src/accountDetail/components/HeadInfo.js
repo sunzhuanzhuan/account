@@ -46,10 +46,11 @@ class HeadInfo extends Component {
                 widthSize={16}
               /> </span> : null}
               <PopoverFormat text={<div className='account-name'>{snsName}</div>} content={snsName} />
-              <VerificationIcon
+
+              {isVerified == 1 ? <PopoverFormat text={<VerificationIcon
                 platformId={platformId}
-                status={verifiedStatus}
-              />
+                status={isVerified}
+              />} content={verificationReason} /> : null}
               <LookIndex url={url} qrCodeUrl={qrCodeUrl} platformName={platformName} />
               {/* <a style={{ marginLeft: 20, color: ' #1990FF' }} onClick={() => setShowModal(true, { content: <BloggerInfo />, title: '博主信息', width: 700 })}>
                 <Icon type='user' />查看博主信息</a> */}

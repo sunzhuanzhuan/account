@@ -6,18 +6,28 @@ const styleProps = {
   marginLeft: 12,
   marginBottom: 2
 }
-const VerificationIcon = ({ platformId, status }) => {
-  const url = platformIdStatusMap[`${platformId}-${status}`]
+const VerificationIcon = ({ platformId,
+  status,
+  type = 1//1是isVerified，2是认证状态verifiedStatus
+}) => {
+  const mapIcon = type == 1 ? verificationMap : platformIdStatusMap
+  const url = mapIcon[`${platformId}-${status}`]
+  console.log("TCL: url", url)
+
   return url ? <img src={url} style={styleProps} /> : null
 }
 const platformIdStatusMap = {
   '115-3': 'http://img.weiboyi.com/vol1/1/102/124/x/l/903276pno35q11r99p5o506o4op229o2/p115_douyin_v3_2x.png',
   '115-5': 'http://img.weiboyi.com/vol1/1/102/124/y/k/90433n15o35q11r99p5o506o4op229o2/p115_douyin_v5_2x.png',
   '115-6': 'http://img.weiboyi.com/vol1/1/102/124/o/e/90465s30o35q11r99p5o506o4op229o2/p115_douyin_v6_2x.png',
+}
+const verificationMap = {
+  '115-1': 'http://img.weiboyi.com/vol1/1/102/124/x/l/903276pno35q11r99p5o506o4op229o2/p115_douyin_v3_2x.png',
   '24-1': 'http://img.weiboyi.com/vol1/1/102/124/r/x/8so7238so35q11r99p5o506o4op229o2/p24_miaopai_v1_2x.png',
   '25-1': 'http://img.weiboyi.com/vol1/1/102/124/a/b/8so893poo35q11r99p5o506o4op229o2/p25_meipai_v1_2x.png',
   '103-1': 'http://img.weiboyi.com/vol1/1/102/124/m/c/90034r0qo35q11r99p5o506o4op229o2/p103_kuaishou_v1.png',
   '110-1': 'http://img.weiboyi.com/vol1/1/102/124/t/g/8s704no1o35q11r99p5o506o4op229o2/p110_bili_v1.png'
+
 }
 
 export default VerificationIcon
