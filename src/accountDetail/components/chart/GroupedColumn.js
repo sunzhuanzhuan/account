@@ -32,7 +32,7 @@ export default class GroupedColumn extends React.Component {
     }
   }
   render() {
-    const { data, typeKey2 = 'mediaPlayNum', typeText2 = '播放', avgLine1, avgLine2 } = this.props
+    const { data, typeKey2 = 'mediaPlayNum', typeText2 = '播放', avgLine1, avgLine2, } = this.props
     const ds = new DataSet();
     const dv = ds.createView().source(data);
     dv.transform({
@@ -63,13 +63,14 @@ export default class GroupedColumn extends React.Component {
       }
 
     };
-    var imageMap = {
-      Wednesday: require("../img/fire.png"),
-    };
+    var imageMap = {}
+    data.filter(one => one.isHot == 1).map(one => {
+      imageMap[one.label] = require("../img/fire.png")
+    });
     //自定义x轴label
     const labelConfig = {
       htmlTemplate(text, item, index) {
-        const dataItem = data.filter(one => one.label == text)[0]
+        const dataItem = data.filter(one => one.label == text)[0] || {}
         return `<a class='label-box'
                     href=${dataItem.mediaUrl}
                     target="_blank">
@@ -130,7 +131,7 @@ export default class GroupedColumn extends React.Component {
           <Geom
             type="point"
             position="label*value"
-            size={40}
+            size={30}
             shape={[
               ['label', 'type'],
               function (name, type) {
@@ -154,7 +155,7 @@ export default class GroupedColumn extends React.Component {
 }
 
 
-const GuideLine = ({ middle, color = '#2fc25b', content = '平均' }) => {
+const GuideLine = ({ middle, color = '#2fc25b', content = '平均', start, end }) => {
   return <Line
     top
     start={{ label: -0.5, value: middle }}
