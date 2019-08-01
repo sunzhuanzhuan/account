@@ -22,7 +22,7 @@ import {
   greenColor,
   pinkColor, g2Tooltip
 } from "./config";
-
+import './RingPie.less'
 
 
 class RingPie extends React.Component {
@@ -99,9 +99,9 @@ class RingPie extends React.Component {
               htmlTemplate={(text, item, index) => {
                 var point = item.point; // 每个弧度对应的点
                 const { name, tgiValue } = point;
-                return `<div style="width:110px;text-align:left"}>${name}<div>
-                        <div style="width:110px;text-align:left">占比：${ text}<div>
-                        <div style="width:110px;text-align:left">${tgiValue ? `TGI：${tgiValue}` : ''}<div>`
+                return `<div class='ring-title'}>${name}<div>
+                        <div class='ring-content'>占比：${ text}<div>
+                        <div class='ring-content'>${tgiValue ? `TGI：${tgiValue}` : ''}<div>`
               }}
             />
           </Geom>

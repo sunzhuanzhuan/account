@@ -20,10 +20,12 @@ class HeadInfo extends Component {
     const { base = {}, feature = {}, skuList = [] } = baseInfo
     const { gender, consumptionLevel, systemType, avatarUrl, areaName,
       snsName, snsId, followerCount, introduction, platformId = 0,
-      url, qrCodeUrl, classification = '-', cooperationTips
+      url, qrCodeUrl, cooperationTips,
+      verifiedStatusName,
+      verifiedStatus
     } = base
     const { wholeRank = 0, orderResponseDuration, orderResponsePercentile,
-      orderAcceptanceNum = '-', orderAcceptanceRate, orderMajorIndustryCategory, orderCompleteDuration,
+      orderAcceptanceNum = '-', classification = '-', orderAcceptanceRate, orderMajorIndustryCategory, orderCompleteDuration,
       isVerified, verificationReason } = feature
     //排名处理
     const platformName = platformView[platformId] || '-'
@@ -44,10 +46,10 @@ class HeadInfo extends Component {
                 widthSize={16}
               /> </span> : null}
               <PopoverFormat text={<div className='account-name'>{snsName}</div>} content={snsName} />
-              {isVerified == 1 ? <PopoverFormat text={<VerificationIcon
+              <VerificationIcon
                 platformId={platformId}
-                status={isVerified}
-              />} content={verificationReason} /> : null}
+                status={verifiedStatus}
+              />
               <LookIndex url={url} qrCodeUrl={qrCodeUrl} platformName={platformName} />
               {/* <a style={{ marginLeft: 20, color: ' #1990FF' }} onClick={() => setShowModal(true, { content: <BloggerInfo />, title: '博主信息', width: 700 })}>
                 <Icon type='user' />查看博主信息</a> */}
@@ -73,18 +75,10 @@ class HeadInfo extends Component {
                 classification == '-' ? null : <FatLable backColor='#F3F8FD' color='#78A3CE' list={[classification]} />
               } />
               <OneLine title='平台认证' content={
-                <div>
-                  {snsId}
+                <div className='content-font'>
+                  {verifiedStatusName}
                 </div>}
               />
-              {/* <OneLine title='功能标签' content={
-                <FatLable backColor='#FFEBEA' color='#FE6A60' list={['直播', '直播', '直播']} />
-              } /> */}
-              {/* <OneLine title='受众信息' content={<div className='content-font'>
-                <span>{isMale ? isMale == 1 ? '男性' : '女性' : <PopoverFormat content='性别' text='-' />}</span> <Divider type="vertical" />
-                <span>{consumptionLevel ? `消费水平${consumptionLevel == 1 ? '低' : consumptionLevel == 2 ? '中' : '高'}` : <PopoverFormat content='消费水平' text='-' />}</span> <Divider type="vertical" />
-                <span>{systemType ? systemType == 1 ? '安卓' : 'IOS' : <PopoverFormat content='浏览端' text='-' />}</span>
-              </div>} /> */}
               <OneLine title='简介' content={
                 <div className='content-font' style={{ maxWidth: 300 }}>
                   <PopoverFormat popoverProps={{ overlayStyle: { width: 400 } }} text={<MultiClamp ellipsis="..." clamp={2}>{introduction}</MultiClamp>} content={introduction} />
