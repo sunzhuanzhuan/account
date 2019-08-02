@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Avatar, Button, Icon } from "antd";
 import './BaseInfo.less'
 import { WBYPlatformIcon } from "wbyui"
+import ImgCircle from "../base/ImgCircle";
 import numeralExpand from '../../util/numeralExpand'
 import { platformView } from "../../accountManage/constants/platform";
 class BaseInfo extends Component {
@@ -19,7 +20,7 @@ class BaseInfo extends Component {
           <div className='floating-base-info-flex'>
             <div className='img'>
               <div className='radius-box'>
-                <Avatar size={60} src={avatarUrl} />
+                <ImgCircle url={avatarUrl} />
               </div>
             </div>
             <div className='detail'>
@@ -35,7 +36,7 @@ class BaseInfo extends Component {
             <div className='floating-base-info-flex'>
               {skuList.length > 0 ? skuList.map(one => <div key={one.skuId} className='sku-item'>
                 <div className='sku-name'>{one.skuTypeName} </div>
-                <div className='sku-price'>¥{one.openQuotePrice} </div>
+                <div className='sku-price'>{one.openQuotePrice ? `¥${one.openQuotePrice}` : '-'} </div>
               </div>) : null}
             </div>
             <div className='car-button'>

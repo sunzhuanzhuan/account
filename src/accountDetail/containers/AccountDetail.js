@@ -81,6 +81,8 @@ class AccountDetail extends Component {
       getNewVideo,
       newVideoList
     }
+    const { base = {}, } = baseInfo
+    const { platformId = 0 } = base
     const historicalADProps = {
       getQueryOrderCooperationList,
       queryOrderCooperationList,
@@ -112,12 +114,12 @@ class AccountDetail extends Component {
           </LazyLoad>
 
           {/* 受众画像 */}
-          <LazyLoad once overflow>
+          {platformId == 118 ? null : <LazyLoad once overflow>
             <AudienceAttribute accountId={accountId}
               getAudienceAttribute={getAudienceAttribute}
               audienceAttributeInfo={audienceAttributeInfo}
             />
-          </LazyLoad>
+          </LazyLoad>}
 
           {/* 账号推荐 */}
           {/* <AccountRecommend /> */}

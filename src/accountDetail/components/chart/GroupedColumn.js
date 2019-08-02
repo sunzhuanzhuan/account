@@ -31,6 +31,12 @@ export default class GroupedColumn extends React.Component {
       return data.reduce((pre, next) => pre + next[key], 0) / data.length;
     }
   }
+  getMinNumbertoArr = (arr) => {
+    return Math.min.apply(null, arr)
+  }
+  getMaxNumbertoArr = (arr) => {
+    return Math.max.apply(null, arr)
+  }
   render() {
     const { data, typeKey2 = 'mediaPlayNum', typeText2 = '播放', avgLine1, avgLine2, } = this.props
     const ds = new DataSet();
@@ -55,8 +61,8 @@ export default class GroupedColumn extends React.Component {
         }[d])
       },
       value: {
-        min: getMinNumber('mediaLikeNum', data) > getMinNumber(typeKey2, data) ? getMinNumber(typeKey2, data) : getMinNumber('mediaLikeNum', data),
-        max: getMaxNumber('mediaLikeNum', data) > getMaxNumber(typeKey2, data) ? getMaxNumber('mediaLikeNum', data) : getMaxNumber(typeKey2, data),
+        min: this.getMinNumbertoArr([getMinNumber('mediaLikeNum', data), getMinNumber(typeKey2, data), avgLine1, avgLine2]) || 0,
+        max: this.getMaxNumbertoArr([getMaxNumber('mediaLikeNum', data), getMaxNumber(typeKey2, data), avgLine1, avgLine2]),
         formatter: val => {
           return formatW(val);
         }
@@ -104,7 +110,7 @@ export default class GroupedColumn extends React.Component {
           </div>
           <div>
             <div className='block-legend green'></div>
-            <div>评论</div>
+            <div>{typeText2}</div>
           </div>
         </div>
         <Chart height={600} data={dv} scale={scale}

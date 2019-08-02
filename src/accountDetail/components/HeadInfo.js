@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import LookIndex from "./LookIndex";
 import VerificationIcon from "../base/VerificationIcon";
 import { PopoverFormat } from "../base/TitleAndDecide";
+import ImgCircle from "../base/ImgCircle";
+
 import "./HeadInfo.less"
 import { Avatar, Button, Divider, Empty, Icon, Popover } from 'antd';
 import MultiClamp from 'react-multi-clamp';
@@ -34,7 +36,7 @@ class HeadInfo extends Component {
       <div className="head-info">
         <div className='head-avatar'>
           <div className="avatar-img">
-            <Avatar size={60} src={avatarUrl} />
+            <ImgCircle url={avatarUrl} />
           </div>
           <PopoverFormat text={<div className="avatar-mark">{wholeRankCN}</div>} content={`${wholeRankCN}`} />
         </div>
