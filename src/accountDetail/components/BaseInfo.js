@@ -4,6 +4,7 @@ import './BaseInfo.less'
 import { WBYPlatformIcon } from "wbyui"
 import ImgCircle from "../base/ImgCircle";
 import numeralExpand from '../../util/numeralExpand'
+import numeral from 'numeral'
 import { platformView } from "../../accountManage/constants/platform";
 class BaseInfo extends Component {
   constructor(props) {
@@ -34,9 +35,9 @@ class BaseInfo extends Component {
           </div>
           <div className='floating-base-info-flex'>
             <div className='floating-base-info-flex'>
-              {skuList.length > 0 ? skuList.map(one => <div key={one.skuId} className='sku-item'>
+              {skuList.length > 0 ? skuList.slice(0, 2).map(one => <div key={one.skuId} className='sku-item'>
                 <div className='sku-name'>{one.skuTypeName} </div>
-                <div className='sku-price'>{one.openQuotePrice ? `¥${one.openQuotePrice}` : '-'} </div>
+                <div className='sku-price'>{one.openQuotePrice ? `¥${numeral(one.openQuotePrice).format('0,0')}` : '-'} </div>
               </div>) : null}
             </div>
             <div className='car-button'>

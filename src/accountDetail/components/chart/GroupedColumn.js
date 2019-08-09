@@ -149,11 +149,11 @@ export default class GroupedColumn extends React.Component {
             ]}
           />
 
-          <Guide>
+          {/* <Guide>
             <GuideLine content='近30条视频平均点赞' middle={avgLine1} color='#3AA1FF' />
             <GuideLine content={`近30条视频平均${typeText2}`} middle={avgLine2} />
 
-          </Guide>
+          </Guide> */}
         </Chart>
       </div>
     );
