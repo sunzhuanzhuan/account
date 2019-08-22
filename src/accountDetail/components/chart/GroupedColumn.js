@@ -61,8 +61,8 @@ export default class GroupedColumn extends React.Component {
         }[d])
       },
       value: {
-        min: this.getMinNumbertoArr([getMinNumber('mediaLikeNum', data), getMinNumber(typeKey2, data), avgLine1, avgLine2]) || 0,
-        max: this.getMaxNumbertoArr([getMaxNumber('mediaLikeNum', data), getMaxNumber(typeKey2, data), avgLine1, avgLine2]),
+        min: this.getMinNumbertoArr([getMinNumber('mediaLikeNum', data), getMinNumber(typeKey2, data)]) || 0,
+        max: this.getMaxNumbertoArr([getMaxNumber('mediaLikeNum', data), getMaxNumber(typeKey2, data)]),
         formatter: val => {
           return formatW(val);
         }

@@ -14,7 +14,8 @@ export const getMinNumber = (key, data = []) => {
   return min - min / 3000
 }
 export const getMaxNumber = (key, data = []) => {
-  return Math.max.apply(Math, data.map(function (item) { return item[key] + 3000 }))
+  const max = Math.max.apply(Math, data.map(function (item) { return item[key] }))
+  return max + max / 3000
 }
 export const blueColor = '#39a0ff'
 export const greenColor = '#29c056'

@@ -41,9 +41,9 @@ class NewVideo extends Component {
         </div>
         <GroupedColumn
           data={list}
-          avgLine1={mediaLikeAvg}
-          avgLine2={platformId == 115 ? mediaCommentAvg : mediaPlayAvg}
-          typeKey2={platformId == 115 ? 'mediaCommentNum' : 'mediaCommentNum'}
+          //avgLine1={mediaLikeAvg}
+          //avgLine2={platformId == 115 ? mediaCommentAvg : mediaPlayAvg}
+          typeKey2={platformId == 115 ? 'mediaCommentNum' : 'mediaRepostNum'}
           typeText2={platformId == 115 ? '评论' : '播放'}
           start={startIndex}
           end={endIndex}
