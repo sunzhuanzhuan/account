@@ -28,7 +28,7 @@ class TopCity extends React.Component {
     let _val = n || 0;
     let value = [...this.state.value];
     value[index] = _val.slice(-1)[0] || 0;
-    if(!isEqual(this.state.value, value)){
+    if (!isEqual(this.state.value, value)) {
       this.setState({
         list: disabledList(this.state.list, value)
       })
@@ -39,7 +39,8 @@ class TopCity extends React.Component {
       this.props.onChange && this.props.onChange(value);
     });
   };
-  constructor(props){
+
+  constructor(props) {
     super(props)
     let value = this.props.value || Array(3).fill(undefined)
     this.state = {

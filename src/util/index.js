@@ -180,6 +180,7 @@ var events = new EventEmitter()
 // })
 // window.events = events;
 // events.emit('message', 'hello world')
+
 export {
 	showLoading,
 	hideLoading,

@@ -48,13 +48,13 @@ export const QCCodeUpload = (props) => {
           }] : [],
           rules: [{ required: true, message: '二维码不能为空' }]
         })(
-          <WBYUploadFile tok={actions.getNewToken} accept={'.bmp, .gif, image/jpeg'} uploadUrl='/api/common-file/file/v1/uploadPubBucket' uploadText={'点击上传'} size={5} showUploadList={{
+          <WBYUploadFile tok={actions.getNewToken} accept={'.bmp,.jpg,.png,.tif,.gif,.pcx,.tga,.exif,.fpx,.svg,.cdr,.pcd,.dxf,.ufo,.eps,.raw,.wmf,.webp,.flic,.ico'} uploadUrl='/api/common-file/file/v1/uploadPubBucket' uploadText={'点击上传'} size={25} showUploadList={{
             showPreviewIcon: true,
             showRemoveIcon: !(qrCodeUrlFrom == 2)
           }} disabled={qrCodeUrlFrom == 2} />
         )}
       </div>
-      <p className='input-desc-bottom'>请上传bmp, jpeg, jpg, gif;5M以内的图片</p>
+      <p className='input-desc-bottom'>请上传25M以内的图片</p>
     </FormItem>
     {/* 隐藏域提交 */}
     {getFieldDecorator('base.qrCodeUrlFrom', { initialValue: qrCodeUrlFrom })(
@@ -74,16 +74,16 @@ export const AccountType = (props) => {
   } = accountInfo;
   return <FormItem {...formItemLayout} wrapperCol={halfWrapCol} label='账号类型'>
     {getFieldDecorator('base.mediaType', {
-      initialValue: mediaType || 3
+      initialValue: mediaType || 1
       // rules: [{ required: true, message: '账号类型必须选择' }]
     })(
-      <Select style={{ width: '100%' }}>
-        <Option value={3}>未知</Option>
-        <Option value={1}>草根</Option>
-        <Option value={2}>名人</Option>
-        <Option value={4}>媒体</Option>
-        <Option value={5}>个人</Option>
-      </Select>
+      <RadioGroup style={{ width: '100%' }}>
+        <Radio value={2}>个人号-具有个人的属性特征<b className='gray-text'>（如papi酱，谷阿莫等）</b></Radio>
+        <br />
+        <Radio value={3}>企业号-社会上的企业或官方注册<b className='gray-text'>（如央视新闻，红十字会等）</b></Radio>
+        <br />
+        <Radio value={4}>内容号-不具有人的属性特征、仅以内容存在<b className='gray-text'>（如精选搞笑排行榜、娱闻少女等）</b></Radio>
+      </RadioGroup>
     )}
   </FormItem>;
 };
@@ -115,22 +115,30 @@ export const AccountDesc = (props) => {
   const { getFieldDecorator, formItemLayout, data: { accountInfo }, actions: { sensitiveWordsFilter }, pid } = props;
   const {
     introduction = '',
-    platformId
+    platformId,
+    introductionFrom,
+    introductionMaintainedTime
   } = accountInfo;
   const desc = platformToDesc[platformId || pid] || '';
-  return <FormItem {...formItemLayout} label='账号简介'>
-    {getFieldDecorator('base.introduction', {
-      initialValue: introduction,
-      first: true,
-      validateTrigger: 'onBlur',
-      rules: [{
-        max: 1000,
-        message: '账号简介不能超过1000字'
-      }, { validator: checkForSensitiveWord(sensitiveWordsFilter) }]
-    })(
-      <TextArea placeholder={desc} autosize={{ minRows: 2, maxRows: 4 }} />
-    )}
-  </FormItem>;
+  return <div>
+    <FormItem {...formItemLayout} label='账号简介'>
+      {getFieldDecorator('base.introduction', {
+        initialValue: introduction,
+        first: true,
+        validateTrigger: 'onBlur',
+        rules: [{
+          max: 1000,
+          message: '账号简介不能超过1000字'
+        }, { validator: checkForSensitiveWord(sensitiveWordsFilter) }]
+      })(
+        <TextArea placeholder={desc} autosize={{ minRows: 2, maxRows: 4 }} />
+      )}
+    </FormItem>
+    {getFieldDecorator('base.introductionFrom', { initialValue: introductionFrom })(
+      <input type="hidden" />)}
+    {getFieldDecorator('base.introductionMaintainedTime', { initialValue: introductionMaintainedTime })(
+      <input type="hidden" />)}
+  </div>
 };
 
 /**
@@ -232,7 +240,7 @@ export const AgentConfigAndPrice = (props) => {
       )}
     </FormItem>
     <FormItem {...formItemLayout} label={` `} colon={false}>
-      {getFieldDecorator('_trinityIsPreventShieldingManual_', {
+      {getFieldDecorator('isManual', {
         initialValue: trinityIsPreventShieldingManual > 0,
         valuePropName: 'checked'
       })(
@@ -242,7 +250,7 @@ export const AgentConfigAndPrice = (props) => {
         注：如果勾选此处，将以人工控制结果为准，若要恢复机维请取消勾选！
       </div>
     </FormItem>
-    {getFieldValue('_trinityIsPreventShieldingManual_') ?
+    {getFieldValue('isManual') ?
       <FormItem {...formItemLayout} label={`强制可在${name}下单结果`}>
         {getFieldDecorator('trinityIsPreventShieldingManual', {
           initialValue: trinityIsPreventShieldingManual || undefined,
@@ -255,7 +263,7 @@ export const AgentConfigAndPrice = (props) => {
         )}
       </FormItem> : null}
     {getFieldValue('trinityIsPreventShieldingAutomated') === 1 ||
-      (getFieldValue('_trinityIsPreventShieldingManual_') &&
+      (getFieldValue('isManual') &&
     getFieldValue('trinityIsPreventShieldingManual') === 1) ?
       <FormItem {...formItemLayout} label='下单方'>
         {getFieldDecorator('trinityPlaceOrderType', {

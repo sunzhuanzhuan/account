@@ -8,19 +8,21 @@ import './container.less'
 // 懒加载路由级组件
 const AddPage = lazyLoadComponent(() => import('./containers/AddPage'))
 const UpdatePage = lazyLoadComponent(() => import('./containers/UpdatePage'))
+const UpdatePageForPackage = lazyLoadComponent(() => import('./containers/UpdatePageForPackage'))
 
 
 class AccountEnterIndex extends Component {
-	state = {}
+  state = {}
 
-	render() {
-		return (
-			<div className='account-manage' id='account-manage-container'>
-				<Route path='/account/manage/add' component={AddPage} />
-				<Route path='/account/manage/update' component={UpdatePage} />
-			</div>
-		);
-	}
+  render() {
+    return (
+      <div className='account-manage' id='account-manage-container'>
+        <Route path='/account/manage/add' component={AddPage} />
+        {/*<Route path='/account/manage/update' component={UpdatePage} />*/}
+        <Route path='/account/manage/update/:platformId' component={UpdatePageForPackage} />
+      </div>
+    );
+  }
 }
 
 export default AccountEnterIndex;
