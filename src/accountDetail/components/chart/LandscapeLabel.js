@@ -25,11 +25,11 @@ class BarLabel extends React.Component {
     //自定义y轴label
     const labelConfig = {
       htmlTemplate(text, item, index) {
-        let dataItem = data.filter(one => one.name == text)[0]
+        let dataItem = data.filter(one => one.key == text)[0]
 
         return `<div  class='label-sex-type'>
         <div class='sex-type'>
-          <div class='sex-box'>${dataItem && dataItem.name}</div>
+          <div class='sex-box'>${dataItem && dataItem.key}</div>
           <div class='type-box'>${dataItem && dataItem.type}</div>
           </div>
         </div>`
@@ -51,18 +51,18 @@ class BarLabel extends React.Component {
         {
           /* 凸显类型 color={['age', '#E6F6C8-#3376CB']} */
         }
-        <Geom type="interval" position="name*value"
+        <Geom type="interval" position="key*value"
           color={['value', '#D8E7FF-#4786F5']}
           tooltip={[
-            "name*value",
-            (name, value) => {
+            "key*value",
+            (key, value) => {
               return {
-                name: name,
+                name: key,
                 value: numeral(value || 0).format('0.0%')
               };
             }
           ]}>
-          <Label content={['name*value', (name, value) => numeral(value || 0).format('0.0%')]} />{' '}
+          <Label content={['key*value', (key, value) => numeral(value || 0).format('0.0%')]} />{' '}
         </Geom>
       </Chart>
     </div> : <Empty style={{ height: 500 + 18, paddingTop: 180 }} />;
