@@ -81,14 +81,14 @@ class ContentData extends Component {
                   BluelineName='mediaPlayAvgIncre'
                   GreenlineText={platformId == 115 ? '点赞增量' : '评论增量'}
                   GreenlineName={platformId == 115 ? 'mediaLikeAvgIncre' : 'mediaCommentAvgIncre'}
-                 
+
                 />
               </div>,
               3: <div className='content-char'>
                 <CharTitle title='互动数和互动率趋势图' content='可观察最近10周内互动数和互动率变化趋势' />
                 <CurveLine data={interactive}
                   BluelineText='互动数'
-                  BluelineName='mediaInteractionAvgFull'
+                  BluelineName='mediaInteractionAvgIncre'
                   GreenlineText={'互动率'}
                   GreenlineName={'interactionProportionIncre'}
                 />

@@ -47,7 +47,7 @@ class CurveLine extends Component {
           return formatW(val)
         }
       },
-      mediaInteractionAvgFull: {
+      mediaInteractionAvgIncre: {
         alias: '互动数',
         formatter: val => {
           return formatW(val);

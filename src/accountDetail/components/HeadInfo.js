@@ -24,10 +24,10 @@ class HeadInfo extends Component {
       snsName, snsId, followerCount, introduction, platformId = 0,
       url, qrCodeUrl, cooperationTips,
       verifiedStatusName,
-      verifiedStatus
+      classification = '-',
     } = base
     const { wholeRank = 0, orderResponseDuration, orderResponsePercentile,
-      orderAcceptanceNum = '-', classification = '-', orderAcceptanceRate, orderMajorIndustryCategory, orderCompleteDuration,
+      orderAcceptanceNum = '-', orderAcceptanceRate, orderMajorIndustryCategory, orderCompleteDuration,
       isVerified, verificationReason } = feature
     //排名处理
     const platformName = platformView[platformId] || '-'
