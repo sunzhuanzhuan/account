@@ -26,11 +26,10 @@ class BarLabel extends React.Component {
     const labelConfig = {
       htmlTemplate(text, item, index) {
         let dataItem = data.filter(one => one.key == text)[0]
-
         return `<div  class='label-sex-type'>
         <div class='sex-type'>
           <div class='sex-box'>${dataItem && dataItem.key}</div>
-          <div class='type-box'>${dataItem && dataItem.type}</div>
+          <div class='type-box'>${dataItem && dataItem.typeName}</div>
           </div>
         </div>`
       }
@@ -45,7 +44,7 @@ class BarLabel extends React.Component {
       </div>
       <Chart height={440} forceFit data={data} scale={cols} padding={['auto', 100, 'auto', 200,]}>
         <Coord transpose />
-        <Axis name="name" label={labelConfig} />
+        <Axis name="key" label={labelConfig} />
         <Axis name="value" label={null} />
         <Tooltip g2-tooltip={g2Tooltip} />
         {
