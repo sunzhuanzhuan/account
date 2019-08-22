@@ -24,9 +24,9 @@ class Histogram extends React.Component {
         }
       },
       value: {
-        alias: '占比',
+        alias: textTitle == 'TGI' ? 'TGI' : '占比',
         formatter: val => {
-          return numeral(val).format('0.0%')
+          return numeral(val).format(textTitle == 'TGI' ? '0.0' : '0.0%')
         }
       }
     }

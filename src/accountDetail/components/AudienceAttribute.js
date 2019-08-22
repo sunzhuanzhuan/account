@@ -83,7 +83,7 @@ class AudienceAttribute extends Component {
           <CharTitle title='粉丝兴趣' />
           <Histogram height={400}
             data={kolVisitorInterestDrawList}
-            positionConfig='name*tgiValue'
+            positionConfig='name*value'
             textTitle='TGI' />
         </div>
 
