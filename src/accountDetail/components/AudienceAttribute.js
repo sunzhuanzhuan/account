@@ -20,8 +20,8 @@ class AudienceAttribute extends Component {
       kolVisitorAgeDrawList,//年龄
       kolVisitorProvinceDrawList = [], //地域
       kolVisitorGenderDrawList,//性别
-      kolVisitorConsumptionDrawList,//消费能力
-      kolVisitorOSDrawList, //设备
+      kolVisitorConsumptionDraw,//消费能力
+      kolVisitorOsDraw, //设备
       kolVisitorOsPriceDraw,//手机价格
       kolVisitorInterestDrawList, //兴趣
       kolVisitorBehaviorWeekDraw, //活跃活跃时间分布 -- 天（新增
@@ -52,7 +52,7 @@ class AudienceAttribute extends Component {
             </div>
             <div className='age-sex-gender' >
               <CharTitle title='消费能力分布' />
-              <RingPie data={kolVisitorConsumptionDrawList} padding={[70]} />
+              <RingPie data={kolVisitorConsumptionDraw} padding={[70]} />
             </div>
           </div>
 
@@ -91,7 +91,7 @@ class AudienceAttribute extends Component {
           <div className='flex4'>
             <div className=''>
               <CharTitle title='手机系统分布' />
-              <RingPie data={kolVisitorOSDrawList} height={240} />
+              <RingPie data={kolVisitorOsDraw} height={240} />
             </div>
             <div className=''>
               <CharTitle title='手机价格分布' />
