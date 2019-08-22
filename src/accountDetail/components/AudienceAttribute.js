@@ -180,6 +180,9 @@ const CityTable = ({ type, list = [] }) => {
       title: 'TGI',
       dataIndex: 'tgiValue',
       key: 'tgiValue',
+      render: (text) => {
+        return <div>{numeral(text).format('0.0')}</div>
+      }
     },
   ];
 

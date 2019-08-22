@@ -131,7 +131,7 @@ class MapChart extends Component {
                 </span>${name}
                 </div>
                 <div>占比：${numeral(value).format('0.0%')}</div>
-                <div>TGI：${tgiValue}</div>
+                <div>TGI：${ numeral(value).format('0.0')}</div>
                 </div>`
                 }} />
             <Legend position='bottom-left'

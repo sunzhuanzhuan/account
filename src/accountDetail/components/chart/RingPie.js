@@ -40,7 +40,7 @@ class RingPie extends React.Component {
     const cols = {
       percent: {
         formatter: val => {
-          val = numeral(val).format('0.00%')
+          val = numeral(val).format('0.0%')
           return val;
         }
       }
@@ -101,7 +101,7 @@ class RingPie extends React.Component {
                 const { name, tgiValue } = point;
                 return `<div class='ring-title'}>${name}<div>
                         <div class='ring-content'>占比：${ text}<div>
-                        <div class='ring-content'>${tgiValue ? `TGI：${tgiValue}` : ''}<div>`
+                        <div class='ring-content'>${tgiValue ? `TGI：${numeral(tgiValue).format('0.0')}` : ''}<div>`
               }}
             />
           </Geom>
