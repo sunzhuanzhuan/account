@@ -34,23 +34,27 @@ class NewVideo extends Component {
     const { startIndex,
       endIndex } = this.state
     const list = newVideoList.slice(startIndex, endIndex)
+    const newListLength = newVideoList.length
     return (
-      newVideoList.length > 0 ? <div className='new-video-box'>
-        <div className="grouped-left-direction">
-          <Icon type="left-circle" onClick={this.setData} />
-        </div>
+      newListLength > 0 ? <div className='new-video-box'>
+        {newListLength > 5 ?
+          <div className="grouped-left-direction">
+            <Icon type="left-circle" onClick={this.setData} />
+          </div> : null}
         <GroupedColumn
           data={list}
           //avgLine1={mediaLikeAvg}
           //avgLine2={platformId == 115 ? mediaCommentAvg : mediaPlayAvg}
-          typeKey2={platformId == 115 ? 'mediaCommentNum' : 'mediaRepostNum'}
+          typeKey2={platformId == 115 ? 'mediaCommentNum' : 'mediaPlayNum'}
           typeText2={platformId == 115 ? '评论' : '播放'}
           start={startIndex}
           end={endIndex}
         />
-        <div className="grouped-right-direction">
-          <Icon type="right-circle" onClick={this.setData} />
-        </div>
+        {newListLength > 5 ?
+          <div className="grouped-right-direction">
+            <Icon type="right-circle" onClick={this.setData} />
+          </div> : null
+        }
       </div> : <Empty style={{ padding: "30px", margin: '0px auto' }} />
     );
   }
