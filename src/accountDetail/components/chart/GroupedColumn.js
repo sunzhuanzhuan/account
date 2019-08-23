@@ -39,7 +39,7 @@ export default class GroupedColumn extends React.Component {
     return Math.max.apply(null, arr)
   }
   render() {
-    const { data, typeKey2 = 'mediaPlayNum', typeText2 = '播放', avgLine1, avgLine2, } = this.props
+    const { data, typeKey2 = 'mediaPlayNum', typeText2 = '播放', avgLine1, avgLine2, hotKey } = this.props
     const ds = new DataSet();
     const dv = ds.createView().source(data);
     dv.transform({
@@ -142,7 +142,7 @@ export default class GroupedColumn extends React.Component {
             shape={[
               ['label', 'type'],
               function (name, type) {
-                if (type == 'mediaLikeNum') {
+                if (type == hotKey) {
                   return ["image", imageMap[name]];
                 }
                 return ['image', null];

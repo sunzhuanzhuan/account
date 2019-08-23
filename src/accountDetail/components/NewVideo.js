@@ -47,6 +47,7 @@ class NewVideo extends Component {
           //avgLine2={platformId == 115 ? mediaCommentAvg : mediaPlayAvg}
           typeKey2={platformId == 115 ? 'mediaCommentNum' : 'mediaPlayNum'}
           typeText2={platformId == 115 ? '评论' : '播放'}
+          hotKey={platformId == 115 ? 'mediaLikeNum' : 'mediaPlayNum'}
           start={startIndex}
           end={endIndex}
         />
