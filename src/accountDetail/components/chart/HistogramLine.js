@@ -80,7 +80,7 @@ class HistogramLine extends Component {
       },
       value: {
         // min: 0,
-        alias: '兴趣爱好',
+        alias: '占比',
         formatter: val => {
           return numeral(val || 0).format('0.0%')
         }
