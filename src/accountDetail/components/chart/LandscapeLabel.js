@@ -43,7 +43,7 @@ class BarLabel extends React.Component {
         </div>
       </div>
       <Chart height={440} forceFit data={data} scale={cols} padding={['auto', 100, 'auto', 200,]}>
-        <Coord transpose />
+        <Coord transpose reflect='y' />
         <Axis name="key" label={labelConfig} />
         <Axis name="value" label={null} />
         <Tooltip g2-tooltip={g2Tooltip} />

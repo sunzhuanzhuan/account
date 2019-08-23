@@ -27,7 +27,7 @@ import './RingPie.less'
 
 class RingPie extends React.Component {
   render() {
-    const { data = [], height = 300, padding = [40, 50], isOneLine } = this.props
+    const { data = [], height = 300, padding = [30, 50], isOneLine } = this.props
     const { DataView } = DataSet;
     const { Html } = Guide;
     const dv = new DataView();
@@ -82,7 +82,7 @@ class RingPie extends React.Component {
             tooltip={[
               "name*percent",
               (item, percent) => {
-                percent = numeral(percent).format('0.00%')
+                percent = numeral(percent).format('0.0%')
                 return {
                   name: item,
                   value: percent
