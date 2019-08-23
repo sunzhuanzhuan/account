@@ -27,7 +27,7 @@ import './RingPie.less'
 
 class RingPie extends React.Component {
   render() {
-    const { data = [], height = 300, padding = [40, 50] } = this.props
+    const { data = [], height = 300, padding = [40, 50], isOneLine } = this.props
     const { DataView } = DataSet;
     const { Html } = Guide;
     const dv = new DataView();
@@ -99,8 +99,8 @@ class RingPie extends React.Component {
               htmlTemplate={(text, item, index) => {
                 var point = item.point; // 每个弧度对应的点
                 const { name, tgiValue } = point;
-                return `<div class='ring-title'}>${name}<div>
-                        <div class='ring-content'>占比：${ text}<div>
+                return isOneLine ? `<div class='one-line-width'><span class='title'>${name}</span>：${text}</div>` : `<div class='ring-title'}>${name}<div>
+                        <div class='ring-content'>占比：${text}<div>
                         <div class='ring-content'>${tgiValue ? `TGI：${numeral(tgiValue).format('0.0')}` : ''}<div>`
               }}
             />
