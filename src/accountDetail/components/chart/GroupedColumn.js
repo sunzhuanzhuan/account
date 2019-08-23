@@ -22,6 +22,7 @@ import { formatW } from "../../util";
 import './GroupedColumn.less'
 import DataSet from "@antv/data-set";
 import moment from "moment";
+const deafultImg = require('../img/deafult-box.png');
 
 const { Line } = Guide;
 
@@ -85,7 +86,7 @@ export default class GroupedColumn extends React.Component {
              <img 
                width='120px'
                height='160px'
-               src=${dataItem.mediaCoverUrl ? dataItem.mediaCoverUrl : require('../img/deafult-box.png')} onError=${(e) => e.target.src = require('../img/deafult-box.png')} />
+               src=${dataItem.mediaCoverUrl ? dataItem.mediaCoverUrl : deafultImg} onerror="this.src='${deafultImg}'; this.onerror=null" />
           </div>
           <div class='hover-img-show'>
           </div>
