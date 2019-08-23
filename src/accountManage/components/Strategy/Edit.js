@@ -8,6 +8,7 @@ import { Button, Divider, Form, message } from "antd";
 import { OnSaleInfo } from "@/accountManage/components/common/Fields";
 import { MaxOrderCount } from "@/accountManage/components/common/Fields";
 import { Strategy } from "@/accountManage/components/common/Fields";
+import { dateDisplay } from "@/accountManage/util";
 
 @Form.create()
 export default class StrategyEdit extends Component {
@@ -93,7 +94,7 @@ export default class StrategyEdit extends Component {
       strategyInfo: { strategyModifiedAt } // 信息修改时间
     } = data.account || {}
     const right = <div className='wrap-panel-right-content'>
-      <span className='gray-text'>最近更新于: {strategyModifiedAt || '--'}</span>
+      <span className='gray-text'>最近更新于: {dateDisplay(strategyModifiedAt,20) || '--'}</span>
       <Button htmlType='submit' type='primary' loading={this.state.submitLoading}>保存</Button>
     </div>;
     return <Form className='module-item-container' onSubmit={this.submit} colon={false} hideRequiredMark>

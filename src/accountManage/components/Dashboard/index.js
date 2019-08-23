@@ -68,7 +68,7 @@ export default class Dashboard extends Component {
                 </div>
               </div>
             </li> : null}
-            <li className='subclass-item-wrap'>
+            <li className='subclass-item-wrap' style={{display: (this.statistic && this.statistic.show) ? 'block' : 'none'}}>
               <h4 className='subclass-head'>
                 <span className='text'>内容统计</span>
                 <small className='line' />
@@ -77,11 +77,13 @@ export default class Dashboard extends Component {
               <div className='subclass-content'>
                 <div className='view-fields-container'>
                   <div className='right-wrap'>
-                    <ContentStatistic pid={configurePlatform.platformId} data={feature} />
+                    <ContentStatistic ref={node => this.statistic = node} pid={configurePlatform.platformId} data={feature} />
                   </div>
                 </div>
               </div>
             </li>
+            <Empty style={{display: ((this.statistic && this.statistic.show) || sexs.length || ages.length || areas.length || interests.length || snbt || trueFansRate) ? "none" : "block"
+            }}/>
             {(sexs.length || ages.length || areas.length || interests.length) ?
               <li className='subclass-item-wrap'>
                 <h4 className='subclass-head'>

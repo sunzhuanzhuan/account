@@ -240,7 +240,7 @@ export const AgentConfigAndPrice = (props) => {
       )}
     </FormItem>
     <FormItem {...formItemLayout} label={` `} colon={false}>
-      {getFieldDecorator('_trinityIsPreventShieldingManual_', {
+      {getFieldDecorator('isManual', {
         initialValue: trinityIsPreventShieldingManual > 0,
         valuePropName: 'checked'
       })(
@@ -250,7 +250,7 @@ export const AgentConfigAndPrice = (props) => {
         注：如果勾选此处，将以人工控制结果为准，若要恢复机维请取消勾选！
       </div>
     </FormItem>
-    {getFieldValue('_trinityIsPreventShieldingManual_') ?
+    {getFieldValue('isManual') ?
       <FormItem {...formItemLayout} label={`强制可在${name}下单结果`}>
         {getFieldDecorator('trinityIsPreventShieldingManual', {
           initialValue: trinityIsPreventShieldingManual || undefined,
@@ -263,7 +263,7 @@ export const AgentConfigAndPrice = (props) => {
         )}
       </FormItem> : null}
     {getFieldValue('trinityIsPreventShieldingAutomated') === 1 ||
-      (getFieldValue('_trinityIsPreventShieldingManual_') &&
+      (getFieldValue('isManual') &&
         getFieldValue('trinityIsPreventShieldingManual') === 1) ?
       <FormItem {...formItemLayout} label='下单方'>
         {getFieldDecorator('trinityPlaceOrderType', {

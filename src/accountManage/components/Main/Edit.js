@@ -22,7 +22,7 @@ import {
 import { Fetch } from "@/accountManage/components/packageComponents";
 import { configItemKeyToField, modulesMap } from "@/accountManage/constants/packageConfig";
 import update from 'immutability-helper'
-import { uploadUrl } from "@/accountManage/util";
+import { dateDisplay, uploadUrl } from "@/accountManage/util";
 
 @Form.create()
 export default class MainEdit extends Component {
@@ -119,7 +119,7 @@ export default class MainEdit extends Component {
       <span>{configurePlatform.platformName}</span>
     </div>;
     const right = <div className='wrap-panel-right-content'>
-      <span className='gray-text'>最近更新于: {baseModifiedAt || '--'}</span>
+      <span className='gray-text'>最近更新于: {dateDisplay(baseModifiedAt,20) || '--'}</span>
       {
         process.env.REACT_APP_CLIENT === 'NC' &&
         <Button style={{ marginRight: '10px' }} type='primary' ghost

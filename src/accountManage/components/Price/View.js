@@ -15,6 +15,7 @@ import {
   PriceInclude,
   ReferencePrice
 } from "@/accountManage/components/common/Fields";
+import { dateDisplay } from "@/accountManage/util";
 
 @Form.create()
 export default class PriceView extends Component {
@@ -45,7 +46,7 @@ export default class PriceView extends Component {
       modifiedAt // 信息修改时间
     } = data.priceInfo || {};
     const right = <div className='wrap-panel-right-content'>
-      <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>
+      <span className='gray-text'>最近更新于: {dateDisplay(modifiedAt) || '--'}</span>
       <a onClick={() => onModuleStatusChange('edit')} style={{fontSize: '14px'}}>
         <Icon type="edit" style={{marginRight: '6px'}}/>
         编辑

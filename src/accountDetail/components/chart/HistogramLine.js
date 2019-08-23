@@ -39,7 +39,7 @@ class HistogramLine extends Component {
     //     people: 2
     //   }
     // ];
-    const { data = [], positionConfig, lineText, boxText, positionIntervalConfig, type = 4, boxLeft, boxRight } = this.props
+    const { data = [], positionConfig, lineText, boxText, positionIntervalConfig, type = 4, boxLeft, boxRight, paddingConfig = [60, 60, 50, 60] } = this.props
 
     const scale = {
       followerCountFull: {
@@ -100,7 +100,7 @@ class HistogramLine extends Component {
         <Chart
           height={height}
           scale={scale}
-          padding={[60, 100, 60, 80]}
+          padding={paddingConfig}
           forceFit
           data={data}
           ref={node => this.chart = node}
@@ -113,9 +113,6 @@ class HistogramLine extends Component {
           <Legend
             {...legendPosition}
             offsetY={-30}
-            offsetX={70}
-            custom={true}
-            allowAllCanceled={true}
             items={[
               {
                 value: boxText,
@@ -135,24 +132,7 @@ class HistogramLine extends Component {
                 }
               }
             ]}
-            onClick={ev => {
-              const item = ev.item;
-              const value = item.value;
-              const checked = ev.checked;
-              const geoms = chartIns.getAllGeoms();
 
-              for (let i = 0; i < geoms.length; i++) {
-                const geom = geoms[i];
-
-                if (geom.getYScale().field === value) {
-                  if (checked) {
-                    geom.show();
-                  } else {
-                    geom.hide();
-                  }
-                }
-              }
-            }}
           />
           <Axis
             name={`${positionIntervalConfig.split('*')[1]}`}

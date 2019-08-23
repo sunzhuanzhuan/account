@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { HeadInfo, DataIndicator, HistoricalAD, ContentData, AudienceAttribute, NewVideo, AccountRecommend } from "../components";
+import { HeadInfo, DataIndicator, HistoricalAD, ContentData, AudienceAttribute, BaseInfo, AccountRecommend } from "../components";
 import './AccountDetail.less'
 import { Modal, message, Spin } from 'antd';
 import LazyLoad from 'react-lazyload';
@@ -9,7 +9,6 @@ import { connect } from "react-redux";
 import * as action from '../actions/index'
 import * as commonAction from "@/actions";
 import { platformView } from "../../accountManage/constants/platform";
-
 import qs from "qs";
 class AccountDetail extends Component {
   constructor(props) {
@@ -68,18 +67,22 @@ class AccountDetail extends Component {
       audienceAttributeInfo,
       queryOrderCooperationList,
       queryIndustryInfoList,
-      isExistCar, queryTgiList,
+      isExistCar,
       newVideoList } = accountDetail
 
     const { getTrend, getAudienceAttribute,
       getQueryOrderCooperationList, addQueryIndustryInfoList,
-      getQueryIndustryInfoList, getNewVideo, getQueryTgiList } = actions
+      getQueryIndustryInfoList, getNewVideo } = actions
     const contentDataProps = {
       trendInfo,
       getTrend,
       accountId,
-      baseInfo
+      baseInfo,
+      getNewVideo,
+      newVideoList
     }
+    const { base = {}, } = baseInfo
+    const { platformId = 0 } = base
     const historicalADProps = {
       getQueryOrderCooperationList,
       queryOrderCooperationList,
@@ -91,8 +94,14 @@ class AccountDetail extends Component {
     return (
       <div className="account-view-detail" id='Js-account-view-detail-Id'>
         <Spin spinning={isLoading}>
+          <BaseInfo selectCarEdit={this.selectCarEdit}
+            setShowModal={this.setShowModal}
+            isExistCar={isExistCar}
+            baseInfo={baseInfo}
+          />
           {/* 头部基础信息 */}
           <HeadInfo setShowModal={this.setShowModal} baseInfo={baseInfo} selectCarEdit={this.selectCarEdit} isExistCar={isExistCar} accountDetail={accountDetail} actions={actions} />
+
           {/* 数据指标 */}
           <DataIndicator baseInfo={baseInfo} />
           {/* 历史案例 */}
@@ -103,18 +112,14 @@ class AccountDetail extends Component {
           <LazyLoad once overflow>
             <ContentData {...contentDataProps} />
           </LazyLoad>
-          {/* 最新视频 */}
-          <LazyLoad once overflow>
-            <NewVideo getNewVideo={getNewVideo} newVideoList={newVideoList} accountId={accountId} />
-          </LazyLoad>
+
           {/* 受众画像 */}
-          <LazyLoad once overflow>
+          {platformId == 118 ? null : <LazyLoad once overflow>
             <AudienceAttribute accountId={accountId}
               getAudienceAttribute={getAudienceAttribute}
               audienceAttributeInfo={audienceAttributeInfo}
-              queryTgiList={queryTgiList}
-              getQueryTgiList={getQueryTgiList} />
-          </LazyLoad>
+            />
+          </LazyLoad>}
 
           {/* 账号推荐 */}
           {/* <AccountRecommend /> */}

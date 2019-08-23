@@ -11,7 +11,7 @@ import {
   ReferencePrice,
   trinityIsPreventShieldingTip
 } from "../common/Fields";
-import { checkVal } from "@/accountManage/util";
+import { checkVal, dateDisplay } from "@/accountManage/util";
 import numeral from '@/util/numeralExpand'
 
 @Form.create()
@@ -111,7 +111,7 @@ export default class PriceEdit extends Component {
       key: skuTypeId, name: skuTypeName
     })) : [];
     const right = <div className='wrap-panel-right-content'>
-      <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>
+      <span className='gray-text'>最近更新于: {dateDisplay(modifiedAt, 20) || '--'}</span>
       <Button htmlType='submit' type='primary' loading={this.state.submitLoading}>保存</Button>
     </div>;
 

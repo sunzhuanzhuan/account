@@ -120,7 +120,7 @@ export default class Trinity extends Component {
       <Button htmlType='submit' type='primary' loading={this.state.submitLoading}>保存</Button>
     </div>;
     return this.state.loading ?
-      <LoadingBlock loading /> : (isFamous === 1 && cooperationPlatformResVOS.length > 0) ?
+      null : (isFamous === 1 && cooperationPlatformResVOS.length > 0) ?
         <Form className='module-item-container' onSubmit={this.submit} colon={false}>
           <ModuleHeader title={configureModule.title} right={right} />
           <section className='content-wrap'>

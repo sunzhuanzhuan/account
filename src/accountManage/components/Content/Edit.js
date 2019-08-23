@@ -11,6 +11,7 @@ import {
 import { Button, Form, message } from "antd";
 import update from "immutability-helper";
 import { configItemKeyToField } from "@/accountManage/constants/packageConfig";
+import { dateDisplay } from "@/accountManage/util";
 
 @Form.create()
 export default class ContentEdit extends Component {
@@ -89,7 +90,7 @@ export default class ContentEdit extends Component {
       submitLoading
     } = this.state
     const right = <div className='wrap-panel-right-content'>
-      <span className='gray-text'>最近更新于: {modifiedAt || '--'}</span>
+      <span className='gray-text'>最近更新于: {dateDisplay(modifiedAt, 20) || '--'}</span>
       <Button htmlType='submit' type='primary' loading={submitLoading}>保存</Button>
     </div>;
     return <Form className='module-item-container' onSubmit={this.submit} colon={false}>

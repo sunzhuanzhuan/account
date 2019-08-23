@@ -2256,7 +2256,7 @@ export const Skills = (props) => {
         options.length > 0 ? <Select
           mode='multiple'
           style={{ width: '100%' }}
-          placeholder='添加您的特长或才艺，将提升您的竞争力，在同类账号中更加突出哦~'
+          placeholder='请添加您的特长或才艺'
           allowClear
           showArrow
           optionFilterProp='children'
@@ -2353,7 +2353,7 @@ export const TrinityConfigAndPrice = (props) => {
       )}
     </FormItem>
     <FormItem {...formItemLayout} label={` `} colon={false}>
-      {getFieldDecorator('_trinityIsPreventShieldingManual_', {
+      {getFieldDecorator('isManual', {
         initialValue: trinityIsPreventShieldingManual > 0,
         valuePropName: 'checked'
       })(
@@ -2363,7 +2363,7 @@ export const TrinityConfigAndPrice = (props) => {
         注：如果勾选此处，将以人工控制结果为准，若要恢复机维请取消勾选！
       </div>
     </FormItem>
-    {getFieldValue('_trinityIsPreventShieldingManual_') ?
+    {getFieldValue('isManual') ?
       <FormItem {...formItemLayout} label={`强制可在${name}下单结果`}>
         {getFieldDecorator('trinityIsPreventShieldingManual', {
           initialValue: trinityIsPreventShieldingManual || undefined,
@@ -2375,9 +2375,8 @@ export const TrinityConfigAndPrice = (props) => {
           </RadioGroup>
         )}
       </FormItem> : null}
-    {getFieldValue('trinityIsPreventShieldingAutomated') === 1 ||
-    (getFieldValue('_trinityIsPreventShieldingManual_') &&
-      getFieldValue('trinityIsPreventShieldingManual') === 1) ?
+    {(getFieldValue('isManual') ?  getFieldValue('trinityIsPreventShieldingManual') === 1 : getFieldValue('trinityIsPreventShieldingAutomated') === 1)
+     ?
       <FormItem {...formItemLayout} label='下单方'>
         {getFieldDecorator('trinityPlaceOrderType', {
           initialValue: trinityPlaceOrderType,
