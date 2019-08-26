@@ -24,7 +24,7 @@ class CurveLine extends Component {
     } = this.props
     const cols = {
       dateRange: {
-        tickCount: 10,
+        tickCount: data && data.length,
       },
       followerCountFull: {
         alias: '粉丝累计量',
