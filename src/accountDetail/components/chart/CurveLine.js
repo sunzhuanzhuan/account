@@ -23,6 +23,9 @@ class CurveLine extends Component {
       BluelineText, BluelineName, boxLeft, boxRight, height = 300,
     } = this.props
     const cols = {
+      dateRange: {
+        tickCount: 10,
+      },
       followerCountFull: {
         alias: '粉丝累计量',
         formatter: val => {
@@ -86,6 +89,7 @@ class CurveLine extends Component {
         </div>
         <Chart height={height} data={data} scale={cols}
           padding={[60, 100, 60, 80]}
+
           forceFit>
           <Legend marker='circle' {...legendPosition}
             offsetX={70}
@@ -120,7 +124,12 @@ class CurveLine extends Component {
             size={2}
             color={blueColor}
             shape={"smooth"}
+
           />
+          <Axis
+            name='dateRange'
+          />
+
           <Axis
             name={GreenlineName}
             grid={null}
