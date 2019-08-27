@@ -5,12 +5,14 @@ import ButtonTab from '../base/ButtonTab'
 import NewVideo from './NewVideo'
 import LazyLoad from 'react-lazyload';
 import { formatWNumber } from "../util";
+const typeMap = { Like: '点赞', Play: '播放', Comment: '评论' }
 
 
 class ContentData extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      dataBoxType: props.platformId == 115 ? 'Like' : 'Play',
       dataBoxProps: {
         data: []
       }
@@ -30,21 +32,27 @@ class ContentData extends Component {
   }
 
   setDataBoxProps = (checkedKey) => {
+    console.log("TCL: setDataBoxProps -> checkedKey", checkedKey)
     const { trendInfo } = this.props
     const data = trendInfo.boxContent
     this.setState({
+      dataBoxType: checkedKey,
       dataBoxProps: { data: [this.dataFormate(data, checkedKey, 90), this.dataFormate(data, checkedKey, 28)] }
     })
   }
 
   dataFormate = (data = {}, type, day) => {
+    const low = data[`media${type}Min${day}d`]
+    const high = data[`media${type}Max${day}d`]
+    const avg = data[`media${type}avg${day}d`]
     return {
       x: `${day}天总视频`,
-      low: data[`media${type}Min${day}d`],
+      low: low,
       q1: data[`media${type}LowerQuartileNum${day}d`],
       median: data[`media${type}MedianNum${day}d`],
       q3: data[`media${type}UpperQuartileNum${day}d`],
-      high: data[`media${type}Max${day}d`]
+      high: high,
+      textContent: `近${day}天视频：平均${typeMap[type]}量${formatWNumber(avg)}，数据集中分布在${formatWNumber(low)} - ${formatWNumber(high)}`
     }
   }
   render() {
@@ -52,14 +60,14 @@ class ContentData extends Component {
       newVideoList, accountId } = this.props
     const { base = {} } = baseInfo
     const { platformId } = base
-    const { dataBoxProps } = this.state
+    const { dataBoxProps, dataBoxType } = this.state
     const { contentSum = [], spreadTrend = [], interactive = [] } = trendInfo
     const typeText = platformId == 115 ? '点赞增量' : '播放增量'
-    const data90 = dataBoxProps.data[0]
-    const data28 = dataBoxProps.data[1]
-    const commonButtonList = [{ key: 'Like', name: '点赞' },
-    { key: 'Comment', name: '评论', }]
-    const buttonList = platformId == 115 ? commonButtonList : [{ key: 'Play', name: '播放' }, ...commonButtonList]
+    const commonButtonList = [
+      { key: 'Like', name: '点赞' },
+      { key: 'Comment', name: '评论' }]
+    const buttonList = platformId == 115 ? commonButtonList
+      : [{ key: 'Play', name: '播放' }, ...commonButtonList]
     return (
       <div className='content-data'>
         <div className='title-big' >数据趋势</div>
@@ -111,6 +119,7 @@ class ContentData extends Component {
             <div className='last-box-decide'>
               <div className='data-box-left'>
                 <ButtonTab
+                  key={JSON.stringify(buttonList)}
                   buttonList={buttonList}
                   onChange={this.setDataBoxProps}
                   contentMap={{
@@ -121,15 +130,14 @@ class ContentData extends Component {
                 />
 
               </div>
-              <div className='right-decide'>
+              <div className='right-decide' key={dataBoxType}>
                 <div>
                   <div className='right-title'><a>箱线图分析说明</a></div>
                   <div className='left-content'>
                     <p>内容表现</p>
-                    <div>近90天视频： 平均播放量{formatWNumber(data90 && data90.low)}，数据集中分布在{formatWNumber(data90 && data90.low)} - {
-                      formatWNumber(data90 && data90.high)}</div>
-                    <div> 近28天视频： 平均播放量{formatWNumber(data28 && data28.low)}，数据集中分布在{formatWNumber(data28 && data28.low)} - {
-                      formatWNumber(data28 && data28.high)}</div>
+                    {dataBoxProps.data.map(one => <div key={one.x}>
+                      {one.textContent}
+                    </div>)}
                   </div>
                   <div className='left-content '>
                     <p>趋势说明</p>
