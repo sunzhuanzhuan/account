@@ -139,6 +139,7 @@ export default class GroupedColumn extends React.Component {
             type="point"
             position="label*value"
             size={30}
+            tooltip={null}
             shape={[
               ['label', 'type'],
               function (name, type) {
