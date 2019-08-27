@@ -24,8 +24,8 @@ class AudienceAttribute extends Component {
       kolVisitorOsDraw, //设备
       kolVisitorOsPriceDraw,//手机价格
       kolVisitorInterestDrawList, //兴趣
-      kolVisitorBehaviorWeekDraw, //活跃活跃时间分布 -- 天（新增
-      kolVisitorBehaviorHourDraw,//活跃活跃时间分布 （新增）
+      kolVisitorBehaviorWeekDraw, //活跃时间分布 -- 天（新增
+      kolVisitorBehaviorHourDraw,//活跃时间分布 （新增）
       kolVisitorAppDraw,//App Top10
       kolProvinceLevelDraw
     } = audienceAttributeInfo
@@ -111,7 +111,7 @@ class AudienceAttribute extends Component {
                 height={400}
                 data={kolVisitorBehaviorHourDraw}
                 positionConfig='name*value'
-                textTitle='活跃活跃时间分布 -- 天'
+                textTitle='活跃时间分布 -- 天'
               />
             </div>
             <div className='fans-line-item'>
@@ -119,7 +119,7 @@ class AudienceAttribute extends Component {
                 height={400}
                 data={kolVisitorBehaviorWeekDraw}
                 positionConfig='name*value'
-                textTitle='活跃活跃时间分布 -- 周'
+                textTitle='活跃时间分布 -- 周'
               />
             </div>
           </div>

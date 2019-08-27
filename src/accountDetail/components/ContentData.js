@@ -4,6 +4,7 @@ import { CharTitle, CurveLine, DataBox } from "./chart";
 import ButtonTab from '../base/ButtonTab'
 import NewVideo from './NewVideo'
 import LazyLoad from 'react-lazyload';
+import { formatWNumber } from "../util";
 
 
 class ContentData extends Component {
@@ -53,6 +54,12 @@ class ContentData extends Component {
     const { platformId } = base
     const { dataBoxProps } = this.state
     const { contentSum = [], spreadTrend = [], interactive = [] } = trendInfo
+    const typeText = platformId == 115 ? '点赞增量' : '播放增量'
+    const data90 = dataBoxProps.data[0]
+    const data28 = dataBoxProps.data[1]
+    const commonButtonList = [{ key: 'Like', name: '点赞' },
+    { key: 'Comment', name: '评论', }]
+    const buttonList = platformId == 115 ? commonButtonList : [{ key: 'Play', name: '播放' }, ...commonButtonList]
     return (
       <div className='content-data'>
         <div className='title-big' >数据趋势</div>
@@ -75,12 +82,12 @@ class ContentData extends Component {
                 />
               </div>,
               2: <div className='content-char'>
-                <CharTitle title='播放增量和评论增量趋势图' content='可观察最近10周内点赞增量和评论增量变化趋势' />
+                <CharTitle title={`评论增量和${typeText}趋势图`} content={`可观察最近10周内评论增量和${typeText}变化趋势`} />
                 <CurveLine data={spreadTrend}
-                  BluelineText='播放增量'
-                  BluelineName='mediaPlayAvgIncre'
-                  GreenlineText={platformId == 115 ? '点赞增量' : '评论增量'}
-                  GreenlineName={platformId == 115 ? 'mediaLikeAvgIncre' : 'mediaCommentAvgIncre'}
+                  BluelineText='评论增量'
+                  BluelineName='mediaCommentAvgIncre'
+                  GreenlineText={typeText}
+                  GreenlineName={platformId == 115 ? 'mediaLikeAvgIncre' : 'mediaPlayAvgIncre'}
 
                 />
               </div>,
@@ -104,16 +111,12 @@ class ContentData extends Component {
             <div className='last-box-decide'>
               <div className='data-box-left'>
                 <ButtonTab
-                  buttonList={[
-                    { key: 'Like', name: '点赞' },
-                    { key: 'Comment', name: '评论', },
-                    { key: 'Repost', name: '转发', }
-                  ]}
+                  buttonList={buttonList}
                   onChange={this.setDataBoxProps}
                   contentMap={{
+                    Play: <DataBox {...dataBoxProps} />,
                     Like: <DataBox {...dataBoxProps} />,
-                    Comment: <DataBox {...dataBoxProps} />,
-                    Repost: <DataBox {...dataBoxProps} />
+                    Comment: <DataBox {...dataBoxProps} />
                   }}
                 />
 
@@ -123,8 +126,10 @@ class ContentData extends Component {
                   <div className='right-title'><a>箱线图分析说明</a></div>
                   <div className='left-content'>
                     <p>内容表现</p>
-                    <div>近90天视频： 平均播放量410万，数据集中分布在240万 - 510万</div>
-                    <div> 近28天视频： 平均播放量470万，数据集中分布在280万 - 520万</div>
+                    <div>近90天视频： 平均播放量{formatWNumber(data90 && data90.low)}，数据集中分布在{formatWNumber(data90 && data90.low)} - {
+                      formatWNumber(data90 && data90.high)}</div>
+                    <div> 近28天视频： 平均播放量{formatWNumber(data28 && data28.low)}，数据集中分布在{formatWNumber(data28 && data28.low)} - {
+                      formatWNumber(data28 && data28.high)}</div>
                   </div>
                   <div className='left-content '>
                     <p>趋势说明</p>

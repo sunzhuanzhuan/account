@@ -47,9 +47,6 @@ class BarLabel extends React.Component {
         <Axis name="key" label={labelConfig} />
         <Axis name="value" label={null} />
         <Tooltip g2-tooltip={g2Tooltip} />
-        {
-          /* 凸显类型 color={['age', '#E6F6C8-#3376CB']} */
-        }
         <Geom type="interval" position="key*value"
           color={['value', '#D8E7FF-#4786F5']}
           tooltip={[
