@@ -68,7 +68,7 @@ class HeadInfo extends Component {
               {gender == 1 || gender == 2 ?
                 <img width='16' src={require(`./img/${gender == 1 ? 'male' : 'famle'}.png`)} />
                 : null}
-              <span>{areaName}</span>
+              <span style={{ marginLeft: 20 }}>{areaName}</span>
             </div>
 
           </div>
@@ -79,7 +79,7 @@ class HeadInfo extends Component {
               } />
               <OneLine title='平台认证' content={
                 <div className='content-font'>
-                  {verifiedStatusName}
+                  {verifiedStatusName ? verifiedStatusName : '-'}
                 </div>}
               />
               <OneLine title='简介' content={
