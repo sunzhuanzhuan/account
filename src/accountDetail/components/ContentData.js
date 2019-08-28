@@ -55,7 +55,8 @@ class ContentData extends Component {
       q3: q3,
       high: high,
       textContent: `近${day}天视频：平均${typeMap[type]}量${formatWNumber(avg)}，数据集中分布在${formatWNumber(q1)} - ${formatWNumber(q3)}`,
-      avg: avg
+      avg: avg,
+      q3Lessq1: q3 - q1
     }
   }
   render() {
@@ -71,8 +72,11 @@ class ContentData extends Component {
       { key: 'Comment', name: '评论' }]
     const buttonList = platformId == 115 ? commonButtonList
       : [{ key: 'Play', name: '播放' }, ...commonButtonList]
-    const data90 = dataBoxProps && dataBoxProps[0]
-    const data28 = dataBoxProps && dataBoxProps[1]
+    const data90 = dataBoxProps && dataBoxProps.data[0]
+    const data28 = dataBoxProps && dataBoxProps.data[1]
+    //箱子图文案判断
+    const avgText = (data28 && data28.avg > data90 && data90.avg) ? '上升' : '下降'
+    const q3Lessq1Text = (data28 && data28.q3Lessq1) < (data90 && data90.q3Lessq1) ? '更趋于稳定' : '波动性更大'
     return (
       <div className='content-data'>
         <div className='title-big' >数据趋势</div>
@@ -146,10 +150,11 @@ class ContentData extends Component {
                   </div>
                   <div className='left-content '>
                     <p>趋势说明</p>
-                    <div>1.近期内容整体质量{(data28 && data28.avg) > (data90 && data90.avg) ? '上升' : '下降'}</div>
-                    <div>2.视频的内容质量的更趋于{
-                      (data28 && data28.q3 - data28 && data28.q1) <
-                        (data90 && data90.q3 - data90 && data90.q1) ? '稳定' : '波动性更大'
+                    <div>1.近期内容整体质量{avgText
+                    }
+                    </div>
+                    <div>2.视频的内容质量的{
+                      q3Lessq1Text
                     }</div>
                   </div>
                 </div>
