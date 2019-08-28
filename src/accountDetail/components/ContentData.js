@@ -5,7 +5,7 @@ import ButtonTab from '../base/ButtonTab'
 import NewVideo from './NewVideo'
 import LazyLoad from 'react-lazyload';
 import { formatWNumber } from "../util";
-const typeMap = { Like: '点赞', Play: '播放', Comment: '评论' }
+const typeMap = { Play: '播放', Like: '点赞', Comment: '评论' }
 
 
 class ContentData extends Component {
@@ -70,8 +70,9 @@ class ContentData extends Component {
     const commonButtonList = [
       { key: 'Like', name: '点赞' },
       { key: 'Comment', name: '评论' }]
+
     const buttonList = platformId == 115 ? commonButtonList
-      : [{ key: 'Play', name: '播放' }, ...commonButtonList]
+      : [...commonButtonList, { key: 'Play', name: '播放' }]
     const data90 = dataBoxProps && dataBoxProps.data[0]
     const data28 = dataBoxProps && dataBoxProps.data[1]
     //箱子图文案判断
