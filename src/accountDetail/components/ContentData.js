@@ -44,7 +44,7 @@ class ContentData extends Component {
   dataFormate = (data = {}, type, day) => {
     const low = data[`media${type}Min${day}d`]
     const high = data[`media${type}Max${day}d`]
-    const avg = data[`media${type}avg${day}d`]
+    const avg = data[`media${type}Avg${day}d`]
     const q1 = data[`media${type}LowerQuartileNum${day}d`]
     const q3 = data[`media${type}UpperQuartileNum${day}d`]
     return {
