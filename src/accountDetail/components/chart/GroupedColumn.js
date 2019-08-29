@@ -103,7 +103,7 @@ export default class GroupedColumn extends React.Component {
         <div className='legend-customize'>
           <div>
             <div className='block-legend fire'></div>
-            <div>最火视频</div>
+            <div>爆款视频</div>
           </div>
           <div>
             <div className='block-legend blue'></div>
