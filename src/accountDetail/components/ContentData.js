@@ -115,7 +115,7 @@ class ContentData extends Component {
                   BluelineText='互动数'
                   BluelineName='mediaInteractionAvgIncre'
                   GreenlineText={platformId == 115 ? null : '互动率'}
-                  GreenlineName={platformId == 115 ? 'interactionProportionIncre' : null}
+                  GreenlineName={platformId == 115 ? null : 'interactionProportionIncre'}
                 />
               </div>
             }}

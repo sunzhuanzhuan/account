@@ -131,11 +131,11 @@ class CurveLine extends Component {
             name='dateRange'
           />
 
-          {GreenlineText ? [<Axis
+          <Axis
             key='1'
             name={GreenlineName}
             grid={null}
-          />,
+          />
           <Geom
             key='2'
             type="line"
@@ -143,7 +143,7 @@ class CurveLine extends Component {
             size={2}
             color={greenColor}
             shape={"smooth"}
-          />] : null}
+          />
         </Chart>
       </div> : <Empty style={{ height: height, paddingTop: 80 }} />
     );
