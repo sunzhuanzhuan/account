@@ -114,8 +114,8 @@ class ContentData extends Component {
                 <CurveLine data={interactive}
                   BluelineText='互动数'
                   BluelineName='mediaInteractionAvgIncre'
-                  GreenlineText={'互动率'}
-                  GreenlineName={'interactionProportionIncre'}
+                  GreenlineText={platformId == 115 ? null : '互动率'}
+                  GreenlineName={platformId == 115 ? 'interactionProportionIncre' : null}
                 />
               </div>
             }}

@@ -82,10 +82,10 @@ class CurveLine extends Component {
       }
     };
     return (
-      data.length > 0 ? <div className='histogram-line'>
+      data.length > 0 ? <div className='histogram-line' key={BluelineText}>
         <div className='title-line'>
           <div className='left-title' style={{ left: boxLeft }}>{BluelineText}</div>
-          <div className='right-title' style={{ right: boxRight }}>{GreenlineText}</div>
+          {GreenlineText ? <div className='right-title' style={{ right: boxRight }}>{GreenlineText}</div> : null}
         </div>
         <Chart height={height} data={data} scale={cols}
           padding={[60, 100, 60, 80]}
@@ -94,6 +94,7 @@ class CurveLine extends Component {
           <Legend marker='circle' {...legendPosition}
             offsetX={70}
             offsetY={-30}
+            clickable={false}
             items={[
               {
                 value: BluelineText,
@@ -130,17 +131,19 @@ class CurveLine extends Component {
             name='dateRange'
           />
 
-          <Axis
+          {GreenlineText ? [<Axis
+            key='1'
             name={GreenlineName}
             grid={null}
-          />
+          />,
           <Geom
+            key='2'
             type="line"
             position={`dateRange*${GreenlineName}`}
             size={2}
             color={greenColor}
             shape={"smooth"}
-          />
+          />] : null}
         </Chart>
       </div> : <Empty style={{ height: height, paddingTop: 80 }} />
     );
