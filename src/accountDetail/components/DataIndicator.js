@@ -6,7 +6,7 @@ import CompositeRadar from "./chart/CompositeRadar";
 import CharTitle from "./chart/CharTitle";
 import ValueFormat from "../base/ValueFormat";
 import numeral from 'numeral'
-import { Divider, Empty } from "antd";
+import { Divider, Empty, Tooltip } from "antd";
 class DataIndicator extends Component {
   constructor(props) {
     super(props);
@@ -51,7 +51,8 @@ class DataIndicator extends Component {
       //     
       mediaCount90d = '-', //90天发布数	
       followerCountGrowthRate28d, //28天粉丝增长率	
-
+      hotMediaCount, // 爆款视频数
+      mediaWeeklyNum, // 28天发布次数
     } = feature
     const { data, legend = ['', ''] } = composite
     return (
@@ -63,12 +64,17 @@ class DataIndicator extends Component {
               <div className='head-center'>
                 <div className='left-index'>
                   <div className='text'>
-                    <CharTitle title='综合指数' color='#999' content='基于互动指数、黑马指数、内容传播指数、服务指数、配合指数、SNBT这6个指标加权计算综合指标。' />
+                    <CharTitle title='商业价值指数' color='#999' content='基于互动指数、内容传播指数、活跃度指数、健康指数、商业适应度指数、成长指数这6个指标加权计算综合指标。' />
                   </div>
                   <div className='score'>{numeral(wholeIndex).format('0')}</div>
                 </div>
                 <Divider type="vertical" style={{ height: 40, margin: '0px 20px' }} />
-                <div className='lable'>{legend[1]}第{wholeRankOnClassification || '-'}名</div>
+                <div className='left-index'>
+                  <div className='text' style={{ marginTop: 7 }}>
+                    <CharTitle title={`${legend[1] || '-'}分类排名`} color='#999' />
+                  </div>
+                  <div>NO.<span className='score'>{wholeRankOnClassification || '-'}</span></div>
+                </div>
               </div>
 
               <div>
@@ -78,47 +84,60 @@ class DataIndicator extends Component {
           </div>
           <div className='left-indicator'>
             <div className='fan-release'>
-              <div className='fan-release-item'>
-                <div>
-                  <HeadBox title={'总粉丝数'} number={followerCount || 21}
+              <div className='back-padding flex1'>
+                <div className='bold-font-size-16'>粉丝数据</div>
+                <div className='fan-release-item '>
+                  <HeadBox
+                    title={'总粉丝数'}
+                    number={followerCount || 21}
                     percent={followerCountRateOnClassificationPriceTag} typeContent='同分类同价格总粉丝数均值' />
+                  <Divider type="vertical" className='height20-colorE3' />
+                  <ThreeNumber
+                    title='28天粉丝增长率'
+                    number={followerCountGrowthRate28d ? numeral(followerCountGrowthRate28d * 100).format('0.0') : '-'}
+                    unit={'%'}
+                    typeContent='同分类同价格28天粉丝增长率均值'
+                  />
+                  <Divider type="vertical" className='height20-colorE3' />
+                  <ThreeNumber
+                    title='粉丝互动率'
+                    number={mediaInteractionProportion ? numeral(mediaInteractionProportion * 100).format('0.0') : '-'}
+                    unit={'%'}
+                    percent={mediaInteractionProportion30ItemRateOnClassificationPriceTag}
+                    typeContent='同分类同价格粉丝数互动率均值' />
                 </div>
-                <div> <ThreeBox title='粉丝互动率' number={numeral(mediaInteractionProportion).format('0.0%')}
-                  percent={mediaInteractionProportion30ItemRateOnClassificationPriceTag} isBig={true}
-                  typeContent='同分类同价格粉丝数互动率均值' /> </div>
-                <ThreeBox title='粉丝互动数' number={
-                  <ValueFormat value={mediaInteractionAvg > 0 ? mediaInteractionAvg : 0} unitClass='unit' />
-                }
-                  percent={mediaInteractionAvg30ItemRateOnClassificationPriceTag} isBig={true}
-                  typeContent='同分类同价格粉丝互动数均值' />
               </div>
-              <div className='fan-release-item'>
-                <HeadBox title={'总发布数'} number={mediaCount || 900} noLast={true} />
-                <ThreeBox title='90天发布数' number={`${mediaCount90d}条`} notPercent={true} />
-                <ThreeBox title='28天粉丝增长率' number={followerCountGrowthRate28d ? numeral(followerCountGrowthRate28d).format('0.0%') : '-'} notPercent={true} />
+              <div className='back-padding flex1'>
+                <div className='bold-font-size-16'>视频数据</div>
+                <div className='fan-release-item'>
+                  <ThreeNumber title='总发布数' number={mediaCount} unit='个' />
+                  <Divider type="vertical" className='height20-colorE3' />
+                  <ThreeNumber title='爆款视频数' number={hotMediaCount} unit='个' tips='近90天发布的爆款视频数' />
+                  <Divider type="vertical" className='height20-colorE3' />
+                  <ThreeNumber title='近28天发布频率' number={numeral(mediaWeeklyNum).format('0.0')} unit='个/周' />
+                </div>
               </div>
             </div>
             <div className='operate-four'>
               <OperateItem typeText='点赞'
-                numberAvg={mediaLikeAvg} percentAvg={mediaLikeAvg30ItemRateOnClassificationPriceTag}
-                sumAvgNumber={'123'} sumAvgPercent={mediaLikeAvgRateOnClassificationPriceTag}
-                numberSum='123' percentSum={mediaLikeSumRateOnClassificationPriceTag}
-                typeSum="123" />
+                numberAvg={mediaLikeAvg}
+                percentAvg={mediaLikeAvg30ItemRateOnClassificationPriceTag}
+              />
+              <Divider type="vertical" className='height20-colorE3' />
               <OperateItem typeText='转发'
-                numberAvg={mediaRepostAvg} percentAvg={mediaRepostAvg30ItemRateOnClassificationPriceTag}
-                sumAvgNumber='123' sumAvgPercent={mediaRepostAvgRateOnClassificationPriceTag}
-                numberSum='123' percentSum={mediaRepostSumRateOnClassificationPriceTag}
-                typeSum="123" />
+                numberAvg={mediaRepostAvg}
+                percentAvg={mediaRepostAvg30ItemRateOnClassificationPriceTag}
+              />
+              <Divider type="vertical" className='height20-colorE3' />
               <OperateItem typeText='评论'
-                numberAvg={mediaCommentAvg} percentAvg={mediaCommentAvg30ItemRateOnClassificationPriceTag}
-                sumAvgNumber='123' sumAvgPercent={mediaCommentAvgRateOnClassificationPriceTag}
-                numberSum='123' percentSum={mediaCommentSumRateOnClassificationPriceTag}
-                typeSum="123" />
+                numberAvg={mediaCommentAvg}
+                percentAvg={mediaCommentAvg30ItemRateOnClassificationPriceTag}
+              />
+              <Divider type="vertical" className='height20-colorE3' />
               <OperateItem typeText='播放'
-                numberAvg={mediaPlayAvg} percentAvg={mediaPlayAvg30ItemRateOnClassificationPriceTag}
-                sumAvgNumber='123' sumAvgPercent={mediaPlayAvgRateOnClassificationPriceTag}
-                numberSum='123' percentSum={mediaPlaySumRateOnClassificationPriceTag}
-                typeSum="123" />
+                numberAvg={mediaPlayAvg}
+                percentAvg={mediaPlayAvg30ItemRateOnClassificationPriceTag}
+              />
             </div>
           </div>
 
@@ -128,40 +147,36 @@ class DataIndicator extends Component {
   }
 }
 const HeadBox = ({ title, number, percent, isLeft = false, noLast, typeContent }) => {
-  const unConfig = noLast ? null : <UpDownPercentage percent={percent} isBackColor={true} typeContent={typeContent} />
+  const unConfig = noLast ? null : <UpDownPercentage percent={percent} typeContent={typeContent} />
   return <div className='head-box'>
-    <div className={`${isLeft ? 'title-light' : 'title'}`}>{title}</div>
+    <div className="title-light">{title}</div>
     <div className='head-box-flex'>
-      {/* <div className='number'>{number}</div>
-      <div className='unit'>{unit}</div> */}
       <ValueFormat value={number > 0 ? number : 0} valueClass='number' unitClass='unit' />
       {isLeft ? <div style={{ marginTop: 10, marginLeft: 3 }}>{unConfig} </div> : ""}
     </div>
     {isLeft ? "" : unConfig}
   </div>
 }
-const ThreeBox = ({ title, number, percent, isBig = false, notPercent = false, typeContent }) => {
-  return <div className='three-avg-box' >
-    <div className={notPercent ? 'big-title' : 'title'}>{title}</div>
-    <div className={`${isBig ? 'big-number' : 'number'}`}>{number ? number : '-'}</div>
-    {notPercent ? null : <div className='down' >
-      <UpDownPercentage percent={percent} typeContent={typeContent} />
-    </div>}
-  </div>
-}
-const OperateItem = ({ typeText, numberAvg, percentAvg, sumAvgNumber, sumAvgPercent, numberSum, percentSum }) => {
+const OperateItem = ({ typeText, numberAvg, percentAvg }) => {
   return <div className='operate-item'>
-    <div>{typeText}</div>
     <div className='back-box'>
-      <HeadBox title='近30条视频均' number={numberAvg} percent={percentAvg} typeContent={`同分类同价格近30条视频${typeText}均值`} />
-      {/* <div className='avg-sum-flex'>
-        <ThreeBox title='总平均' number={sumAvgNumber} percent={sumAvgPercent} />
-        <ThreeBox title='累计' number={numberSum} percent={percentSum} />
-      </div> */}
+      <HeadBox title={`平均${typeText}`} number={numberAvg} percent={percentAvg} typeContent={`同分类同价格近30条视频${typeText}均值`} />
     </div>
+  </div>
+}
+const ThreeNumber = ({ title, number, unit, percent, typeContent, tips }) => {
+  return <div>
+    <div className='font13-color9'>{tips ? <Tooltip title={tips}>
+      {title}
+    </Tooltip> : title}</div>
+    <div className='font24-color3 text-center '>
+      {number}
+      <span className='font12-color3'>{unit}</span></div>
+    {percent ? <div>
+      <UpDownPercentage percent={percent} typeContent={typeContent} />
+    </div> : null}
 
   </div>
 }
-
 export default DataIndicator;
 

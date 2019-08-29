@@ -20,11 +20,7 @@ export const audienceAttributeInfo = handleActions({
     return { ...action.payload.data }
   }
 }, {})
-export const queryTgiList = handleActions({
-  [accountDetail.getQueryTgiList_success]: (state, action) => {
-    return { ...action.payload.data }
-  }
-}, {})
+
 
 
 export const queryIndustryInfoList = handleActions({
@@ -60,7 +56,7 @@ export const isExistCar = handleActions({
 
 export const newVideoList = handleActions({
   [accountDetail.getNewVideo_success]: (state, action) => {
-    return [...action.payload.data]
+    return [...action.payload.data].map((one, index) => ({ ...one, label: `${index}` }))
   }
 }, [])
 //账号详情---最近应约价
@@ -91,7 +87,6 @@ export default combineReducers({
   queryIndustryInfoList,
   isExistCar,
   newVideoList,
-  queryTgiList,
   recentReservationOrderPriceList,
   historyPriceCount
 })

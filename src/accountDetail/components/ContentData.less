@@ -5,7 +5,6 @@
         @margin-left-right-10();
         background: #fff;
         margin-bottom: 21px;
-
     }
 
     .last-box-decide {
@@ -14,12 +13,12 @@
     }
 
     .data-box-left {
-        min-width: calc(100% - 400px);
+        min-width: calc(100% - 450px);
         flex: 2;
     }
 
     .right-decide {
-        min-width: 400px;
+        min-width: 450px;
         border-left: @border-left-line;
         padding-left: 20px;
         margin-bottom: 20px;
@@ -27,6 +26,29 @@
         flex-direction: column;
         display: flex;
         justify-content: space-between;
+
+        .right-title {
+            text-align: right;
+            padding-bottom: 20px;
+            padding-right: 20px;
+        }
+
+        .left-content {
+            margin: 20px 0px 60px;
+        }
+
+
+
+        .left-content p {
+            background: #E8E8E8;
+            border-radius: 13px;
+            width: 81px;
+            height: 25px;
+            text-align: center;
+            line-height: 25px;
+            @color333-font14();
+            font-weight: bold;
+        }
 
         .line-middle {
             border-bottom: @border-left-line;

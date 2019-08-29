@@ -23,14 +23,17 @@ class CurveLine extends Component {
       BluelineText, BluelineName, boxLeft, boxRight, height = 300,
     } = this.props
     const cols = {
+      dateRange: {
+        tickCount: data && data.length,
+      },
       followerCountFull: {
-        alias: '粉丝累计数',
+        alias: '粉丝累计量',
         formatter: val => {
           return formatW(val)
         }
       },
       followerCountIncre: {
-        alias: '粉丝净增数',
+        alias: '粉丝增量',
         formatter: val => {
           return formatW(val);
         }
@@ -47,31 +50,51 @@ class CurveLine extends Component {
           return formatW(val)
         }
       },
-      mediaInteractionAvgFull: {
-        alias: '平均互动数',
+      mediaInteractionAvgIncre: {
+        alias: '互动数',
         formatter: val => {
           return formatW(val);
         }
       },
       interactionProportionIncre: {
-        alias: '平均互动率',
+        alias: '互动率',
         formatter: val => {
           return numeral(val || 0).format('0.0%')
         }
       },
+      mediaLikeAvgIncre: {
+        alias: '点赞增量',
+        formatter: val => {
+          return formatW(val);
+        }
+      },
+      mediaCommentAvgIncre: {
+        alias: '评论增量',
+        formatter: val => {
+          return formatW(val);
+        }
+      },
+      mediaPlayAvgIncre: {
+        alias: '播放增量',
+        formatter: val => {
+          return formatW(val);
+        }
+      }
     };
     return (
-      data.length > 0 ? <div className='histogram-line'>
+      data.length > 0 ? <div className='histogram-line' key={BluelineText}>
         <div className='title-line'>
           <div className='left-title' style={{ left: boxLeft }}>{BluelineText}</div>
-          <div className='right-title' style={{ right: boxRight }}>{GreenlineText}</div>
+          {GreenlineText ? <div className='right-title' style={{ right: boxRight }}>{GreenlineText}</div> : null}
         </div>
         <Chart height={height} data={data} scale={cols}
           padding={[60, 100, 60, 80]}
+
           forceFit>
           <Legend marker='circle' {...legendPosition}
             offsetX={70}
             offsetY={-30}
+            clickable={false}
             items={[
               {
                 value: BluelineText,
@@ -102,12 +125,19 @@ class CurveLine extends Component {
             size={2}
             color={blueColor}
             shape={"smooth"}
+
           />
           <Axis
+            name='dateRange'
+          />
+
+          <Axis
+            key='1'
             name={GreenlineName}
             grid={null}
           />
           <Geom
+            key='2'
             type="line"
             position={`dateRange*${GreenlineName}`}
             size={2}

@@ -56,9 +56,9 @@ class CompositeRadar extends Component {
     return (
       <div>
         <Chart
-          height={240}
+          height={220}
           data={dv}
-          padding={[70, 30, 40, 30]}
+          padding={[40, 20, 60]}
           scale={scale}
           forceFit
 
@@ -71,7 +71,7 @@ class CompositeRadar extends Component {
             label={{
               htmlTemplate(text, item, index) {
                 const value = numeral(dataForMap[text] || 0).format('0')
-                return `<div style='width:100px;text-align:center'>${text}  <span style="color:#333;font-size:14px;font-weight:400;">${value}</span></div>`
+                return `<div style='width:120px;text-align:center'>${text}  <span style="color:#333;font-size:14px;font-weight:400;">${value}</span></div>`
               }
             }}
             grid={{
@@ -121,7 +121,11 @@ class CompositeRadar extends Component {
               alternateColor: "rgba(0, 0, 0, 0.04)"
             }}
           />
-          <Legend name="user" marker="circle" offsetY={-30} position='top-center' data={['环节一', '环节二']} />
+          <Legend name="user"
+            marker="circle"
+            position='bottom-right'
+            data={['环节一', '环节二']}
+            offsetY={20} />
           <Geom type="line"
             position="name*score"
             tooltip={false}

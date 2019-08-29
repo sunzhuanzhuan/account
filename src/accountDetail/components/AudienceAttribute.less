@@ -1,104 +1,154 @@
 @import "../index.less";
 
 .flex1-right-white {
-    flex: 1;
-    @margin-left-right-10();
-    background: #fff;
+  max-width: 100%;
+  @margin-left-right-10();
+  background: #fff;
 }
 
 .audience-attribute {
+  .city-top-title {
+    text-align: center;
+    font-weight: 500;
+    font-size: 14px;
+    margin: 10px;
+    color: #000;
+  }
 
-    .audience-attribute-charts {
+  .age-sex-gender {
+    flex: 1;
+    max-width: calc(100% / 3);
+  }
 
-        @flex-between();
-        flex: 1
+  .fans-line-two {
+    width: 100%;
+    display: flex;
+
+    .fans-line-item {
+      width: calc(100%/2)
+    }
+  }
+
+  .flex4 {
+    max-width: calc(100% / 11 * 4);
+    flex: 4;
+  }
+
+  .flex7 {
+    max-width: calc(100% / 11 * 7);
+    flex: 7;
+  }
+
+  .region-img {
+    @margin-left-right-10();
+    background: #fff;
+    margin-top: 20px;
+    @flex-between();
+
+
+    .ranking {
+      display: flex;
+      justify-content: center;
+      flex-grow: 1;
     }
 
-    .left-three {
-        flex: 2;
+    .rnking-box {
+      margin-left: 30px;
+      height: 35px;
+
+      .number-blue {
+        .circle-box(#57AFFF, #fff);
+      }
+
+      .number-gray {
+        .circle-box;
+      }
 
 
-        .left-three-two {
-            @flex-between();
-            min-width: 600px;
 
-            .one-line-item {
-                .flex1-right-white;
-            }
-        }
-
-        .two-line-item {
-            min-width: 580px;
-            .flex1-right-white;
-            margin-top: 20px;
-        }
-    }
-
-    .right-two {
-        flex: 1;
-        min-width: 400px;
-
-        .right-two-item {
-            .flex1-right-white;
-        }
-
-        .right-two-equit {
-            .flex1-right-white;
-            margin-top: 20px;
-            padding-bottom: 14px;
-        }
-    }
-
-    .region-img {
-        @margin-left-right-10();
-        background: #fff;
-        margin-top: 20px;
-        @flex-between();
-
-
-        .ranking {
-            flex: none;
-            width: 300px;
-            margin: 20px auto;
-            padding: 20px;
-        }
-
-        .rnking-box {
-            margin-left: 30px;
-            height: 35px;
-
-            .number-blue {
-                .circle-box(#57AFFF, #fff);
-            }
-
-            .number-gray {
-                .circle-box;
-            }
-
-            .city-name {
-                display: inline-block;
-                width: 100px;
-                padding-left: 60px;
-                font-size: 14px;
-                color: #000;
-            }
-
-            .city-name-blod {
-                .city-name;
-                font-weight: 500;
-            }
-        }
-    }
-
-    .circle-box(@background: #F0F2F5, @color: #000) {
+      .city-name {
         display: inline-block;
-        width: 20px;
-        height: 20px;
-        background: @background;
-        border-radius: 10px;
-        color: @color;
-        text-align: center;
-        padding-top: 1px;
-        font-size: 12px;
+        width: 160px;
+        padding-left: 40px;
+        font-size: 14px;
+        color: #000;
+      }
+
+      .city-name-blod {
+        .city-name;
+        font-weight: 500;
+      }
+
+      .percent-width {
+        width: 100px;
+      }
     }
+  }
+
+  .circle-box(@background: #F0F2F5, @color: #000) {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: @background;
+    border-radius: 10px;
+    color: @color;
+    text-align: center;
+    padding-top: 1px;
+    font-size: 12px;
+  }
+}
+
+.sex-list {
+  display: flex;
+  justify-content: space-around;
+
+  .sex-item {
+    width: calc(100%/2);
+  }
+
+  .sex-name {
+    margin: 10px;
+    text-align: center;
+  }
+
+  .sex-data {
+    display: flex;
+    height: 40px;
+    line-height: 40px;
+    justify-content: center;
+  }
+}
+
+.trapezoid(@width: 200px, @hight: 50px, @bottom: 100px, @color: #F0F2F5) {
+  border-bottom: @bottom solid @color;
+  border-left: @hight solid transparent;
+  border-right: @hight solid transparent;
+  width: @width
+}
+
+.vsitor-consumption {
+  .high {
+    .trapezoid(180px, 50px, 80px, #ff0);
+    height: 30px;
+  }
+}
+
+.city-table {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 30px;
+
+  .title {
+    color: #999;
+    font-size: 13px;
+    height: 40px;
+    margin: 0px 20px;
+  }
+
+  .content {
+    color: #333;
+    font-size: 14px;
+    height: 40px;
+    margin: 0px 20px;
+  }
 }

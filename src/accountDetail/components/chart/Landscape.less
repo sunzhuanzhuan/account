@@ -1,0 +1,35 @@
+@import '../../index.less';
+
+.column-width {
+  width: 100px
+}
+
+.label-sex-type {
+  position: relative;
+  left: -186px;
+
+  .sex-type {
+    display: flex;
+  }
+
+  .sex-box,
+  .type-box {
+    .column-width;
+    @nowrap-hidden-ellipsis();
+  }
+}
+
+.title-header {
+  position: relative;
+
+  .title-box {
+    margin-top: 20px;
+    display: flex;
+
+    &>div {
+      .column-width;
+      color: #999;
+      font-size: 12px
+    }
+  }
+}

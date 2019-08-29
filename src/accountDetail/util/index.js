@@ -8,6 +8,15 @@ export const formatW = (value) => {
 
   return value
 }
+export const formatWNumber = (value) => {
+  if (Math.abs(value) >= 10000) {
+    value = numeral(value / 10000).format('0.0') + '万'
+  } else {
+    value = numeral(value || 0).format('0.0')
+  }
+
+  return value
+}
 
 export const getQuoteNumber = (value) => {
   if (value) {

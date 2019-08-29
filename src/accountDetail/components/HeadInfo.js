@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import LookIndex from "./LookIndex";
+import VerificationIcon from "../base/VerificationIcon";
 import { PopoverFormat } from "../base/TitleAndDecide";
+import ImgCircle from "../base/ImgCircle";
+
 import "./HeadInfo.less"
 import { Avatar, Button, Divider, Empty, Icon, Popover } from 'antd';
 import MultiClamp from 'react-multi-clamp';
@@ -17,9 +20,11 @@ class HeadInfo extends Component {
   render() {
     const { setShowModal, isExistCar, baseInfo = {}, selectCarEdit, actions, accountDetail } = this.props
     const { base = {}, feature = {}, skuList = [] } = baseInfo
-    const { isMale, consumptionLevel, systemType, avatarUrl,
+    const { gender, consumptionLevel, systemType, avatarUrl, areaName,
       snsName, snsId, followerCount, introduction, platformId = 0,
-      url, qrCodeUrl, classification = '-', cooperationTips
+      url, qrCodeUrl, cooperationTips,
+      verifiedStatusName,
+      classification = '-',
     } = base
     const { wholeRank = 0, orderResponseDuration, orderResponsePercentile,
       orderAcceptanceNum = '-', orderAcceptanceRate, orderMajorIndustryCategory, orderCompleteDuration,
@@ -31,7 +36,7 @@ class HeadInfo extends Component {
       <div className="head-info">
         <div className='head-avatar'>
           <div className="avatar-img">
-            <Avatar size={60} src={avatarUrl} />
+            <ImgCircle url={avatarUrl} />
           </div>
           <PopoverFormat text={<div className="avatar-mark">{wholeRankCN}</div>} content={`${wholeRankCN}`} />
         </div>
@@ -43,7 +48,11 @@ class HeadInfo extends Component {
                 widthSize={16}
               /> </span> : null}
               <PopoverFormat text={<div className='account-name'>{snsName}</div>} content={snsName} />
-              {isVerified == 1 ? <PopoverFormat text={<img width='14px' style={{ marginLeft: 10, paddingBottom: 4 }} src={require(`./img/certification-${'other'}.png`)} />} content={verificationReason} /> : null}
+
+              {isVerified == 1 ? <PopoverFormat text={<VerificationIcon
+                platformId={platformId}
+                status={isVerified}
+              />} content={verificationReason} /> : null}
               <LookIndex url={url} qrCodeUrl={qrCodeUrl} platformName={platformName} />
               {/* <a style={{ marginLeft: 20, color: ' #1990FF' }} onClick={() => setShowModal(true, { content: <BloggerInfo />, title: '博主信息', width: 700 })}>
                 <Icon type='user' />查看博主信息</a> */}
@@ -54,21 +63,25 @@ class HeadInfo extends Component {
                 合作须知
                </div>
             </div>
-            <div className='account-code'>{platformView[platformId]}号：{snsId}</div>
+            <div className='account-code'>
+              <span>ID：{snsId}</span>
+              {gender == 1 || gender == 2 ?
+                <img width='16' src={require(`./img/${gender == 1 ? 'male' : 'famle'}.png`)} />
+                : null}
+              <span style={{ marginLeft: 20 }}>{areaName}</span>
+            </div>
+
           </div>
           <div className='info-bottom-three'>
             <div className='base-info'>
               <OneLine title='账号标签' content={
                 classification == '-' ? null : <FatLable backColor='#F3F8FD' color='#78A3CE' list={[classification]} />
               } />
-              {/* <OneLine title='功能标签' content={
-                <FatLable backColor='#FFEBEA' color='#FE6A60' list={['直播', '直播', '直播']} />
-              } /> */}
-              <OneLine title='受众信息' content={<div className='content-font'>
-                <span>{isMale ? isMale == 1 ? '男性' : '女性' : <PopoverFormat content='性别' text='-' />}</span> <Divider type="vertical" />
-                <span>{consumptionLevel ? `消费水平${consumptionLevel == 1 ? '低' : consumptionLevel == 2 ? '中' : '高'}` : <PopoverFormat content='消费水平' text='-' />}</span> <Divider type="vertical" />
-                <span>{systemType ? systemType == 1 ? '安卓' : 'IOS' : <PopoverFormat content='浏览端' text='-' />}</span>
-              </div>} />
+              <OneLine title='平台认证' content={
+                <div className='content-font'>
+                  {verifiedStatusName ? verifiedStatusName : '-'}
+                </div>}
+              />
               <OneLine title='简介' content={
                 <div className='content-font' style={{ maxWidth: 300 }}>
                   <PopoverFormat popoverProps={{ overlayStyle: { width: 400 } }} text={<MultiClamp ellipsis="..." clamp={2}>{introduction}</MultiClamp>} content={introduction} />
@@ -84,7 +97,15 @@ class HeadInfo extends Component {
               <div className='type-info-row'>
                 <OneType title="历史服务最多分类" content={orderMajorIndustryCategory || '-'} />
                 <OneType title="接单率" content={FieldMap.getSegmentByFloat(orderAcceptanceRate)} last={orderAcceptanceRate ? numeral(orderAcceptanceRate).format('0%') : '-'} />
-                <OneType title="平均订单完结周期" content={orderCompleteDuration ? numeral(orderCompleteDuration / 3600 / 24).format('0.00') : '-'} last='天' />
+                <OneType title="平均订单完结周期" content={orderCompleteDuration ? `${numeral(orderCompleteDuration / 3600 / 24).format('0.00')}天` : '-'} last={
+                  <a style={{ fontSize: 13 }} onClick={() => setShowModal(true, {
+                    content: <RecentPrice />, title: `近期应约（${accountDetail.historyPriceCount}）`, width: 1000
+                  })}>
+                    近期应约（{accountDetail.historyPriceCount}）
+                </a>
+                }
+
+                />
               </div>
             </div>
             <div className='release-info'>
@@ -96,11 +117,7 @@ class HeadInfo extends Component {
               <div style={{ textAlign: 'center' }}>
                 {isExistCar ? <Button className='add-select-car-button' type='primary' onClick={() => selectCarEdit(true)}>加入选号车</Button> :
                   <Button className='remove-select-car-button' onClick={() => selectCarEdit(false)}>移出选号车</Button>}
-                <a onClick={() => setShowModal(true, {
-                  content: <RecentPrice />, title: `近期应约（${accountDetail.historyPriceCount}）`, width: 1000
-                })}>
-                  近期应约（{accountDetail.historyPriceCount}）
-                </a>
+
               </div>
               {/* <div style={{ textAlign: "center", marginTop: 12 }}>加入收藏<span className='collect'>（100人已收藏）</span></div> */}
             </div>
@@ -117,7 +134,7 @@ const OneLine = ({ title, content, last }) => {
     <div>{last}</div>
   </div>
 }
-const OneType = ({ title, content, last, color }) => {
+const OneType = ({ title, content, last, color, lastContent }) => {
   return <div className='type-info-flex'>
     <div className='title'>{title}</div>
     <div className='content' style={{ color: color }}>

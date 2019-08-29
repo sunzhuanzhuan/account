@@ -5,6 +5,11 @@ export { default as CurveLine } from './CurveLine'
 export { default as CurveLineTwo } from './CurveLineTwo'
 export { default as DataBox } from './DataBox'
 export { default as HistogramLine } from './HistogramLine'
+export { default as Histogram } from './Histogram'
 export { default as Landscape } from './Landscape'
+export { default as LandscapeType } from './LandscapeLabel'
 export { default as PieChart } from './PieChart'
+export { default as RingPie } from './RingPie'
+export { default as GroupedColumn } from './GroupedColumn'
+
 

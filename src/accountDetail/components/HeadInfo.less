@@ -17,10 +17,12 @@
 .head-info {
     padding-top: 27px;
     margin: 10px;
-    margin-top: 0px;
+    margin-top: 80px;
     background: #fff;
     display: flex;
     padding-bottom: 10px;
+    z-index: 999;
+    position: relative;
 
     .add-select-car-button {
         width: 50%;
@@ -32,6 +34,7 @@
     .remove-select-car-button {
         .add-select-car-button;
         background: #999;
+        border: 1px solid #999;
         color: #fff
     }
 
@@ -78,7 +81,13 @@
             }
 
             .account-code {
+                margin-top: 20px;
                 @color999-font12();
+
+                img {
+                    margin-left: 20px;
+                    padding-bottom: 3px;
+                }
             }
         }
 
