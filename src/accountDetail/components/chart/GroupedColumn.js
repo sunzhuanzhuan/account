@@ -86,7 +86,7 @@ export default class GroupedColumn extends React.Component {
              <img 
                width='120px'
                height='160px'
-               src=${dataItem.mediaCoverUrl ? dataItem.mediaCoverUrl : deafultImg} />
+              src=${dataItem.mediaCoverUrl ? `http://api-webroot.api.weiboyi.com/pic.php?picurl=${dataItem.mediaCoverUrl}` : deafultImg} onerror="this.src='${deafultImg}'; this.onerror=null" />
           </div>
           <div class='hover-img-show'>
           </div>
