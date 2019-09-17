@@ -27,7 +27,7 @@ export default class Owner extends Component {
     let isOwner = auth['account.manage.update.change.main.account'];
     let href = isOwner ? `${babysitterHost}/user/index/type/huanma/account_id/${accountId}/weibo_type/${platformId}` : `${babysitterHost}/user/chowner/account_id/${accountId}`;
 
-    const rightC = <div className='wrap-panel-right-content'>
+    const rightC = this.props.readOnly ? null : <div className='wrap-panel-right-content'>
       <a target={'_blank'} href={href}>更换主账号</a>
     </div>;
     return <div className='module-item-container'>

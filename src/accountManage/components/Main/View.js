@@ -73,10 +73,10 @@ export default class MainView extends Component {
     </div>;
     const right = <div className='wrap-panel-right-content'>
       <span className='gray-text'>最近更新于: {dateDisplay(baseModifiedAt) || '--'}</span>
-      <a onClick={() => onModuleStatusChange('edit')} style={{ fontSize: '14px' }}>
+      {this.props.readOnly ? null : <a onClick={() => onModuleStatusChange('edit')} style={{ fontSize: '14px' }}>
         <Icon type="edit" style={{ marginRight: '6px' }} />
         编辑
-      </a>
+      </a>}
       {/*<Button type='primary' onClick={() => onModuleStatusChange('edit')}>编辑</Button>*/}
     </div>;
 
@@ -195,13 +195,13 @@ export default class MainView extends Component {
           </div>
         </li>
       </ul>
-      <footer className='mini-fields-footer clearfix'>
+      {this.props.readOnly ? null : <footer className='mini-fields-footer clearfix'>
         <div>
           <span onClick={() => onModuleStatusChange('mini')}>
             收起更多 <Icon type="double-left" rotate={90} />
           </span>
         </div>
-      </footer>
+      </footer>}
     </div>
   }
 }

@@ -43,10 +43,10 @@ export default class StrategyView extends Component {
     } = data.account || {}
     const right = <div className='wrap-panel-right-content'>
       <span className='gray-text'>最近更新于: {dateDisplay(strategyModifiedAt) || '--'}</span>
-      <a onClick={() => onModuleStatusChange('edit')} style={{ fontSize: '14px' }}>
+      {this.props.readOnly ? null : <a onClick={() => onModuleStatusChange('edit')} style={{ fontSize: '14px' }}>
         <Icon type="edit" style={{ marginRight: '6px' }} />
         编辑
-      </a>
+      </a>}
       {/*<Button type='primary' onClick={() => onModuleStatusChange('edit')}>编辑</Button>*/}
     </div>;
 

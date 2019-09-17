@@ -47,10 +47,10 @@ export default class PriceView extends Component {
     } = data.priceInfo || {};
     const right = <div className='wrap-panel-right-content'>
       <span className='gray-text'>最近更新于: {dateDisplay(modifiedAt) || '--'}</span>
-      <a onClick={() => onModuleStatusChange('edit')} style={{fontSize: '14px'}}>
+      {this.props.readOnly ? null : <a onClick={() => onModuleStatusChange('edit')} style={{fontSize: '14px'}}>
         <Icon type="edit" style={{marginRight: '6px'}}/>
         编辑
-      </a>
+      </a>}
       {/*<Button type='primary' onClick={() => onModuleStatusChange('edit')}>编辑</Button>*/}
     </div>;
     const priceKeys = skuList ? skuList.map(({ skuTypeId, skuTypeName }) => ({
@@ -60,7 +60,6 @@ export default class PriceView extends Component {
       <ModuleHeader title={configureModule.title} right={right} />
       <section className='content-wrap'>
         <div className="view-fields-container">
-          <div className='right-wrap'>
             <section className='content-wrap'>
               {isFamous === 1 ?
                 <FamousPriceView {...fieldProps} priceKeys={priceKeys}>
@@ -86,7 +85,7 @@ export default class PriceView extends Component {
                   } />
                 </FamousPriceView>
                 :
-                <NamelessPriceView {...fieldProps} priceKeys={priceKeys}>
+                <NamelessPriceView {...fieldProps} priceList={skuList}>
                   {configurePlatform.visibility.fields.referencePrice &&
                   <ReferencePrice  {...fieldProps} />}
                   <FieldView width={80} title="接硬广" value={
@@ -104,7 +103,6 @@ export default class PriceView extends Component {
               }
             </section>
           </div>
-        </div>
       </section>
     </div>
   }

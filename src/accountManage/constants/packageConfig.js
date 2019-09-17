@@ -98,6 +98,7 @@ export function platformToModules(platformId, filterSource) {
   _modules = _modules.map(key => modulesMap[key])
   return update(platformData, { visibility: { modules: { $set: _modules } } })
 }
+// 维护页面可编辑
 export const tabs = [
   {
     index: '1',
@@ -132,6 +133,48 @@ export const tabs = [
       "personal"
     ],
     perfectionDegreeKey: 'personal'
+  }
+]
+// 维护页面查看
+export const viewTabs = [
+  {
+    index: '1',
+    title: '账号信息',
+    warp: [
+      "owner",
+      "main",
+      "cooperation",
+      "content",
+      "strategy",
+      "other"
+    ]
+  }, {
+    index: '2',
+    title: '报价信息',
+    warp: [
+      "price",
+      "trinity"
+    ],
+    perfectionDegreeKey: 'sku'
+  }, {
+    index: '3',
+    title: '数据统计',
+    warp: [
+      "dashboard"
+    ]
+  }, {
+    index: '4',
+    title: '博主信息',
+    warp: [
+      "personal"
+    ],
+    perfectionDegreeKey: 'personal'
+  }, {
+    index: '5',
+    title: '博主信息',
+    warp: [
+      "owner"
+    ],
   }
 ]
 
