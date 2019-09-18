@@ -171,7 +171,7 @@ export const viewTabs = [
     perfectionDegreeKey: 'personal'
   }, {
     index: '5',
-    title: '博主信息',
+    title: '订单信息',
     warp: [
       "owner"
     ],

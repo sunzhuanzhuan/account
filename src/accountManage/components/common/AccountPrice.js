@@ -720,15 +720,13 @@ export class FamousPriceView extends Component {
             <span>{nextPriceValidTo || '-'}</span>
           </div>
         } />
-        <FieldView width={80} title="账号报价" value={
-          <PriceTable style={{ lineHeight: '40px' }} isEdit={false} priceKeys={priceKeys} value={nextVal} />
+        <FieldView width={80} title="下期报价" value={
+          <PriceTable style={{ lineHeight: '40px' }} isEdit={false}  priceKeys={['nextCostPriceRaw', 'nextChannelPrice', 'nextPublicationPrice']} value={skuList} />
         } />
         <FieldView width={80} title="审核状态" value={
           approvalStatus(reviewStatus, reviewFailReason)
         } />
-      </div> : <FieldView width={80} title="下期报价" value={
-        <PriceTable style={{ lineHeight: '40px' }} isEdit={false}  priceKeys={['nextCostPriceRaw', 'nextChannelPrice', 'nextPublicationPrice']} value={skuList} />
-      } />}
+      </div> : <FieldView width={80} title="下期报价" value={'无'} />}
       <Divider dashed />
       {children}
     </div>;
