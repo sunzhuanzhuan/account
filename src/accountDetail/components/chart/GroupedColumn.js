@@ -86,7 +86,7 @@ export default class GroupedColumn extends React.Component {
              <img 
                width='120px'
                height='160px'
-               src=${dataItem.mediaCoverUrl ? dataItem.mediaCoverUrl : deafultImg} onerror="this.src='${deafultImg}'; this.onerror=null" />
+              src=${dataItem.mediaCoverUrl ? `http://api-webroot.api.weiboyi.com/pic.php?picurl=${dataItem.mediaCoverUrl}` : deafultImg} onerror="this.src='${deafultImg}'; this.onerror=null" />
           </div>
           <div class='hover-img-show'>
           </div>
@@ -103,7 +103,7 @@ export default class GroupedColumn extends React.Component {
         <div className='legend-customize'>
           <div>
             <div className='block-legend fire'></div>
-            <div>最火视频</div>
+            <div>爆款视频</div>
           </div>
           <div>
             <div className='block-legend blue'></div>

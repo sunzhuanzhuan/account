@@ -76,8 +76,8 @@ class ContentData extends Component {
     const data90 = dataBoxProps && dataBoxProps.data[0]
     const data28 = dataBoxProps && dataBoxProps.data[1]
     //箱子图文案判断
-    const avgText = (data28 && data28.avg > data90 && data90.avg) ? '上升' : '下降'
-    const q3Lessq1Text = (data28 && data28.q3Lessq1) < (data90 && data90.q3Lessq1) ? '更趋于稳定' : '波动性更大'
+    const avgText = (data28 && data28.avg || 0) > (data90 && data90.avg || 0) ? '上升' : '下降'
+    const q3Lessq1Text = (data28 && data28.q3Lessq1 || 0) < (data90 && data90.q3Lessq1 || 0) ? '更趋于稳定' : '波动性更大'
     return (
       <div className='content-data'>
         <div className='title-big' >数据趋势</div>
@@ -114,8 +114,8 @@ class ContentData extends Component {
                 <CurveLine data={interactive}
                   BluelineText='互动数'
                   BluelineName='mediaInteractionAvgIncre'
-                  GreenlineText={'互动率'}
-                  GreenlineName={'interactionProportionIncre'}
+                  GreenlineText={platformId == 115 ? null : '互动率'}
+                  GreenlineName={platformId == 115 ? null : 'interactionProportionIncre'}
                 />
               </div>
             }}
