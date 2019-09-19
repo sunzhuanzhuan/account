@@ -36,8 +36,10 @@ export default class MainView extends Component {
       onModuleStatusChange
     } = this.props
     const {
+      id,
       base: {
         avatarUrl,
+        snsUniqueId,
         snsName,
         snsId,
         url,
@@ -96,6 +98,8 @@ export default class MainView extends Component {
                 </div>
               </div>
               <div className='right-wrap'>
+                <FieldView title="唯一标识" value={snsUniqueId} />
+                <FieldView title="account_id" value={id} />
                 <FieldView title="账号名称" value={snsName} />
                 <FieldView title="账号ID" value={snsId} />
                 {configurePlatform.visibility.fields.url &&

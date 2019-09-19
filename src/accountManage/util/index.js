@@ -133,12 +133,16 @@ export const dateDisplay = (date, len = 16) => {
   return date ? date.slice(0, len) : ''
 }
 
-
-
-
 export const findStatusText = (status, sources, keys = ["id", 'name']) => {
   let _data = sources.find(item => item[keys[0]] === status) || {}
   return _data[keys[1]]
+}
+
+
+export const booleanDisplay = (status, texts = ["", "是", '否']) => {
+  if(status){
+    return texts[status]
+  }
 }
 
 export default { uploadUrl, checkVal, handleReason, date2moment }

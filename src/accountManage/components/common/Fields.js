@@ -2330,7 +2330,8 @@ export const TrinityConfigAndPrice = (props) => {
   };
   const {
     form: { getFieldDecorator, getFieldValue },
-    data: { trinityPriceInfo }
+    data: { trinityPriceInfo },
+    readOnly
   } = props;
   const {
     trinityIsPreventShielding,
@@ -2357,7 +2358,7 @@ export const TrinityConfigAndPrice = (props) => {
         initialValue: trinityIsPreventShieldingManual > 0,
         valuePropName: 'checked'
       })(
-        <Checkbox>人工控制可在{name}下单</Checkbox>
+        <Checkbox disabled={readOnly}>人工控制可在{name}下单</Checkbox>
       )}
       <div style={{ color: 'red' }}>
         注：如果勾选此处，将以人工控制结果为准，若要恢复机维请取消勾选！
@@ -2369,7 +2370,7 @@ export const TrinityConfigAndPrice = (props) => {
           initialValue: trinityIsPreventShieldingManual || undefined,
           rules: [{ required: true, message: '本项为必选项，请选择！' }]
         })(
-          <RadioGroup>
+          <RadioGroup disabled={readOnly}>
             <Radio value={1}>强制可下单</Radio>
             <Radio value={2}>强制不可下单</Radio>
           </RadioGroup>
@@ -2382,7 +2383,7 @@ export const TrinityConfigAndPrice = (props) => {
           initialValue: trinityPlaceOrderType,
           rules: [{ required: true, message: '本项为必选项，请选择！' }]
         })(
-          <RadioGroup>
+          <RadioGroup disabled={readOnly}>
             <Radio value={2}>博主自行下单</Radio>
             <Radio value={1}>微播易代下单</Radio>
           </RadioGroup>
@@ -2408,7 +2409,7 @@ export const TrinityConfigAndPrice = (props) => {
                       return <tr key={sku.trinitySkuKey}>
                         <th>{sku.wbyTypeName}</th>
                         <td style={{ padding: '0 4px', textAlign: 'left' }}>
-                          <FormItem>
+                          {readOnly ? <div style={{textAlign: 'center'}}>{sku.publicCostPrice}</div> : <FormItem>
                             {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].publicCostPrice`, {
                               initialValue: sku.publicCostPrice,
                               rules: [{
@@ -2423,7 +2424,7 @@ export const TrinityConfigAndPrice = (props) => {
                                 max={999999999}
                                 style={{ width: '100%' }}
                               />)}
-                          </FormItem>
+                          </FormItem>}
                         </td>
                         <td>
                           {sku.publicCostPriceMaintainedTime || '--'}

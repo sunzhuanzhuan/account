@@ -30,6 +30,7 @@ export default class PersonalView extends Component {
     const {
       isFamous,
       personalInfo: {
+        sexualOrientation,
         gender,
         area = {},
         shipping = {},
@@ -65,8 +66,7 @@ export default class PersonalView extends Component {
       {/*<Button type='primary' onClick={() => onModuleStatusChange('edit')}>编辑</Button>*/}
     </div>;
 
-    return Object.keys(data.account.personalInfo).length > 2 ?
-      <div className='module-item-container'>
+    return <div className='module-item-container'>
         <ModuleHeader title={configureModule.title} right={right} />
         <ul className='content-wrap'>
           <li className='subclass-item-wrap'>
@@ -76,9 +76,10 @@ export default class PersonalView extends Component {
             </h4>
             <div className='subclass-content'>
               <div className="view-fields-container">
-                {
-                  (gender || area || shipping || birthDate || nationalityName || industryName || occupations.length || educationQualification || relationshipStatus || hasCar || hasHouse) ?
                     <div className='right-wrap'>
+                      <FieldView width={70} title="性取向" value={
+                        sexualOrientation === 1 ? '同性' : sexualOrientation === 2 ? '异性' : sexualOrientation === 3 ? '双性' : ''
+                      } />
                       <FieldView width={70} title="性别" value={
                         gender === 1 ? '男' : gender === 2 ? '女' : gender === 3 ? '未知' : ''
                       } />
@@ -119,8 +120,7 @@ export default class PersonalView extends Component {
                           <span>有车</span>}
                         </div>
                       } />
-                    </div> : <div className='right-wrap'>您可以添加【收货地】【宠物】【技能】等信息，提升您的账号竞争力和曝光率哦~</div>
-                }
+                    </div>
               </div>
             </div>
           </li>
@@ -134,12 +134,12 @@ export default class PersonalView extends Component {
                 <div className='right-wrap'>
                   <FieldView width={40} title="宝宝" value={
                     children.length > 0 ?
-                      <ChildrenListView list={children} /> : '添加您宝宝的相关信息，会更受【母婴、生活、洗护类】广告主的亲睐哦~'
+                      <ChildrenListView list={children} /> : '--'
                   } />
                   <FieldView width={40} title="宠物" value={
                     petsList.length  > 0 ? petsList.map((item, n) =>
                         <Tag key={n}>{item.petName || item}</Tag>)
-                      : <div>添加您宠物的相关信息，会更受【宠物类】广告主的亲睐哦~</div>
+                      : <div>--</div>
                   } />
                 </div>
               </div>
@@ -155,14 +155,13 @@ export default class PersonalView extends Component {
                 <div className='right-wrap'>
                   {
                     skillsList.length ? skillsList.map((item, n) =>
-                      <Tag key={n}>{item.skillName || item}</Tag>) : '添加您的特长或才艺，将提升您的竞争力，在同类账号中更加突出哦~'
+                      <Tag key={n}>{item.skillName || item}</Tag>) : '--'
                   }
                 </div>
               </div>
             </div>
           </li>
         </ul>
-      </div> :
-      <EmptyModule title={configureModule.title} desc={'您的信息完善将提升您的曝光率，更利于账号的接单转化率提升哦~'} onChange={onModuleStatusChange}/>
+      </div>
   }
 }
