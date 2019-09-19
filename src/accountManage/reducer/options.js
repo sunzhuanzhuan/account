@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux'
 import { handleActions, combineActions } from 'redux-actions';
+import update from 'immutability-helper'
+
 import {
   getVerifiedType_success,
   // getCooperateNoticeFieldConfig_success,
@@ -131,6 +133,36 @@ export const skillReduce = handleActions({
   }
 }, [])
 
+// 订单信息筛选项
+const initOrderFilterOptions = {
+  executionStatus: [
+    { 'label': '执行中', 'value': '21' },
+    { 'label': '已执行', 'value': '22' },
+    { 'label': '待执行', 'value': '23' },
+    { 'label': '执行取消', 'value': '24' },
+    { 'label': '执行终止', 'value': '25' },
+    { 'label': '待质检', 'value': '26' },
+    { 'label': '质检中', 'value': '27' },
+    { 'label': '质检完成', 'value': '28' },
+    { 'label': '终止申请中', 'value': '31' },
+    { 'label': '已完成', 'value': '32' },
+    { 'label': '赔偿申请中', 'value': '33' },
+    { 'label': '赔偿通过', 'value': '34' },
+    { 'label': '已结案', 'value': '35' }
+  ],
+  brands: [],
+  companies: []
+}
+export const orderFilterOptions = handleActions({
+  /*[combineActions(getExecutor_success)]: (state, action) => {
+    return update(state, {
+      executors: {
+        $set: action.payload.data
+      }
+    })
+  }*/
+}, initOrderFilterOptions)
+
 export default combineReducers({
   verified,
   adServiceItems,
@@ -143,5 +175,6 @@ export default combineReducers({
   skills,
   skillReduce,
   occupations,
-  nationality
+  nationality,
+  orderFilterOptions
 })
