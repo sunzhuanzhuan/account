@@ -5,12 +5,17 @@ import React, { Component } from "react"
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
 import { Statistic, Row, Col, Empty, Table, Alert } from "antd";
 import OrderFilterForm from "@/accountManage/components/common/OrdersFilterForm";
+import ScrollTable from '@/components/Scolltable'
+
+const setWidth = () => {
+  let w = document.getElementById('account-manage-container').clientWidth
+  document.getElementById('navLink-orders').style.width = w + "px"
+}
 
 const columns = [
   {
     title: '需求名称',
     dataIndex: 'execution_evidence_code',
-    fixed: 'left',
     render: (text, record) => {
       return text
     }
@@ -140,6 +145,8 @@ export default class Orders extends Component {
 
   componentDidMount() {
     this.getList()
+    setWidth()
+    window.addEventListener('resize', setWidth)
   }
 
   render() {
@@ -159,7 +166,7 @@ export default class Orders extends Component {
     }
     return <div className='module-item-container'>
       <ModuleHeader title={configureModule.title} />
-      <section className='content-wrap'>
+      <section id="orders-content-wrap" className='content-wrap'>
         <div className='orders-filter-container'>
           <OrderFilterForm
             loading={this.state.listLoading}
@@ -170,13 +177,16 @@ export default class Orders extends Component {
           />
         </div>
         <Alert message={'订单数量：' + total} />
-        <div style={{width: 1200}}>
-          <Table
-            // loading={this.state.listLoading}
-            dataSource={list.map(key => source[key])}
-            pagination={pagination}
-            columns={columns}
-          />
+        <div>
+          <ScrollTable scrollClassName='.ant-table-body' widthScroll={1800}>
+            <Table
+              // loading={this.state.listLoading}
+              dataSource={list.map(key => source[key])}
+              pagination={pagination}
+              scroll={{ x: 1800 }}
+              columns={columns}
+            />
+          </ScrollTable>
         </div>
       </section>
     </div>
