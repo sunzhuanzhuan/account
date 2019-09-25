@@ -1,6 +1,8 @@
 export default {
   common: {
     getCompanyList: '/export/account/getCompanyList',
+    searchForCompanyByName: '/account/getCompanyList',
+    searchForBrandByName: '/account/getBrandList',
     getAllPlatform: '/platform/getAll',
     getChineseCities: '/operator-gateway/common/v1/chineseCities',
     getToken: '/toolbox-gateway/file/v1/getToken',

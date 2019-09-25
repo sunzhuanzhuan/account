@@ -65,5 +65,9 @@ export default {
     getAdvertisingFieldConfig: prefix + '/account/v1_1/configuration/advertisingFieldConfig',
     getCooperateNoticeFieldConfig: prefix + '/account/v1_1/configuration/cooperateNoticeFieldConfig',
     getAccountFieldConfig: prefix + '/account/v1_1/configuration/accountFieldConfig'
+  },
+  orders: {
+    getOrdersFilterItem: '/account/getFilterItem',
+    getOrdersByAccount: '/account/getOrderList'
   }
 }

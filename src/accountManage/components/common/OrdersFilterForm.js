@@ -13,25 +13,24 @@ const Option = Select.Option
 @Form.create()
 export default class OrderFilterForm extends Component {
   state = {
-    timeType: 'submitter_at'
+    timeType: 'created_time'
   }
   handleSubmit = (e) => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
         // 处理params
-        this.props.getList({ ...values, page: 1 })
+        this.props.getList({
+          ...values,
+          created_time: values.created_time,
+          execution_completed_time: values.execution_completed_time,
+          page: 1
+        })
       }
     })
   }
   handleReset = () => {
     this.props.form.resetFields()
-  }
-  validatorBatchId = (rule, value, callback) => {
-    if (value && value.trim().split(/\s+/g).length > 200) {
-      return callback('不能超过200个')
-    }
-    callback()
   }
 
   render() {
@@ -48,8 +47,8 @@ export default class OrderFilterForm extends Component {
                 getPopupContainer={() => document.querySelector('.orders-filter-container')}
                 onChange={(key) => this.setState({ timeType: key })}
               >
-                <Option value="submitter_at">创建时间</Option>
-                <Option value="internal_check_at">回填执行链接时间</Option>
+                <Option value="created_time">创建时间</Option>
+                <Option value="execution_completed_time">回填执行链接时间</Option>
               </Select>
               {getFieldDecorator(this.state.timeType, {})(
                 <RangePicker showTime style={{ width: 'calc(100% - 130px)' }} />
@@ -59,7 +58,9 @@ export default class OrderFilterForm extends Component {
         </Col>
         <Col span={6}>
           <Form.Item label="预约状态">
-            {getFieldDecorator('summary_status1', {})(
+            {getFieldDecorator('reservation_status', {
+              initialValue: ['2']
+            })(
               <Select
                 allowClear
                 mode="multiple"
@@ -72,15 +73,15 @@ export default class OrderFilterForm extends Component {
                   return `已选${omittedValues.length}项`
                 }}
               >
-                {options.executionStatus.map(option =>
-                  <Option key={option.value}>{option.label}</Option>)}
+                {Object.entries(options.reservationStatus).map(([value, label]) =>
+                  <Option key={value}>{label}</Option>)}
               </Select>
             )}
           </Form.Item>
         </Col>
         <Col span={6}>
           <Form.Item label="客户确认状态">
-            {getFieldDecorator('summary_status2', {})(
+            {getFieldDecorator('customer_confirmation_status', {})(
               <Select
                 allowClear
                 mode="multiple"
@@ -93,15 +94,15 @@ export default class OrderFilterForm extends Component {
                   return `已选${omittedValues.length}项`
                 }}
               >
-                {options.executionStatus.map(option =>
-                  <Option key={option.value}>{option.label}</Option>)}
+                {Object.entries(options.customerConfirmationStatus).map(([value, label]) =>
+                  <Option key={value}>{label}</Option>)}
               </Select>
             )}
           </Form.Item>
         </Col>
         <Col span={6}>
           <Form.Item label="执行状态">
-            {getFieldDecorator('summary_status3', {})(
+            {getFieldDecorator('execution_status', {})(
               <Select
                 allowClear
                 mode="multiple"
@@ -114,8 +115,8 @@ export default class OrderFilterForm extends Component {
                   return `已选${omittedValues.length}项`
                 }}
               >
-                {options.executionStatus.map(option =>
-                  <Option key={option.value}>{option.label}</Option>)}
+                {Object.entries(options.executionStatus).map(([value, label]) =>
+                  <Option key={value}>{label}</Option>)}
               </Select>
             )}
           </Form.Item>
@@ -127,9 +128,9 @@ export default class OrderFilterForm extends Component {
             })(
               <SearchSelect
                 placeholder="请输入并选择公司"
-                action={actions.getCompanyNames}
-                wordKey='name'
-                // isEmptySearch
+                action={actions.searchForCompanyByName}
+                wordKey='company_name'
+                isEmptySearch
                 getPopupContainer={() => document.querySelector('.orders-filter-container')}
                 mapResultItemToOption={({ company_id, name } = {}) => ({
                   value: company_id,
@@ -144,13 +145,13 @@ export default class OrderFilterForm extends Component {
             {getFieldDecorator('brand_id', {})(
               <SearchSelect
                 placeholder="请选择品牌名称"
-                action={actions.getCompanyNames}
-                wordKey='name'
-                // isEmptySearch
+                action={actions.searchForBrandByName}
+                wordKey='brand_name'
+                isEmptySearch
                 getPopupContainer={() => document.querySelector('.orders-filter-container')}
-                mapResultItemToOption={({ company_id, name } = {}) => ({
-                  value: company_id,
-                  label: name
+                mapResultItemToOption={({ id, view_name } = {}) => ({
+                  value: id,
+                  label: view_name
                 })}
               />
             )}

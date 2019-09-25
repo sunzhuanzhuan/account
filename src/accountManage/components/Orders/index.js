@@ -7,27 +7,27 @@ import { Statistic, Row, Col, Empty, Table, Alert } from "antd";
 import OrderFilterForm from "@/accountManage/components/common/OrdersFilterForm";
 import ScrollTable from '@/components/Scolltable'
 
-const setWidth = () => {
-  let w = document.getElementById('account-manage-container').clientWidth
-  document.getElementById('navLink-orders').style.width = w + "px"
+// 需求详情
+const requirementPath = (id, hash) =>  {
+  const babysitterHost = window.bentleyConfig.babysitter_host.value || 'http://toufang.weiboyi.com';
+  return `${babysitterHost}/pack/order/infoformanager/order_id/${id}#${hash}`
 }
-
 const columns = [
   {
     title: '需求名称',
-    dataIndex: 'execution_evidence_code',
+    dataIndex: 'requirement_name',
     render: (text, record) => {
       return text
     }
   },
   {
     title: '需求/订单ID',
-    dataIndex: 'execution_evidence_code',
+    dataIndex: 'requirement_id',
     render: (data, record) => {
       return <div>
-        需求：11111
+        需求：{data}
         <br />
-        订单：<a target="_blank" href={data}>{data}</a>
+        订单：<a target="_blank" href={data}>{record.order_id}</a>
       </div>
     }
   },
@@ -36,37 +36,37 @@ const columns = [
     dataIndex: 'execution_evidence_code',
     render: (data, record) => {
       return <div>
-        <a target="_blank" href={record.po_path}>查看需求描述</a>
+        <a target="_blank" href={requirementPath(record.requirement_id,'reservationDocument')}>查看需求描述</a>
         <br />
-        <a target="_blank" href={record.po_path}>查看应约回复</a>
+        <a target="_blank" href={requirementPath(record.requirement_id,'requireDescription')}>查看应约回复</a>
       </div>
     }
   },
   {
     title: '订单状态',
-    dataIndex: 'execution_evidence_code',
-    render: (data, record) => {
+    dataIndex: 'reservation_status_name',
+    render: (text, record) => {
       return <div>
-        预约状态：
+        预约状态：{text}
         <br />
-        客户确认状态：
+        客户确认状态：{record.customer_confirmation_status_name}
         <br />
-        执行状态：
+        执行状态：{record.execution_status_name}
       </div>
     }
   },
   {
     title: '执行价格名称',
-    dataIndex: 'execution_evidence_code',
-    render: (data, record) => {
+    dataIndex: 'accept_reservation_chosen_price',
+    render: (name, record) => {
       return <div>
-        展示该订单客户确认的价格名称
+        {name}
       </div>
     }
   },
   {
     title: '账号报价（元）',
-    dataIndex: 'execution_evidence_code',
+    dataIndex: 'quoted_price',
     render: (num, record) => {
       return <div>
         {num}
@@ -75,7 +75,7 @@ const columns = [
   },
   {
     title: '订单成本价（元）',
-    dataIndex: 'execution_evidence_code',
+    dataIndex: 'price',
     render: (num, record) => {
       return <div>
         {num}
@@ -84,40 +84,40 @@ const columns = [
   },
   {
     title: '销售/执行人/BP',
-    dataIndex: 'execution_evidence_code',
-    render: (data, record) => {
+    dataIndex: 'owner_admin_name',
+    render: (name, record) => {
       return <div>
-        销售：
+        销售：{name}
         <br />
-        执行人：
+        执行人：{record.executor_admin_name}
         <br />
-        BP：
+        BP：{record.bp_name || "-"}
       </div>
     }
   },
   {
     title: '时间',
-    dataIndex: 'execution_evidence_code',
-    render: (data, record) => {
+    dataIndex: 'created_time',
+    render: (date, record) => {
       return <div>
-        创建时间：
+        创建时间：{date}
         <br />
-        应约或者拒约的时间：
+        应约或者拒约的时间：{'-'}
         <br />
-        回填执行链接时间：
+        回填执行链接时间：{record.execution_completed_time}
       </div>
     }
   },
   {
     title: '公司简称/项目/品牌',
-    dataIndex: 'execution_evidence_code',
-    render: (data, record) => {
+    dataIndex: 'company_name',
+    render: (name, record) => {
       return <div>
-        公司简称：
+        公司简称：{name}
         <br />
-        项目名称：
+        项目名称：{record.project_name}
         <br />
-        品牌名称：
+        品牌名称：{record.brand_name}
       </div>
     }
   }
@@ -129,7 +129,9 @@ export default class Orders extends Component {
     this.state = {
       search: {
         page: 1,
-        pageSize: 50
+        pageSize: 50,
+        account_id: props.data.account.id,
+        reservation_status: ['2']
       }
     }
   }
@@ -138,15 +140,15 @@ export default class Orders extends Component {
     const { actions } = this.props
     let search = { ...this.state.search, ...params }
     this.setState({ listLoading: true, search })
-    /*actions.getSummaryListByOrder(search).finally(() => {
+    actions.getOrdersByAccount(search).finally(() => {
       this.setState({ listLoading: false })
-    })*/
+    })
   }
 
   componentDidMount() {
+    const { actions } = this.props
+    actions.getOrdersFilterItem()
     this.getList()
-    setWidth()
-    window.addEventListener('resize', setWidth)
   }
 
   render() {
@@ -166,7 +168,7 @@ export default class Orders extends Component {
     }
     return <div className='module-item-container'>
       <ModuleHeader title={configureModule.title} />
-      <section id="orders-content-wrap" className='content-wrap'>
+      <section className='content-wrap'>
         <div className='orders-filter-container'>
           <OrderFilterForm
             loading={this.state.listLoading}
@@ -176,14 +178,14 @@ export default class Orders extends Component {
             getList={this.getList}
           />
         </div>
-        <Alert message={'订单数量：' + total} />
+        <Alert message={'订单数量：' + total} style={{marginBottom: 12 }}/>
         <div>
           <ScrollTable scrollClassName='.ant-table-body' widthScroll={1800}>
             <Table
               // loading={this.state.listLoading}
               dataSource={list.map(key => source[key])}
               pagination={pagination}
-              scroll={{ x: 1800 }}
+              scroll={list.length ? { x: 1800 } : {}}
               columns={columns}
             />
           </ScrollTable>

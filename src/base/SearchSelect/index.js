@@ -83,7 +83,7 @@ export default class SearchSelect extends Component {
 		this.search = debounce(this.search, 800);
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		this.search('')
 	}
 
@@ -100,14 +100,15 @@ export default class SearchSelect extends Component {
 	render() {
 		const {
 			placeholder = '请输入并从下拉框中选择', empty = '输入查询信息',
-			mapResultItemToOption
+			mapResultItemToOption,
+      labelInValue
 		} = this.props;
 		const { searchIng, data, value } = this.state;
 		return (
 			<Select
 				showSearch
 				allowClear
-				labelInValue
+				labelInValue={labelInValue}
 				filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
 				value={value}
 				placeholder={placeholder}

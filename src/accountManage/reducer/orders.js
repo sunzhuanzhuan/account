@@ -1,14 +1,9 @@
 import { combineReducers } from 'redux'
 import { handleActions, combineActions } from 'redux-actions';
 import {
-  getVerifiedType_success
-} from '../actions/package'
-import {
-  clearAccountInfo
+  clearAccountInfo,
+  getOrdersByAccount_success
 } from '../actions'
-import {
-  getAvailablePlatformList_success
-} from '@/actions'
 
 // 处理列表数据为map表
 function handleResponseList(primary_key) {
@@ -33,7 +28,7 @@ function initList() {
 
 // 相关订单信息
 export const orders = handleActions({
-  [combineActions(clearAccountInfo)]: handleResponseList('order_id'),
+  [combineActions(getOrdersByAccount_success)]: handleResponseList('order_id'),
   [combineActions(clearAccountInfo)]: () => {
     return initList()
   }

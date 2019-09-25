@@ -13,10 +13,11 @@ import {
   getCountryList_success,
   getOccupation_success,
   getPet_success,
-  getSkill_success
+  getSkill_success,
 } from '../actions/package'
 import {
-  getIndustryListForAccount_success
+  getIndustryListForAccount_success,
+  getOrdersFilterItem_success
 } from '../actions'
 import {
   getAvailablePlatformList_success
@@ -135,32 +136,29 @@ export const skillReduce = handleActions({
 
 // 订单信息筛选项
 const initOrderFilterOptions = {
-  executionStatus: [
-    { 'label': '执行中', 'value': '21' },
-    { 'label': '已执行', 'value': '22' },
-    { 'label': '待执行', 'value': '23' },
-    { 'label': '执行取消', 'value': '24' },
-    { 'label': '执行终止', 'value': '25' },
-    { 'label': '待质检', 'value': '26' },
-    { 'label': '质检中', 'value': '27' },
-    { 'label': '质检完成', 'value': '28' },
-    { 'label': '终止申请中', 'value': '31' },
-    { 'label': '已完成', 'value': '32' },
-    { 'label': '赔偿申请中', 'value': '33' },
-    { 'label': '赔偿通过', 'value': '34' },
-    { 'label': '已结案', 'value': '35' }
-  ],
-  brands: [],
-  companies: []
+  reservationStatus: {},
+  customerConfirmationStatus: {},
+  executionStatus: {},
 }
 export const orderFilterOptions = handleActions({
-  /*[combineActions(getExecutor_success)]: (state, action) => {
+  [combineActions(getOrdersFilterItem_success)]: (state, action) => {
+    const {
+      reservation_status,
+      customer_confirmation_status,
+      execution_status
+    } = action.payload.data
     return update(state, {
-      executors: {
-        $set: action.payload.data
-      }
+      reservationStatus: {
+        $set: reservation_status
+      },
+      customerConfirmationStatus: {
+        $set: customer_confirmation_status
+      },
+      executionStatus: {
+        $set: execution_status
+      },
     })
-  }*/
+  }
 }, initOrderFilterOptions)
 
 export default combineReducers({
