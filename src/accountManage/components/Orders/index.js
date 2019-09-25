@@ -102,7 +102,7 @@ const columns = [
       return <div>
         创建时间：{date}
         <br />
-        应约或者拒约的时间：{'-'}
+        应约或者拒约的时间：{record.accept_reservation_time || record.reject_reservation_time || '-'}
         <br />
         回填执行链接时间：{record.execution_completed_time}
       </div>

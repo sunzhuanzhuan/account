@@ -29,9 +29,7 @@ function initList() {
 // 相关订单信息
 export const orders = handleActions({
   [combineActions(getOrdersByAccount_success)]: handleResponseList('order_id'),
-  [combineActions(clearAccountInfo)]: () => {
-    return initList()
-  }
+  [combineActions(clearAccountInfo)]: initList
 }, initList())
 
 export default orders
