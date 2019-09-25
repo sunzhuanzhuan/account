@@ -8,7 +8,7 @@ import OrderFilterForm from "@/accountManage/components/common/OrdersFilterForm"
 import ScrollTable from '@/components/Scolltable'
 
 // 需求详情
-const requirementPath = (id, hash) =>  {
+const requirementPath = (id, hash = '') =>  {
   const babysitterHost = window.bentleyConfig.babysitter_host.value || 'http://toufang.weiboyi.com';
   return `${babysitterHost}/pack/order/infoformanager/order_id/${id}#${hash}`
 }
@@ -17,7 +17,7 @@ const columns = [
     title: '需求名称',
     dataIndex: 'requirement_name',
     render: (text, record) => {
-      return text
+      return text || '-'
     }
   },
   {
@@ -27,7 +27,7 @@ const columns = [
       return <div>
         需求：{data}
         <br />
-        订单：<a target="_blank" href={data}>{record.order_id}</a>
+        订单：<a target="_blank" href={requirementPath(record.order_id)}>{record.order_id}</a>
       </div>
     }
   },
@@ -36,9 +36,9 @@ const columns = [
     dataIndex: 'execution_evidence_code',
     render: (data, record) => {
       return <div>
-        <a target="_blank" href={requirementPath(record.requirement_id,'reservationDocument')}>查看需求描述</a>
+        <a target="_blank" href={requirementPath(record.order_id,'reservationDocument')}>查看需求描述</a>
         <br />
-        <a target="_blank" href={requirementPath(record.requirement_id,'requireDescription')}>查看应约回复</a>
+        <a target="_blank" href={requirementPath(record.order_id,'requireDescription')}>查看应约回复</a>
       </div>
     }
   },
@@ -60,7 +60,7 @@ const columns = [
     dataIndex: 'accept_reservation_chosen_price',
     render: (name, record) => {
       return <div>
-        {name}
+        {name || '-'}
       </div>
     }
   },
@@ -69,7 +69,7 @@ const columns = [
     dataIndex: 'quoted_price',
     render: (num, record) => {
       return <div>
-        {num}
+        {num || '-'}
       </div>
     }
   },
@@ -78,7 +78,7 @@ const columns = [
     dataIndex: 'price',
     render: (num, record) => {
       return <div>
-        {num}
+        {num || '-'}
       </div>
     }
   },
@@ -87,9 +87,9 @@ const columns = [
     dataIndex: 'owner_admin_name',
     render: (name, record) => {
       return <div>
-        销售：{name}
+        销售：{name || '-'}
         <br />
-        执行人：{record.executor_admin_name}
+        执行人：{record.executor_admin_name || '-'}
         <br />
         BP：{record.bp_name || "-"}
       </div>
@@ -104,7 +104,7 @@ const columns = [
         <br />
         应约或者拒约的时间：{record.accept_reservation_time || record.reject_reservation_time || '-'}
         <br />
-        回填执行链接时间：{record.execution_completed_time}
+        回填执行链接时间：{record.execution_completed_time || '-'}
       </div>
     }
   },
@@ -113,11 +113,11 @@ const columns = [
     dataIndex: 'company_name',
     render: (name, record) => {
       return <div>
-        公司简称：{name}
+        公司简称：{name || '-'}
         <br />
-        项目名称：{record.project_name}
+        项目名称：{record.project_name || '-'}
         <br />
-        品牌名称：{record.brand_name}
+        品牌名称：{record.brand_name || '-'}
       </div>
     }
   }
@@ -182,7 +182,7 @@ export default class Orders extends Component {
         <div>
           <ScrollTable scrollClassName='.ant-table-body' widthScroll={1800}>
             <Table
-              // loading={this.state.listLoading}
+              loading={this.state.listLoading}
               dataSource={list.map(key => source[key])}
               pagination={pagination}
               scroll={list.length ? { x: 1800 } : {}}
