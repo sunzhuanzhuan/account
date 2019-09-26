@@ -257,3 +257,18 @@ export const {
 } = createHttpAction('calculatePrice', Interface.calculatePrice, {
   method: 'post'
 })
+
+/**
+ * 订单信息
+ */
+export const {
+  getOrdersFilterItem,
+  getOrdersFilterItem_success
+} = createHttpAction('getOrdersFilterItem', Interface.orders.getOrdersFilterItem)
+
+// 获取账号订单列表
+
+export const {
+  getOrdersByAccount,
+  getOrdersByAccount_success
+} = createHttpAction('getOrdersByAccount', Interface.orders.getOrdersByAccount)

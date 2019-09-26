@@ -4,6 +4,7 @@ import { allEditables } from '../constants/editables';
 import account from './account'
 import options from './options'
 import visibility from './visibility'
+import orders from './orders'
 
 
 import {
@@ -293,5 +294,6 @@ export default combineReducers({
   industryListForAccount,
   sensitiveWordsFilter,
   trinityPriceInfo,
-  moduleStatus
+  moduleStatus,
+  orders
 })

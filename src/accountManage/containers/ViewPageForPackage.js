@@ -1,31 +1,33 @@
+/**
+ * Created by lzb on 2019-09-17.
+ */
 import React, { Component } from "react"
 import { bindActionCreators } from "redux";
-import { Tabs, Anchor, Button, message } from 'antd'
+import { Tabs, Anchor } from 'antd'
 import { connect } from "react-redux";
 import * as action from '../actions/index'
 import * as commonAction from '@/actions/index'
 import * as packageAction from '../actions/package'
 import { parseUrlQuery } from "@/util/parseUrl";
-import { tabs, modulesMap, platformToModules } from '../constants/packageConfig'
+import { viewTabs as tabs, modulesMap, platformToModules } from '../constants/packageConfig'
 import Module from "@/accountManage/components/common/Module";
 import ImproveStatistics from "@/accountManage/components/common/ImproveStatistics";
 import LoadingBlock from "@/accountManage/base/LoadingBlock";
 import numeral from '@/util/numeralExpand'
-import { sensors } from "@/util/sensor/sensors";
 import AccountState from "@/accountManage/components/AccountState";
 
 const { TabPane } = Tabs;
 const { Link } = Anchor;
 
 
-class UpdatePageForPackage extends Component {
+class ViewPageForPackage extends Component {
   constructor(props) {
     super(props);
-    const { account_id, active, addQuote } = parseUrlQuery(props.location.search)
+    const { account_id, active } = parseUrlQuery(props.location.search)
     const { platformId } = props.match.params || {}
     // addQuote 参数判断是否是否直接进入报价编辑
     this.state = {
-      active: active || (addQuote ? '2' : '1'),
+      active: active || '1',
       accountId: account_id,
       platformId: parseInt(platformId) || 1,
       fullLoading: true,
@@ -40,61 +42,6 @@ class UpdatePageForPackage extends Component {
     const { getDetail } = this.props.actions
     getDetail({ accountId: this.state.accountId }).finally(() => {
       cb && cb()
-    })
-  }
-
-  allSubmit = () => {
-    // 一键提交
-    const {
-      updateBaseInfo,
-      updateCooperationInfo,
-      updateContentInfo,
-      updateStrategyInfo,
-      updateOtherInfo,
-      updatePersonalInfo
-    } = this.props.actions
-    let actionsMap = {
-      'main': updateBaseInfo,
-      'cooperation': updateCooperationInfo,
-      'content': updateContentInfo,
-      'strategy': updateStrategyInfo,
-      'other': updateOtherInfo,
-      'personal': updatePersonalInfo
-    }
-    let comps = [], actions = [];
-    Object.entries(window.__UpdateAccountReactComp__).forEach(([key, value]) => {
-      if (value) {
-        comps.push(value)
-        actions.push(actionsMap[key])
-      }
-    })
-    const verifies = comps.map((c) => {
-      return new Promise((resolve, reject) => {
-        c.props.form.validateFieldsAndScroll((err, fieldsValue) => {
-          if (!err) resolve(c.handleSubmitValues(fieldsValue))
-          reject(err)
-        })
-      })
-    })
-    Promise.all(verifies).then(data => {
-      this.setState({
-        submitLoading: true
-      })
-      let updates = actions.map((action, index) => action(data[index]))
-      Promise.all(updates).then((data) => {
-        this.setState({
-          submitLoading: false
-        })
-        message.success(data.message || '更新账号成功', 1.5, () => this.reload())
-
-      }).finally(() => {
-        this.setState({
-          submitLoading: false
-        })
-      })
-    }).catch(err => {
-      console.error('一键提交:', err);
-      message.error('信息填写不合法, 请重新填写')
     })
   }
 
@@ -136,7 +83,6 @@ class UpdatePageForPackage extends Component {
       active,
       fullLoading,
       isError,
-      submitLoading
     } = this.state
     const activeTab = tabs[active - 1] || {}
     const { account: { perfectionDegree, base }, priceInfo } = this.props.accountManage
@@ -165,7 +111,7 @@ class UpdatePageForPackage extends Component {
             价格政策ID: <a target='_blank' href={"/account/policy?id=" + policyInfoId}>{policyInfoId}</a></small>
           : null}
       </h2>
-      {process.env.REACT_APP_CLIENT === 'NB' && <Tabs
+      <Tabs
         activeKey={active}
         animated={{ inkBar: true, tabPane: false }}
         onChange={(active) => {
@@ -190,7 +136,7 @@ class UpdatePageForPackage extends Component {
             </div>
           } key={pane.index} />)
         }
-      </Tabs>}
+      </Tabs>
       <div className='tab-pane-common-box'>
         <div className='tab-pane-modules'>
           {
@@ -205,6 +151,7 @@ class UpdatePageForPackage extends Component {
                   auth: this.props.auth,
                   userConfig: this.props.userConfig
                 }}
+                readOnly
                 reload={this.reload}
               />
             })
@@ -218,7 +165,7 @@ class UpdatePageForPackage extends Component {
               showInkInFixed={true}
               getContainer={() => document.querySelector('#app-content-children-id')}
             >
-              <ImproveStatistics {...statisticsProps} actions={this.props.actions} />
+              <ImproveStatistics {...statisticsProps} actions={this.props.actions} readOnly/>
               {
                 modulesList.map(({ anchorId: key, title, perfectionDegreeKey }) =>
                   <Link key={key} href={"#navLink-" + key} title={
@@ -233,9 +180,6 @@ class UpdatePageForPackage extends Component {
                     </div>
                   } />)
               }
-              {process.env.REACT_APP_CLIENT === 'NB' && <div className='nav-box-footer'>
-                <Button type='primary' loading={submitLoading} block onClick={this.allSubmit}>一键提交</Button>
-              </div>}
             </Anchor>
           </div> : null
         }
@@ -259,4 +203,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(UpdatePageForPackage)
+)(ViewPageForPackage)

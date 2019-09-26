@@ -1,6 +1,5 @@
-import React, { Component, PureComponent } from "react";
+import React, { Component } from "react";
 import './style.less'
-import { moduleStatus } from "@/accountManage/reducer";
 
 const formItemLayout = {
   labelCol: {
@@ -42,7 +41,7 @@ export default class Module extends Component {
       {C && <C {...this.props} layout={{
         full: formItemLayout,
         half: halfWrapCol
-      }} moduleStatus={moduleStatus[key]} />}
+      }} moduleStatus={this.props.readOnly ? 'view': moduleStatus[key]} readOnly={this.props.readOnly}/>}
     </article>
   }
 }

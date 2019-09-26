@@ -709,7 +709,8 @@ export class FamousPriceView extends Component {
         </div>
       } />
       <FieldView width={80} title="账号报价" value={
-        <PriceTable style={{ lineHeight: '40px' }} isEdit={false} priceKeys={priceKeys} value={nowVal} />
+        <PriceTable style={{ lineHeight: '40px' }} isEdit={false} priceKeys={['costPriceRaw', 'channelPrice', 'publicationPrice']}
+          value={skuList} />
       } />
       {nextPriceValidFrom ? <div>
         <FieldView width={80} title="下期有效期" value={
@@ -719,13 +720,13 @@ export class FamousPriceView extends Component {
             <span>{nextPriceValidTo || '-'}</span>
           </div>
         } />
-        <FieldView width={80} title="账号报价" value={
-          <PriceTable style={{ lineHeight: '40px' }} isEdit={false} priceKeys={priceKeys} value={nextVal} />
+        <FieldView width={80} title="下期报价" value={
+          <PriceTable style={{ lineHeight: '40px' }} isEdit={false}  priceKeys={['nextCostPriceRaw', 'nextChannelPrice', 'nextPublicationPrice']} value={skuList} />
         } />
         <FieldView width={80} title="审核状态" value={
           approvalStatus(reviewStatus, reviewFailReason)
         } />
-      </div> : <FieldView width={80} title="下期报价" value={'添加【下个报价】将提升您的账号曝光率哦~'} />}
+      </div> : <FieldView width={80} title="下期报价" value={'无'} />}
       <Divider dashed />
       {children}
     </div>;
@@ -736,7 +737,7 @@ export class FamousPriceView extends Component {
 export class NamelessPriceView extends Component {
   render() {
     const {
-      children, priceKeys,
+      children, priceList,
       data: { priceInfo }
     } = this.props;
     const {
@@ -748,7 +749,12 @@ export class NamelessPriceView extends Component {
     });
     return <div>
       <FieldView width={80} title="账号报价" value={
-        <PriceTable style={{ lineHeight: '40px' }} isEdit={false} priceKeys={priceKeys} value={val} />
+        <PriceTable
+          style={{ lineHeight: '40px' }}
+          isEdit={false}
+          priceKeys={['costPriceRaw', 'channelPrice', 'publicationPrice']}
+          value={priceList}
+        />
       } />
       <Divider dashed />
       {children}

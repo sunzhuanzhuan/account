@@ -9,6 +9,7 @@ import './container.less'
 const AddPage = lazyLoadComponent(() => import('./containers/AddPage'))
 const UpdatePage = lazyLoadComponent(() => import('./containers/UpdatePage'))
 const UpdatePageForPackage = lazyLoadComponent(() => import('./containers/UpdatePageForPackage'))
+const ViewPageForPackage = lazyLoadComponent(() => import('./containers/ViewPageForPackage'))
 
 
 class AccountEnterIndex extends Component {
@@ -20,6 +21,7 @@ class AccountEnterIndex extends Component {
         <Route path='/account/manage/add' component={AddPage} />
         {/*<Route path='/account/manage/update' component={UpdatePage} />*/}
         <Route path='/account/manage/update/:platformId' component={UpdatePageForPackage} />
+        <Route path='/account/manage/view/:platformId' component={ViewPageForPackage} />
       </div>
     );
   }
