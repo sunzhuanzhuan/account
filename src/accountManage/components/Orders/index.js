@@ -8,7 +8,7 @@ import OrderFilterForm from "@/accountManage/components/common/OrdersFilterForm"
 import ScrollTable from '@/components/Scolltable'
 
 // 需求详情
-const requirementPath = (id, hash = '') =>  {
+const requirementPath = (id, hash = '') => {
   const babysitterHost = window.bentleyConfig.babysitter_host.value || 'http://toufang.weiboyi.com';
   return `${babysitterHost}/pack/order/infoformanager/order_id/${id}#${hash}`
 }
@@ -36,9 +36,9 @@ const columns = [
     dataIndex: 'execution_evidence_code',
     render: (data, record) => {
       return <div>
-        <a target="_blank" href={requirementPath(record.order_id,'reservationDocument')}>查看需求描述</a>
+        <a target="_blank" href={requirementPath(record.order_id, 'reservationDocument')}>查看需求描述</a>
         <br />
-        <a target="_blank" href={requirementPath(record.order_id,'requireDescription')}>查看应约回复</a>
+        <a target="_blank" href={requirementPath(record.order_id, 'requireDescription')}>查看应约回复</a>
       </div>
     }
   },
@@ -162,9 +162,15 @@ export default class Orders extends Component {
       total,
       pageSize,
       current: page,
+      showSizeChanger: true,
+      pageSizeOptions: [50, 100, 200],
+      onShowSizeChange: (current, pageSize) => {
+        this.getList({ page: 1, pageSize })
+      },
       onChange: (current) => {
         this.getList({ page: current })
       }
+
     }
     return <div className='module-item-container'>
       <ModuleHeader title={configureModule.title} />
@@ -178,7 +184,7 @@ export default class Orders extends Component {
             getList={this.getList}
           />
         </div>
-        <Alert message={'订单数量：' + total} style={{marginBottom: 12 }}/>
+        <Alert message={'订单数量：' + total} style={{ marginBottom: 12 }} />
         <div>
           <ScrollTable scrollClassName='.ant-table-body' widthScroll={1800}>
             <Table

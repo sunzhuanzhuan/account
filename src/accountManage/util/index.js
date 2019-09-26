@@ -63,7 +63,21 @@ export function date2moment(date) {
   }
   return date ? moment(date) : moment.invalid()
 }
-
+/**
+ * 处理moment 或者 [moment,...] 为 'YYYY-MM-DD HH:mm:ss'
+ */
+export function moment2dateStr(datetime) {
+  if (!datetime) return datetime;
+  if (Array.isArray(datetime)) {
+    return datetime.map(m => {
+      return moment2dateStr(m);
+    });
+  }
+  if (moment(datetime).isValid()) {
+    return moment(datetime).format('YYYY-MM-DD HH:mm:ss');
+  }
+  return datetime;
+}
 /**
  * 创建数字区间
  * @param start

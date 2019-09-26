@@ -5,6 +5,7 @@ import React, { Component } from 'react'
 import { Form, Input, Row, Col, Select, Button, DatePicker } from 'antd'
 import EmSpan from '../../base/EmSpan'
 import SearchSelect from '@/base/SearchSelect'
+import { moment2dateStr } from "@/accountManage/util";
 
 const { RangePicker } = DatePicker
 const InputGroup = Input.Group
@@ -22,8 +23,8 @@ export default class OrderFilterForm extends Component {
         // 处理params
         this.props.getList({
           ...values,
-          created_time: values.created_time,
-          execution_completed_time: values.execution_completed_time,
+          created_time: moment2dateStr(values.created_time),
+          execution_completed_time: moment2dateStr(values.execution_completed_time),
           page: 1
         })
       }
