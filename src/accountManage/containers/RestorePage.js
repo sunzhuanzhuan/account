@@ -45,7 +45,7 @@ class RestorePage extends Component {
         this.props.actions.batchUpdateAccountIsDeleted({
           accountIds: transformStrToAry(values.accounts)
         }).then(() => {
-          message('恢复成功！')
+          message.success('恢复成功！')
         }).finally(() => this.setState({
           loading: false
         }))
