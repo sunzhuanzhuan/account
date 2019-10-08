@@ -160,10 +160,10 @@ export default class Orders extends Component {
     const { options, orders: { list, source, total, page, pageSize } } = data
     const pagination = {
       total,
-      pageSize,
+      pageSize: parseInt(pageSize),
       current: page,
       showSizeChanger: true,
-      pageSizeOptions: [50, 100, 200],
+      pageSizeOptions: ["50", "100", "200"],
       onShowSizeChange: (current, pageSize) => {
         this.getList({ page: 1, pageSize })
       },
