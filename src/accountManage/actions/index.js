@@ -257,3 +257,12 @@ export const {
 } = createHttpAction('calculatePrice', Interface.calculatePrice, {
   method: 'post'
 })
+
+/**
+ * 恢复账号
+ */
+export const {
+  batchUpdateAccountIsDeleted,
+} = createHttpAction('batchUpdateAccountIsDeleted', Interface.batchUpdateAccountIsDeleted, {
+  method: 'post'
+})

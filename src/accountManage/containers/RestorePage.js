@@ -1,5 +1,9 @@
 import React, { Component } from "react"
-import { Form, Button, Input } from 'antd'
+import { Form, Button, Input, message } from 'antd'
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as commonAction from "@/actions";
+import * as action from "@/accountManage/actions";
 
 const MAX_COUNT = 100
 function transformStrToAry(str = '') {
@@ -35,10 +39,16 @@ class RestorePage extends Component {
     e.preventDefault()
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        /*this.setState({
+        this.setState({
           loading: true
-        })*/
-        console.log('values', transformStrToAry(values.accounts));
+        })
+        this.props.actions.batchUpdateAccountIsDeleted({
+          accountIds: transformStrToAry(values.accounts)
+        }).then(() => {
+          message('恢复成功！')
+        }).finally(() => this.setState({
+          loading: false
+        }))
       }
     });
   }
@@ -75,5 +85,11 @@ class RestorePage extends Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators({ ...commonAction, ...action }, dispatch)
+});
 
-export default RestorePage
+export default connect(
+  () => {},
+  mapDispatchToProps
+)(RestorePage)
