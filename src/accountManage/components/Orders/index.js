@@ -10,7 +10,8 @@ import ScrollTable from '@/components/Scolltable'
 // 需求详情
 const requirementPath = (id, hash = '') => {
   const babysitterHost = window.bentleyConfig.babysitter_host.value || 'http://toufang.weiboyi.com';
-  return `${babysitterHost}/pack/order/infoformanager/order_id/${id}#${hash}`
+  return `${babysitterHost}/pack/order/infoformanager/order_id/${id}`
+  // #${hash}
 }
 const columns = [
   {
@@ -160,10 +161,10 @@ export default class Orders extends Component {
     const { options, orders: { list, source, total, page, pageSize } } = data
     const pagination = {
       total,
-      pageSize,
+      pageSize: parseInt(pageSize),
       current: page,
       showSizeChanger: true,
-      pageSizeOptions: [50, 100, 200],
+      pageSizeOptions: ["50", "100", "200"],
       onShowSizeChange: (current, pageSize) => {
         this.getList({ page: 1, pageSize })
       },
