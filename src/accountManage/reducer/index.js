@@ -33,6 +33,7 @@ import {
 import {
   setModuleStatus,
   getDetail_success,
+  getAccountInfoById_success,
   getAreasHotCity_success
 } from '../actions/package'
 
@@ -219,7 +220,7 @@ export const moduleStatus = handleActions({
       ...action.payload.data
     }
   },
-  [combineActions(getDetail_success)]: (state, action) => {
+  [combineActions(getDetail_success, getAccountInfoById_success)]: (state, action) => {
     const { base: canEdit } = action.payload.data
     if (canEdit) {
       return {

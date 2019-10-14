@@ -43,6 +43,7 @@ export default {
   },
   account: {
     getDetail: prefix + '/account/v1/getDetail',
+    getAccountInfoById: prefix + '/account/v1/getAccountInfoById',
     updateBaseInfo: prefix + '/account/v1/updateBaseInfo',
     updateCooperationInfo: prefix + '/account/v1/updateCooperationInfo',
     updateContentInfo: prefix + '/account/v1_1/updateContentInfo',
