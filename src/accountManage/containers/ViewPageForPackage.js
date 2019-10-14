@@ -59,7 +59,7 @@ class ViewPageForPackage extends Component {
       })
     }
     const { actions } = this.props
-    actions.getDetail({ accountId: this.state.accountId }).then(({ data }) => {
+    actions.getAccountInfoById({ accountId: this.state.accountId }).then(({ data }) => {
       // 获取主账号信息
       let { userId } = data.base
       if (userId) {

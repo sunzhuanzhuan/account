@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux'
 import { handleActions, combineActions } from 'redux-actions';
 import {
-  getDetail_success
+  getDetail_success,
+  getAccountInfoById_success
 } from '../actions/package'
 import {
   updateFetchInfo,
@@ -31,7 +32,7 @@ let initEditable = () => {
 
 // id
 export const id = handleActions({
-  [combineActions(getDetail_success)]: (state, action) => {
+  [combineActions(getDetail_success, getAccountInfoById_success)]: (state, action) => {
     let { id } = action.payload.data
     return id
   },
@@ -42,7 +43,7 @@ export const id = handleActions({
 
 // 基本信息
 export const base = handleActions({
-  [combineActions(getDetail_success)]: (state, action) => {
+  [combineActions(getDetail_success, getAccountInfoById_success)]: (state, action) => {
     let { base = {} } = action.payload.data
     return {
       ...state,
@@ -63,7 +64,7 @@ export const base = handleActions({
 }, initEditable())
 // 合作相关
 export const cooperation = handleActions({
-  [combineActions(getDetail_success)]: (state, action) => {
+  [combineActions(getDetail_success, getAccountInfoById_success)]: (state, action) => {
     let { cooperation = {} } = action.payload.data
     return {
       ...state,
@@ -76,7 +77,7 @@ export const cooperation = handleActions({
 }, {})
 // 内容相关
 export const content = handleActions({
-  [combineActions(getDetail_success)]: (state, action) => {
+  [combineActions(getDetail_success, getAccountInfoById_success)]: (state, action) => {
     let { content = {} } = action.payload.data
     return {
       ...state,
@@ -89,7 +90,7 @@ export const content = handleActions({
 }, {})
 // 策略信息
 export const strategyInfo = handleActions({
-  [combineActions(getDetail_success)]: (state, action) => {
+  [combineActions(getDetail_success, getAccountInfoById_success)]: (state, action) => {
     let { strategyInfo = {} } = action.payload.data
     return {
       ...state,
@@ -111,7 +112,7 @@ export const strategyInfo = handleActions({
 }, {})
 // 其他信息
 export const otherInfo = handleActions({
-  [combineActions(getDetail_success)]: (state, action) => {
+  [combineActions(getDetail_success, getAccountInfoById_success)]: (state, action) => {
     let { otherInfo = {} } = action.payload.data
     return {
       ...state,
@@ -124,7 +125,7 @@ export const otherInfo = handleActions({
 }, {})
 // 特征数据
 export const feature = handleActions({
-  [combineActions(getDetail_success)]: (state, action) => {
+  [combineActions(getDetail_success, getAccountInfoById_success)]: (state, action) => {
     let { feature = {} } = action.payload.data
     return {
       ...state,
@@ -137,7 +138,7 @@ export const feature = handleActions({
 }, {})
 // 博主个人信息
 export const personalInfo = handleActions({
-  [combineActions(getDetail_success)]: (state, action) => {
+  [combineActions(getDetail_success, getAccountInfoById_success)]: (state, action) => {
     let { personalInfo = {} } = action.payload.data
     return {
       ...state,
@@ -158,7 +159,7 @@ const initPerfection = {
   "overall": 0
 }
 export const perfectionDegree = handleActions({
-  [combineActions(getDetail_success)]: (state, action) => {
+  [combineActions(getDetail_success, getAccountInfoById_success)]: (state, action) => {
     let { perfectionDegree = {} } = action.payload.data
     return {
       ...state,
@@ -171,7 +172,7 @@ export const perfectionDegree = handleActions({
 }, initPerfection)
 // 完整响应信息
 export const _response = handleActions({
-  [combineActions(getDetail_success)]: (state, action) => {
+  [combineActions(getDetail_success, getAccountInfoById_success)]: (state, action) => {
     return action.payload.data
   },
   [combineActions(clearAccountInfo)]: () => {
