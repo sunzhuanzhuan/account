@@ -1029,7 +1029,7 @@ export const CooperationTips = (props) => {
         validateFirst: true,
         validateTrigger: 'onBlur',
         rules: [
-          { pattern: /^[^\s]{0,1000}$/, message: '合作须知备注可输入中英文数字符号, 最多可输入1000个字' },
+          { pattern: /.{0,1000}/, message: '合作须知备注可输入中英文数字符号, 最多可输入1000个字' },
           { validator: checkForSensitiveWord, name: '合作案例备注' }
         ],
         initialValue: cooperationTips
@@ -1155,7 +1155,7 @@ export const PostPlatform = (props) => {
           validateFirst: true,
           validateTrigger: 'onBlur',
           rules: [
-            { pattern: /^[^\s]{0,200}$/, message: '分发平台备注可输入中英文数字符号, 最多可输入200个字' },
+            { pattern: /.{0,200}/, message: '分发平台备注可输入中英文数字符号, 最多可输入200个字' },
             { validator: checkForSensitiveWord, name: '分发平台备注' }
           ],
           initialValue: multiPlatformOriginalPostTips
