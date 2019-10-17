@@ -18,7 +18,7 @@ class HeadInfo extends Component {
     this.state = {};
   }
   render() {
-    const { setShowModal, isExistCar, baseInfo = {}, selectCarEdit, actions, accountDetail } = this.props
+    const { setShowModal, isExistCar, baseInfo = {}, selectCarEdit, actions, accountId, accountDetail, authVisble } = this.props
     const { base = {}, feature = {}, skuList = [] } = baseInfo
     const { gender, consumptionLevel, systemType, avatarUrl, areaName,
       snsName, snsId, followerCount, introduction, platformId = 0,
@@ -54,6 +54,9 @@ class HeadInfo extends Component {
                 status={isVerified}
               />} content={verificationReason} /> : null}
               <LookIndex url={url} qrCodeUrl={qrCodeUrl} platformName={platformName} />
+              {authVisble ?
+                <span><Divider type='vertical' />
+                  <a href={`/account/manage/view/${platformId}?account_id=${accountId}`}><Icon type='search' style={{ paddingRight: 4 }} />账号维护页</a></span> : null}
               {/* <a style={{ marginLeft: 20, color: ' #1990FF' }} onClick={() => setShowModal(true, { content: <BloggerInfo />, title: '博主信息', width: 700 })}>
                 <Icon type='user' />查看博主信息</a> */}
               <div className='cooperation-tips' onClick={() => setShowModal(true, {
