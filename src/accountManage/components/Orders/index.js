@@ -173,6 +173,8 @@ export default class Orders extends Component {
       }
 
     }
+
+    const listScrollWidth = list.length ? 1800 : 100
     return <div className='module-item-container'>
       <ModuleHeader title={configureModule.title} />
       <section className='content-wrap'>
@@ -187,12 +189,12 @@ export default class Orders extends Component {
         </div>
         <Alert message={'订单数量：' + total} style={{ marginBottom: 12 }} />
         <div>
-          <ScrollTable scrollClassName='.ant-table-body' widthScroll={1800}>
+          <ScrollTable scrollClassName='.ant-table-body' widthScroll={listScrollWidth}>
             <Table
               loading={this.state.listLoading}
               dataSource={list.map(key => source[key])}
               pagination={pagination}
-              scroll={list.length ? { x: 1800 } : {}}
+              scroll={list.length ? { x: listScrollWidth } : {x: listScrollWidth}}
               columns={columns}
             />
           </ScrollTable>

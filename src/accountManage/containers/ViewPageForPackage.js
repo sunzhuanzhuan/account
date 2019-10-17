@@ -108,7 +108,7 @@ class ViewPageForPackage extends Component {
         账号维护
         {policyInfoId ?
           <small className='policyInfo-id-display'>
-            价格政策ID: <a target='_blank' href={"/account/policy?id=" + policyInfoId}>{policyInfoId}</a></small>
+            价格政策ID: {policyInfoId}</small>
           : null}
       </h2>
       <Tabs

@@ -10,7 +10,7 @@ export default class Owner extends Component {
   render() {
     const {
       module: configureModule,
-      data: { account, adminAccount, auth, userConfig },
+      data: { account, adminAccount, auth, userConfig }
     } = this.props
     const { babysitter_host = {} } = userConfig;
     const {
@@ -34,7 +34,12 @@ export default class Owner extends Component {
       <ModuleHeader title={configureModule.title} right={rightC} />
       <section className='content-wrap'>
         <Row>
-          <Col span={6}>主账号名称：<a target={'_blank'} href={`${babysitterHost}/user/update/user_id/${userId}`}>{identityName}</a></Col>
+          <Col span={6}>
+            主账号名称：
+            {this.props.readOnly ? identityName :
+              <a target={'_blank'} href={`${babysitterHost}/user/update/user_id/${userId}`}>{identityName}</a>
+            }
+          </Col>
           <Col span={6}>user_id：{userId}</Col>
           <Col span={6}>资源媒介：{ownerAdminRealName || '--'}</Col>
           <Col span={6}>项目媒介：{volAdminRealName || '--'}</Col>
