@@ -10,7 +10,7 @@ import ScrollTable from '@/components/Scolltable'
 // 需求详情
 const requirementPath = (id, hash = '') => {
   const babysitterHost = window.bentleyConfig.babysitter_host.value || 'http://toufang.weiboyi.com';
-  return `${babysitterHost}/pack/order/infoformanager/order_id/${id}`
+  return `${babysitterHost}/pack/order/infoformanager/order_id/${id}?no_conversation`
   // #${hash}
 }
 const columns = [
