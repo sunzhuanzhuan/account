@@ -170,7 +170,7 @@ export default class CooperationView extends Component {
                   } />}
                   {asyncVisibility.postPlatform &&
                   <FieldView width={70} title="分发平台" value={
-                    <div>
+                    supportMultiPlatformOriginalPost && <div>
                       <span style={{ marginRight: '8px' }}>{supportMultiPlatformOriginalPost === 1 ? '可分发' : '不可分发'}</span>
                       {
                         supportMultiPlatformOriginalPost === 1 && postPlatforms.map(item =>
