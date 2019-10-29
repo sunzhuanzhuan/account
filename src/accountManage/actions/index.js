@@ -272,3 +272,11 @@ export const {
   getOrdersByAccount,
   getOrdersByAccount_success
 } = createHttpAction('getOrdersByAccount', Interface.orders.getOrdersByAccount)
+/*
+ * 恢复账号
+ */
+export const {
+  batchUpdateAccountIsDeleted,
+} = createHttpAction('batchUpdateAccountIsDeleted', Interface.batchUpdateAccountIsDeleted, {
+  method: 'post'
+})

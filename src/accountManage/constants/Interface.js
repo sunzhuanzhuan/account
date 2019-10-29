@@ -70,5 +70,6 @@ export default {
   orders: {
     getOrdersFilterItem: '/account/getFilterItem',
     getOrdersByAccount: '/account/getOrderList'
-  }
+  },
+  batchUpdateAccountIsDeleted: prefix + '/account/v1/batchUpdateAccountIsDeleted'
 }

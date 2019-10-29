@@ -7,6 +7,7 @@ import './container.less'
 
 // 懒加载路由级组件
 const AddPage = lazyLoadComponent(() => import('./containers/AddPage'))
+const RestorePage = lazyLoadComponent(() => import('./containers/RestorePage'))
 const UpdatePage = lazyLoadComponent(() => import('./containers/UpdatePage'))
 const UpdatePageForPackage = lazyLoadComponent(() => import('./containers/UpdatePageForPackage'))
 const ViewPageForPackage = lazyLoadComponent(() => import('./containers/ViewPageForPackage'))
@@ -22,6 +23,7 @@ class AccountEnterIndex extends Component {
         {/*<Route path='/account/manage/update' component={UpdatePage} />*/}
         <Route path='/account/manage/update/:platformId' component={UpdatePageForPackage} />
         <Route path='/account/manage/view/:platformId' component={ViewPageForPackage} />
+        <Route path='/account/manage/batch-restore' component={RestorePage} />
       </div>
     );
   }
