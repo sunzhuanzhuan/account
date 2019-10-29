@@ -32,7 +32,7 @@ export default class ImproveStatistics extends Component {
       />
       {done ? <div className='tips-text'>账号的曝光率提升了100%</div> :
         <div className='tips-text'>立即完善将提升账号的曝光率哦~</div>}
-      {done ? null : <a onClick={() => this.goComplete(moduleId)}>去完善</a>}
+      {(done || this.props.readOnly) ? null : <a onClick={() => this.goComplete(moduleId)}>去完善</a>}
     </div>
   }
 }

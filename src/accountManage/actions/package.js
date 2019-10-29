@@ -9,6 +9,13 @@ export const {
   getDetail,
   getDetail_success
 } = createHttpAction('getDetail', Interface.account.getDetail);
+/**
+ * 获取查看态的账号信息
+ */
+export const {
+  getAccountInfoById,
+  getAccountInfoById_success
+} = createHttpAction('getAccountInfoById', Interface.account.getAccountInfoById);
 
 // 设置模块状态
 export const setModuleStatus = createAction('setModuleStatus', (data) => {

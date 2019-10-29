@@ -9,7 +9,8 @@ import {
   Price,
   Personal,
   Dashboard,
-  Trinity
+  Trinity,
+  Orders
 } from "../components/packageComponents";
 import intersection from 'lodash/intersection'
 import update from 'immutability-helper'
@@ -80,10 +81,22 @@ export const modulesMap = {
     anchorId: "trinity",
     title: "三方平台报价",
     component: Trinity
+  },
+  'orders': {
+    anchorId: "orders",
+    title: "预约订单信息",
+    component: Orders
   }
 }
 
 // 处理模块差异性并注入配置数据
+/**
+ * 新增模块
+ * 1. 新增modulesMap中的组件
+ * 2. 在tab中添加
+ * 3. 在客户端差异中配置
+ * 4. 在平台差异中配置
+ */
 export function platformToModules(platformId, filterSource) {
   filterSource = filterSource || Object.keys(modulesMap)
   let platformData = platformToType[platformId] || platformToType["-1"]
@@ -98,6 +111,7 @@ export function platformToModules(platformId, filterSource) {
   _modules = _modules.map(key => modulesMap[key])
   return update(platformData, { visibility: { modules: { $set: _modules } } })
 }
+// 维护页面可编辑
 export const tabs = [
   {
     index: '1',
@@ -134,6 +148,48 @@ export const tabs = [
     perfectionDegreeKey: 'personal'
   }
 ]
+// 维护页面查看
+export const viewTabs = [
+  {
+    index: '1',
+    title: '账号信息',
+    warp: [
+      "owner",
+      "main",
+      "cooperation",
+      "content",
+      "strategy",
+      "other"
+    ]
+  }, {
+    index: '2',
+    title: '报价信息',
+    warp: [
+      "price",
+      "trinity"
+    ],
+    perfectionDegreeKey: 'sku'
+  }, {
+    index: '3',
+    title: '数据统计',
+    warp: [
+      "dashboard"
+    ]
+  }, {
+    index: '4',
+    title: '博主信息',
+    warp: [
+      "personal"
+    ],
+    perfectionDegreeKey: 'personal'
+  }, {
+    index: '5',
+    title: '订单信息',
+    warp: [
+      "orders"
+    ],
+  }
+]
 
 // 客户端差异性
 export const diffByClient = {
@@ -149,7 +205,8 @@ export const diffByClient = {
       "price",
       "dashboard",
       "personal",
-      "trinity"
+      "trinity",
+      "orders"
     ]
   },
   "NC": {
@@ -175,6 +232,7 @@ export const diffByTypes = {
         url: true
       },
       modules: [
+        "orders",
         "owner",
         "fetch",
         "main",
@@ -212,6 +270,7 @@ export const diffByTypes = {
         isSupportLive: true
       },
       modules: [
+        "orders",
         "owner",
         "fetch",
         "main",
@@ -247,6 +306,7 @@ export const diffByTypes = {
         url: true
       },
       modules: [
+        "orders",
         "owner",
         "fetch",
         "main",
@@ -285,6 +345,7 @@ export const diffByTypes = {
         trueFansRate: true
       },
       modules: [
+        "orders",
         "owner",
         "fetch",
         "main",
@@ -327,6 +388,7 @@ export const diffByTypes = {
         isLowQuality: true
       },
       modules: [
+        "orders",
         "owner",
         "fetch",
         "main",
@@ -369,6 +431,7 @@ export const diffByTypes = {
         isFansNumberImg: true
       },
       modules: [
+        "orders",
         "owner",
         "main",
         "cooperation",
@@ -403,6 +466,7 @@ export const diffByTypes = {
         url: true
       },
       modules: [
+        "orders",
         "owner",
         "main",
         "cooperation",
@@ -429,6 +493,7 @@ export const diffByTypes = {
         url: true
       },
       modules: [
+        "orders",
         "owner",
         "fetch",
         "main",
@@ -476,6 +541,7 @@ export const diffByTypes = {
         url: true
       },
       modules: [
+        "orders",
         "owner",
         "fetch",
         "main",
@@ -511,6 +577,7 @@ export const diffByTypes = {
         url: true
       },
       modules: [
+        "orders",
         "owner",
         "fetch",
         "main",
@@ -546,6 +613,7 @@ export const diffByTypes = {
         url: true
       },
       modules: [
+        "orders",
         "owner",
         "fetch",
         "main",
@@ -581,6 +649,7 @@ export const diffByTypes = {
         url: true
       },
       modules: [
+        "orders",
         "owner",
         "fetch",
         "main",
@@ -616,6 +685,7 @@ export const diffByTypes = {
         url: true
       },
       modules: [
+        "orders",
         "owner",
         "fetch",
         "main",
@@ -651,6 +721,7 @@ export const diffByTypes = {
         url: true
       },
       modules: [
+        "orders",
         "owner",
         "fetch",
         "main",

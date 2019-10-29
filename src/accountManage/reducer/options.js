@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux'
 import { handleActions, combineActions } from 'redux-actions';
+import update from 'immutability-helper'
+
 import {
   getVerifiedType_success,
   // getCooperateNoticeFieldConfig_success,
@@ -11,10 +13,11 @@ import {
   getCountryList_success,
   getOccupation_success,
   getPet_success,
-  getSkill_success
+  getSkill_success,
 } from '../actions/package'
 import {
-  getIndustryListForAccount_success
+  getIndustryListForAccount_success,
+  getOrdersFilterItem_success
 } from '../actions'
 import {
   getAvailablePlatformList_success
@@ -131,6 +134,33 @@ export const skillReduce = handleActions({
   }
 }, [])
 
+// 订单信息筛选项
+const initOrderFilterOptions = {
+  reservationStatus: {},
+  customerConfirmationStatus: {},
+  executionStatus: {},
+}
+export const orderFilterOptions = handleActions({
+  [combineActions(getOrdersFilterItem_success)]: (state, action) => {
+    const {
+      reservation_status,
+      customer_confirmation_status,
+      execution_status
+    } = action.payload.data
+    return update(state, {
+      reservationStatus: {
+        $set: reservation_status
+      },
+      customerConfirmationStatus: {
+        $set: customer_confirmation_status
+      },
+      executionStatus: {
+        $set: execution_status
+      },
+    })
+  }
+}, initOrderFilterOptions)
+
 export default combineReducers({
   verified,
   adServiceItems,
@@ -143,5 +173,6 @@ export default combineReducers({
   skills,
   skillReduce,
   occupations,
-  nationality
+  nationality,
+  orderFilterOptions
 })
