@@ -60,7 +60,10 @@ class AccountDetail extends Component {
   }
   render() {
     const { showModal, visible, searchParam: { accountId }, isLoading } = this.state
-    const { actions, accountDetail } = this.props
+    const { actions, accountDetail, authorizationsReducers } = this.props
+    //是否BP角色
+    const authVisble = authorizationsReducers.authVisibleList['is.bp']
+
     const {
       baseInfo,
       trendInfo,
@@ -100,7 +103,8 @@ class AccountDetail extends Component {
             baseInfo={baseInfo}
           />
           {/* 头部基础信息 */}
-          <HeadInfo setShowModal={this.setShowModal} baseInfo={baseInfo} selectCarEdit={this.selectCarEdit} isExistCar={isExistCar} accountDetail={accountDetail} actions={actions} />
+          <HeadInfo setShowModal={this.setShowModal} baseInfo={baseInfo} selectCarEdit={this.selectCarEdit} isExistCar={isExistCar} accountDetail={accountDetail} actions={actions} accountId={accountId}
+            authVisble={authVisble} />
 
           {/* 数据指标 */}
           <DataIndicator baseInfo={baseInfo} />
@@ -140,7 +144,8 @@ class AccountDetail extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    accountDetail: state.accountDetailReducer
+    accountDetail: state.accountDetailReducer,
+    authorizationsReducers: state.authorizationsReducers,
   }
 }
 

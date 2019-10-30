@@ -8,6 +8,16 @@ export const {
   getCompanyList_success
 } = createHttpAction('getCompanyList2', Interface.common.getCompanyList)
 
+// 模糊搜索公司
+export const {
+  searchForCompanyByName,
+} = createHttpAction('searchForCompanyByName', Interface.common.searchForCompanyByName)
+
+// 模糊搜索品牌
+export const {
+  searchForBrandByName,
+} = createHttpAction('searchForBrandByName', Interface.common.searchForBrandByName)
+
 //新上传获取token
 export const {
   getNewToken
