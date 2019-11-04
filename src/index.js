@@ -18,6 +18,7 @@ import AccountManage from './accountManage';
 import AccountDetail from './accountDetail';
 import PolicyManage from './policyManage/containers/PolicyManage';
 import ChannelDiscount from './policyManage/containers/ChannelDiscount';
+import Owner from './ownerManage';
 
 import { linkTo } from '@/util/linkTo';
 // 设置语言包
@@ -37,6 +38,7 @@ const routes = () => (
       <Route path="/account/view" component={AccountDetail} />
       <Route path="/account/policy" component={PolicyManage} />
       <Route path="/account/discount" component={ChannelDiscount} />
+      <Route path="/account/owner" component={Owner} />
       <Route render={() => linkTo('/error')} />
     </Switch>
   </App>
@@ -49,7 +51,7 @@ render(
         <Switch>
           {
             process.env.NODE_ENV === 'development' ?
-              <Route exact path="/" render={() => <Redirect to="/account/manage/package/1?account_id=1" />} /> : null
+              <Route exact path="/" render={() => <Redirect to="/account/owner/update" />} /> : null
           }
           <Route path="/account" render={routes} />
           <Route render={redirectToOtherProjects} />
