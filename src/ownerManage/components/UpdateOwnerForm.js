@@ -24,6 +24,7 @@ const formItemLayout = {
 const AddOwnerForm = (props) => {
   const { getFieldDecorator } = props.form;
   const [loading, setLoading] = useState(false);
+  const [ diffPhone, setDiffPhone ] = useState(false)
 
   const InfoPay = <QuestionTip title="支付信息" content={
     <div>
@@ -42,7 +43,7 @@ const AddOwnerForm = (props) => {
       console.log(values, '=====');
       Modal.confirm({
         title: '已添加成功！您可以继续添加，也可返回到主账号列表。',
-        icon: <Icon type="check-circle" style={{color: '#52C41A'}}/>,
+        icon: <Icon type="check-circle" style={{ color: '#52c41a' }} />,
         cancelText: '继续添加',
         okText: '分配账号',
         onOk: () => {
@@ -54,6 +55,10 @@ const AddOwnerForm = (props) => {
       }
     });
   };
+
+  const handleDiffPhone = (val) => {
+    setDiffPhone("111" !== val.target.value)
+  }
 
   return (
     <Form {...formItemLayout} onSubmit={handleSubmit} className="" colon={false}>
@@ -71,6 +76,7 @@ const AddOwnerForm = (props) => {
             <Option value="3">Option 3</Option>
           </Select>
         )}
+        <a className="form-suffix-action-70">修改历史</a>
       </Form.Item>
       <Form.Item label="渠道登录名">
         {getFieldDecorator('username', {
@@ -158,7 +164,7 @@ const AddOwnerForm = (props) => {
           }]
         })(<Input placeholder="请输入您的联系电话" />)}
       </Form.Item>
-      <Form.Item label="手机号码" key="cellPhone">
+      <Form.Item label="手机号码">
         {getFieldDecorator('cellPhone', {
           validateFirst: true,
           initialValue: "",
@@ -170,8 +176,22 @@ const AddOwnerForm = (props) => {
             }
           ]
         })(
-          <Input addonBefore="+86" placeholder="请输入手机号码" />)}
+          <Input addonBefore="+86" placeholder="请输入手机号码" onChange={handleDiffPhone}/>)}
+        <a className="form-suffix-action-70">修改历史</a>
       </Form.Item>
+      { diffPhone &&
+        <Form.Item label="修改原因">
+          {getFieldDecorator('cellPhone22', {
+            rules: [
+              {
+                required: true,
+                message: '请输入修改原因'
+              }
+            ]
+          })(
+            <Input placeholder="请输入修改原因" />)}
+        </Form.Item>
+      }
       <ContactTypesLeastOne form={props.form} />
       <Form.Item label="是否提前打款">
         {getFieldDecorator('isPrepayment', {
@@ -184,10 +204,10 @@ const AddOwnerForm = (props) => {
           </Select>
         )}
       </Form.Item>
-      <Form.Item label="其他联系人" wrapperCol={{xs: { span: 24 }, sm: { span: 20 }}}>
+      <Form.Item label="其他联系人" wrapperCol={{ xs: { span: 24 }, sm: { span: 20 } }}>
         <ContactExtend form={props.form} />
       </Form.Item>
-      <div style={{textAlign: 'center', padding: 20}}>
+      <div style={{ textAlign: 'center', padding: 20 }}>
         <Button
           type="primary"
           htmlType="submit"

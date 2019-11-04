@@ -5,6 +5,7 @@ import './container.less'
 
 // 懒加载路由级组件
 const UpdateOwnerPage = lazyLoadComponent(() => import('./containers/UpdateOwnerPage'))
+const AddOwnerPage = lazyLoadComponent(() => import('./containers/AddOwnerPage'))
 
 
 class AccountEnterIndex extends Component {
@@ -13,6 +14,7 @@ class AccountEnterIndex extends Component {
   render() {
     return (
       <div className='owner-manage'>
+        <Route path='/account/owner/add' component={AddOwnerPage} />
         <Route path='/account/owner/update' component={UpdateOwnerPage} />
       </div>
     );
