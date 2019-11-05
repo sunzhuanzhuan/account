@@ -15,7 +15,7 @@ class AccountEnterIndex extends Component {
     return (
       <div className='owner-manage'>
         <Route path='/account/owner/add' component={AddOwnerPage} />
-        <Route path='/account/owner/update' component={UpdateOwnerPage} />
+        <Route path='/account/owner/update/:id' component={UpdateOwnerPage} />
       </div>
     );
   }

@@ -21,10 +21,10 @@ const formItemLayout = {
   }
 };
 
-const AddOwnerForm = (props) => {
+const UpdateOwnerForm = (props) => {
   const { getFieldDecorator } = props.form;
   const [loading, setLoading] = useState(false);
-  const [ diffPhone, setDiffPhone ] = useState(false)
+  const [diffPhone, setDiffPhone] = useState(false)
 
   const InfoPay = <QuestionTip title="支付信息" content={
     <div>
@@ -33,6 +33,20 @@ const AddOwnerForm = (props) => {
       2.综合税费：指增值税及附加+个人所得税
       <br />
       3.提现需要提供身份证号、对应银行卡号及手机号等相关信息
+    </div>
+  } />
+
+  const InfoCycle = <QuestionTip title="实际账期时间" content={
+    <div>
+      根据主账号最近一年内订单打款时间和执行完成时间计算得出，具体算法如下：
+      <br />
+      1、筛选出主账号最近一年所有已打款的所有类型订单
+      <br />
+      2、计算所筛选订单“订单打款时间-订单执行完成时间”总和
+      <br />
+      3、计算实际账期时间，实际账期时间=上文时间总和/（24*订单数），数值以天为单位，保留整数，遇到小数向上取整
+      <br />
+      注：提前打款的订单计算出的实际账期为负数
     </div>
   } />
 
@@ -57,7 +71,7 @@ const AddOwnerForm = (props) => {
   };
 
   const handleDiffPhone = (val) => {
-    setDiffPhone("111" !== val.target.value)
+    setDiffPhone( props.cellPhone !== val.target.value)
   }
 
   return (
@@ -65,22 +79,26 @@ const AddOwnerForm = (props) => {
       <Form.Item label="资源媒介">
         {getFieldDecorator('ownerAdminId', {
           validateFirst: true,
-          initialValue: '1',
+          initialValue: props.ownerAdminId,
           rules: [
             { required: true }
           ]
         })(
           <Select placeholder="请选择">
-            <Option value="1">Option 1</Option>
-            <Option value="2">Option 2</Option>
-            <Option value="3">Option 3</Option>
+            {
+              props.mediumsOptions.map((item) => {
+                return <Option key={item.mediumId} value={item.mediumId}>{item.mediumName}</Option>
+
+              })
+            }
           </Select>
         )}
-        <a className="form-suffix-action-70">修改历史</a>
+        <a className="form-suffix-action-70" onClick={() => props.setModal('media')}>修改历史</a>
       </Form.Item>
       <Form.Item label="渠道登录名">
         {getFieldDecorator('username', {
           validateFirst: true,
+          initialValue: props.username,
           rules: [
             { required: true, message: '渠道登录名不能为空' },
             {
@@ -93,23 +111,24 @@ const AddOwnerForm = (props) => {
       <Form.Item label="主账号类型">
         {getFieldDecorator('userType', {
           validateFirst: true,
-          initialValue: '1',
+          initialValue: props.userType,
           rules: [
             { required: true }
           ]
         })(
           <Select placeholder="请选择">
-            <Option value="1">个人号</Option>
-            <Option value="2">账号集团</Option>
-            <Option value="3">中介</Option>
-            <Option value="4">未知</Option>
-            <Option value="5">工作室</Option>
+            <Option value={1}>个人号</Option>
+            <Option value={2}>账号集团</Option>
+            <Option value={3}>中介</Option>
+            <Option value={4}>未知</Option>
+            <Option value={5}>工作室</Option>
           </Select>
         )}
       </Form.Item>
       <Form.Item label="主账号名称">
         {getFieldDecorator('identityName', {
           validateFirst: true,
+          initialValue: props.identityName,
           rules: [
             { required: true, message: '主账号名称不能为空' },
             {
@@ -122,19 +141,26 @@ const AddOwnerForm = (props) => {
       <Form.Item label={<span>支付信息{InfoPay}</span>}>
         {getFieldDecorator('partnerType', {
           validateFirst: true,
+          initialValue: props.partnerType,
           rules: [
             { required: true, message: '请选择支付信息！' }
           ]
         })(<RadioGroup>
           <Radio value={1}>报价<span style={{ color: "#f00" }}>含税</span>，后期须提供增值税专用发票后方可提现</Radio>
           <br />
-          <Radio value={2}>报价<span style={{ color: "#f00" }}>不含税</span>，提现须授权微播易相关通道平台代扣代缴综合税费</Radio>
+          <Radio value={4}>报价<span style={{ color: "#f00" }}>不含税</span>，提现须授权微播易相关通道平台代扣代缴综合税费</Radio>
         </RadioGroup>)}
+      </Form.Item>
+      <Form.Item label="默认账期(天):">
+        <span>{props.defaultCycle}</span>
+      </Form.Item>
+      <Form.Item label={<span>实际账期{InfoCycle}</span>}>
+        <span>{props.actualCycle}</span>
       </Form.Item>
       <Form.Item label="真实姓名">
         {getFieldDecorator('realName', {
           validateFirst: true,
-          initialValue: "",
+          initialValue: props.realName,
           rules: [
             {
               pattern: /^([a-zA-Z0-9\u4e00-\u9fa5《》]{2,15})?$/,
@@ -146,7 +172,7 @@ const AddOwnerForm = (props) => {
       <Form.Item label="公司名称">
         {getFieldDecorator('company', {
           validateFirst: true,
-          initialValue: "",
+          initialValue: props.company,
           rules: [
             {
               pattern: /^([a-zA-Z0-9\u4e00-\u9fa5]{3,30})?$/,
@@ -157,7 +183,7 @@ const AddOwnerForm = (props) => {
       </Form.Item>
       <Form.Item label="联系电话">
         {getFieldDecorator('contactPhone', {
-          initialValue: "",
+          initialValue: props.contactPhone,
           rules: [{
             pattern: /^\d{3,4}-\d{7,8}-\d{3,6}$/,
             message: '联系电话应为区号-电话号码-分机号'
@@ -167,7 +193,7 @@ const AddOwnerForm = (props) => {
       <Form.Item label="手机号码">
         {getFieldDecorator('cellPhone', {
           validateFirst: true,
-          initialValue: "",
+          initialValue: props.cellPhone,
           rules: [
             {
               required: true,
@@ -176,36 +202,36 @@ const AddOwnerForm = (props) => {
             }
           ]
         })(
-          <Input addonBefore="+86" placeholder="请输入手机号码" onChange={handleDiffPhone}/>)}
-        <a className="form-suffix-action-70">修改历史</a>
+          <Input addonBefore="+86" placeholder="请输入手机号码" onChange={handleDiffPhone} />)}
+        <a className="form-suffix-action-70" onClick={() => props.setModal('cellPhone')}>修改历史</a>
       </Form.Item>
-      { diffPhone &&
-        <Form.Item label="修改原因">
-          {getFieldDecorator('cellPhone22', {
-            rules: [
-              {
-                required: true,
-                message: '请输入修改原因'
-              }
-            ]
-          })(
-            <Input placeholder="请输入修改原因" />)}
-        </Form.Item>
+      {diffPhone &&
+      <Form.Item label="修改原因">
+        {getFieldDecorator('updateCellPhoneReason', {
+          rules: [
+            {
+              required: true,
+              message: '请输入修改原因'
+            }
+          ]
+        })(
+          <Input placeholder="请输入修改原因" />)}
+      </Form.Item>
       }
-      <ContactTypesLeastOne form={props.form} />
+      <ContactTypesLeastOne form={props.form} qq={props.qq} weixinId={props.weixinId} email={props.email} />
       <Form.Item label="是否提前打款">
         {getFieldDecorator('isPrepayment', {
           validateFirst: true,
-          initialValue: '2'
+          initialValue: props.isPrepayment
         })(
           <Select placeholder="请选择">
-            <Option value="2">否</Option>
-            <Option value="1">是</Option>
+            <Option value={2}>否</Option>
+            <Option value={1}>是</Option>
           </Select>
         )}
       </Form.Item>
       <Form.Item label="其他联系人" wrapperCol={{ xs: { span: 24 }, sm: { span: 20 } }}>
-        <ContactExtend form={props.form} />
+        <ContactExtend form={props.form} data={props.mcnContactInfoList} />
       </Form.Item>
       <div style={{ textAlign: 'center', padding: 20 }}>
         <Button
@@ -221,4 +247,4 @@ const AddOwnerForm = (props) => {
   );
 };
 
-export default Form.create()(AddOwnerForm);
+export default Form.create()(UpdateOwnerForm);
