@@ -111,18 +111,25 @@ const UpdateOwnerPage = (props) => {
       getMediaList(currentPage)
     }
   }
+
+
   return (
     <LoadingWrapped loading={pageLoading}>
       <div className="update-owner-page-container">
         <h2>
           修改主账号
         </h2>
-        <OwnerForm setModal={setModal} {...props.ownerInfo} mediumsOptions={props.mediums}/>
+        <OwnerForm
+          setModal={setModal}
+          {...props.ownerInfo}
+          mediumsOptions={props.mediums}
+          action={props.actions.ownerUpdate}
+        />
         <Modal {...modalProps} title="媒介修改历史" visible={modal === "media"}>
           <Table
             size="small"
             columns={mediaColumns}
-            listLoading={listLoading}
+            loading={listLoading}
             dataSource={dataForMedia.list}
             pagination={mediaPagination}
             rowKey="id"
@@ -132,7 +139,7 @@ const UpdateOwnerPage = (props) => {
           <Table
             size="small"
             columns={cellPhoneColumns}
-            listLoading={listLoading}
+            loading={listLoading}
             dataSource={dataForPhone}
             pagination={false}
             rowKey="id"

@@ -14,7 +14,6 @@ const QuestionTip = props => {
         title={ title }
         content={ content }
         trigger={ type }
-        getPopupContainer={() => document.getElementById("app-content-children-id")}
       >
         <Icon className="tip-icon" type="question-circle-o" />
       </Popover>

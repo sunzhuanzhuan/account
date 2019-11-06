@@ -27,6 +27,22 @@ export const {
   method: "post"
 });
 
+// 更新主账号信息
+export const {
+  ownerUpdate
+} = createHttpAction('ownerUpdate', Interface.ownerUpdate, {
+  method: "post"
+});
+
+// 新增主账号
+export const {
+  ownerAdd
+} = createHttpAction('ownerAdd', Interface.ownerAdd, {
+  method: "post"
+});
+
+
+
 // 维护 - 修改数据
 export const updateFetchInfo = createAction('updateFetchInfo', (data) => {
   return { data };

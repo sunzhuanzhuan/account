@@ -2,7 +2,7 @@
  * Created by lzb on 2019-11-04.
  */
 import React, { useState } from 'react';
-import { Button, Form, Input, Select, Radio, Modal, Icon } from 'antd';
+import { Button, Form, Input, Select, Radio, Modal, Icon, message } from 'antd';
 import QuestionTip from "@/base/QuestionTip";
 import ContactTypesLeastOne from "@/ownerManage/components/ContactTypesLeastOne";
 import ContactExtend from "@/ownerManage/components/ContactExtend";
@@ -39,18 +39,26 @@ const AddOwnerForm = (props) => {
   const handleSubmit = e => {
     e.preventDefault();
     props.form.validateFieldsAndScroll((err, values) => {
-      console.log(values, '=====');
-      Modal.confirm({
-        title: '已添加成功！您可以继续添加，也可返回到主账号列表。',
-        icon: <Icon type="check-circle" style={{color: '#52C41A'}}/>,
-        cancelText: '继续添加',
-        okText: '分配账号',
-        onOk: () => {
-        },
-        onCancel: () => {}
-      })
       if (!err) {
-        console.log('Received values of form: ', values);
+        setLoading(true)
+        props.action(values).then(() => {
+          setLoading(false)
+          Modal.confirm({
+            title: '已添加成功！您可以继续添加，也可返回到主账号列表。',
+            icon: <Icon type="check-circle" style={{ color: '#52c41a' }} />,
+            cancelText: '继续添加',
+            okText: '返回主账号列表',
+            onOk: () => {
+              // TODO: 跳转地址
+              window.location.href = "/#/"
+            },
+            onCancel: () => {
+              props.form.resetFields()
+            }
+          })
+        }).catch(() => {
+          setLoading(false)
+        })
       }
     });
   };
@@ -60,15 +68,18 @@ const AddOwnerForm = (props) => {
       <Form.Item label="资源媒介">
         {getFieldDecorator('ownerAdminId', {
           validateFirst: true,
-          initialValue: '1',
+          initialValue: props.defaultMediums && parseInt(props.defaultMediums),
           rules: [
             { required: true }
           ]
         })(
           <Select placeholder="请选择">
-            <Option value="1">Option 1</Option>
-            <Option value="2">Option 2</Option>
-            <Option value="3">Option 3</Option>
+            {
+              props.mediumsOptions.map((item) => {
+                return <Option key={item.mediumId} value={item.mediumId}>{item.mediumName}</Option>
+
+              })
+            }
           </Select>
         )}
       </Form.Item>
@@ -184,10 +195,10 @@ const AddOwnerForm = (props) => {
           </Select>
         )}
       </Form.Item>
-      <Form.Item label="其他联系人" wrapperCol={{xs: { span: 24 }, sm: { span: 20 }}}>
+      <Form.Item label="其他联系人" wrapperCol={{ xs: { span: 24 }, sm: { span: 20 } }}>
         <ContactExtend form={props.form} />
       </Form.Item>
-      <div style={{textAlign: 'center', padding: 20}}>
+      <div style={{ textAlign: 'center', padding: 20 }}>
         <Button
           type="primary"
           htmlType="submit"

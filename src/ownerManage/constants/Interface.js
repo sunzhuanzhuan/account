@@ -4,4 +4,6 @@ export default {
   getOwnerDetail: prefix + '/detail',
   phoneUpdateHistory: prefix + '/phoneUpdateHistory',
   mcnAdminUpdateHistory: prefix + '/mcnAdminUpdateHistory',
+  ownerUpdate: prefix + '/update',
+  ownerAdd: prefix + '/add',
 }

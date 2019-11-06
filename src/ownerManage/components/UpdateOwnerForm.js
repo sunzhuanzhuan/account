@@ -2,7 +2,7 @@
  * Created by lzb on 2019-11-04.
  */
 import React, { useState } from 'react';
-import { Button, Form, Input, Select, Radio, Modal, Icon } from 'antd';
+import { Button, Form, Input, Select, Radio, Modal, Icon, message } from 'antd';
 import QuestionTip from "@/base/QuestionTip";
 import ContactTypesLeastOne from "@/ownerManage/components/ContactTypesLeastOne";
 import ContactExtend from "@/ownerManage/components/ContactExtend";
@@ -54,24 +54,21 @@ const UpdateOwnerForm = (props) => {
   const handleSubmit = e => {
     e.preventDefault();
     props.form.validateFieldsAndScroll((err, values) => {
-      console.log(values, '=====');
-      Modal.confirm({
-        title: '已添加成功！您可以继续添加，也可返回到主账号列表。',
-        icon: <Icon type="check-circle" style={{ color: '#52c41a' }} />,
-        cancelText: '继续添加',
-        okText: '分配账号',
-        onOk: () => {
-        },
-        onCancel: () => {}
-      })
       if (!err) {
-        console.log('Received values of form: ', values);
+        setLoading(true)
+        props.action(values).then(() => {
+          setLoading(false)
+          message.success('主账号信息更新成功, 正在为您跳转到列表页')
+          window.location.href = window.bentleyConfig.babysitter_host.value + "/default/user/index"
+        }).catch(() => {
+          setLoading(false)
+        })
       }
     });
   };
 
   const handleDiffPhone = (val) => {
-    setDiffPhone( props.cellPhone !== val.target.value)
+    setDiffPhone(props.cellPhone !== val.target.value)
   }
 
   return (

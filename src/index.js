@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import store, { history } from './store';
 import 'babel-polyfill';
-import { LocaleProvider } from 'antd';
+import { ConfigProvider, LocaleProvider } from 'antd';
 import './index.less';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import moment from 'moment';
@@ -33,14 +33,16 @@ const redirectToOtherProjects = ({ location: { pathname = '/error', search = '' 
 // 项目内路由
 const routes = () => (
   <App history={history}>
-    <Switch>
-      <Route path="/account/manage" component={AccountManage} />
-      <Route path="/account/view" component={AccountDetail} />
-      <Route path="/account/policy" component={PolicyManage} />
-      <Route path="/account/discount" component={ChannelDiscount} />
-      <Route path="/account/owner" component={Owner} />
-      <Route render={() => linkTo('/error')} />
-    </Switch>
+    <ConfigProvider getPopupContainer={() => document.getElementById('app-content-children-id')}>
+      <Switch>
+        <Route path="/account/manage" component={AccountManage} />
+        <Route path="/account/view" component={AccountDetail} />
+        <Route path="/account/policy" component={PolicyManage} />
+        <Route path="/account/discount" component={ChannelDiscount} />
+        <Route path="/account/owner" component={Owner} />
+        <Route render={() => linkTo('/error')} />
+      </Switch>
+    </ConfigProvider>
   </App>
 );
 
