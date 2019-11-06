@@ -4,7 +4,7 @@
  */
 import React, { useState, useRef, useEffect } from 'react';
 import OwnerForm from "../components/UpdateOwnerForm";
-import { Modal, Table } from "antd";
+import { Button, Dropdown, Modal, Table, Icon, Menu } from "antd";
 import { bindActionCreators } from "redux";
 import * as commonAction from "@/actions";
 import * as action from "../actions";
@@ -44,12 +44,14 @@ const cellPhoneColumns = [
   }
 ]
 
+
 const UpdateOwnerPage = (props) => {
   const [modal, setModal] = useState(null)
   const [dataForMedia, setMediaData] = useState({})
   const [dataForPhone, setPhoneData] = useState([])
   const [listLoading, setListLoading] = useState(false)
   const [pageLoading, setPageLoading] = useState(false)
+  const [showButton, setShowButton] = useState(false)
   const { id } = props.match.params
 
 
@@ -64,6 +66,9 @@ const UpdateOwnerPage = (props) => {
   useEffect(() => {
     setPageLoading(true)
     props.actions.getMediums({ mcnId: id })
+    props.actions.isCanUpdateUserInfo({ userId: id }).then(({ data }) => {
+      setShowButton(data)
+    })
     props.actions.getOwnerDetail({ id }).then(() => {
       setPageLoading(false)
     }).catch((err) => {
@@ -112,12 +117,48 @@ const UpdateOwnerPage = (props) => {
     }
   }
 
+  const operations = {
+    addAccount() {
+      window.location.href = `/account/manager/platform/userId/${props.ownerInfo.ownerAdminId}`
+    },
+    addPolicy() {
+      props.history.push(`/account/policy?userId=${props.ownerInfo.ownerAdminId}&name=${props.ownerInfo.identityName}`)
+    },
+    addDiscount() {
+      props.history.push(`/account/discount?userId=${props.ownerInfo.ownerAdminId}&name=${props.ownerInfo.identityName}`)
+    }
+  }
+
+  const menu = (
+    <Menu>
+      <Menu.Item key="1" onClick={operations.addAccount}>
+        增加账号
+      </Menu.Item>
+      <Menu.Item key="2" onClick={operations.addPolicy}>
+        添加政策
+      </Menu.Item>
+      <Menu.Item key="3" onClick={operations.addDiscount}>
+        添加渠道折扣
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
     <LoadingWrapped loading={pageLoading}>
       <div className="update-owner-page-container">
-        <h2>
+        <h2 className="update-owner-page-title">
           修改主账号
+          <div>
+            {!!showButton &&
+            <Button type="primary" onClick={operations.addAccount}>修改自营支付方式</Button>}
+            {!!showButton &&
+            <Button type="primary" onClick={operations.addAccount}>修改直供支付方式</Button>}
+            <Dropdown overlay={menu} trigger={['click']}>
+              <Button>
+                其他操作 <Icon type="down" />
+              </Button>
+            </Dropdown>
+          </div>
         </h2>
         <OwnerForm
           setModal={setModal}

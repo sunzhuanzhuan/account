@@ -6,4 +6,5 @@ export default {
   mcnAdminUpdateHistory: prefix + '/mcnAdminUpdateHistory',
   ownerUpdate: prefix + '/update',
   ownerAdd: prefix + '/add',
+  isCanUpdateUserInfo: '/operator-gateway/rbac/isCanUpdateUserInfo',
 }

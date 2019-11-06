@@ -41,6 +41,11 @@ export const {
   method: "post"
 });
 
+// 是否可以修改主账号信息
+export const {
+  isCanUpdateUserInfo
+} = createHttpAction('isCanUpdateUserInfo', Interface.isCanUpdateUserInfo);
+
 
 
 // 维护 - 修改数据
