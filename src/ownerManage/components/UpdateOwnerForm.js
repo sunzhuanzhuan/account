@@ -53,6 +53,9 @@ const UpdateOwnerForm = (props) => {
   // 提交
   const handleSubmit = e => {
     e.preventDefault();
+
+    // TODO: diff mcnID 
+
     props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         setLoading(true)

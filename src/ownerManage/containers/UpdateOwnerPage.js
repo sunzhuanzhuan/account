@@ -51,7 +51,7 @@ const UpdateOwnerPage = (props) => {
   const [dataForPhone, setPhoneData] = useState([])
   const [listLoading, setListLoading] = useState(false)
   const [pageLoading, setPageLoading] = useState(false)
-  const [showButton, setShowButton] = useState(false)
+  const [showButton, setShowButton] = useState({})
   const { id } = props.match.params
 
 
@@ -121,10 +121,28 @@ const UpdateOwnerPage = (props) => {
     addAccount() {
       window.location.href = `/account/manager/platform/userId/${props.ownerInfo.ownerAdminId}`
     },
+    addGross() {
+      window.location.href = `/account/manager/platform/userId/${props.ownerInfo.ownerAdminId}`
+    },
+    editGross(id) {
+      window.location.href = `/account/manager/platform/userId/${props.ownerInfo.ownerAdminId}`
+    },
+    addNet() {
+      window.location.href = `/account/manager/platform/userId/${props.ownerInfo.ownerAdminId}`
+    },
+    editNet(id) {
+      window.location.href = `/account/manager/platform/userId/${props.ownerInfo.ownerAdminId}`
+    },
     addPolicy() {
       props.history.push(`/account/policy?userId=${props.ownerInfo.ownerAdminId}&name=${props.ownerInfo.identityName}`)
     },
+    editPolicy(id) {
+      props.history.push(`/account/policy?userId=${props.ownerInfo.ownerAdminId}&name=${props.ownerInfo.identityName}`)
+    },
     addDiscount() {
+      props.history.push(`/account/discount?userId=${props.ownerInfo.ownerAdminId}&name=${props.ownerInfo.identityName}`)
+    },
+    editDiscount(id) {
       props.history.push(`/account/discount?userId=${props.ownerInfo.ownerAdminId}&name=${props.ownerInfo.identityName}`)
     }
   }
@@ -134,12 +152,22 @@ const UpdateOwnerPage = (props) => {
       <Menu.Item key="1" onClick={operations.addAccount}>
         增加账号
       </Menu.Item>
+      {showButton.policy > 0 &&
       <Menu.Item key="2" onClick={operations.addPolicy}>
+        修改政策
+      </Menu.Item>}
+      {showButton.policy < 0 &&
+      <Menu.Item key="3" onClick={() => operations.editPolicy(showButton.policy)}>
         添加政策
-      </Menu.Item>
-      <Menu.Item key="3" onClick={operations.addDiscount}>
+      </Menu.Item>}
+      {showButton.channelDiscount > 0 &&
+      <Menu.Item key="4" onClick={operations.addDiscount}>
+        修改渠道折扣
+      </Menu.Item>}
+      {showButton.channelDiscount < 0 &&
+      <Menu.Item key="5" onClick={() => operations.editDiscount(showButton.channelDiscount)}>
         添加渠道折扣
-      </Menu.Item>
+      </Menu.Item>}
     </Menu>
   );
 
@@ -149,10 +177,14 @@ const UpdateOwnerPage = (props) => {
         <h2 className="update-owner-page-title">
           修改主账号
           <div>
-            {!!showButton &&
-            <Button type="primary" onClick={operations.addAccount}>修改自营支付方式</Button>}
-            {!!showButton &&
-            <Button type="primary" onClick={operations.addAccount}>修改直供支付方式</Button>}
+            {showButton.grossPayment > 0 &&
+            <Button type="primary" onClick={() => operations.editGross(showButton.grossPayment)}>修改自营支付方式</Button>}
+            {showButton.grossPayment < 0 &&
+            <Button type="primary" onClick={operations.addGross}>添加自营支付方式</Button>}
+            {showButton.netPayment > 0 &&
+            <Button type="primary" onClick={() => operations.editNet(showButton.netPayment)}>修改直供支付方式</Button>}
+            {showButton.netPayment < 0 &&
+            <Button type="primary" onClick={operations.addNet}>添加直供支付方式</Button>}
             <Dropdown overlay={menu} trigger={['click']}>
               <Button>
                 其他操作 <Icon type="down" />
