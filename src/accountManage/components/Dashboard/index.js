@@ -70,7 +70,7 @@ export default class Dashboard extends Component {
                 </div>
               </div>
             </li> : null}
-            <li className='subclass-item-wrap' id="statistic-block-wrapped">
+            <li className='subclass-item-wrap' id="statistic-block-wrapped" style={{display: (this.statistic && this.statistic.show) ? 'block' : 'none'}}>
               <h4 className='subclass-head'>
                 <span className='text'>内容统计</span>
                 <small className='line' />
