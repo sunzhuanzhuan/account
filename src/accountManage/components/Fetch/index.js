@@ -37,7 +37,6 @@ export default class Fetch extends React.Component {
     this.isAutoFetch = urlParams['fetch_info'] && decodeURIComponent(urlParams['fetch_info'])
     let isID = /^\d+$/.test(this.isAutoFetch)
     const { platform: configurePlatform } = this.props
-    // TODO: 逻辑重写
     let keys = configurePlatform.configure.fetchDefaultKeys
     if (typeof keys === "function") {
       keys = keys(isID)

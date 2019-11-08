@@ -50,7 +50,7 @@ const AddOwnerForm = (props) => {
             okText: '返回主账号列表',
             onOk: () => {
               // TODO: 跳转地址
-              window.location.href = "/#/"
+              window.location.href = props.config.babysitterHost + "/default/user/index"
             },
             onCancel: () => {
               props.form.resetFields()

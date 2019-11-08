@@ -22,6 +22,7 @@ const AddOwnerPage = (props) => {
         添加主账号
       </h2>
       <OwnerForm
+        config={props.config}
         defaultMediums={props.userInfo.user_id}
         mediumsOptions={props.mediums}
         action={props.actions.ownerAdd}
@@ -35,7 +36,8 @@ const mapStateToProps = (state) => {
     ownerInfo: state.ownerManageReducer.ownerInfo,
     mediums: state.ownerManageReducer.mediums,
     auth: state.authorizationsReducers.authVisibleList,
-    userInfo: state.loginReducer.userLoginInfo.user_info
+    userInfo: state.loginReducer.userLoginInfo.user_info,
+    config: state.commonReducers.config
   }
 }
 
