@@ -46,6 +46,20 @@ const fields = {
 }
 
 export default class ContentStatistic extends Component {
+
+  componentDidMount() {
+    if (this.show) {
+      const blockNode = window.document.getElementById('statistic-block-wrapped')
+      const emptyNode = window.document.getElementById('statistic-empty-wrapped')
+      if (blockNode) {
+        blockNode.style.display = 'block'
+      }
+      if (emptyNode) {
+        emptyNode.style.display = 'none'
+      }
+    }
+  }
+
   render() {
     const columnsKeys = (fansColumnsKeys[platformView[this.props.pid] || ''] || []).map(key => {
       if (fields[key]) {
