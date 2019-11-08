@@ -41,6 +41,11 @@ export const {
   method: "post"
 });
 
+// 主账号换媒介检测
+export const {
+  preCheckChangeOwnerAdmin
+} = createHttpAction('preCheckChangeOwnerAdmin', Interface.preCheckChangeOwnerAdmin);
+
 // 是否可以修改主账号信息
 export const {
   isCanUpdateUserInfo

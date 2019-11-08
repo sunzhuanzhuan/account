@@ -25,6 +25,7 @@ const UpdateOwnerForm = (props) => {
   const { getFieldDecorator } = props.form;
   const [loading, setLoading] = useState(false);
   const [diffPhone, setDiffPhone] = useState(false)
+  const [diffMcn, setDiffMcn] = useState(false)
 
   const InfoPay = <QuestionTip title="支付信息" content={
     <div>
@@ -50,25 +51,61 @@ const UpdateOwnerForm = (props) => {
     </div>
   } />
 
+  // 保存信息
+  const save = (values) => {
+    setLoading(true)
+    props.actions.ownerUpdate(values).then(() => {
+      setLoading(false)
+      message.success('主账号信息更新成功, 正在为您跳转到列表页')
+      window.location.href = props.config.babysitterHost + "/default/user/index"
+    }).catch(() => {
+      setLoading(false)
+    })
+  }
+
+  const forceSaveConfirm = (message, values) => {
+    Modal.confirm({
+      title: "提示",
+      content: message.map((text,n) => <p key={n}>{`${n+1}.${text}`}</p>),
+      okText: '确认转移',
+      cancelText: '放弃转移',
+      onOk: (hide) => {
+        hide()
+        save(values)
+      }
+    })
+  }
+
   // 提交
   const handleSubmit = e => {
     e.preventDefault();
-
-    // TODO: diff mcnID 
-
     props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        setLoading(true)
-        props.action(values).then(() => {
-          setLoading(false)
-          message.success('主账号信息更新成功, 正在为您跳转到列表页')
-          window.location.href = window.bentleyConfig.babysitter_host.value + "/default/user/index"
-        }).catch(() => {
-          setLoading(false)
-        })
+        if (diffMcn) {
+          Modal.confirm({
+            title: "提示",
+            content: "此主账号所属pack分属多个媒介经理，pack将转移给此次转移主账号目标媒介经理，确认转移？",
+            onOk: () => (
+              props.actions.preCheckChangeOwnerAdmin({ mcnId: values.ownerAdminId }).then(({ data }) => {
+                let { allow, message } = data
+                if (allow) {
+                  save(values)
+                } else {
+                  forceSaveConfirm(message, values)
+                }
+              })
+            )
+          })
+        } else {
+          save(values)
+        }
       }
     });
   };
+
+  const handleDiffMcn = (id) => {
+    setDiffMcn(props.ownerAdminId !== id)
+  }
 
   const handleDiffPhone = (val) => {
     setDiffPhone(props.cellPhone !== val.target.value)
@@ -84,7 +121,7 @@ const UpdateOwnerForm = (props) => {
             { required: true }
           ]
         })(
-          <Select placeholder="请选择">
+          <Select placeholder="请选择" onChange={handleDiffMcn}>
             {
               props.mediumsOptions.map((item) => {
                 return <Option key={item.mediumId} value={item.mediumId}>{item.mediumName}</Option>
@@ -240,7 +277,7 @@ const UpdateOwnerForm = (props) => {
           loading={loading}
           style={{ width: "20%" }}
         >
-          下一步
+          提交
         </Button>
       </div>
     </Form>

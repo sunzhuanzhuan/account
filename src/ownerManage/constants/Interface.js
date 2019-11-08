@@ -7,4 +7,5 @@ export default {
   ownerUpdate: prefix + '/update',
   ownerAdd: prefix + '/add',
   isCanUpdateUserInfo: '/operator-gateway/rbac/isCanUpdateUserInfo',
+  preCheckChangeOwnerAdmin: prefix + '/preCheckChangeOwnerAdmin',
 }
