@@ -173,6 +173,7 @@ const UpdateOwnerPage = (props) => {
           mediumsOptions={props.mediums}
           actions={props.actions}
           config={props.config}
+          auth={props.auth}
         />
         <Modal {...modalProps} title="媒介修改历史" visible={modal === "media"}>
           <Table

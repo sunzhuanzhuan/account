@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 export const PlatformItem = (props) => {
   return (
     <Link className="select-platform-page-item" to={`/account/manage/add/${props.id}?user_id=${props.userId}`}>
-      <img className="select-platform-page-item-img" src={"http://trunk-img.weiboyi.com/" + props.platformIcon} />
+      <img className="select-platform-page-item-img" src={props.platformIcon} />
       <em className="select-platform-page-item-text">{props.platformName}</em>
     </Link>
   )

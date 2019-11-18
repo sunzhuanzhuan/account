@@ -236,7 +236,7 @@ const UpdateOwnerForm = (props) => {
         })(<Input placeholder="请输入您的联系电话" />)}
       </Form.Item>
       <Form.Item label="手机号码">
-        {getFieldDecorator('cellPhone', {
+        {props.auth["mcn.cellphone.edit"] ? getFieldDecorator('cellPhone', {
           validateFirst: true,
           initialValue: props.cellPhone,
           rules: [
@@ -247,7 +247,9 @@ const UpdateOwnerForm = (props) => {
             }
           ]
         })(
-          <Input addonBefore="+86" placeholder="请输入手机号码" onChange={handleDiffPhone} />)}
+          <Input addonBefore="+86" placeholder="请输入手机号码" onChange={handleDiffPhone} />):
+          <span>{props.cellPhone}</span>
+        }
         <a className="form-suffix-action-70" onClick={() => props.setModal('cellPhone')}>修改历史</a>
       </Form.Item>
       {diffPhone &&
