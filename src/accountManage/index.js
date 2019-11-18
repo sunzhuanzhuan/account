@@ -11,6 +11,7 @@ const RestorePage = lazyLoadComponent(() => import('./containers/RestorePage'))
 const UpdatePage = lazyLoadComponent(() => import('./containers/UpdatePage'))
 const UpdatePageForPackage = lazyLoadComponent(() => import('./containers/UpdatePageForPackage'))
 const ViewPageForPackage = lazyLoadComponent(() => import('./containers/ViewPageForPackage'))
+const SelectPlatform = lazyLoadComponent(() => import('./containers/SelectPlatform'))
 
 
 class AccountEnterIndex extends Component {
@@ -24,6 +25,7 @@ class AccountEnterIndex extends Component {
         <Route path='/account/manage/update/:platformId' component={UpdatePageForPackage} />
         <Route path='/account/manage/view/:platformId' component={ViewPageForPackage} />
         <Route path='/account/manage/batch-restore' component={RestorePage} />
+        <Route path='/account/manage/platform/:userId' component={SelectPlatform} />
       </div>
     );
   }

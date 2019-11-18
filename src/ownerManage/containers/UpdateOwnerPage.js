@@ -67,7 +67,7 @@ const UpdateOwnerPage = (props) => {
   useEffect(() => {
     setPageLoading(true)
     props.actions.getMediums({ mcnId: id })
-    props.actions.isCanUpdateUserInfo({ userId: id }).then(({ data }) => {
+    props.actions.isCanUpdateUserInfo({ mcnId: id }).then(({ data }) => {
       setShowButton(data)
     })
     props.actions.getOwnerDetail({ id }).then(() => {
@@ -91,7 +91,7 @@ const UpdateOwnerPage = (props) => {
     setListLoading(true)
     props.actions.mcnAdminUpdateHistory({
       page: { currentPage, pageSize },
-      form: { mcnId: 1 }
+      form: { mcnId: linkUserId }
     }).then(({ data }) => {
       setMediaData(data)
     }).finally(() => {
@@ -100,7 +100,7 @@ const UpdateOwnerPage = (props) => {
   }
   const getPhoneList = () => {
     setListLoading(true)
-    props.actions.phoneUpdateHistory({ mcnId: 1 })
+    props.actions.phoneUpdateHistory({ mcnId: linkUserId })
       .then(({ data }) => {
         setPhoneData(data)
       })
@@ -118,14 +118,14 @@ const UpdateOwnerPage = (props) => {
     }
   }
 
-  let linkUserId = props.ownerInfo.ownerAdminId
-  let linkUserName = props.ownerInfo.identityName
+  let linkUserId = props.ownerInfo.userId
+  let linkUserName = props.ownerInfo.username
   let linkHost = props.config.babysitterHost
 
   const menu = (
     <Menu>
       <Menu.Item key="1">
-        <a href={`${linkHost}/account/manager/platform/userId/${linkUserId}`}>增加账号</a>
+        <Link to={`/account/manage/platform/${linkUserId}`}>增加账号</Link>
       </Menu.Item>
       {showButton.policy > 0 &&
       <Menu.Item key="2">

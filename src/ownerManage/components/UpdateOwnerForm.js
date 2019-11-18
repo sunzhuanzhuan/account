@@ -54,7 +54,7 @@ const UpdateOwnerForm = (props) => {
   // 保存信息
   const save = (values) => {
     setLoading(true)
-    props.actions.ownerUpdate(values).then(() => {
+    props.actions.ownerUpdate(handleValues(values)).then(() => {
       setLoading(false)
       message.success('主账号信息更新成功, 正在为您跳转到列表页')
       window.location.href = props.config.babysitterHost + "/default/user/index"
@@ -76,6 +76,14 @@ const UpdateOwnerForm = (props) => {
     })
   }
 
+  function handleValues(values) {
+    values.userId = props.userId
+    values.mcnContactInfoList = values.mcnContactInfoList.filter(item => {
+      return item.id || item.realName
+    })
+    return values;
+  }
+
   // 提交
   const handleSubmit = e => {
     e.preventDefault();
@@ -86,7 +94,7 @@ const UpdateOwnerForm = (props) => {
             title: "提示",
             content: "此主账号所属pack分属多个媒介经理，pack将转移给此次转移主账号目标媒介经理，确认转移？",
             onOk: () => (
-              props.actions.preCheckChangeOwnerAdmin({ mcnId: values.ownerAdminId }).then(({ data }) => {
+              props.actions.preCheckChangeOwnerAdmin({ mcnId: props.userId }).then(({ data }) => {
                 let { allow, message } = data
                 if (allow) {
                   save(values)
@@ -188,11 +196,11 @@ const UpdateOwnerForm = (props) => {
           <Radio value={4}>报价<span style={{ color: "#f00" }}>不含税</span>，提现须授权微播易相关通道平台代扣代缴综合税费</Radio>
         </RadioGroup>)}
       </Form.Item>
-      <Form.Item label="默认账期(天):">
-        <span>{props.defaultCycle}</span>
+      <Form.Item label="默认账期(天)">
+        <span>{props.defaultCycle || '-'}</span>
       </Form.Item>
       <Form.Item label={<span>实际账期{InfoCycle}</span>}>
-        <span>{props.actualCycle}</span>
+        <span>{props.actualCycle || '-'}</span>
       </Form.Item>
       <Form.Item label="真实姓名">
         {getFieldDecorator('realName', {

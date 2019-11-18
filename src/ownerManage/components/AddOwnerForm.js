@@ -35,13 +35,20 @@ const AddOwnerForm = (props) => {
     </div>
   } />
 
+  function handleValues(values) {
+    values.mcnContactInfoList = values.mcnContactInfoList.filter(item => {
+      return item.id || item.realName
+    })
+    return values;
+  }
+
   // 提交
   const handleSubmit = e => {
     e.preventDefault();
     props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         setLoading(true)
-        props.action(values).then(() => {
+        props.action(handleValues(values)).then(() => {
           setLoading(false)
           Modal.confirm({
             title: '已添加成功！您可以继续添加，也可返回到主账号列表。',
@@ -133,7 +140,7 @@ const AddOwnerForm = (props) => {
         })(<RadioGroup>
           <Radio value={1}>报价<span style={{ color: "#f00" }}>含税</span>，后期须提供增值税专用发票后方可提现</Radio>
           <br />
-          <Radio value={2}>报价<span style={{ color: "#f00" }}>不含税</span>，提现须授权微播易相关通道平台代扣代缴综合税费</Radio>
+          <Radio value={4}>报价<span style={{ color: "#f00" }}>不含税</span>，提现须授权微播易相关通道平台代扣代缴综合税费</Radio>
         </RadioGroup>)}
       </Form.Item>
       <Form.Item label="真实姓名">

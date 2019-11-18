@@ -72,5 +72,10 @@ export const resetSiderAuth = createAction('RESET_SIDERMENU_AUTH', () => {
   return [];
 })
 
+// 获取新b端可添加平台列表
+export const {
+  getNewBPlatforms
+} = createHttpAction('getNewBPlatforms', Interface.common.getNewBPlatforms)
+
 
 export const getCompanyList = getCompanyList2

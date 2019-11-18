@@ -5,14 +5,64 @@ import React, { useState } from 'react';
 import { Form, Input } from "antd";
 
 const ContactExtend = (props) => {
-  const { getFieldDecorator, getFieldValue, validateFields, getFieldError } = props.form;
-  const triggerPhone = (key) => {
-    let errors = getFieldError(key)
-    if (errors && errors.includes("由于添加了联系人所以手机号码为必填项")) {
-      setTimeout(() => {
-        validateFields([key], { force: true })
-      },20);
-    }
+  const { getFieldDecorator, getFieldValue, getFieldError, setFields } = props.form;
+
+  const validateRequired = function(field) {
+    let parentField = field.split('.')[0]
+    setTimeout(() => {
+      let { realName, cellPhone, other } = getFieldValue(parentField) || {}
+      let realNameField = parentField + '.realName'
+      let cellPhoneField = parentField + '.cellPhone'
+      // let otherField = parentField + '.other'
+      if (realName) {
+        // 名称存在
+        if (cellPhone) {
+          // 电话存在
+          if (!getFieldError(cellPhoneField)) {
+            // 电话格式正确
+            // 清空电话错误
+            setFields({
+              [cellPhoneField]: {
+                value: cellPhone
+              }
+            })
+          }
+          // 清空其他错误
+          setFields({
+            [realNameField]: {
+              value: realName
+            }
+          })
+        } else {
+          // 电话不存在
+          // 设置电话报错
+          setFields({
+            [cellPhoneField]: {
+              value: "",
+              errors: [new Error("由于添加了联系人所以手机号码为必填项")]
+            }
+          })
+        }
+      } else {
+        // 名称不存在
+        if (cellPhone || other) {
+          // 电话或者其他信息存在
+          setFields({
+            [realNameField]: {
+              value: "",
+              errors: [new Error("由于添加了联系方式所以联系人为必填项")]
+            }
+          })
+        } else {
+          // 电话或者其他信息不存在
+          // 清空错误
+          setFields({
+            [realNameField]: {value: ""},
+            [cellPhoneField]: {value: ""}
+          })
+        }
+      }
+    }, 20);
   }
 
   const [first = {}, second = {}] = props.data || []
@@ -31,7 +81,7 @@ const ContactExtend = (props) => {
         <td>
           1
           {getFieldDecorator('mcnContactInfoList[0].id', {
-            initialValue: first.id,
+            initialValue: first.id
           })(
             <Input type="hidden" />)}
         </td>
@@ -39,9 +89,9 @@ const ContactExtend = (props) => {
           <Form.Item>
             {getFieldDecorator('mcnContactInfoList[0].realName', {
               validateFirst: true,
-              initialValue: first.realName,
+              initialValue: first.realName
             })(
-              <Input placeholder="请输入" onChange={() => triggerPhone('mcnContactInfoList[0].cellPhone')} />)}
+              <Input placeholder="请输入" onChange={() => validateRequired("mcnContactInfoList[0].realName")} />)}
           </Form.Item>
         </td>
         <td>
@@ -51,24 +101,21 @@ const ContactExtend = (props) => {
               initialValue: first.cellPhone,
               rules: [
                 {
-                  required: !!getFieldValue('mcnContactInfoList[0].realName'),
-                  message: '由于添加了联系人所以手机号码为必填项'
-                },
-                {
                   pattern: /^[1]([3-9])[0-9]{9}$/,
                   message: '请输入正确的手机号码'
                 }
               ]
             })(
-              <Input addonBefore="+86" placeholder="请输入手机号码" />)}
+              <Input addonBefore="+86" placeholder="请输入手机号码" onChange={() => validateRequired("mcnContactInfoList[0].cellPhone")} />)}
           </Form.Item>
         </td>
         <td>
           <Form.Item>
             {getFieldDecorator('mcnContactInfoList[0].other', {
               validateFirst: true,
-              initialValue: first.other,
-            })(<Input placeholder="请输入" />)}
+              initialValue: first.other
+            })(
+              <Input placeholder="请输入" onChange={() => validateRequired("mcnContactInfoList[0].other")} />)}
           </Form.Item>
         </td>
       </tr>
@@ -76,7 +123,7 @@ const ContactExtend = (props) => {
         <td>
           2
           {getFieldDecorator('mcnContactInfoList[1].id', {
-            initialValue: second.id,
+            initialValue: second.id
           })(
             <Input type="hidden" />)}
         </td>
@@ -84,9 +131,9 @@ const ContactExtend = (props) => {
           <Form.Item>
             {getFieldDecorator('mcnContactInfoList[1].realName', {
               validateFirst: true,
-              initialValue: second.realName,
+              initialValue: second.realName
             })(
-              <Input placeholder="请输入" onChange={() => triggerPhone('mcnContactInfoList[1].cellPhone')} />)}
+              <Input placeholder="请输入" onChange={() => validateRequired("mcnContactInfoList[1].realName")}  />)}
           </Form.Item>
         </td>
         <td>
@@ -96,24 +143,20 @@ const ContactExtend = (props) => {
               initialValue: second.cellPhone,
               rules: [
                 {
-                  required: !!getFieldValue('mcnContactInfoList[1].realName'),
-                  message: '由于添加了联系人所以手机号码为必填项'
-                },
-                {
                   pattern: /^[1]([3-9])[0-9]{9}$/,
                   message: '请输入正确的手机号码'
                 }
               ]
             })(
-              <Input addonBefore="+86" placeholder="请输入手机号码" />)}
+              <Input addonBefore="+86" placeholder="请输入手机号码" onChange={() => validateRequired("mcnContactInfoList[1].cellPhone")}  />)}
           </Form.Item>
         </td>
         <td>
           <Form.Item>
             {getFieldDecorator('mcnContactInfoList[1].other', {
               validateFirst: true,
-              initialValue: second.other,
-            })(<Input placeholder="请输入" />)}
+              initialValue: second.other
+            })(<Input placeholder="请输入" onChange={() => validateRequired("mcnContactInfoList[1].other")} />)}
           </Form.Item>
         </td>
       </tr>
