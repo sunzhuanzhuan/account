@@ -212,7 +212,7 @@ const AddOwnerForm = (props) => {
           loading={loading}
           style={{ width: "20%" }}
         >
-          下一步
+          提交
         </Button>
       </div>
     </Form>
