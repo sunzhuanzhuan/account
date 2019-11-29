@@ -63,10 +63,10 @@ const UpdateOwnerForm = (props) => {
     })
   }
 
-  const forceSaveConfirm = (message, values) => {
+  const forceSaveConfirm = (result, values) => {
     Modal.confirm({
       title: "提示",
-      content: message.map((text,n) => <p key={n}>{`${n+1}.${text}`}</p>),
+      content: result.map((text,n) => <p key={n}>{`${n+1}.${text}`}</p>),
       okText: '确认转移',
       cancelText: '放弃转移',
       onOk: (hide) => {
@@ -95,11 +95,11 @@ const UpdateOwnerForm = (props) => {
             content: "此主账号所属pack分属多个媒介经理，pack将转移给此次转移主账号目标媒介经理，确认转移？",
             onOk: () => (
               props.actions.preCheckChangeOwnerAdmin({ mcnId: props.userId }).then(({ data }) => {
-                let { allow, message } = data
+                let { allow, message: result } = data
                 if (allow) {
                   save(values)
                 } else {
-                  forceSaveConfirm(message, values)
+                  forceSaveConfirm(result, values)
                 }
               })
             )
