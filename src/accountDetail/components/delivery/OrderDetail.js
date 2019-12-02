@@ -27,15 +27,21 @@ export default function OrderDetail() {
   const [brandList, setBrandList] = useState([])
   useEffect(() => {
     getDetail(param)
+    getBrand()
   }, [])
   useEffect(() => {
     getDetail(param)
   }, [param])
+  //详情信息
   async function getDetail(params) {
     const { data } = api.post('/orderDetail', { ...params })
     setOrderDetail(data)
   }
-
+  //下拉框数据
+  async function getBrand() {
+    const { data = [] } = api.get('/getBrandList')
+    setBrandList(data)
+  }
   const columns = [
     {
       title: '项目名称',
