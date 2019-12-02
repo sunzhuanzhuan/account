@@ -16,29 +16,10 @@ class DataIndicator extends Component {
   render() {
     const { baseInfo = {} } = this.props
     const { feature = {}, base = {}, composite = {} } = baseInfo
-    const { followerCount, platformId } = base
+
     const {
       wholeIndex, //综合指数
       wholeRankOnClassification, //类型排名
-      mediaCount,
-      followerCountRateOnClassificationPriceTag, //总粉丝数同别的对比
-      mediaInteractionProportion, //粉丝互动率
-      mediaInteractionProportion30ItemRateOnClassificationPriceTag, //账号粉丝互动率 比 同行业同价位平均粉丝互动率
-      //点赞
-      mediaLikeAvg, // 行业互动点赞
-      mediaLikeAvg30ItemRateOnClassificationPriceTag, //30条平均点赞 比同行业其他人多
-      //转发
-      mediaRepostAvg, //近30条互动转发均值
-      mediaRepostAvg30ItemRateOnClassificationPriceTag, //账号近30条平均转发比同行业同价位近30条平均转发
-      //评论
-      mediaCommentAvg, //近30评论平均值
-      mediaCommentAvg30ItemRateOnClassificationPriceTag, //账号近30条平均评论/同行业同价位近30条平均评论		 
-      //播放
-      mediaPlayAvg,
-      mediaPlayAvg30ItemRateOnClassificationPriceTag, //账号近30条平均播放/同行业同价位近30条平均播放	Float	 
-      followerCountGrowthRate28d, //28天粉丝增长率	
-      hotMediaCount, // 爆款视频数
-      mediaWeeklyNum, // 28天发布次数
     } = feature
     const { data, legend = ['', ''] } = composite
     return (
@@ -69,71 +50,105 @@ class DataIndicator extends Component {
             </div>
           </div>
           <div className='left-indicator'>
-            <div className='fan-release'>
-              <div className='back-padding flex1'>
-                <div className='bold-font-size-16'>粉丝数据</div>
-                <div className='fan-release-item '>
-                  <HeadBox
-                    title={'总粉丝数'}
-                    number={followerCount || 21}
-                    percent={followerCountRateOnClassificationPriceTag} typeContent='同分类同价格总粉丝数均值' />
-                  <Divider type="vertical" className='height20-colorE3' />
-                  <ThreeNumber
-                    title='28天粉丝增长率'
-                    number={followerCountGrowthRate28d ? numeral(followerCountGrowthRate28d * 100).format('0.0') : '-'}
-                    unit={'%'}
-                    typeContent='同分类同价格28天粉丝增长率均值'
-                  />
-                  <Divider type="vertical" className='height20-colorE3' />
-                  <ThreeNumber
-                    title='粉丝互动率'
-                    number={mediaInteractionProportion ? numeral(mediaInteractionProportion * 100).format('0.0') : '-'}
-                    unit={'%'}
-                    percent={mediaInteractionProportion30ItemRateOnClassificationPriceTag}
-                    typeContent='同分类同价格粉丝数互动率均值' />
-                </div>
-              </div>
-              <div className='back-padding flex1'>
-                <div className='bold-font-size-16'>视频数据</div>
-                <div className='fan-release-item'>
-                  <ThreeNumber title='总发布数' number={mediaCount} unit='个' />
-                  <Divider type="vertical" className='height20-colorE3' />
-                  <ThreeNumber title='爆款视频数' number={hotMediaCount} unit='个' tips='近90天发布的爆款视频数' />
-                  <Divider type="vertical" className='height20-colorE3' />
-                  <ThreeNumber title='近28天发布频率' number={numeral(mediaWeeklyNum).format('0.0')} unit='个/周' />
-                </div>
-              </div>
-            </div>
-            <div className='operate-four'>
-              {/* 快手抖音独有 */}
-
-              <OperateItem typeText='点赞'
-                numberAvg={mediaLikeAvg}
-                percentAvg={mediaLikeAvg30ItemRateOnClassificationPriceTag}
-              />
-              <Divider type="vertical" className='height20-colorE3' />
-              <OperateItem typeText='转发'
-                numberAvg={mediaRepostAvg}
-                percentAvg={mediaRepostAvg30ItemRateOnClassificationPriceTag}
-              />
-              <Divider type="vertical" className='height20-colorE3' />
-              <OperateItem typeText='评论'
-                numberAvg={mediaCommentAvg}
-                percentAvg={mediaCommentAvg30ItemRateOnClassificationPriceTag}
-              />
-              <Divider type="vertical" className='height20-colorE3' />
-              <OperateItem typeText='播放'
-                numberAvg={mediaPlayAvg}
-                percentAvg={mediaPlayAvg30ItemRateOnClassificationPriceTag}
-              />
-            </div>
+            <VideoInfo base={base} feature={feature} />
           </div>
-
         </div>
       </div>
     );
   }
 }
+const wechat = [
+  { name: "总发布数（原创文章数）", value: '382', unit: `个（${143}篇）` },
+  { name: "10w+阅读文章数", value: '8', unit: `个` },
+  { name: "真实阅读率", value: '48.5', unit: `%` },
+  { name: "近28天推送次数", value: '6', unit: `次` },
+  { name: "近28天发布频率", value: '2.9', unit: `个/周` },
+]
+
+const sina = [
+  { name: "粉丝数", value: '382', unit: `万` },
+  { name: "真粉率", value: '382', unit: `%` },
+  { name: "博文总数（原创 | 转发）", value: '382', unit: `个（${142} | ${240}）` },
+  { name: "图文微博数", value: '382', unit: `个` },
+  { name: "视频微博数", value: '382', unit: `个` },
+]
+const redBook = [
+  { name: "粉丝数", value: '382', unit: `万` },
+  { name: "真粉率", value: '45.2', unit: `%` },
+  { name: "笔记总数", value: '382', unit: `个` },
+  { name: "图文笔记", value: '382', unit: `个` },
+  { name: "视频笔记", value: '382', unit: `个` }
+]
+
+const VideoInfo = ({ feature = {}, base = {} }) => {
+  return <>
+    <div className='fan-release'>
+      <div className='back-padding flex1'>
+        <div className='bold-font-size-16'>粉丝数据</div>
+        <div className='fan-release-item '>
+          <HeadBox
+            title={'总粉丝数'}
+            number={base.followerCount || 21}
+            percent={feature.followerCountRateOnClassificationPriceTag} typeContent='同分类同价格总粉丝数均值' />
+          <Divider type="vertical" className='height20-colorE3' />
+          <ThreeNumber
+            title='28天粉丝增长率'
+            number={feature.followerCountGrowthRate28d ? numeral(feature.followerCountGrowthRate28d * 100).format('0.0') : '-'}
+            unit={'%'}
+            typeContent='同分类同价格28天粉丝增长率均值'
+          />
+          <Divider type="vertical" className='height20-colorE3' />
+          <ThreeNumber
+            title='粉丝互动率'
+            number={feature.mediaInteractionProportion ? numeral(feature.mediaInteractionProportion * 100).format('0.0') : '-'}
+            unit={'%'}
+            percent={feature.mediaInteractionProportion30ItemRateOnClassificationPriceTag}
+            typeContent='同分类同价格粉丝数互动率均值' />
+        </div>
+      </div>
+      <div className='back-padding flex1'>
+        <div className='bold-font-size-16'>视频数据</div>
+        <div className='fan-release-item'>
+          <ThreeNumber title='总发布数' number={feature.mediaCount} unit='个' />
+          <Divider type="vertical" className='height20-colorE3' />
+          <ThreeNumber title='爆款视频数' number={feature.hotMediaCount} unit='个' tips='近90天发布的爆款视频数' />
+          <Divider type="vertical" className='height20-colorE3' />
+          <ThreeNumber title='近28天发布频率' number={numeral(feature.mediaWeeklyNum).format('0.0')} unit='个/周' />
+        </div>
+      </div>
+    </div>
+    <div className='operate-four'>
+      {/* 快手抖音独有 */}
+      {base.platformId == 103 || base.platformId == 115 ? <>
+        <OperateItem typeText='真实观看率'
+          numberAvg={feature.mediaLikeAvg}
+          percentAvg={feature.mediaLikeAvg30ItemRateOnClassificationPriceTag}
+        />
+        <Divider type="vertical" className='height20-colorE3' />
+      </> : null}
+      <OperateItem typeText='点赞'
+        numberAvg={feature.mediaLikeAvg}
+        percentAvg={feature.mediaLikeAvg30ItemRateOnClassificationPriceTag}
+      />
+      <Divider type="vertical" className='height20-colorE3' />
+      <OperateItem typeText='转发'
+        numberAvg={feature.mediaRepostAvg}
+        percentAvg={feature.mediaRepostAvg30ItemRateOnClassificationPriceTag}
+      />
+      <Divider type="vertical" className='height20-colorE3' />
+      <OperateItem typeText='评论'
+        numberAvg={feature.mediaCommentAvg}
+        percentAvg={feature.mediaCommentAvg30ItemRateOnClassificationPriceTag}
+      />
+      <Divider type="vertical" className='height20-colorE3' />
+      <OperateItem typeText='播放'
+        numberAvg={feature.mediaPlayAvg}
+        percentAvg={feature.mediaPlayAvg30ItemRateOnClassificationPriceTag}
+      />
+    </div>
+  </>
+}
+
 const HeadBox = ({ title, number, percent, isLeft = false, noLast, typeContent }) => {
   const unConfig = noLast ? null : <UpDownPercentage percent={percent} typeContent={typeContent} />
   return <div className='head-box'>
