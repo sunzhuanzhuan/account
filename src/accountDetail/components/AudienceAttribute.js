@@ -5,17 +5,21 @@ import { CharTitle, LandscapeType, Landscape, Histogram, HistogramLine, ChinaMap
 import numeral from 'numeral'
 import ButtonTab from '../base/ButtonTab'
 import { Empty, Progress } from 'antd';
+import api from '../../api'
 class AudienceAttribute extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      audienceAttributeInfo: []
+    };
   }
-  componentDidMount = () => {
-    const { getAudienceAttribute, accountId } = this.props
-    getAudienceAttribute({ accountId: accountId })
+  componentDidMount = async () => {
+    const { accountId } = this.props
+    const { data } = await api.get(`/operator-gateway/accountDetail/v1/getAudienceAttribute?accountId=${accountId}`)
+    this.setState({ audienceAttributeInfo: data })
   }
   render() {
-    const { audienceAttributeInfo = {} } = this.props
+    const { audienceAttributeInfo = {} } = this.state
     const {
       kolVisitorAgeDrawList,//年龄
       kolVisitorProvinceDrawList = [], //地域

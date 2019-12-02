@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { HeadInfo, DataIndicator, HistoricalAD, ContentData, AudienceAttribute, BaseInfo, AccountRecommend } from "../components";
+import Delivery from '../components/delivery'
 import './AccountDetail.less'
-import { Modal, message, Spin } from 'antd';
+import { Modal, message, Spin, Tabs } from 'antd';
 import LazyLoad from 'react-lazyload';
 import { Route, withRouter } from 'react-router-dom'
 import { bindActionCreators } from "redux";
@@ -10,6 +11,7 @@ import * as action from '../actions/index'
 import * as commonAction from "@/actions";
 import { platformView } from "../../accountManage/constants/platform";
 import qs from "qs";
+const { TabPane } = Tabs;
 class AccountDetail extends Component {
   constructor(props) {
     super(props);
@@ -58,6 +60,7 @@ class AccountDetail extends Component {
     }
     message.success('操作成功')
   }
+
   render() {
     const { showModal, visible, searchParam: { accountId }, isLoading } = this.state
     const { actions, accountDetail, authorizationsReducers } = this.props
@@ -65,15 +68,11 @@ class AccountDetail extends Component {
     const authVisble = authorizationsReducers.authVisibleList['is.bp']
 
     const {
-      baseInfo,
-      trendInfo,
-      audienceAttributeInfo,
+      baseInfo, trendInfo,
       queryOrderCooperationList,
       queryIndustryInfoList,
-      isExistCar,
-      newVideoList } = accountDetail
-
-    const { getTrend, getAudienceAttribute,
+      isExistCar, newVideoList } = accountDetail
+    const { getTrend,
       getQueryOrderCooperationList, addQueryIndustryInfoList,
       getQueryIndustryInfoList, getNewVideo } = actions
     const contentDataProps = {
@@ -94,45 +93,48 @@ class AccountDetail extends Component {
       accountId,
       addQueryIndustryInfoList
     }
+    const headProps = {
+      setShowModal: this.setShowModal,
+      selectCarEdit: this.selectCarEdit,
+      isExistCar, accountDetail,
+      actions, baseInfo, accountId, authVisble,
+    }
     return (
       <div className="account-view-detail" id='Js-account-view-detail-Id'>
         <Spin spinning={isLoading}>
-          <BaseInfo selectCarEdit={this.selectCarEdit}
-            setShowModal={this.setShowModal}
-            isExistCar={isExistCar}
-            baseInfo={baseInfo}
-          />
+          <BaseInfo {...headProps} />
           {/* 头部基础信息 */}
-          <HeadInfo setShowModal={this.setShowModal} baseInfo={baseInfo} selectCarEdit={this.selectCarEdit} isExistCar={isExistCar} accountDetail={accountDetail} actions={actions} accountId={accountId}
-            authVisble={authVisble} />
-
-          {/* 数据指标 */}
-          <DataIndicator baseInfo={baseInfo} />
-          {/* 历史案例 */}
-          <LazyLoad once overflow>
-            <HistoricalAD {...historicalADProps} />
-          </LazyLoad>
-          {/*内容数据  */}
-          <LazyLoad once overflow>
-            <ContentData {...contentDataProps} />
-          </LazyLoad>
-
-          {/* 受众画像 */}
-          {platformId == 118 ? null : <LazyLoad once overflow>
-            <AudienceAttribute accountId={accountId}
-              getAudienceAttribute={getAudienceAttribute}
-              audienceAttributeInfo={audienceAttributeInfo}
-            />
-          </LazyLoad>}
-
+          <HeadInfo {...headProps} />
+          <Tabs defaultActiveKey="3" onChange={this.changeType} className='detail-tabs' size='large'>
+            <TabPane tab="平台数据" key="1">
+              {/* 数据指标 */}
+              <DataIndicator baseInfo={baseInfo} />
+              {/* 历史案例 */}
+              <LazyLoad once overflow>
+                <HistoricalAD {...historicalADProps} />
+              </LazyLoad>
+              {/*内容数据  */}
+              <LazyLoad once overflow>
+                <ContentData {...contentDataProps} />
+              </LazyLoad>
+            </TabPane>
+            <TabPane tab="用户画像" key="2">
+              {/* 受众画像 */}
+              {platformId == 118 ? null : <LazyLoad once overflow>
+                <AudienceAttribute accountId={accountId} />
+              </LazyLoad>}
+            </TabPane>
+            <TabPane tab="投放数据" key="3">
+              <Delivery />
+            </TabPane>
+          </Tabs>
           {/* 账号推荐 */}
           {/* <AccountRecommend /> */}
           <Modal
             title={showModal.title}
-            visible={visible}
+            visible={visible} footer={null}
             onOk={() => this.setShowModal(false, null)}
             onCancel={() => this.setShowModal(false, null)}
-            footer={null}
             width={showModal.width}
           >
             {showModal.content}

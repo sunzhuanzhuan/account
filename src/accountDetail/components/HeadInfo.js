@@ -80,6 +80,9 @@ class HeadInfo extends Component {
               <OneLine title='账号标签' content={
                 classification == '-' ? null : <FatLable backColor='#F3F8FD' color='#78A3CE' list={[classification]} />
               } />
+              <OneLine title='关联品牌' content={
+                classification == '-' ? null : <FatLable backColor='#F3F8FD' color='#78A3CE' list={[classification]} />
+              } />
               <OneLine title='平台认证' content={
                 <div className='content-font'>
                   {verifiedStatusName ? verifiedStatusName : '-'}

@@ -16,40 +16,26 @@ class DataIndicator extends Component {
   render() {
     const { baseInfo = {} } = this.props
     const { feature = {}, base = {}, composite = {} } = baseInfo
-    const { followerCount } = base
+    const { followerCount, platformId } = base
     const {
       wholeIndex, //综合指数
       wholeRankOnClassification, //类型排名
       mediaCount,
       followerCountRateOnClassificationPriceTag, //总粉丝数同别的对比
       mediaInteractionProportion, //粉丝互动率
-      mediaInteractionAvg, //平均互动数
       mediaInteractionProportion30ItemRateOnClassificationPriceTag, //账号粉丝互动率 比 同行业同价位平均粉丝互动率
-      mediaInteractionAvg30ItemRateOnClassificationPriceTag, //平均互动数
       //点赞
       mediaLikeAvg, // 行业互动点赞
       mediaLikeAvg30ItemRateOnClassificationPriceTag, //30条平均点赞 比同行业其他人多
-      mediaLikeAvgRateOnClassificationPriceTag, //总平均点赞 比同行业其他人多
-      mediaLikeSumRateOnClassificationPriceTag, //累计点赞比同行业其他人多
-
       //转发
       mediaRepostAvg, //近30条互动转发均值
       mediaRepostAvg30ItemRateOnClassificationPriceTag, //账号近30条平均转发比同行业同价位近30条平均转发
-      mediaRepostAvgRateOnClassificationPriceTag, // 账号平均转发比同行业同价位平均单视频转发
-      mediaRepostSumRateOnClassificationPriceTag, //账号平均转发比同行业同价位平均累计转发
       //评论
       mediaCommentAvg, //近30评论平均值
       mediaCommentAvg30ItemRateOnClassificationPriceTag, //账号近30条平均评论/同行业同价位近30条平均评论		 
-      mediaCommentAvgRateOnClassificationPriceTag, //账号平均评论/同行业同价位平均单视频评论		 
-      mediaCommentSumRateOnClassificationPriceTag, //账号平均评论/同行业同价位平均累计评论
-
       //播放
       mediaPlayAvg,
       mediaPlayAvg30ItemRateOnClassificationPriceTag, //账号近30条平均播放/同行业同价位近30条平均播放	Float	 
-      mediaPlayAvgRateOnClassificationPriceTag, //	账号平均播放/同行业同价位平均单视频播放	Float	 
-      mediaPlaySumRateOnClassificationPriceTag, //	账号平均播放/同行业同价位平均累计播放
-      //     
-      mediaCount90d = '-', //90天发布数	
       followerCountGrowthRate28d, //28天粉丝增长率	
       hotMediaCount, // 爆款视频数
       mediaWeeklyNum, // 28天发布次数
@@ -119,6 +105,8 @@ class DataIndicator extends Component {
               </div>
             </div>
             <div className='operate-four'>
+              {/* 快手抖音独有 */}
+
               <OperateItem typeText='点赞'
                 numberAvg={mediaLikeAvg}
                 percentAvg={mediaLikeAvg30ItemRateOnClassificationPriceTag}
