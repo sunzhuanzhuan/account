@@ -4,6 +4,7 @@ import { allEditables } from '../constants/editables';
 import account from './account'
 import options from './options'
 import visibility from './visibility'
+import orders from './orders'
 
 
 import {
@@ -31,6 +32,7 @@ import {
 import {
   setModuleStatus,
   getDetail_success,
+  getAccountInfoById_success,
   getAreasHotCity_success
 } from '../actions/package'
 
@@ -218,7 +220,7 @@ export const moduleStatus = handleActions({
       ...action.payload.data
     }
   },
-  [combineActions(getDetail_success)]: (state, action) => {
+  [combineActions(getDetail_success, getAccountInfoById_success)]: (state, action) => {
     const { base: canEdit } = action.payload.data
     if (canEdit) {
       return {
@@ -293,5 +295,6 @@ export default combineReducers({
   industryListForAccount,
   sensitiveWordsFilter,
   trinityPriceInfo,
-  moduleStatus
+  moduleStatus,
+  orders
 })

@@ -5,7 +5,7 @@ import React, { Component } from "react"
 import { ModuleHeader } from "@/accountManage/components/common/ModuleHeader";
 import { Button, Form, Tooltip, Icon } from "antd";
 import FieldView from "@/accountManage/base/FeildView";
-import { handleReason, weeksToNames } from "@/accountManage/util";
+import { booleanDisplay, handleReason, weeksToNames } from "@/accountManage/util";
 import { dateDisplay } from "../../util";
 
 @Form.create()
@@ -34,6 +34,12 @@ export default class StrategyView extends Component {
           bOnShelfStatus,
           bOffShelfReasonStringList
         } = {},
+        disapprovalReason,
+        isContacted,
+        isSignedOff,
+        isOnline,
+        isOpen,
+        isShielded,
         approvedStatus,
         strategy = {},
         maxOrderCount,
@@ -43,10 +49,10 @@ export default class StrategyView extends Component {
     } = data.account || {}
     const right = <div className='wrap-panel-right-content'>
       <span className='gray-text'>最近更新于: {dateDisplay(strategyModifiedAt) || '--'}</span>
-      <a onClick={() => onModuleStatusChange('edit')} style={{ fontSize: '14px' }}>
+      {this.props.readOnly ? null : <a onClick={() => onModuleStatusChange('edit')} style={{ fontSize: '14px' }}>
         <Icon type="edit" style={{ marginRight: '6px' }} />
         编辑
-      </a>
+      </a>}
       {/*<Button type='primary' onClick={() => onModuleStatusChange('edit')}>编辑</Button>*/}
     </div>;
 
@@ -59,7 +65,7 @@ export default class StrategyView extends Component {
         approvedText = '审核成功'
         break;
       case 3:
-        approvedText = '未审核'
+        approvedText = '审核失败'
         break;
       default:
         approvedText = '--'
@@ -76,18 +82,14 @@ export default class StrategyView extends Component {
           <div className='subclass-content'>
             <div className="view-fields-container">
               <div className='right-wrap'>
-                <FieldView width={70} title="审核状态" value={approvedText} />
-                <FieldView width={70} title="是否上架" value={aOnShelfStatus &&
-                <div>
-                  {aOnShelfStatus === 2 && <span>否</span>}
-                  {aOnShelfStatus === 2 && aOffShelfReasonStringList &&
-                  <Tooltip title={handleReason(aOffShelfReasonStringList)}>
-                    <a style={{ marginLeft: '20px' }}>显示原因</a>
-                  </Tooltip>
-                  }
-                  {aOnShelfStatus === 1 && <span>是</span>}
-                </div>
-                } />
+                <FieldView width={120} title="审核状态" value={approvedText} />
+                <FieldView width={120} title="是否与博主联系" value={booleanDisplay(isContacted)} />
+                <FieldView width={120} title="是否在C端已注销" value={booleanDisplay(isSignedOff)} />
+                <FieldView width={120} title="是否可售卖" value={booleanDisplay(isOnline)} />
+                <FieldView width={120} title="是否公开" value={booleanDisplay(isOpen)} />
+                <FieldView width={120} title="是否被官方屏蔽" value={booleanDisplay(isShielded)} />
+                <FieldView width={120} title="可在A端上架" value={booleanDisplay(aOnShelfStatus)} />
+                <FieldView width={120} title="可在B端上架" value={booleanDisplay(bOnShelfStatus)} />
               </div>
             </div>
           </div>
@@ -128,7 +130,7 @@ export default class StrategyView extends Component {
                         <FieldView width={40} title="备注" value={maxOrderCountNote} />
                       </div> : ''
                     } />
-                  </div> : <div className='right-wrap'>您可在此设置账号的接单上限、暂离时间</div>
+                  </div> : <div className='right-wrap'>--</div>
               }
             </div>
           </div>
