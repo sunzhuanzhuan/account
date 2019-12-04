@@ -83,32 +83,34 @@ export default function OrderDetail() {
 
   return <div>
     <div className='title-big'>订单详情</div>
-    <div>
-      <Select defaultValue="lucy" style={{ width: 120, margin: '0px 20px' }}
-        onChange={value => setParam({ ...param, page: 1, brand: value })}>
-        {brandList.map(item => <Option
-          key={item.id} value={item.id}>
-          {item.name}
-        </Option>)}
-      </Select>
+    <div className='container'>
+      <div >
+        <Select defaultValue="lucy" style={{ width: 120, margin: '0px 20px' }}
+          onChange={value => setParam({ ...param, page: 1, brand: value })}>
+          {brandList.map(item => <Option
+            key={item.id} value={item.id}>
+            {item.name}
+          </Option>)}
+        </Select>
 
-      <Radio.Group
-        value={param.type}
-        onChange={e => setParam({ ...param, page: 1, type: e.target.value })}>
-        <Radio value={0}>全部订单</Radio>
-        <Radio value={1}>预约</Radio>
-        <Radio value={2}>派单</Radio>
-      </Radio.Group>
-    </div>
-    <div>
+        <Radio.Group
+          value={param.type}
+          onChange={e => setParam({ ...param, page: 1, type: e.target.value })}>
+          <Radio value={0}>全部订单</Radio>
+          <Radio value={1}>预约</Radio>
+          <Radio value={2}>派单</Radio>
+        </Radio.Group>
+      </div>
+      <div>
 
-    </div>
-    <div>
-      <Table dataSource={dataSource} columns={columns}
-        pagination={{
-          pageSize: "2",
-          onChange: num => setParam({ ...param, page: num })
-        }} />
+      </div>
+      <div>
+        <Table dataSource={dataSource} columns={columns}
+          pagination={{
+            pageSize: 2,
+            onChange: num => setParam({ ...param, page: num })
+          }} />
+      </div>
     </div>
   </div>
 }

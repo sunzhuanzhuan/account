@@ -9,8 +9,17 @@
     font-size: @font-size;
 }
 
+.container {
+    max-width: 100%;
+    margin: 20px 10px 0px;
+    background: #fff;
+    padding: 20px;
+}
+
 .title-big {
-    @color333-font20();
+    color: #333;
+    font-size: 20px;
+    margin: 29px 0px 8px 20px;
 }
 
 @nowrap-hidden-ellipsis: {
@@ -73,10 +82,7 @@
     flex-direction: column;
 }
 
-@color333-font20: {
-    .font-color(#333, 20px);
-    margin: 29px 0px 8px 20px;
-}
+
 
 @hover-shadow: {
     cursor: pointer;

@@ -13,7 +13,9 @@ function OrderAssess() {
   return (
     <div>
       <div className='title-big'>订单评价</div>
-      <Statistics />
+      <div className='container'>
+        <Statistics />
+      </div>
     </div>
   )
 }

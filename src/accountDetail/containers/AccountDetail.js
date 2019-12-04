@@ -125,7 +125,7 @@ class AccountDetail extends Component {
               </LazyLoad>}
             </TabPane>
             <TabPane tab="投放数据" key="3">
-              <Delivery />
+              <Delivery setShowModal={this.setShowModal} />
             </TabPane>
           </Tabs>
           {/* 账号推荐 */}
@@ -136,6 +136,7 @@ class AccountDetail extends Component {
             onOk={() => this.setShowModal(false, null)}
             onCancel={() => this.setShowModal(false, null)}
             width={showModal.width}
+            maskClosable={false}
           >
             {showModal.content}
           </Modal>
