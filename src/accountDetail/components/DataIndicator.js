@@ -57,28 +57,7 @@ class DataIndicator extends Component {
     );
   }
 }
-const wechat = [
-  { name: "总发布数（原创文章数）", value: '382', unit: `个（${143}篇）` },
-  { name: "10w+阅读文章数", value: '8', unit: `个` },
-  { name: "真实阅读率", value: '48.5', unit: `%` },
-  { name: "近28天推送次数", value: '6', unit: `次` },
-  { name: "近28天发布频率", value: '2.9', unit: `个/周` },
-]
 
-const sina = [
-  { name: "粉丝数", value: '382', unit: `万` },
-  { name: "真粉率", value: '382', unit: `%` },
-  { name: "博文总数（原创 | 转发）", value: '382', unit: `个（${142} | ${240}）` },
-  { name: "图文微博数", value: '382', unit: `个` },
-  { name: "视频微博数", value: '382', unit: `个` },
-]
-const redBook = [
-  { name: "粉丝数", value: '382', unit: `万` },
-  { name: "真粉率", value: '45.2', unit: `%` },
-  { name: "笔记总数", value: '382', unit: `个` },
-  { name: "图文笔记", value: '382', unit: `个` },
-  { name: "视频笔记", value: '382', unit: `个` }
-]
 
 const VideoInfo = ({ feature = {}, base = {} }) => {
   return <>

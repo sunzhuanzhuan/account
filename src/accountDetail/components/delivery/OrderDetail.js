@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import api from '@/api'
 import { Select, Radio, Table } from 'antd'
+import './OrderDetail.less'
 const { Option } = Select;
 const dataSource = [
   {
