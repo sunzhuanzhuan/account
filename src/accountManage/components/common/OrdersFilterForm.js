@@ -141,7 +141,7 @@ export default class OrderFilterForm extends Component {
             )}
           </Form.Item>
         </Col>
-        <Col span={6}>
+        <Col span={5}>
           <Form.Item label="所属品牌">
             {getFieldDecorator('brand_id', {})(
               <SearchSelect
@@ -158,8 +158,22 @@ export default class OrderFilterForm extends Component {
             )}
           </Form.Item>
         </Col>
+        <Col span={5}>
+          <Form.Item label="是否改价">
+            {getFieldDecorator('is_price_modified', { initialValue: '0' })(
+              <Select
+                style={{ width: '130px' }}
+                getPopupContainer={() => document.querySelector('.orders-filter-container')}
+              >
+                <Option value="0">请选择</Option>
+                <Option value="1">是</Option>
+                <Option value="2">否</Option>
+              </Select>
+            )}
+          </Form.Item>
+        </Col>
 
-        <Col span={6}>
+        <Col span={2}>
           <div style={{ lineHeight: '40px', textAlign: 'left' }}>
             <Button type='primary' style={{ marginLeft: '20px' }} htmlType='submit' loading={loading}>查询</Button>
             {/*<Button style={{ margin: '0 20px 0 10px' }} onClick={this.handleReset}>重置</Button>*/}

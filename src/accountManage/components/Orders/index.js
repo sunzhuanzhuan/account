@@ -64,6 +64,14 @@ const columns = [
         {name || '-'}
       </div>
     }
+  }, {
+    title: '首次应约账号报价（元）',
+    dataIndex: 'first_total_account_quote_price',
+    render: (num, record) => {
+      return <div>
+        {num || '-'}
+      </div>
+    }
   },
   {
     title: '账号报价（元）',
@@ -194,7 +202,7 @@ export default class Orders extends Component {
               loading={this.state.listLoading}
               dataSource={list.map(key => source[key])}
               pagination={pagination}
-              scroll={list.length ? { x: listScrollWidth } : {x: listScrollWidth}}
+              scroll={list.length ? { x: listScrollWidth } : { x: listScrollWidth }}
               columns={columns}
             />
           </ScrollTable>
