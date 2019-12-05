@@ -67,9 +67,9 @@ const columns = [
   }, {
     title: '首次应约账号报价（元）',
     dataIndex: 'first_total_account_quote_price',
-    render: (num, record) => {
+    render: (price, record) => {
       return <div>
-        {num || '-'}
+        {price || '-'}
       </div>
     }
   },
