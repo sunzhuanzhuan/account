@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import api from '@/api'
 import { Button, Table, } from 'antd';
 import Prediction from './Prediction'
+import { WordCloud } from '../chart'
 import './PutPreview.less'
 export default function PutPreview({ setShowModal }) {
   const [data, setData] = useState({})
@@ -16,6 +17,7 @@ export default function PutPreview({ setShowModal }) {
     <div className='put-preview'>
       <div className='title-big'>投放预览</div>
       <div className='active-order container'>
+
         <DataActive />
         <div className='order-statistics '>
           <div className='header'>
@@ -43,6 +45,7 @@ const DataActive = () => {
   ]
   return <div className='data-active'>
     {data.map(one => one.name)}
+    <WordCloud />
   </div>
 }
 const OrderStatistics = () => {
