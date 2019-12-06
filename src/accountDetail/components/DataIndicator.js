@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import UpDownPercentage from "../base/UpDownPercentage";
 import './DataIndicator.less'
-
+import { getWechat, wechatColumns, getSina, sinaColumns, getRedBook, redBookColumns } from '../constants/DataIndicatorConfig'
 import CompositeRadar from "./chart/CompositeRadar";
 import CharTitle from "./chart/CharTitle";
 import ValueFormat from "../base/ValueFormat";
 import numeral from 'numeral'
-import { Divider, Empty, Tooltip } from "antd";
+import { Divider, Empty, Tooltip, Table } from "antd";
 class DataIndicator extends Component {
   constructor(props) {
     super(props);
@@ -50,15 +50,82 @@ class DataIndicator extends Component {
             </div>
           </div>
           <div className='left-indicator'>
-            <VideoInfo base={base} feature={feature} />
+            {/* <VideoInfo base={base} feature={feature} /> */}
+            {/* <SinaInfo /> */}
+            {/* <WechatInfo /> */}
+            <RedBookInfo />
           </div>
         </div>
       </div>
     );
   }
 }
-
-
+//微信信息
+const WechatInfo = () => {
+  const data = getWechat(data)
+  return <div className='wechat-info'>
+    <div className='wechat-sum'>
+      {data.map(item => <ThreeNumber
+        key={item.name}
+        title={item.name}
+        number={item.value}
+        unit={item.unit}
+        typeContent='同分类同价格28天粉丝增长率均值'
+      />)}
+    </div>
+    <div className='wechat-table'>
+      <Table columns={wechatColumns}
+        dataSource={[{ name: '头条' }, { name: '多图文第二条' }, { name: '多图文3-N条' }]}
+        pagination={false}
+        bordered={true}
+      />
+    </div>
+  </div>
+}
+//微博信息
+const SinaInfo = () => {
+  const data = getSina(data)
+  return <div className='sina-info'>
+    <div className='sina-sum'>
+      {data.map(item => <ThreeNumber
+        key={item.name}
+        title={item.name}
+        number={item.value}
+        unit={item.unit}
+        typeContent='同分类同价格28天粉丝增长率均值'
+      />)}
+    </div>
+    <div className='sina-table'>
+      <Table columns={sinaColumns}
+        dataSource={[{ name: '直发' }, { name: '转发' }]}
+        pagination={false}
+        bordered={true}
+      />
+    </div>
+  </div>
+}
+//小红书信息
+const RedBookInfo = () => {
+  const data = getRedBook(data)
+  return <div className='red-book-info'>
+    <div className='red-book-sum'>
+      {data.map(item => <ThreeNumber
+        key={item.name}
+        title={item.name}
+        number={item.value}
+        unit={item.unit}
+        typeContent='同分类同价格28天粉丝增长率均值'
+      />)}
+    </div>
+    <div className='red-book-table'>
+      <Table columns={redBookColumns}
+        dataSource={[{ name: '视频' }, { name: '图文' }]}
+        pagination={false}
+        bordered={true}
+      />
+    </div>
+  </div>
+}
 const VideoInfo = ({ feature = {}, base = {} }) => {
   return <>
     <div className='fan-release'>
@@ -148,7 +215,7 @@ const OperateItem = ({ typeText, numberAvg, percentAvg }) => {
 }
 const ThreeNumber = ({ title, number, unit, percent, typeContent, tips }) => {
   return <div>
-    <div className='font13-color9'>{tips ? <Tooltip title={tips}>
+    <div className='font13-color9 text-center'>{tips ? <Tooltip title={tips}>
       {title}
     </Tooltip> : title}</div>
     <div className='font24-color3 text-center '>

@@ -79,5 +79,5 @@ const OrderStatistics = () => {
       key: 'address1',
     }
   ];
-  return <Table dataSource={dataSource} columns={columns} pagination={false} />
+  return <Table dataSource={dataSource} columns={columns} pagination={false} bordered />
 }

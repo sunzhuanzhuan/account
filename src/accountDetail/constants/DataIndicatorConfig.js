@@ -12,6 +12,7 @@ export const wechatColumns = [
     title: '',
     dataIndex: 'name',
     key: 'name',
+    align: 'center'
   },
   {
     title: '平均阅读量',
@@ -22,6 +23,11 @@ export const wechatColumns = [
     title: '平均点赞数',
     dataIndex: 'avglike',
     key: 'avglike',
+  },
+  {
+    title: '最高阅读量',
+    dataIndex: 'highlike',
+    key: 'highlike',
   },
   {
     title: '最高点赞数',
@@ -48,9 +54,21 @@ export const sinaColumns = [
     title: '',
     dataIndex: 'name',
     key: 'name',
+    align: 'center',
+    width: '100px'
   },
   {
-    title: '平均评论数 | 最高转发数',
+    title: '平均转发数 | 最高转发数',
+    dataIndex: 'avgread',
+    key: 'avgread',
+  },
+  {
+    title: '平均评论数 | 最高评论数',
+    dataIndex: 'avgread',
+    key: 'avgread',
+  },
+  {
+    title: '平均点赞数 | 最高点赞数',
     dataIndex: 'avgread',
     key: 'avgread',
   },
@@ -58,8 +76,8 @@ export const sinaColumns = [
 export const getRedBook = (data = {}) => {
   return [
     { name: "粉丝数", value: '382', unit: `万` },
-    { name: "真粉率", value: '45.2', unit: `%` },
-    { name: "笔记总数", value: '382', unit: `个` },
+    // { name: "真粉率", value: '45.2', unit: `%` },
+    // { name: "笔记总数", value: '382', unit: `个` },
     { name: "图文笔记", value: '382', unit: `个` },
     { name: "视频笔记", value: '382', unit: `个` }
   ]

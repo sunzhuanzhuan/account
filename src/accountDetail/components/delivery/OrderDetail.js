@@ -23,7 +23,7 @@ const dataSource = [
 
 ];
 export default function OrderDetail() {
-  const [param, setParam] = useState({ brand: 0, type: 0 })
+  const [param, setParam] = useState({ brand: 0, type: 0, isTime: false, isPrice: false })
   const [orderDetail, setOrderDetail] = useState({})
   const [brandList, setBrandList] = useState([])
   useEffect(() => {
@@ -84,34 +84,39 @@ export default function OrderDetail() {
 
   return <div>
     <div className='title-big'>订单详情</div>
-    <div className='container'>
-      <div >
-        <Select defaultValue="lucy" style={{ width: 120, margin: '0px 20px' }}
-          onChange={value => setParam({ ...param, page: 1, brand: value })}>
-          {brandList.map(item => <Option
-            key={item.id} value={item.id}>
-            {item.name}
-          </Option>)}
-        </Select>
+    <div className='container '>
+      <div className='flex-between'>
+        <div >
+          <Select defaultValue="lucy" style={{ width: 120, margin: '0px 20px' }}
+            onChange={value => setParam({ ...param, page: 1, brand: value })}>
+            {brandList.map(item => <Option
+              key={item.id} value={item.id}>
+              {item.name}
+            </Option>)}
+          </Select>
 
-        <Radio.Group
-          value={param.type}
-          onChange={e => setParam({ ...param, page: 1, type: e.target.value })}>
-          <Radio value={0}>全部订单</Radio>
-          <Radio value={1}>预约</Radio>
-          <Radio value={2}>派单</Radio>
-        </Radio.Group>
+          <Radio.Group
+            value={param.type}
+            onChange={e => setParam({ ...param, page: 1, type: e.target.value })}>
+            <Radio value={0}>全部订单</Radio>
+            <Radio value={1}>预约</Radio>
+            <Radio value={2}>派单</Radio>
+          </Radio.Group>
+        </div>
+        <div>
+          <span className={`chilkbox ${param.isTime ? 'active' : ''}`} onClick={() => setParam({ ...param, isTime: (!param.isTime) })}>时间降序</span>
+          <span className={`chilkbox ${param.isPrice ? 'active' : ''}`}
+            onClick={() => setParam({ ...param, isPrice: (!param.isPrice) })}>价格降序
+          </span>
+        </div>
       </div>
-      <div>
-
-      </div>
-      <div>
-        <Table dataSource={dataSource} columns={columns}
+      <div style={{ marginTop: 20 }}>
+        <Table dataSource={dataSource} columns={columns} bordered
           pagination={{
             pageSize: 2,
             onChange: num => setParam({ ...param, page: num })
           }} />
       </div>
     </div>
-  </div>
+  </div >
 }
