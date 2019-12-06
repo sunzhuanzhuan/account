@@ -11,6 +11,7 @@ import moment from 'moment';
 import * as actions from '../actions/pricePolicy';
 import './PolicyManage.less';
 import qs from 'qs';
+import RuleModule from '../components/RuleModule'
 
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
@@ -217,6 +218,7 @@ class PolicyManage extends React.Component {
 					</Form>
 				</Spin>
 				{stopModal ? <StopReasonModal onCancel={this.isShowStopModal} onOk={this.handleStopPolicy} /> : null}
+				<RuleModule></RuleModule>
 			</div>
 		]
 	}
