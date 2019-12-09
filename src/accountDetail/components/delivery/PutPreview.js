@@ -16,10 +16,9 @@ export default function PutPreview({ setShowModal }) {
   return (
     <div className='put-preview'>
       <div className='title-big'>投放预览</div>
-      <div className='active-order container'>
-
+      <div className='active-order '>
         <DataActive />
-        <div className='order-statistics '>
+        <div className='order-statistics container'>
           <div className='header'>
             <p>投放广告数据表现</p>
             <Button type='primary'
@@ -39,13 +38,48 @@ export default function PutPreview({ setShowModal }) {
 
 const DataActive = () => {
   const data = [
-    { name: '总订单数（预约|派单）', sum: '14', remark: `(${9}|{${5})` },
-    { name: '品牌数（订单品牌）', sum: '14', remark: `({${5})` },
-    { name: '覆盖行业', sum: '14', remark: `` },
+    { title: '总订单数', subtitle: '（预约|派单）', sum: '14', remark: `(${9}|${5})` },
+    { title: '品牌数', subtitle: '（订单品牌）', sum: '14', remark: `(${5})` },
+    { title: '覆盖行业', sum: '14', remark: `` },
   ]
-  return <div className='data-active'>
-    {data.map(one => one.name)}
+  return <div className='data-active container'>
+    <div className='statistics'>
+      {data.map(item => <NumberItem item={item} key={item.title} />)}
+    </div>
     <WordCloud />
+    <LineType />
+  </div>
+}
+const NumberItem = ({ item }) => {
+  return <div className='item'>
+    <div className='title'>
+      <b>{item.title}</b>
+      <span>{item.subtitle}</span>
+    </div>
+    <div className='number'>
+      <span className='big'>{item.sum}</span>
+      <span>{item.remark}</span>
+    </div>
+  </div>
+}
+
+const LineType = ({ list = [{ name: '母婴', value: "30%" }, { name: '音乐', value: "20%" }, { name: '其他', value: "50%" }] }) => {
+  const color = { 0: '#8544E0', 1: 'green', 2: 'pink' }
+  return <div className='line-type-box'>
+    <div className='line-type'>
+      {list.map((item, index) => <div key={item.name}
+        style={{ width: item.value, background: color[index] }}>
+        {item.value}
+      </div>)}
+    </div>
+    <div>
+      <div className='line-text'>
+        {list.map((item, index) => <div key={item.name} className='circle-text'>
+          <div className='circle' style={{ background: color[index] }}></div>
+          <div className='text'>{item.name}</div>
+        </div>)}
+      </div>
+    </div>
   </div>
 }
 const OrderStatistics = () => {
@@ -92,6 +126,6 @@ const OrderStatistics = () => {
     }
   ];
   return <Table
-    className='put-pre-table'
+    className='put-pre-table table-no-background-add-odd '
     dataSource={dataSource} columns={columns} pagination={false} />
 }

@@ -1,3 +1,5 @@
+import React from 'react'
+
 export const getWechat = (data = {}) => {
   return [
     { name: "总发布数（原创文章数）", value: '382', unit: `个（${143}篇）` },
@@ -49,6 +51,7 @@ export const getSina = (data = {}) => {
     { name: "视频微博数", value: '382', unit: `个` },
   ]
 }
+const textStyle = { textAlign: "center" }
 export const sinaColumns = [
   {
     title: '',
@@ -58,21 +61,23 @@ export const sinaColumns = [
     width: '100px'
   },
   {
-    title: '平均转发数 | 最高转发数',
+    title: <div style={textStyle}><h3>转发数</h3>平均 | 最高</div>,
     dataIndex: 'avgread',
     key: 'avgread',
   },
   {
-    title: '平均评论数 | 最高评论数',
+    title: <div style={textStyle}><h3>评论数</h3>平均 | 最高</div>,
     dataIndex: 'avgread',
     key: 'avgread',
   },
   {
-    title: '平均点赞数 | 最高点赞数',
+    title: <div style={textStyle}><h3>点赞数</h3>平均 | 最高</div>,
     dataIndex: 'avgread',
     key: 'avgread',
   },
 ]
+
+
 export const getRedBook = (data = {}) => {
   return [
     { name: "粉丝数", value: '382', unit: `万` },
@@ -90,8 +95,8 @@ export const redBookColumns = [
   },
   {
     title: '平均播放数',
-    dataIndex: 'avgread平均播放数',
-    key: 'avgread平均播放数',
+    dataIndex: 'value',
+    key: 'value',
   },
   {
     title: '平均收藏数',

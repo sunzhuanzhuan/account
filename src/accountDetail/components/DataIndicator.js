@@ -51,9 +51,9 @@ class DataIndicator extends Component {
           </div>
           <div className='left-indicator'>
             {/* <VideoInfo base={base} feature={feature} /> */}
-            {/* <SinaInfo /> */}
+            <SinaInfo />
             {/* <WechatInfo /> */}
-            <RedBookInfo />
+            {/* <RedBookInfo /> */}
           </div>
         </div>
       </div>
@@ -73,11 +73,10 @@ const WechatInfo = () => {
         typeContent='同分类同价格28天粉丝增长率均值'
       />)}
     </div>
-    <div className='wechat-table'>
+    <div className='wechat-table table-no-background-add-odd'>
       <Table columns={wechatColumns}
         dataSource={[{ name: '头条' }, { name: '多图文第二条' }, { name: '多图文3-N条' }]}
         pagination={false}
-        bordered={true}
       />
     </div>
   </div>
@@ -95,11 +94,10 @@ const SinaInfo = () => {
         typeContent='同分类同价格28天粉丝增长率均值'
       />)}
     </div>
-    <div className='sina-table'>
+    <div className='sina-table table-no-background-add-odd'>
       <Table columns={sinaColumns}
         dataSource={[{ name: '直发' }, { name: '转发' }]}
         pagination={false}
-        bordered={true}
       />
     </div>
   </div>
@@ -117,11 +115,10 @@ const RedBookInfo = () => {
         typeContent='同分类同价格28天粉丝增长率均值'
       />)}
     </div>
-    <div className='red-book-table'>
+    <div className='red-book-table table-no-background-add-odd '>
       <Table columns={redBookColumns}
         dataSource={[{ name: '视频' }, { name: '图文' }]}
         pagination={false}
-        bordered={true}
       />
     </div>
   </div>

@@ -9,6 +9,30 @@
     .data-active {
         flex: 3;
         min-width: 400px;
+
+        .statistics {
+            display: flex;
+
+            .item {
+                span {
+                    color: #ccc;
+                }
+
+                .title {
+                    b {
+                        font-size: 14px;
+                    }
+                }
+
+                .number {
+                    .big {
+                        color: #000;
+                        font-size: 18px;
+                    }
+                }
+            }
+        }
+
     }
 
     .order-statistics {
@@ -26,20 +50,45 @@
         }
     }
 
-    .gray-font {
-        color: #ccc;
-        font-weight: 400;
-    }
 
-    .put-pre-table {
-        .ant-table-thead>tr>th {
-            background: #fff;
-            .gray-font;
+
+    .line-type-box {
+        .line-type {
+            display: flex;
+            width: 100%;
+            color: #fff;
+            text-align: center;
+            height: 26px;
+            line-height: 26px;
+
+            &>:first-child {
+                border-top-left-radius: 13px;
+                border-bottom-left-radius: 13px;
+            }
+
+            &>:last-child {
+                border-top-right-radius: 13px;
+                border-bottom-right-radius: 13px;
+            }
         }
 
-        .ant-table-tbody>tr>td:nth-child(odd) {
-            height: 50px;
-            .gray-font;
+
+
+        .line-text {
+            display: flex;
+
+            .circle-text {
+                display: flex;
+                height: 30px;
+                line-height: 30px;
+
+                .circle {
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 50%;
+                    margin: 10px;
+                }
+            }
         }
     }
 }

@@ -101,3 +101,25 @@
 .mt20 {
     margin-top: 20px;
 }
+
+.gray-font {
+    color: #666;
+    font-weight: 400;
+}
+
+.table-no-background-add-odd {
+    .ant-table-thead>tr>th {
+        background: #fff;
+        .gray-font;
+    }
+
+    .ant-table-tbody>tr>td:nth-child(odd) {
+        height: 50px;
+        .gray-font;
+    }
+
+    .ant-table-tbody>tr>td:nth-child(even) {
+        height: 50px;
+        color: #000;
+    }
+}
