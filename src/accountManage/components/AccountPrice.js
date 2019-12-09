@@ -183,14 +183,14 @@ function orderStatusView(refuse_status, desc = '') {
   return _C;
 }
 
-// 报价提示信息
-function handlePriceTitle(tax, type) {
-  let key = '1';
-  if (!tax) {
-    key = type == 1 ? '2' : '3';
-  }
-  return priceTitle[key].desc;
-}
+// // 报价提示信息
+// function handlePriceTitle(tax, type) {
+//   let key = '1';
+//   if (!tax) {
+//     key = type == 1 ? '2' : '3';
+//   }
+//   return priceTitle[key].desc;
+// }
 
 // 派单报价
 export class NamelessPrice extends Component {
@@ -217,7 +217,6 @@ export class NamelessPrice extends Component {
           ]
         })(
           <PriceTable
-            desc={handlePriceTitle(taxInPrice == 1, partnerType)}
             data={this.props.data}
             isEdit
             priceKeys={['costPriceRaw', 'channelPrice', 'publicationPrice']}
@@ -402,21 +401,21 @@ export class FamousPrice extends Component {
       <FormItem {...formItemLayout} label='下期有效期'>
         <span>{nextStar.format('YYYY-MM-DD')}</span><span className='m10-e'>至</span>
         {canEditTime ? getFieldDecorator('nextPriceValidTo', {
-            validateFirst: true,
-            initialValue: nextEnd,
-            rules: [{
-              type: 'object',
-              required: require,
-              message: '请选择结束时间'
-            }, { validator: this.checkDateAndPrice }]
-          })(
+          validateFirst: true,
+          initialValue: nextEnd,
+          rules: [{
+            type: 'object',
+            required: require,
+            message: '请选择结束时间'
+          }, { validator: this.checkDateAndPrice }]
+        })(
           <DatePicker onOpenChange={this.setDefaultValue(disabledDate)} getPopupContainer={() => document.querySelector('#account-manage-container')} disabledDate={current => current && current < disabledDate} />) :
           <span>
-						{getFieldDecorator('nextPriceValidTo', {
+            {getFieldDecorator('nextPriceValidTo', {
               initialValue: moment(nextEnd).endOf('day')
             })(<input type="hidden" />)}
             {nextEnd && nextEnd.format('YYYY-MM-DD')}
-					</span>}
+          </span>}
       </FormItem>
       <FormItem {...formItemLayout} label='账号报价'>
         {getFieldDecorator('price_next', {
@@ -429,7 +428,6 @@ export class FamousPrice extends Component {
 
         })(
           <PriceTable
-            desc={handlePriceTitle(taxInPrice == 1, partnerType)}
             data={this.props.data}
             isEdit={canEditPrice}
             priceKeys={['nextCostPriceRaw', 'nextChannelPrice', 'nextPublicationPrice']}
@@ -508,7 +506,7 @@ class PriceTable extends Component {
   calculatePrice = (value, index) => {
     const { priceKeys: [, channelPriceKey], action, data } = this.props;
     const { accountInfo: { platformId, userId } } = data
-    if(!value){
+    if (!value) {
       return this.onChange(0, index, channelPriceKey)
     }
     const hide = message.loading('价格计算中...')
@@ -542,10 +540,18 @@ class PriceTable extends Component {
   };
 
   render() {
-    const { isEdit, desc = '', priceKeys } = this.props;
+    const { isEdit, priceKeys } = this.props;
+    const {
+      partnerType,
+      taxInPrice,
+      invoiceType
+    } = this.props.priceInfo;
     const { value } = this.state;
     return <div>
-      {desc ? <span>请填写<span style={{ color: 'red' }}>{desc}</span></span> : null}
+      <span>{partnerType == 1 ? '报价含税（' : '报价不含税'}
+        {invoiceType ? invoiceType == 1 ? '回票类型：增值税专用发票' : '回票类型：增值税普通发票' : null}
+        {invoiceType ? '税点:' + taxInPrice * 100 + '%)' : null}
+      </span>
       <div className='price-table'>
         <div className='price-table-head'>
           <Row gutter={8}>
