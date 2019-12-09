@@ -1,7 +1,7 @@
 import React from "react";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Icon, Form, DatePicker, Spin, Input, message } from 'antd';
+import { Button, Icon, Form, DatePicker, Spin, Input, message, Card, Radio } from 'antd';
 // import CommonTitle from "../components/CommonTitle";
 // import RulesWrapper from "../components/RulesWrapper";
 // import WhiteList from "../components/WhiteList";
@@ -17,6 +17,21 @@ const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
 // const RadioGroup = Radio.Group;
 const { TextArea } = Input;
+
+const RuleDiscountRatio = (props) => {
+	const { getFieldDecorator } = props.form
+	return <Form.Item>
+		{getFieldDecorator('password', {
+			rules: [{ required: true, message: 'Please input your Password!' }],
+		})(
+			<Input
+				prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+				type="password"
+				placeholder="Password"
+			/>,
+		)}
+	</Form.Item>
+}
 
 class PolicyManage extends React.Component {
 	constructor(props) {
@@ -37,22 +52,22 @@ class PolicyManage extends React.Component {
 		const search = this.props.location.search.substring(1);
 		const userId = qs.parse(search)['userId'];
 		const policyId = qs.parse(search)['id'];
-		const userName= qs.parse(search)['name'];
+		const userName = qs.parse(search)['name'];
 
-		if(policyId !== undefined)
+		if (policyId !== undefined)
 			this.props.getPolicyDetail(policyId);
-		this.setState({policyId, userName, userId})
+		this.setState({ policyId, userName, userId })
 	}
 
 	componentDidUpdate(prevProps) {
-        const { progress: prevProgress } = prevProps;
+		const { progress: prevProgress } = prevProps;
 		const { errorMsg = '操作失败', newPolicyId, progress, msg = '操作成功' } = this.props;
 
-        if(prevProgress !== progress && progress === 'fail') {
-            this.getErrorTips(errorMsg, 'error');
-        }else if(prevProgress !== progress && progress === 'saveSuccess') {
+		if (prevProgress !== progress && progress === 'fail') {
+			this.getErrorTips(errorMsg, 'error');
+		} else if (prevProgress !== progress && progress === 'saveSuccess') {
 			this.getErrorTips(msg, 'success');
-			if(newPolicyId) {
+			if (newPolicyId) {
 				this.props.history.replace(`/account/policy?id=${newPolicyId}`)
 				window.location.reload();
 			}
@@ -60,83 +75,84 @@ class PolicyManage extends React.Component {
 	}
 
 	getErrorTips = (msg, type = 'error') => {
-        try {
-            if (typeof message.destroy === 'function') {
-                message.destroy();
-            }
-            message[type](msg);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+		try {
+			if (typeof message.destroy === 'function') {
+				message.destroy();
+			}
+			message[type](msg);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	getDisabledDate = (current) => {
-		const { timeRange = [] } = this.state; 
+		const { timeRange = [] } = this.state;
 
-		if(timeRange[0])
+		if (timeRange[0])
 			// return !(!(current && current <= moment().subtract(1, 'days').endOf('day')) && current.diff(timeRange[0], 'days') > 60); //60天内不可选
 			return current && current <= moment().subtract(1, 'days').endOf('day');
 	}
 
 	handleSavePolicy = () => {
-		const { form, policyDetail= {} } = this.props;
+		const { form, policyDetail = {} } = this.props;
 		const { policyId, userId } = this.state;
 		const { id, policyStatus } = policyDetail;
 
 		form.validateFields((err, values) => {
-			if(err) return;
-			const { policyTime = [], illustration } = values;
-			const updateObj = {
-				validStartTime: policyTime[0].format('YYYY-MM-DD 00:00:00'),
-				validEndTime: policyTime[1].format('YYYY-MM-DD 00:00:00'),
-				illustration
-			};
-			const isEdit = policyId !== undefined;
-			let method = isEdit ? 'editPolicy' : 'addPolicy';
+			console.log("=====", values)
+			// if (err) return;
+			// const { policyTime = [], illustration } = values;
+			// const updateObj = {
+			// 	validStartTime: policyTime[0].format('YYYY-MM-DD 00:00:00'),
+			// 	validEndTime: policyTime[1].format('YYYY-MM-DD 00:00:00'),
+			// 	illustration
+			// };
+			// const isEdit = policyId !== undefined;
+			// let method = isEdit ? 'editPolicy' : 'addPolicy';
 
-			if(isEdit) {
-				Object.assign(updateObj, {id, policyStatus})
-			}else {
-				Object.assign(updateObj, {userId})
-			}
+			// if (isEdit) {
+			// 	Object.assign(updateObj, { id, policyStatus })
+			// } else {
+			// 	Object.assign(updateObj, { userId })
+			// }
 
-			this.props.updatePriceInfo(updateObj, method).then(() => {
-				if(isEdit)
-					this.props.getPolicyDetail(policyId);
-			});
+			// this.props.updatePriceInfo(updateObj, method).then(() => {
+			// 	if (isEdit)
+			// 		this.props.getPolicyDetail(policyId);
+			// });
 		})
 	}
 
 	handleChangeDate = (timeRange) => {
-		this.setState({timeRange});
+		this.setState({ timeRange });
 	}
 
 	handleChangeDateRange = () => {
-		this.setState({timeRange: []})
+		this.setState({ timeRange: [] })
 	}
 
 	judgeInputLenth = (_, value, callback) => {
-		if(value && value.length <= 2000) {
+		if (value && value.length <= 2000) {
 			callback();
-		}else if(!value) {
+		} else if (!value) {
 			callback('请输入政策说明')
-		}else if(value.length > 200) {
+		} else if (value.length > 200) {
 			callback('政策说明最多可输入2000字')
 		}
 	}
 
 	isShowStopModal = () => {
-		this.setState({stopModal: !this.state.stopModal})
+		this.setState({ stopModal: !this.state.stopModal })
 	}
 
 	handleStopPolicy = (value) => {
 		const { policyDetail = {} } = this.props;
 		const { policyId } = this.state;
 		const { id, policyStatus } = policyDetail;
-		Object.assign(value, {id, policyStatus});
+		Object.assign(value, { id, policyStatus });
 
 		this.props.updatePriceInfo(value, 'stopPolicy').then(() => {
-			if( policyId !== undefined )
+			if (policyId !== undefined)
 				this.props.getPolicyDetail(policyId);
 		});
 		this.isShowStopModal();
@@ -146,11 +162,11 @@ class PolicyManage extends React.Component {
 		const { form, policyDetail = {}, progress } = this.props;
 		const { stopModal, policyId, userName } = this.state;
 		const isEdit = policyId !== undefined;
-		const { policyStatus, identityName, illustration, validStartTime, validEndTime, modifyName='未知', id, modifiedAt, stopReason } = policyDetail;
+		const { policyStatus, identityName, illustration, validStartTime, validEndTime, modifyName = '未知', id, modifiedAt, stopReason } = policyDetail;
 		const { getFieldDecorator } = form;
 		const formItemLayout = {
-            labelCol: {span: 2},
-            wrapperCol: {span: 22},
+			labelCol: { span: 2 },
+			wrapperCol: { span: 22 },
 		};
 
 		return [
@@ -159,85 +175,58 @@ class PolicyManage extends React.Component {
 			</h2>,
 			<div key='policyWrapper' className='policyWrapper'>
 				<Spin spinning={progress === 'loading'}>
-					{ isEdit ? <PageInfo policyId={id} status={policyStatus} stopReason={stopReason} editor={modifyName} editTime={moment(modifiedAt).format('YYYY-MM-DD HH:mm:ss')} /> : null }
+					{isEdit ? <PageInfo policyId={id} status={policyStatus} stopReason={stopReason} editor={modifyName} editTime={moment(modifiedAt).format('YYYY-MM-DD HH:mm:ss')} /> : null}
 					<Form>
-						<FormItem label='主账号名称' {...formItemLayout}>
+						{/* <FormItem label='主账号名称' {...formItemLayout}>
 							{isEdit ? identityName : userName || '未知'}
-						</FormItem>
+						</FormItem> */}
 						<FormItem label="政策有效期"  {...formItemLayout}>
-							{getFieldDecorator('policyTime', {
-								initialValue: validStartTime && validEndTime ? [moment(validStartTime), moment(validEndTime)] : undefined,
-								rules: [{
-									required: true,
-									message: '请添加政策有效期',
-								}],
-							})(
-								<RangePicker 
-									className='policyTime' 
-									onCalendarChange={this.handleChangeDate} 
+							{getFieldDecorator('policyTime', {})(
+								<RangePicker
+									className='policyTime'
+									onCalendarChange={this.handleChangeDate}
 									onChange={this.handleChangeDateRange}
-									// disabledDate={this.getDisabledDate} 
+								// disabledDate={this.getDisabledDate} 
 								/>
 							)}
 						</FormItem>
-						{/* <FormItem label="返点结算频次"  {...formItemLayout}>
-							{getFieldDecorator('settleRate', {
-								initialValue: 0
-							})(
-								<RadioGroup options={this.rateOption}/>
-							)}
-						</FormItem>
-						<CommonTitle title='全局账号设置'/>
-						<FormItem label='政策规则' {...formItemLayout}>
-							<RulesWrapper />
-						</FormItem>
-						<CommonTitle title='特殊账号设置'/>
-						<FormItem label='政策规则' {...formItemLayout}>
-							<RulesWrapper />
-						</FormItem>
-						<CommonTitle title='白名单'/>
-						<WhiteList /> */}
 						<FormItem label="政策说明"  {...formItemLayout}>
-							{getFieldDecorator('illustration', {
-								initialValue: illustration,
-								rules: [
-									{required: true, message: ' '},
-									{validator: this.judgeInputLenth}
-								],
-							})(
+							{getFieldDecorator('illustration', {})(
 								<TextArea className='remarksText' />
 							)}
 						</FormItem>
+
 						<FormItem className='policyFooter'>
-							{ 
-								policyStatus == 1 || policyStatus == 2 ? 
-									<Button type='primary' onClick={this.isShowStopModal}>停用</Button> : null 
+							{
+								policyStatus == 1 || policyStatus == 2 ?
+									<Button type='primary' onClick={this.isShowStopModal}>停用</Button> : null
 							}
-							<Button type='primary' onClick={this.handleSavePolicy}>{ policyStatus == 4 ? '启用' : '提交'}</Button>
+							<Button type='primary' onClick={this.handleSavePolicy}>{policyStatus == 4 ? '启用' : '提交'}</Button>
 						</FormItem>
+						<RuleModule form={form}></RuleModule>
 					</Form>
 				</Spin>
 				{stopModal ? <StopReasonModal onCancel={this.isShowStopModal} onOk={this.handleStopPolicy} /> : null}
-				<RuleModule></RuleModule>
+
 			</div>
 		]
 	}
 }
 
 const mapStateToProps = (state) => {
-    const { pricePolicyReducer = {} } = state;
-    const { policyDetail, newPolicyId, progress, errorMsg, msg } = pricePolicyReducer;
+	const { pricePolicyReducer = {} } = state;
+	const { policyDetail, newPolicyId, progress, errorMsg, msg } = pricePolicyReducer;
 
-    return { policyDetail, newPolicyId, progress, errorMsg, msg };
+	return { policyDetail, newPolicyId, progress, errorMsg, msg };
 }
 
 const mapDispatchToProps = (dispatch) => (
-    bindActionCreators({
-        ...actions
-    }, dispatch)
+	bindActionCreators({
+		...actions
+	}, dispatch)
 )
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+	mapStateToProps,
+	mapDispatchToProps
 )(Form.create()(PolicyManage))
