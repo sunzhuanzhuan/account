@@ -56,6 +56,18 @@ const OrderStatistics = () => {
       age: 32,
       address: '播放量：8989',
     },
+    {
+      key: '2',
+      name: '平均订单',
+      age: 32,
+      address: '播放量：8989',
+    },
+    {
+      key: '3',
+      name: '平均点赞',
+      age: 32,
+      address: '播放量：8989',
+    },
   ];
 
   const columns = [
@@ -79,5 +91,7 @@ const OrderStatistics = () => {
       key: 'address1',
     }
   ];
-  return <Table dataSource={dataSource} columns={columns} pagination={false} bordered />
+  return <Table
+    className='put-pre-table'
+    dataSource={dataSource} columns={columns} pagination={false} />
 }
