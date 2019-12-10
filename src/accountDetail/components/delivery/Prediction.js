@@ -32,7 +32,7 @@ const Prediction = (props) => {
       <div className='prediction-icon' style={{ marginTop: 4 }} onClick={startPrediction}>开始预测</div>
     </Form.Item>
     {preResult ? <div>
-      <h1>预测结果</h1>
+      <h2>预测结果</h2>
       {preResult}
     </div> : null}
   </Form>

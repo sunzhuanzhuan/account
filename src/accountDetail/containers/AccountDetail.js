@@ -105,29 +105,32 @@ class AccountDetail extends Component {
           <BaseInfo {...headProps} />
           {/* 头部基础信息 */}
           <HeadInfo {...headProps} />
-          <Tabs defaultActiveKey="3" onChange={this.changeType} className='detail-tabs' size='large'>
-            <TabPane tab="平台数据" key="1">
-              {/* 数据指标 */}
-              <DataIndicator baseInfo={baseInfo} />
-              {/* 历史案例 */}
-              <LazyLoad once overflow>
-                <HistoricalAD {...historicalADProps} />
-              </LazyLoad>
-              {/*内容数据  */}
-              <LazyLoad once overflow>
-                <ContentData {...contentDataProps} />
-              </LazyLoad>
-            </TabPane>
-            <TabPane tab="用户画像" key="2">
-              {/* 受众画像 */}
-              {platformId == 118 ? null : <LazyLoad once overflow>
-                <AudienceAttribute accountId={accountId} />
-              </LazyLoad>}
-            </TabPane>
-            <TabPane tab="投放数据" key="3">
-              <Delivery setShowModal={this.setShowModal} />
-            </TabPane>
-          </Tabs>
+          <div className='data-charts'>
+            <div className='updata-time'>数据更新时间：{'接口获取'}</div>
+            <Tabs defaultActiveKey="3" onChange={this.changeType} className='detail-tabs' size='large'>
+              <TabPane tab="平台数据" key="1">
+                {/* 数据指标 */}
+                <DataIndicator baseInfo={baseInfo} />
+                {/* 历史案例 */}
+                <LazyLoad once overflow>
+                  <HistoricalAD {...historicalADProps} />
+                </LazyLoad>
+                {/*内容数据  */}
+                <LazyLoad once overflow>
+                  <ContentData {...contentDataProps} />
+                </LazyLoad>
+              </TabPane>
+              <TabPane tab="用户画像" key="2">
+                {/* 受众画像 */}
+                {platformId == 118 ? null : <LazyLoad once overflow>
+                  <AudienceAttribute accountId={accountId} />
+                </LazyLoad>}
+              </TabPane>
+              <TabPane tab="投放数据" key="3">
+                <Delivery setShowModal={this.setShowModal} />
+              </TabPane>
+            </Tabs>
+          </div>
           {/* 账号推荐 */}
           {/* <AccountRecommend /> */}
           <Modal

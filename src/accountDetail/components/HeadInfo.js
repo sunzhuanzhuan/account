@@ -5,7 +5,7 @@ import { PopoverFormat } from "../base/TitleAndDecide";
 import ImgCircle from "../base/ImgCircle";
 
 import "./HeadInfo.less"
-import { Avatar, Button, Divider, Empty, Icon, Popover } from 'antd';
+import { Avatar, Button, Divider, Empty, Icon, Popover, Table } from 'antd';
 import MultiClamp from 'react-multi-clamp';
 import { platformView } from "../../accountManage/constants/platform";
 import FieldMap from "../constants/FieldMap";
@@ -110,20 +110,16 @@ class HeadInfo extends Component {
                     近期应约（{accountDetail.historyPriceCount}）
                 </a>
                 }
-
                 />
               </div>
             </div>
             <div className='release-info'>
-
-              <div className='release-info-box'>
-                {skuList.length > 0 ? skuList.slice(0, 4).map((one, index) => <OneRelease key={one.skuId} title={one.skuTypeName} content={one.openQuotePrice} last={one.unitPrice} isDefense={index == 0 && one.isPreventShielding == 1} />) :
-                  <Empty style={{ margin: '0px auto' }} />}
-              </div>
+              {skuList.length > 0 ?
+                platformId == 9 ? <WeChatTable data={skuList} /> : <SkuListBox skuList={skuList} />
+                : <Empty style={{ margin: '0px auto' }} />}
               <div style={{ textAlign: 'center' }}>
                 {isExistCar ? <Button className='add-select-car-button' type='primary' onClick={() => selectCarEdit(true)}>加入选号车</Button> :
                   <Button className='remove-select-car-button' onClick={() => selectCarEdit(false)}>移出选号车</Button>}
-
               </div>
               {/* <div style={{ textAlign: "center", marginTop: 12 }}>加入收藏<span className='collect'>（100人已收藏）</span></div> */}
             </div>
@@ -150,17 +146,22 @@ const OneType = ({ title, content, last, color, lastContent }) => {
 
   </div>
 }
-const OneRelease = ({ title = '-', content, last = '-', isDefense }) => {
-  return <div className='release-info-three'>
-    <div className='title'>{title}{isDefense ?
-      <Popover content='该参考报价为含防屏蔽的报价'>
-        <span className='defense'>防</span>
-      </Popover>
-      : null}</div>
-    <div className='two-line-flex'>
-      <div className='content'>{`${content ? '¥' + numeral(content).format('0,0') : '-'}`}</div>
-      <PopoverFormat text={<div className='last'>{last}元/千粉丝</div>} content='平均每千粉丝单价' />
-    </div>
+const SkuListBox = ({ skuList }) => {
+  return <div className='release-info-box'>
+    {skuList.slice(0, 4).map((one, index) => {
+      const isDefense = index == 0 && one.isPreventShielding == 1
+      return <div className='release-info-three' key={one.skuId}>
+        <div className='title'>{one.skuTypeName}{isDefense ?
+          <Popover content='该参考报价为含防屏蔽的报价'>
+            <span className='defense'>防</span>
+          </Popover>
+          : null}</div>
+        <div className='two-line-flex'>
+          <div className='content'>{getPrice(one.openQuotePrice)}</div>
+          <PopoverFormat text={<div className='last'>{one.unitPrice}元/千粉丝</div>} content='平均每千粉丝单价' />
+        </div>
+      </div>
+    })}
   </div>
 }
 const FatLable = ({ backColor, color, list }) => {
@@ -170,5 +171,35 @@ const FatLable = ({ backColor, color, list }) => {
       style={{ marginLeft: index == 0 ? 0 : '', background: backColor, color: color }}
       key={index}>{one}</div>)}
   </div>
+}
+function getPrice(number) {
+  return <div className='priceRed'>
+    {`${(number > 0 || number == 0) ? '¥' + numeral(number).format('0,0') : '-'}`}
+  </div>
+}
+const WeChatTable = ({ data = [] }) => {
+  const columns = [
+    {
+      title: '',
+      dataIndex: 'skuTypeName',
+      key: 'skuTypeName',
+    },
+    {
+      title: '发布',
+      dataIndex: 'openQuotePrice',
+      key: 'openQuotePrice',
+      render: (text) => getPrice(text)
+    },
+    {
+      title: '原创+发布',
+      dataIndex: 'name2',
+      key: 'name2',
+      render: (text) => getPrice(text)
+    }
+  ]
+  return <Table dataSource={data} columns={columns}
+    rowKey="skuId" className='table-no-background-add-odd wachat-table'
+    pagination={false}
+  />
 }
 export default HeadInfo;

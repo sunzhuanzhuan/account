@@ -186,10 +186,7 @@
                         border: 1px solid red;
                     }
 
-                    .content {
-                        color: #F4655B;
-                        font-size: 22px;
-                    }
+
 
                     .last {
                         @color999-font12();
@@ -198,4 +195,24 @@
             }
         }
     }
+
+    .wachat-table {
+        .ant-table-tbody>tr>td:nth-child(odd) {
+            height: 40px;
+        }
+
+        .ant-table-tbody>tr>td:nth-child(even) {
+            height: 40px;
+        }
+
+        .ant-table-thead>tr>th,
+        .ant-table-tbody>tr>td {
+            padding: 4px 2px;
+        }
+    }
+}
+
+.priceRed {
+    color: #F4655B;
+    font-size: 22px;
 }
