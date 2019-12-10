@@ -33,8 +33,8 @@ export const wechatColumns = [
   },
   {
     title: '最高点赞数',
-    dataIndex: 'highlike',
-    key: 'highlike',
+    dataIndex: 'highlike3',
+    key: 'highlike3',
   },
   {
     title: '10w+阅读文章数',
@@ -67,13 +67,13 @@ export const sinaColumns = [
   },
   {
     title: <div style={textStyle}><h3>评论数</h3>平均 | 最高</div>,
-    dataIndex: 'avgread',
-    key: 'avgread',
+    dataIndex: 'avgread1',
+    key: 'avgread1',
   },
   {
     title: <div style={textStyle}><h3>点赞数</h3>平均 | 最高</div>,
-    dataIndex: 'avgread',
-    key: 'avgread',
+    dataIndex: 'avgread2',
+    key: 'avgread3',
   },
 ]
 

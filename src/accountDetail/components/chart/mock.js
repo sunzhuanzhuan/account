@@ -1,103 +1,19 @@
-export const data = [
-  {
-    "x": "第一个哈哈哈",
-    "value": 23510,
-    "category": "asia"
-  },
-  {
-    "x": "Taiwan",
-    "value": 25680,
-    "category": "asia"
-  },
-  {
-    "x": "Cameroon",
-    "value": 28044,
-    "category": "africa"
-  },
-  {
-    "x": "Ivory Coast",
-    "value": 21331,
-    "category": "africa"
-  },
-  {
-    "x": "Madagascar",
-    "value": 24363,
-    "category": "africa"
-  },
-  {
-    "x": "Niger",
-    "value": 24000,
-    "category": "africa"
-  },
-  {
-    "x": "Sri Lanka",
-    "value": 23000,
-    "category": "asia"
-  },
-  {
-    "x": "第n个哈哈哈",
-    "value": 10000,
-    "category": "europe"
-  },
-  {
-    "x": "Burkina Faso",
-    "value": 12147,
-    "category": "africa"
-  },
-  {
-    "x": "Syria",
-    "value": 17000,
-    "category": "asia"
-  },
-  {
-    "x": "Mali",
-    "value": 15000,
-    "category": "africa"
-  },
-  {
-    "x": "Malawi",
-    "value": 19000,
-    "category": "africa"
-  },
-  {
-    "x": "Chile",
-    "value": 11900,
-    "category": "america"
-  },
-  {
-    "x": "Kazakhstan",
-    "value": 15800,
-    "category": "asia"
-  },
-  {
-    "x": "Netherlands",
-    "value": 11900,
-    "category": "europe"
-  },
-  {
-    "x": "Ecuador",
-    "value": 17700,
-    "category": "america"
-  },
-  {
-    "x": "Guatemala",
-    "value": 16133,
-    "category": "america"
-  },
-  {
-    "x": "第20个哈哈哈",
-    "value": 13883,
-    "category": "africa"
-  },
-  {
-    "x": "Cambodia",
-    "value": 16444,
-    "category": "asia"
-  },
-  {
-    "x": "Cambodiax",
-    "value": 16444,
-    "category": "asi是a"
-  },
-
-]
+const d = {
+  "data": [
+    {
+      "x": "90天总视频",
+      "low": 292000,
+      "q1": 348350,
+      "median": 964742,
+      "q3": 1620956,
+      "high": 1796774,
+      "textContent": "近90天视频：平均点赞量100.5万，数据集中分布在34.8万 - 162.1万",
+      "avg": 1004564,
+      "q3Lessq1": 1272606
+    },
+    {
+      "x": "28天总视频",
+      "textContent": "近28天视频：平均点赞量0.0，数据集中分布在0.0 - 0.0",
+      "q3Lessq1": null
+    }]
+}

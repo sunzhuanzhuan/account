@@ -77,6 +77,7 @@ const WechatInfo = () => {
       <Table columns={wechatColumns}
         dataSource={[{ name: '头条' }, { name: '多图文第二条' }, { name: '多图文3-N条' }]}
         pagination={false}
+        rowKey='name'
       />
     </div>
   </div>
@@ -98,6 +99,7 @@ const SinaInfo = () => {
       <Table columns={sinaColumns}
         dataSource={[{ name: '直发' }, { name: '转发' }]}
         pagination={false}
+        rowKey='name'
       />
     </div>
   </div>
@@ -119,6 +121,7 @@ const RedBookInfo = () => {
       <Table columns={redBookColumns}
         dataSource={[{ name: '视频' }, { name: '图文' }]}
         pagination={false}
+        rowKey='name'
       />
     </div>
   </div>

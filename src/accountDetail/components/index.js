@@ -6,6 +6,10 @@ export { default as NewVideo } from './NewVideo'
 export { default as ContentData } from './ContentData'
 export { default as AudienceAttribute } from './AudienceAttribute'
 export { default as AccountRecommend } from './AccountRecommend'
+export { default as DataTrends } from './DataTrends'
+export { default as ContentQuality } from './ContentQuality'
+
+
 
 
 

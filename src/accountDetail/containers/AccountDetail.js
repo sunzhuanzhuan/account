@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { HeadInfo, DataIndicator, HistoricalAD, ContentData, AudienceAttribute, BaseInfo, AccountRecommend } from "../components";
+import { HeadInfo, DataIndicator, HistoricalAD, ContentData, AudienceAttribute, BaseInfo, ContentQuality, DataTrends } from "../components";
 import Delivery from '../components/delivery'
 import './AccountDetail.less'
 import { Modal, message, Spin, Tabs } from 'antd';
@@ -107,7 +107,7 @@ class AccountDetail extends Component {
           <HeadInfo {...headProps} />
           <div className='data-charts'>
             <div className='updata-time'>数据更新时间：{'接口获取'}</div>
-            <Tabs defaultActiveKey="3" onChange={this.changeType} className='detail-tabs' size='large'>
+            <Tabs defaultActiveKey="1" onChange={this.changeType} className='detail-tabs' size='large'>
               <TabPane tab="平台数据" key="1">
                 {/* 数据指标 */}
                 <DataIndicator baseInfo={baseInfo} />
@@ -116,9 +116,11 @@ class AccountDetail extends Component {
                   <HistoricalAD {...historicalADProps} />
                 </LazyLoad>
                 {/*内容数据  */}
-                <LazyLoad once overflow>
+                {/* <LazyLoad once overflow>
                   <ContentData {...contentDataProps} />
-                </LazyLoad>
+                </LazyLoad> */}
+                {/* <DataTrends accountId={accountId} baseInfo={baseInfo} /> */}
+                <ContentQuality accountId={accountId} baseInfo={baseInfo} />
               </TabPane>
               <TabPane tab="用户画像" key="2">
                 {/* 受众画像 */}
