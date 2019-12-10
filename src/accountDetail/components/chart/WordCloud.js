@@ -20,7 +20,7 @@ import { data } from "./mock.js";
 
 class Wordcloud extends React.Component {
   render() {
-    const { height = '300',
+    const { height = '217',
       width = window.innerWidth / 7 * 3 - 40
     } = this.props
     function getTextAttrs(cfg) {

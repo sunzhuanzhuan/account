@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react'
 import { Button, Form, Input, Select, Table } from 'antd';
+import './PutPreview.less'
 const Prediction = (props) => {
   const [preResult, setPreResult] = useState(0)
   const { getFieldDecorator, validateFields } = props.form
@@ -28,7 +29,7 @@ const Prediction = (props) => {
       </Select>)}
     </Form.Item>
     <Form.Item>
-      <Button type='primary' onClick={startPrediction}>开始预测</Button>
+      <div className='prediction-icon' style={{ marginTop: 4 }} onClick={startPrediction}>开始预测</div>
     </Form.Item>
     {preResult ? <div>
       <h1>预测结果</h1>

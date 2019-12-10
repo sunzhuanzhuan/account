@@ -40,13 +40,18 @@
     line-height: 22px;
 }
 
+@color999-font12: {
+    .font-color(#999, 12px);
+}
+
 @color999-font13: {
     .font-color(#999, 13px);
 }
 
-@color999-font12: {
-    .font-color(#999, 12px);
+@color999-font24: {
+    .font-color(#999, 24px);
 }
+
 
 @color333-font16: {
     .font-color(#333, 16px);
@@ -58,6 +63,10 @@
 
 @color333-font13: {
     .font-color(#333, 13px);
+}
+
+@color333-font24: {
+    .font-color(#333, 24px);
 }
 
 @flex-between: {
@@ -110,16 +119,33 @@
 .table-no-background-add-odd {
     .ant-table-thead>tr>th {
         background: #fff;
-        .gray-font;
+        @color999-font13();
+        font-weight: 400;
     }
 
     .ant-table-tbody>tr>td:nth-child(odd) {
         height: 50px;
-        .gray-font;
+        @color999-font13();
     }
 
     .ant-table-tbody>tr>td:nth-child(even) {
         height: 50px;
         color: #000;
+    }
+
+    .dark-big {
+        @color333-font24()
+    }
+
+    .dark-small {
+        @color333-font14()
+    }
+
+    .light-big {
+        @color999-font24()
+    }
+
+    .light-small {
+        .font-color(#999, 14px);
     }
 }

@@ -26,7 +26,7 @@ function OrderAssess() {
     setOrderList(data)
   }
   return (
-    <div>
+    <div className='order-assess'>
       <div className='title-big'>订单评价</div>
       <div className='container'>
         <Statistics />
@@ -70,8 +70,8 @@ const Statistics = () => {
     { name: '商业适应性指数', value: 30 },]
   return <div className='statistics'>
     {list.map(item => <div key={item.name} className='item'>
-      <div>{item.name}</div>
-      <div>{item.value}
+      <div className='title'>{item.name}</div>
+      <div className='value'>{item.value}
         <span className='unit'>{item.unit}</span>
       </div>
     </div>)}
@@ -80,22 +80,22 @@ const Statistics = () => {
 const Item = ({ item }) => {
   return <div key={item.id} className='common-item'>
     <div>
-      <b>{item.title}</b>
+      <span className='title'>{item.title}</span>
       <span className='data-time'>{item.data}</span>
     </div>
     <div className='content'>
       <div className='more-common'>
-        {item.content.length > 45 ? `${item.content.slice(0, 45)}……` : item.content}
+        {item.content.length > 40 ? `${item.content.slice(0, 40)}……` : item.content}
       </div>
       <div className='rate-type-box'>
         <RateType title='响应速度' value={2} />
         <RateType title='配合度' value={2} />
-        <RateType title='效果满意' value={2} />
+        <RateType title='效果满意' value={5} />
       </div>
     </div>
   </div>
 }
 const RateType = ({ title, value }) => {
-  return <div>{title} <Rate allowHalf={true} disabled defaultValue={value} className='comment-rate' /></div>
+  return <div className='title'>{title} <Rate allowHalf={true} disabled defaultValue={value} className='comment-rate' /></div>
 }
 export default OrderAssess

@@ -21,13 +21,12 @@ export default function PutPreview({ setShowModal }) {
         <div className='order-statistics container'>
           <div className='header'>
             <p>投放广告数据表现</p>
-            <Button type='primary'
-
+            <div className='prediction-icon'
               onClick={() => setShowModal(true, {
                 content: <Prediction setShowModal={setShowModal} />,
                 title: '投放预测',
                 width: '800px'
-              })}>投放预测</Button>
+              })}>投放预测</div>
           </div>
           <OrderStatistics />
         </div>
@@ -38,8 +37,8 @@ export default function PutPreview({ setShowModal }) {
 
 const DataActive = () => {
   const data = [
-    { title: '总订单数', subtitle: '（预约|派单）', sum: '14', remark: `(${9}|${5})` },
-    { title: '品牌数', subtitle: '（订单品牌）', sum: '14', remark: `(${5})` },
+    { title: '总订单数', subtitle: '（预约|派单）', sum: '14', remark: `（${9}|${5}）` },
+    { title: '品牌数', subtitle: '（订单品牌）', sum: '14', remark: `（${5}）` },
     { title: '覆盖行业', sum: '14', remark: `` },
   ]
   return <div className='data-active container'>
@@ -63,8 +62,15 @@ const NumberItem = ({ item }) => {
   </div>
 }
 
-const LineType = ({ list = [{ name: '母婴', value: "30%" }, { name: '音乐', value: "20%" }, { name: '其他', value: "50%" }] }) => {
-  const color = { 0: '#8544E0', 1: 'green', 2: 'pink' }
+const LineType = ({ list = [
+  { name: '母婴', value: "20%" },
+  { name: '音乐', value: "10%" },
+  { name: '其他', value: "30%" },
+  { name: '母婴1', value: "10%" },
+  { name: '音乐1', value: "10%" },
+  { name: '其他1', value: "20%" },
+] }) => {
+  const color = { 0: '#FE6E67', 1: '#6091F9', 2: '#FAA051', 3: '#2DD8AA', 4: '#7E78FF', 5: '#E6354B' }
   return <div className='line-type-box'>
     <div className='line-type'>
       {list.map((item, index) => <div key={item.name}

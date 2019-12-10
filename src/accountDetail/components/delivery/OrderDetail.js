@@ -80,6 +80,14 @@ export default function OrderDetail() {
       title: '投放数据',
       dataIndex: '投放数据name',
       key: '投放数据name',
+      render: () => <div>
+        <a href={''}>{99}</a>
+        <div>
+          播放数：
+          评论数：
+          点赞数：
+        </div>
+      </div>
     },
 
   ];
@@ -115,7 +123,7 @@ export default function OrderDetail() {
         </div> */}
       </div>
       <div style={{ marginTop: 20 }}>
-        <Table dataSource={dataSource} columns={columns} bordered
+        <Table dataSource={dataSource} columns={columns}
           pagination={{
             pageSize: 2,
             onChange: num => setParam({ ...param, page: num })
