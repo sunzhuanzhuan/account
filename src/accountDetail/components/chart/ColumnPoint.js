@@ -15,9 +15,14 @@ import {
   Util
 } from "bizcharts";
 import getLabelConfig from './ColumnPointConfig'
+import { formatW } from "../../util";
 class ColumnPoint extends React.Component {
   render() {
-    const { data, dataKey = 'mediaLikeNum', platformId } = this.props
+    const { data,
+      dataKey = 'mediaLikeNum',
+      platformId,
+      padding = [60, 100, 280, 100],
+      fireText, dataText } = this.props
     //自定义x轴label
     const labelConfig = {
       htmlTemplate(text, item, index) {
@@ -25,23 +30,35 @@ class ColumnPoint extends React.Component {
         return getLabelConfig(platformId, dataItem)
       }
     }
-    const cols = {}
+    const cols = {
+      [dataKey]: {
+        formatter: val => {
+          return formatW(val);
+        }
+      }
+    }
     var imageMap = {}
     data.filter(one => one.isHot == 1).map(one => {
       imageMap[one.label] = require("../img/fire.png")
     });
     return (
       <div >
-        <Chart height={600} data={data} scale={cols} forceFit padding={[60, 100, 260, 100]}
+        <div className='legend-customize'>
+          <div>
+            <div className='block-legend fire'></div>
+            <div>{fireText}</div>
+          </div>
+          <div>
+            <div className='block-legend blue'></div>
+            <div>{dataText}</div>
+          </div>
+        </div>
+        <Chart height={600} data={data} scale={cols} forceFit padding={padding}
         >
           <Axis name="label" label={labelConfig} />
           <Axis name={dataKey} />
-          {/* <Tooltip
-            crosshairs={{
-              type: "y"
-            }}
-          /> */}
-          <Geom type="interval" position={`label*${dataKey}`} color='#7E78FF' />
+          {/* <Tooltip crosshairs={{  type: "y" }} /> */}
+          <Geom type="interval" position={`label*${dataKey}`} />
           <Geom
             type="point"
             position={`label*${dataKey}`}

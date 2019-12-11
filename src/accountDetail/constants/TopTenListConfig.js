@@ -3,20 +3,21 @@ export const weChat = {
   dataKey: '',
   //近10篇文章的封面图、跳转链接、阅读、点赞、发布位置、发布日期、标题
   fireText: '最火文章',
-  dataText: ''
+  dataText: '浏览'
 }
 
 export const sina = {
   title: '近10个博文的数据表现',
-  dataKey: '',
+  dataKey: '点赞',
   //近10篇博文跳转链接、评论、点赞、转发、类型（eg：图文微博直发）、发布日期、标题
   fireText: '最火博文',
-  dataText: ''
+  dataText: '',
+  padding: [60, 100, 140, 100]
 }
 
 export const redBook = {
   title: '近10个笔记的数据表现',
-  dataKey: '',
+  dataKey: '点赞',
   //近10个笔记的数据表现：近10篇笔记封面图、跳转链接、评论、点赞、收藏、类型（eg：图文/视频 笔记）、发布日期、标题
   fireText: '最火笔记',
   dataText: ''
@@ -27,7 +28,7 @@ export const douyin = {
   title: '近10个视频数据表现',
   dataKey: 'mediaLikeNum',
   fireText: '最火视频',
-  dataText: '评论'
+  dataText: '点赞'
 }
 
 
