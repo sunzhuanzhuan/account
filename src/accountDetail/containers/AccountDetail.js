@@ -120,7 +120,7 @@ class AccountDetail extends Component {
                   <ContentData {...contentDataProps} />
                 </LazyLoad> */}
                 {/* <DataTrends accountId={accountId} baseInfo={baseInfo} /> */}
-                <ContentQuality accountId={accountId} baseInfo={baseInfo} />
+                <ContentQuality accountId={accountId} baseInfo={baseInfo} platformId={platformId} />
               </TabPane>
               <TabPane tab="用户画像" key="2">
                 {/* 受众画像 */}

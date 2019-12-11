@@ -15,7 +15,6 @@ export const weChat = {
     { key: 2, name: '第一条', content: { ...weChatContent, dataKey: 'contentSum' } },
     { key: 3, name: '第二条', content: { ...weChatContent, dataKey: 'contentSum' } }
   ],
-
 }
 //微博图表配置
 const sinaContent = {
