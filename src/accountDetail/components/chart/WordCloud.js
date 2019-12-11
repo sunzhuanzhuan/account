@@ -16,13 +16,14 @@ import {
 } from "bizcharts";
 import DataSet from "@antv/data-set";
 import _ from 'lodash'
-import { data } from "./mock.js";
+import { dataMock } from "./mock.js";
+import { Empty } from "antd";
 
 class Wordcloud extends React.Component {
   render() {
     const { height = '217',
-      width = window.innerWidth / 7 * 3 - 40
-    } = this.props
+      width = window.innerWidth / 7 * 3 - 40,
+      data = dataMock } = this.props
     function getTextAttrs(cfg) {
       return _.assign(
         {},
@@ -93,7 +94,7 @@ class Wordcloud extends React.Component {
     };
     return (
       <div>
-        <Chart
+        {data.length > 0 ? <Chart
           height={height}
           width={width}
           data={dv}
@@ -110,7 +111,7 @@ class Wordcloud extends React.Component {
             shape="cloud"
             tooltip="value*category"
           />
-        </Chart>
+        </Chart> : <Empty style={{ height: height + 18, paddingTop: 80 }} />}
       </div>
     );
   }

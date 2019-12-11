@@ -58,7 +58,7 @@ class ColumnPoint extends React.Component {
           <Axis name="label" label={labelConfig} />
           <Axis name={dataKey} />
           {/* <Tooltip crosshairs={{  type: "y" }} /> */}
-          <Geom type="interval" position={`label*${dataKey}`} />
+          <Geom type="interval" position={`label*${dataKey}`} size={50} />
           <Geom
             type="point"
             position={`label*${dataKey}`}

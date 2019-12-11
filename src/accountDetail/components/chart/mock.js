@@ -1,19 +1,32 @@
-const d = {
-  "data": [
-    {
-      "x": "90天总视频",
-      "low": 292000,
-      "q1": 348350,
-      "median": 964742,
-      "q3": 1620956,
-      "high": 1796774,
-      "textContent": "近90天视频：平均点赞量100.5万，数据集中分布在34.8万 - 162.1万",
-      "avg": 1004564,
-      "q3Lessq1": 1272606
-    },
-    {
-      "x": "28天总视频",
-      "textContent": "近28天视频：平均点赞量0.0，数据集中分布在0.0 - 0.0",
-      "q3Lessq1": null
-    }]
-}
+export const dataMock = [
+  {
+    "x": "India",
+    "value": 1316000000,
+    "category": "asia"
+  },
+  {
+    "x": "United States",
+    "value": 324982000,
+    "category": "america"
+  },
+  {
+    "x": "Indonesia",
+    "value": 263510000,
+    "category": "asia"
+  },
+  {
+    "x": "Brazil",
+    "value": 207505000,
+    "category": "america"
+  },
+  {
+    "x": "Pakistan",
+    "value": 196459000,
+    "category": "asia"
+  },
+  {
+    "x": "Nigeria",
+    "value": 191836000,
+    "category": "africa"
+  },
+]
