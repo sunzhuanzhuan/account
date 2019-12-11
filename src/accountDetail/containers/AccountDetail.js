@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { HeadInfo, DataIndicator, HistoricalAD, ContentData, AudienceAttribute, BaseInfo, ContentQuality, DataTrends } from "../components";
+import { HeadInfo, DataIndicator, HistoricalAD, ContentData, AudienceAttribute, BaseInfo, ContentQuality, DataTrends, TopTenList } from "../components";
 import Delivery from '../components/delivery'
 import './AccountDetail.less'
 import { Modal, message, Spin, Tabs } from 'antd';
@@ -116,11 +116,9 @@ class AccountDetail extends Component {
                   <HistoricalAD {...historicalADProps} />
                 </LazyLoad>
                 {/*内容数据  */}
-                {/* <LazyLoad once overflow>
-                  <ContentData {...contentDataProps} />
-                </LazyLoad> */}
-                {/* <DataTrends accountId={accountId} baseInfo={baseInfo} /> */}
+                <DataTrends accountId={accountId} baseInfo={baseInfo} />
                 <ContentQuality accountId={accountId} baseInfo={baseInfo} platformId={platformId} />
+
               </TabPane>
               <TabPane tab="用户画像" key="2">
                 {/* 受众画像 */}

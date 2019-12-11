@@ -5,6 +5,7 @@ import ButtonTab from '../base/ButtonTab'
 import { formatWNumber } from "../util";
 import api from '../../api'
 import getQualityConfig, { keyToName } from '../constants/ContentQualityConfig'
+import TopTenList from './TopTenList';
 const dataFormate = (data = {}, type, day) => {
   const low = data[`media${type}Min${day}d`]
   const high = data[`media${type}Max${day}d`]
@@ -62,9 +63,9 @@ function ContentQuality(props) {
             </div>
             <RightDecide data={dataBox[checkedKey]} type={keyToName[checkedKey]} />
           </div>
-
+          {/* 近10条数据 */}
+          <TopTenList accountId={props.accountId} platformId={props.platformId} />
         </div>
-
       </div>
     </div>
   )
