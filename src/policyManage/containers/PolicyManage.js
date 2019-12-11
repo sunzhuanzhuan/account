@@ -1,7 +1,10 @@
 import React from "react";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Button, Icon, Form, DatePicker, Spin, Input, message, Card, Radio } from 'antd';
+import {
+	Button, Icon, Form, DatePicker, Spin, Input, message,
+	Radio, Switch, InputNumber, Upload, Modal
+} from 'antd';
 // import CommonTitle from "../components/CommonTitle";
 // import RulesWrapper from "../components/RulesWrapper";
 // import WhiteList from "../components/WhiteList";
@@ -11,7 +14,11 @@ import moment from 'moment';
 import * as actions from '../actions/pricePolicy';
 import './PolicyManage.less';
 import qs from 'qs';
+import { ModuleHeader } from '@/components/ModuleHeader';
+import WhiteList from '../components/WhiteList';
 import RuleModule from '../components/RuleModule'
+import EditRuleForm from '../components/RuleModules/EditRuleForm'
+
 
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
@@ -37,7 +44,8 @@ class PolicyManage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			stopModal: false
+			stopModal: false,
+			showEditRuleModal: false
 		}
 		// this.rateOption = [
 		// 	{ label: '未知', value: 0 },
@@ -157,16 +165,45 @@ class PolicyManage extends React.Component {
 		});
 		this.isShowStopModal();
 	}
+	normFile = e => {
+		console.log('Upload event:', e);
+		if (Array.isArray(e)) {
+			return e;
+		}
+		return e && e.fileList;
+	};
+	addRule = (type) => {
+		this.setState({ showEditRuleModal: true, type })
+	}
+	editRuleModalClose = e => {
+		this.setState({ showEditRuleModal: false })
+	}
 
 	render() {
 		const { form, policyDetail = {}, progress } = this.props;
-		const { stopModal, policyId, userName } = this.state;
+		const { stopModal, policyId, userName, showEditRuleModal } = this.state;
 		const isEdit = policyId !== undefined;
 		const { policyStatus, identityName, illustration, validStartTime, validEndTime, modifyName = '未知', id, modifiedAt, stopReason } = policyDetail;
 		const { getFieldDecorator } = form;
 		const formItemLayout = {
 			labelCol: { span: 2 },
 			wrapperCol: { span: 22 },
+		};
+		const contractUploadProps = {
+			name: 'file',
+			multiple: true,
+			action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+			onChange(info) {
+				const { status } = info.file;
+				if (status !== 'uploading') {
+					console.log(info.file, info.fileList);
+				}
+				if (status === 'done') {
+					message.success(`${info.file.name} file uploaded successfully.`);
+				} else if (status === 'error') {
+					message.error(`${info.file.name} file upload failed.`);
+				}
+			},
 		};
 
 		return [
@@ -190,6 +227,73 @@ class PolicyManage extends React.Component {
 								/>
 							)}
 						</FormItem>
+
+						<ModuleHeader title="全局账号设置"></ModuleHeader>
+						<div>政策规则：<Button onClick={() => this.addRule('all')} type="link">+添加</Button></div>
+						<RuleModule type='all' form={form}></RuleModule>
+
+						<ModuleHeader title="特殊账号设置"></ModuleHeader>
+						<div>政策规则：<Button onClick={() => this.addRule('special')} type="link">+添加</Button></div>
+						{/* <RuleModule type='special' form={form}></RuleModule> */}
+
+						<ModuleHeader title="白名单"></ModuleHeader>
+						<WhiteList></WhiteList>
+
+						<ModuleHeader title="返点规则"></ModuleHeader>
+						<FormItem label='返点结算周期' {...formItemLayout}>
+							{
+								getFieldDecorator('rebate', {})(
+									<Radio.Group options={['月', '季', '半年', '年']} />
+								)
+							}
+						</FormItem>
+						<FormItem label='阶梯返点结算' {...formItemLayout}>
+							{
+								getFieldDecorator('rebate', {})(
+									<>
+										<Radio.Group options={['阶梯收入计算', '全量收入计算']} />
+										<cite className='eg-explain'>例：0-100返点3%，100及以上返点5%，博主总收入150<br />
+											阶梯收入计算=（100*3%）+（50*5%）<br />
+											全量收入计算=150*5%</cite>
+									</>
+								)
+							}
+						</FormItem>
+						<FormItem label='保底政策' {...formItemLayout}>
+							{
+								getFieldDecorator('baoding', {})(
+									<Switch checkedChildren="开" unCheckedChildren="关" defaultChecked />
+								)
+							}
+						</FormItem>
+						<FormItem label='保底金额' {...formItemLayout}>
+							{
+								getFieldDecorator('baoding_p', {})(
+									<InputNumber style={{ width: 100 }} suffix="元" />
+								)
+							}
+						</FormItem>
+						<FormItem label='备注' {...formItemLayout}>
+							{
+								getFieldDecorator('beizhu', {})(
+									<Input.TextArea rows={4} style={{ width: 100 }} suffix="元" />
+								)
+							}
+						</FormItem>
+						<Form.Item label="合同" {...formItemLayout} {...contractUploadProps}>
+							{getFieldDecorator('hetong', {
+								valuePropName: 'fileList',
+								getValueFromEvent: this.normFile,
+							})(
+								<Upload.Dragger name="files" action="/upload.do">
+									<p className="ant-upload-drag-icon">
+										<Icon type="inbox" />
+									</p>
+									<p className="ant-upload-text">Click or drag file to this area to upload</p>
+									<p className="ant-upload-hint">Support for a single or bulk upload.</p>
+								</Upload.Dragger>,
+							)}
+						</Form.Item>
 						<FormItem label="政策说明"  {...formItemLayout}>
 							{getFieldDecorator('illustration', {})(
 								<TextArea className='remarksText' />
@@ -203,10 +307,15 @@ class PolicyManage extends React.Component {
 							}
 							<Button type='primary' onClick={this.handleSavePolicy}>{policyStatus == 4 ? '启用' : '提交'}</Button>
 						</FormItem>
-						<RuleModule form={form}></RuleModule>
 					</Form>
 				</Spin>
 				{stopModal ? <StopReasonModal onCancel={this.isShowStopModal} onOk={this.handleStopPolicy} /> : null}
+
+				<EditRuleForm
+					type='all'
+					showEditRuleModal={showEditRuleModal}
+					editRuleModalClose={this.editRuleModalClose}
+				></EditRuleForm>
 
 			</div>
 		]

@@ -1,5 +1,5 @@
 import React from "react";
-import { Table } from 'antd';
+import { Table, Row, Col, Input, Button } from 'antd';
 
 class WhiteList extends React.Component {
 	constructor(props) {
@@ -54,19 +54,26 @@ class WhiteList extends React.Component {
 			},
 		];
 	}
-	
+
 	render() {
 		const { currentPage } = this.state;
 		const pagination = {
-            onChange: (currentPage) => {
-                this.setState({currentPage})
-            },
-            total: 100,
-            pageSize: 20,
-            current: currentPage,
-        };
+			onChange: (currentPage) => {
+				this.setState({ currentPage })
+			},
+			total: 100,
+			pageSize: 20,
+			current: currentPage,
+		};
 
-		return [
+		return <div className='white-list'>
+			<div className='search-bar'>
+				<span className='label' span={3}>account_id: </span>
+				<Input />
+				<span className='label' span={3}>账号名称:</span>
+				<Input />
+				<Button type='primary'>查询</Button><Button>重置</Button><Button>添加</Button>
+			</div>
 			<Table
 				key='list'
 				columns={this.columns}
@@ -75,8 +82,7 @@ class WhiteList extends React.Component {
 				pagination={pagination}
 				scroll={{ x: 1300 }}
 			/>
-
-		]
+		</div>
 	}
 }
 

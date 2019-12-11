@@ -19,47 +19,47 @@ const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
 class PolicyManage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            stopModal: false
-        }
-        // this.rateOption = [
-        // 	{ label: '未知', value: 0 },
-        // 	{ label: '月', value: 1 },
-        // 	{ label: '季', value: 2 },
-        // 	{ label: '半年', value: 3 },
-        // 	{ label: '年', value: 4 },
-        // ];
-    }
+	constructor(props) {
+		super(props);
+		this.state = {
+			stopModal: false
+		}
+		// this.rateOption = [
+		// 	{ label: '未知', value: 0 },
+		// 	{ label: '月', value: 1 },
+		// 	{ label: '季', value: 2 },
+		// 	{ label: '半年', value: 3 },
+		// 	{ label: '年', value: 4 },
+		// ];
+	}
 
-    componentDidMount() {
-        const search = this.props.location.search.substring(1);
-        const userId = qs.parse(search)['userId'];
-        const policyId = qs.parse(search)['id'];
-        const userName = qs.parse(search)['name'];
+	componentDidMount() {
+		const search = this.props.location.search.substring(1);
+		const userId = qs.parse(search)['userId'];
+		const policyId = qs.parse(search)['id'];
+		const userName= qs.parse(search)['name'];
 
-        if (policyId !== undefined)
-            this.props.getPolicyDetail(policyId);
-        this.setState({ policyId, userName, userId })
-    }
+		if(policyId !== undefined)
+			this.props.getPolicyDetail(policyId);
+		this.setState({policyId, userName, userId})
+	}
 
-    componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps) {
         const { progress: prevProgress } = prevProps;
-        const { errorMsg = '操作失败', newPolicyId, progress, msg = '操作成功' } = this.props;
+		const { errorMsg = '操作失败', newPolicyId, progress, msg = '操作成功' } = this.props;
 
-        if (prevProgress !== progress && progress === 'fail') {
+        if(prevProgress !== progress && progress === 'fail') {
             this.getErrorTips(errorMsg, 'error');
-        } else if (prevProgress !== progress && progress === 'saveSuccess') {
-            this.getErrorTips(msg, 'success');
-            if (newPolicyId) {
-                this.props.history.replace(`/account/policy?id=${newPolicyId}`)
-                window.location.reload();
-            }
-        }
-    }
+        }else if(prevProgress !== progress && progress === 'saveSuccess') {
+			this.getErrorTips(msg, 'success');
+			if(newPolicyId) {
+				this.props.history.replace(`/account/policy?id=${newPolicyId}`)
+				window.location.reload();
+			}
+		}
+	}
 
-    getErrorTips = (msg, type = 'error') => {
+	getErrorTips = (msg, type = 'error') => {
         try {
             if (typeof message.destroy === 'function') {
                 message.destroy();
@@ -70,85 +70,158 @@ class PolicyManage extends React.Component {
         }
     };
 
-    getDisabledDate = (current) => {
-        const { timeRange = [] } = this.state;
+	getDisabledDate = (current) => {
+		const { timeRange = [] } = this.state; 
 
-        if (timeRange[0])
-            // return !(!(current && current <= moment().subtract(1, 'days').endOf('day')) && current.diff(timeRange[0], 'days') > 60); //60天内不可选
-            return current && current <= moment().subtract(1, 'days').endOf('day');
-    }
+		if(timeRange[0])
+			// return !(!(current && current <= moment().subtract(1, 'days').endOf('day')) && current.diff(timeRange[0], 'days') > 60); //60天内不可选
+			return current && current <= moment().subtract(1, 'days').endOf('day');
+	}
 
-    handleSavePolicy = () => {
-        const { form, policyDetail = {} } = this.props;
-        const { policyId, userId } = this.state;
-        const { id, policyStatus } = policyDetail;
+	handleSavePolicy = () => {
+		const { form, policyDetail= {} } = this.props;
+		const { policyId, userId } = this.state;
+		const { id, policyStatus } = policyDetail;
 
-        form.validateFields((err, values) => {
-            if (err) return;
-            const { policyTime = [], illustration } = values;
-            const updateObj = {
-                validStartTime: policyTime[0].format('YYYY-MM-DD 00:00:00'),
-                validEndTime: policyTime[1].format('YYYY-MM-DD 00:00:00'),
-                illustration
-            };
-            const isEdit = policyId !== undefined;
-            let method = isEdit ? 'editPolicy' : 'addPolicy';
+		form.validateFields((err, values) => {
+			if(err) return;
+			const { policyTime = [], illustration } = values;
+			const updateObj = {
+				validStartTime: policyTime[0].format('YYYY-MM-DD 00:00:00'),
+				validEndTime: policyTime[1].format('YYYY-MM-DD 00:00:00'),
+				illustration
+			};
+			const isEdit = policyId !== undefined;
+			let method = isEdit ? 'editPolicy' : 'addPolicy';
 
-            if (isEdit) {
-                Object.assign(updateObj, { id, policyStatus })
-            } else {
-                Object.assign(updateObj, { userId })
-            }
+			if(isEdit) {
+				Object.assign(updateObj, {id, policyStatus})
+			}else {
+				Object.assign(updateObj, {userId})
+			}
 
-            this.props.updatePriceInfo(updateObj, method).then(() => {
-                if (isEdit)
-                    this.props.getPolicyDetail(policyId);
-            });
-        })
-    }
+			this.props.updatePriceInfo(updateObj, method).then(() => {
+				if(isEdit)
+					this.props.getPolicyDetail(policyId);
+			});
+		})
+	}
 
-    handleChangeDate = (timeRange) => {
-        this.setState({ timeRange });
-    }
+	handleChangeDate = (timeRange) => {
+		this.setState({timeRange});
+	}
 
-    handleChangeDateRange = () => {
-        this.setState({ timeRange: [] })
-    }
+	handleChangeDateRange = () => {
+		this.setState({timeRange: []})
+	}
 
-    judgeInputLenth = (_, value, callback) => {
-        if (value && value.length <= 2000) {
-            callback();
-        } else if (!value) {
-            callback('请输入政策说明')
-        } else if (value.length > 200) {
-            callback('政策说明最多可输入2000字')
-        }
-    }
+	judgeInputLenth = (_, value, callback) => {
+		if(value && value.length <= 2000) {
+			callback();
+		}else if(!value) {
+			callback('请输入政策说明')
+		}else if(value.length > 200) {
+			callback('政策说明最多可输入2000字')
+		}
+	}
 
-    isShowStopModal = () => {
-        this.setState({ stopModal: !this.state.stopModal })
-    }
+	isShowStopModal = () => {
+		this.setState({stopModal: !this.state.stopModal})
+	}
 
-    handleStopPolicy = (value) => {
-        const { policyDetail = {} } = this.props;
-        const { policyId } = this.state;
-        const { id, policyStatus } = policyDetail;
-        Object.assign(value, { id, policyStatus });
+	handleStopPolicy = (value) => {
+		const { policyDetail = {} } = this.props;
+		const { policyId } = this.state;
+		const { id, policyStatus } = policyDetail;
+		Object.assign(value, {id, policyStatus});
 
-        this.props.updatePriceInfo(value, 'stopPolicy').then(() => {
-            if (policyId !== undefined)
-                this.props.getPolicyDetail(policyId);
-        });
-        this.isShowStopModal();
-    }
+		this.props.updatePriceInfo(value, 'stopPolicy').then(() => {
+			if( policyId !== undefined )
+				this.props.getPolicyDetail(policyId);
+		});
+		this.isShowStopModal();
+	}
 
-    render() {
-        return [
-            <div key='policyWrapper' className='policyWrapper'>
-                <RuleModule></RuleModule>
-            </div>
-        ]
-    }
+	render() {
+		const { form, policyDetail = {}, progress } = this.props;
+		const { stopModal, policyId, userName } = this.state;
+		const isEdit = policyId !== undefined;
+		const { policyStatus, identityName, illustration, validStartTime, validEndTime, modifyName='未知', id, modifiedAt, stopReason } = policyDetail;
+		const { getFieldDecorator } = form;
+		const formItemLayout = {
+            labelCol: {span: 2},
+            wrapperCol: {span: 22},
+		};
+
+		return [
+			<h2 key='policyHeader' className='policyHeader'>
+				{isEdit ? '修改政策' : '新增政策'}
+			</h2>,
+			<div key='policyWrapper' className='policyWrapper'>
+				<Spin spinning={progress === 'loading'}>
+					{ isEdit ? <PageInfo policyId={id} status={policyStatus} stopReason={stopReason} editor={modifyName} editTime={moment(modifiedAt).format('YYYY-MM-DD HH:mm:ss')} /> : null }
+					<Form>
+						<FormItem label='主账号名称' {...formItemLayout}>
+							{isEdit ? identityName : userName || '未知'}
+						</FormItem>
+						<FormItem label="政策有效期"  {...formItemLayout}>
+							{getFieldDecorator('policyTime', {
+								initialValue: validStartTime && validEndTime ? [moment(validStartTime), moment(validEndTime)] : undefined,
+								rules: [{
+									required: true,
+									message: '请添加政策有效期',
+								}],
+							})(
+								<RangePicker 
+									className='policyTime' 
+									onCalendarChange={this.handleChangeDate} 
+									onChange={this.handleChangeDateRange}
+									// disabledDate={this.getDisabledDate} 
+								/>
+							)}
+						</FormItem>
+						{/* <FormItem label="返点结算频次"  {...formItemLayout}>
+							{getFieldDecorator('settleRate', {
+								initialValue: 0
+							})(
+								<RadioGroup options={this.rateOption}/>
+							)}
+						</FormItem>
+						<CommonTitle title='全局账号设置'/>
+						<FormItem label='政策规则' {...formItemLayout}>
+							<RulesWrapper />
+						</FormItem>
+						<CommonTitle title='特殊账号设置'/>
+						<FormItem label='政策规则' {...formItemLayout}>
+							<RulesWrapper />
+						</FormItem>
+						<CommonTitle title='白名单'/>
+						<WhiteList /> */}
+						<FormItem label="政策说明"  {...formItemLayout}>
+							{getFieldDecorator('illustration', {
+								initialValue: illustration,
+								rules: [
+									{required: true, message: ' '},
+									{validator: this.judgeInputLenth}
+								],
+							})(
+								<TextArea className='remarksText' />
+							)}
+						</FormItem>
+						<FormItem className='policyFooter'>
+							{ 
+								policyStatus == 1 || policyStatus == 2 ? 
+									<Button type='primary' onClick={this.isShowStopModal}>停用</Button> : null 
+							}
+							<Button type='primary' onClick={this.handleSavePolicy}>{ policyStatus == 4 ? '启用' : '提交'}</Button>
+						</FormItem>
+					</Form>
+				</Spin>
+				{stopModal ? <StopReasonModal onCancel={this.isShowStopModal} onOk={this.handleStopPolicy} /> : null}
+				<RuleModule></RuleModule>
+			</div>
+		]
+	}
 }
 
 const mapStateToProps = (state) => {
