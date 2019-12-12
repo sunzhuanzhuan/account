@@ -2,28 +2,21 @@ import React, { useState, useEffect } from 'react'
 import './OrderAssess.less'
 import api from '@/api'
 import { List, Rate, Radio } from 'antd'
-const listData = [];
-for (let i = 0; i < 23; i++) {
-  listData.push({
-    href: 'http://ant.design',
-    title: `ant design part ${i}`,
-    data: (new Date()).toLocaleDateString(),
-    avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-    description:
-      'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-    content:
-      '如果有来生，要做一棵树， 站成永恒。没有悲欢的姿势， 一半在尘土里安详， 一半在风里飞扬； 一半洒落荫凉， 一半沐浴阳光。 非常沉默、非常骄傲。 从不依靠、从不寻找。',
-  });
-}
-function OrderAssess() {
+import axios from 'axios'
+import qs from 'qs'
+import { withRouter } from 'react-router-dom'
+function OrderAssess(props) {
   const [orderList, setOrderList] = useState({})
   const [searchParam, setSearchParam] = useState({ evaluate_level: 0 })
+
   useEffect(() => {
     getOrderlist()
   }, [])
-  async function getOrderlist() {
-    const { data } = api.get('/orderlist')
-    setOrderList(data)
+  async function getOrderlist(param) {
+    const baseSearch = qs.parse(props.location.search.substring(1))
+    //const { data } = await api.get('/orderlist')
+    const { data } = await axios.post('http://yapi.ops.tst-weiboyi.com/mock/129/api/operator-gateway/accountDetail/v1/getRecentOrderList', { ...baseSearch, param })
+    setOrderList(data.data)
   }
   return (
     <div className='order-assess'>
@@ -48,7 +41,7 @@ function OrderAssess() {
             },
             pageSize: 3,
           }}
-          dataSource={listData}
+          dataSource={orderList.list}
           renderItem={item => (
             <List.Item >
               <Item item={item} />
@@ -77,7 +70,8 @@ const Statistics = () => {
     </div>)}
   </div>
 }
-const Item = ({ item }) => {
+const Item = ({ item = {} }) => {
+
   return <div key={item.id} className='common-item'>
     <div>
       <span className='title'>{item.title}</span>
@@ -85,7 +79,7 @@ const Item = ({ item }) => {
     </div>
     <div className='content'>
       <div className='more-common'>
-        {item.content.length > 40 ? `${item.content.slice(0, 40)}……` : item.content}
+        {item.content && item.content.length > 40 ? `${item.content.slice(0, 40)}……` : item.content}
       </div>
       <div className='rate-type-box'>
         <RateType title='响应速度' value={2} />
@@ -98,4 +92,4 @@ const Item = ({ item }) => {
 const RateType = ({ title, value }) => {
   return <div className='title'>{title} <Rate allowHalf={true} disabled defaultValue={value} className='comment-rate' /></div>
 }
-export default OrderAssess
+export default withRouter(OrderAssess)

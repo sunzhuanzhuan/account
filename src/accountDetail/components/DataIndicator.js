@@ -41,7 +41,7 @@ function DataIndicator(props) {
         return <WechatInfo feature={indicatorData.weixin} />
       case '2':
         return <SinaInfo base={base} feature={indicatorData.weibo} />
-      case '3':
+      case '4':
         return <RedBookInfo feature={indicatorData.xiaohongshu} />
       default:
         return <VideoInfo base={base} feature={indicatorData.video} />

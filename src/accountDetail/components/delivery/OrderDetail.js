@@ -2,30 +2,16 @@ import React, { useState, useEffect } from 'react'
 import api from '@/api'
 import { Select, Radio, Table } from 'antd'
 import './OrderDetail.less'
+import axios from 'axios'
+import qs from 'qs'
+import { withRouter } from 'react-router-dom'
+import getDeliverConfig from '../../constants/deliveryConfig'
 const { Option } = Select;
-const dataSource = [
-  {
-    key: '1',
-    name: '胡彦斌',
-  },
-  {
-    key: '2',
-    name: '胡彦祖',
-  },
-  {
-    key: '3',
-    name: '胡彦祖',
-  },
-  {
-    key: '4',
-    name: '胡彦祖',
-  },
-
-];
-export default function OrderDetail() {
-  const [param, setParam] = useState({ brand: 0, isFamous: 1, isTime: false, isPrice: false })
+function OrderDetail(props) {
+  const [param, setParam] = useState({})
   const [orderDetail, setOrderDetail] = useState({})
   const [brandList, setBrandList] = useState([])
+  const baseSearch = qs.parse(props.location.search.substring(1))
   useEffect(() => {
     getDetail(param)
     getBrand()
@@ -35,8 +21,10 @@ export default function OrderDetail() {
   }, [param])
   //详情信息
   async function getDetail(params) {
-    const { data } = api.post('/orderDetail', { ...params })
-    setOrderDetail(data)
+    //const { data } = api.post('/orderDetail', { ...params })
+    //const { data } = await api.get('/orderlist')
+    const { data } = await axios.post('http://yapi.ops.tst-weiboyi.com/mock/129/api/operator-gateway/accountDetail/v1/getRecentOrderList', { ...baseSearch, param })
+    setOrderDetail(data.data)
   }
   //下拉框数据
   async function getBrand() {
@@ -46,46 +34,47 @@ export default function OrderDetail() {
   const columns = [
     {
       title: '项目名称',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'projectName',
+      key: 'projectName',
     },
     {
       title: '应约时间',
-      dataIndex: 'isTime',
-      key: 'isTime',
+      dataIndex: 'acceptCreatedTime',
+      key: 'acceptCreatedTime',
       sorter: true,
     },
     {
       title: '价格名称',
-      dataIndex: '价格名称name',
-      key: '价格名称name',
+      dataIndex: 'priceLabel',
+      key: 'priceLabel',
     },
     {
       title: '投放品牌',
-      dataIndex: '投放品牌name',
-      key: '投放品牌name',
+      dataIndex: 'signedBrandName',
+      key: 'signedBrandName',
     },
     {
       title: '所属行业',
-      dataIndex: '所属行业name',
-      key: '所属行业name',
+      dataIndex: 'industryName',
+      key: 'industryName',
     },
     {
       title: '成交价格',
-      dataIndex: 'isPrice',
-      key: 'isPrice',
-      sorter: true,
+      dataIndex: 'dealPrice',
+      key: 'dealPrice',
+      //sorter: true,
     },
     {
       title: '投放数据',
-      dataIndex: '投放数据name',
-      key: '投放数据name',
-      render: () => <div>
-        <a href={''}>{99}</a>
+      dataIndex: 'DcOrderStatistic',
+      key: 'DcOrderStatistic',
+      width: '150px',
+      render: (text) => <div>
+        <a href={''}>投放数据</a>
         <div>
-          播放数：
-          评论数：
-          点赞数：
+          {getDeliverConfig(baseSearch.platformId).map(one => <div key={one.name}>
+            {one.name}:{text[one.key]}
+          </div>)}
         </div>
       </div>
     },
@@ -101,35 +90,32 @@ export default function OrderDetail() {
       <div className='flex-between'>
         <div >
           <Select defaultValue="lucy" style={{ width: 120, margin: '0px 20px 0px 0px' }}
-            onChange={value => setParam({ ...param, page: 1, brand: value })}>
+            onChange={value => setParam({ ...param, page: 1, signedBrandId: value })}>
             {brandList.map(item => <Option
               key={item.id} value={item.id}>
               {item.name}
             </Option>)}
           </Select>
 
-          <Radio.Group
+          {/* <Radio.Group
             value={param.isFamous}
             onChange={e => setParam({ ...param, page: 1, isFamous: e.target.value })}>
             <Radio value={1}>预约</Radio>
             <Radio value={2}>派单</Radio>
-          </Radio.Group>
+          </Radio.Group> */}
         </div>
-        {/* <div>
-          <span className={`chilkbox ${param.isTime ? 'active' : ''}`} onClick={() => setParam({ ...param, isTime: (!param.isTime) })}>时间降序</span>
-          <span className={`chilkbox ${param.isPrice ? 'active' : ''}`}
-            onClick={() => setParam({ ...param, isPrice: (!param.isPrice) })}>价格降序
-          </span>
-        </div> */}
       </div>
       <div style={{ marginTop: 20 }}>
-        <Table dataSource={dataSource} columns={columns}
+        <Table dataSource={orderDetail.list} columns={columns}
           pagination={{
             pageSize: 2,
             onChange: num => setParam({ ...param, page: num })
           }}
-          onChange={handleTableChange} />
+          onChange={handleTableChange}
+          rowKey='orderId' />
       </div>
     </div>
   </div >
 }
+export default withRouter(OrderDetail)
+

@@ -107,7 +107,7 @@ class AccountDetail extends Component {
           <HeadInfo {...headProps} />
           <div className='data-charts'>
             <div className='updata-time'>数据更新时间：{'接口获取'}</div>
-            <Tabs defaultActiveKey="1" onChange={this.changeType} className='detail-tabs' size='large'>
+            <Tabs defaultActiveKey="3" onChange={this.changeType} className='detail-tabs' size='large'>
               <TabPane tab="平台数据" key="1">
                 {/* 数据指标 */}
                 <DataIndicator baseInfo={baseInfo} />
