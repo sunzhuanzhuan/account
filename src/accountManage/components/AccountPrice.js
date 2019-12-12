@@ -543,14 +543,14 @@ class PriceTable extends Component {
     const { isEdit, priceKeys } = this.props;
     const {
       partnerType,
-      taxInPrice,
+      taxRate,
       invoiceType
     } = this.props.priceInfo;
     const { value } = this.state;
     return <div>
       <span>{partnerType == 1 ? '报价含税（' : '报价不含税'}
-        {invoiceType ? invoiceType == 1 ? '回票类型：增值税专用发票' : '回票类型：增值税普通发票' : null}
-        {invoiceType ? '税点:' + taxInPrice * 100 + '%)' : null}
+        {partnerType == 1 ? invoiceType == 1 ? '回票类型：增值税专用发票' : '回票类型：增值税普通发票' : null}
+        {partnerType == 1 && invoiceType == 1 ? '税点:' + taxRate * 100 + '%)' : null}
       </span>
       <div className='price-table'>
         <div className='price-table-head'>
