@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import UpDownPercentage from "../base/UpDownPercentage";
 import './DataIndicator.less'
 import { getWechat, wechatColumns, getSina, sinaColumns, getRedBook, redBookColumns } from '../constants/DataIndicatorConfig'
@@ -7,62 +7,84 @@ import CharTitle from "./chart/CharTitle";
 import ValueFormat from "../base/ValueFormat";
 import numeral from 'numeral'
 import { Divider, Empty, Tooltip, Table } from "antd";
-class DataIndicator extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
+import { withRouter } from 'react-router-dom'
+import qs from 'qs'
+//import api from '../../api'
+import axios from 'axios'
+function DataIndicator(props) {
+  const [indicatorData, setIndicatorData] = useState({})
+  const [dataIndex, setDataIndex] = useState([])
+  const searchParams = qs.parse(props.location.search.substring(1))
+  useEffect(() => {
+    getData()
+  }, [])
+
+  async function getData() {
+    const { data } = await axios.get(' http://yapi.ops.tst-weiboyi.com/mock/129/api/operator-gateway/accountDetail/v1/getMediaStatistics')
+    setIndicatorData(data.data)
+    setDataIndex(data.data.comprehensiveIndex.data)
   }
+  console.log("TCL: DataIndicator -> indicatorData", indicatorData)
 
-  render() {
-    const { baseInfo = {} } = this.props
-    const { feature = {}, base = {}, composite = {} } = baseInfo
+  const { baseInfo = {} } = props
+  const { feature = {}, base = {}, composite = {} } = baseInfo
+  const {
+    wholeIndex, //综合指数
+    wholeRankOnClassification, //类型排名
+  } = feature
+  const { legend = ['', ''] } = composite
 
-    const {
-      wholeIndex, //综合指数
-      wholeRankOnClassification, //类型排名
-    } = feature
-    const { data, legend = ['', ''] } = composite
-    return (
-      <div className='data-indicator'>
-        <div className='title-big'>数据指标</div>
-        <div className='content' >
-          <div className='right-composite'>
-            <div className='composite-exponent'>
-              <div className='head-center'>
-                <div className='left-index'>
-                  <div className='text'>
-                    <CharTitle title='商业价值指数' color='#999' content='基于互动指数、内容传播指数、活跃度指数、健康指数、商业适应度指数、成长指数这6个指标加权计算综合指标。' />
-                  </div>
-                  <div className='score'>{numeral(wholeIndex).format('0')}</div>
+  function getChildren() {
+    const groupType = searchParams.groupType
+    switch (groupType) {
+      case '1':
+        return <WechatInfo feature={indicatorData.weixin} />
+      case '2':
+        return <SinaInfo base={base} feature={indicatorData.weibo} />
+      case '3':
+        return <RedBookInfo feature={indicatorData.xiaohongshu} />
+      default:
+        return <VideoInfo base={base} feature={indicatorData.video} />
+    }
+  }
+  return (
+    <div className='data-indicator'>
+      <div className='title-big'>数据指标</div>
+      <div className='content' >
+        <div className='right-composite'>
+          <div className='composite-exponent'>
+            <div className='head-center'>
+              <div className='left-index'>
+                <div className='text'>
+                  <CharTitle title='商业价值指数' color='#999' content='基于互动指数、内容传播指数、活跃度指数、健康指数、商业适应度指数、成长指数这6个指标加权计算综合指标。' />
                 </div>
-                <Divider type="vertical" style={{ height: 40, margin: '0px 20px' }} />
-                <div className='left-index'>
-                  <div className='text' style={{ marginTop: 7 }}>
-                    <CharTitle title={`${legend[1] || '-'}分类排名`} color='#999' />
-                  </div>
-                  <div>NO.<span className='score'>{wholeRankOnClassification || '-'}</span></div>
-                </div>
+                <div className='score'>{numeral(wholeIndex).format('0')}</div>
               </div>
-
-              <div>
-                {data ? <CompositeRadar data={data} legendType={legend} /> : <Empty style={{ marginTop: '10%' }} />}
+              <Divider type="vertical" style={{ height: 40, margin: '0px 20px' }} />
+              <div className='left-index'>
+                <div className='text' style={{ marginTop: 7 }}>
+                  <CharTitle title={`${legend[1] || '-'}分类排名`} color='#999' />
+                </div>
+                <div>NO.<span className='score'>{wholeRankOnClassification || '-'}</span></div>
               </div>
             </div>
-          </div>
-          <div className='left-indicator'>
-            {/* <VideoInfo base={base} feature={feature} /> */}
-            <SinaInfo />
-            {/* <WechatInfo /> */}
-            {/* <RedBookInfo /> */}
+
+            <div>
+              {dataIndex ? <CompositeRadar data={dataIndex} legendType={legend} /> : <Empty style={{ marginTop: '10%' }} />}
+            </div>
           </div>
         </div>
+        <div className='left-indicator'>
+          {getChildren()}
+
+        </div>
       </div>
-    );
-  }
+    </div>)
 }
+export default withRouter(DataIndicator)
 //微信信息
-const WechatInfo = () => {
-  const data = getWechat(data)
+const WechatInfo = ({ feature = {} }) => {
+  const data = getWechat(feature)
   return <div className='wechat-info'>
     <div className='wechat-sum'>
       {data.map(item => <ThreeNumber
@@ -75,7 +97,7 @@ const WechatInfo = () => {
     </div>
     <div className='wechat-table table-no-background-add-odd'>
       <Table columns={wechatColumns}
-        dataSource={[{ name: '头条' }, { name: '多图文第二条' }, { name: '多图文3-N条' }]}
+        dataSource={feature.list}
         pagination={false}
         rowKey='name'
       />
@@ -83,8 +105,8 @@ const WechatInfo = () => {
   </div>
 }
 //微博信息
-const SinaInfo = () => {
-  const data = getSina(data)
+const SinaInfo = ({ feature = {} }) => {
+  const data = getSina(feature)
   return <div className='sina-info'>
     <div className='sina-sum'>
       {data.map(item => <ThreeNumber
@@ -97,7 +119,7 @@ const SinaInfo = () => {
     </div>
     <div className='sina-table table-no-background-add-odd'>
       <Table columns={sinaColumns}
-        dataSource={[{ name: '直发' }, { name: '转发' }]}
+        dataSource={feature.list}
         pagination={false}
         rowKey='name'
       />
@@ -105,8 +127,10 @@ const SinaInfo = () => {
   </div>
 }
 //小红书信息
-const RedBookInfo = () => {
-  const data = getRedBook(data)
+const RedBookInfo = ({ feature = {} }) => {
+  console.log("TCL: RedBookInfo -> feature", feature)
+
+  const data = getRedBook(feature)
   return <div className='red-book-info'>
     <div className='red-book-sum'>
       {data.map(item => <ThreeNumber
@@ -119,7 +143,7 @@ const RedBookInfo = () => {
     </div>
     <div className='red-book-table table-no-background-add-odd '>
       <Table columns={redBookColumns}
-        dataSource={[{ name: '视频' }, { name: '图文' }]}
+        dataSource={feature.list}
         pagination={false}
         rowKey='name'
       />
@@ -227,5 +251,4 @@ const ThreeNumber = ({ title, number, unit, percent, typeContent, tips }) => {
 
   </div>
 }
-export default DataIndicator;
 
