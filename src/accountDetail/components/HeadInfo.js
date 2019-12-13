@@ -81,7 +81,12 @@ class HeadInfo extends Component {
                 classification == '-' ? null : <FatLable backColor='#F3F8FD' color='#78A3CE' list={[classification]} />
               } />
               <OneLine title='关联品牌' content={
-                classification == '-' ? null : <FatLable backColor='#F3F8FD' color='#78A3CE' list={[classification]} />
+                classification == '-' ? null : <div style={{ display: 'flex' }}>
+                  <FatLable backColor='#edf8f4' color='#51a385' list={[classification]} />
+                  <a className='look' onClick={() => setShowModal(true, {
+                    content: <BrandList />, title: '全部品牌', width: 400
+                  })}>  查看全部</a>
+                </div>
               } />
               <OneLine title='平台认证' content={
                 <div className='content-font'>
@@ -201,5 +206,8 @@ const WeChatTable = ({ data = [] }) => {
     rowKey="skuId" className='table-no-background-add-odd wachat-table'
     pagination={false}
   />
+}
+const BrandList = ({ list = ['asd', 'asdasd'] }) => {
+  return <div className='brand-list'>{list.map(one => <div key={one}>{one}</div>)}</div>
 }
 export default HeadInfo;
