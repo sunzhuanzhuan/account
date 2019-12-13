@@ -4,49 +4,61 @@ import { Button, Table, } from 'antd';
 import Prediction from './Prediction'
 import { WordCloud } from '../chart'
 import './PutPreview.less'
-export default function PutPreview({ setShowModal }) {
+import axios from 'axios'
+import { withRouter } from 'react-router-dom'
+import numeral from 'numeral'
+import { formatWNumberDefult } from '../../util'
+function PutPreview(props) {
   const [data, setData] = useState({})
+  const [brandList, setBrandList] = useState({})
+
   useEffect(() => {
     getDate()
   }, [])
   async function getDate() {
-    const { data } = api.get('/data')
-    setData(data)
+    //const { data } = await api.get(`/operator-gateway/accountDetail/v1/getOverview${props.location.search}`)
+    //const   brandData = await api.get(`/operator-gateway/accountDetail/v1/getBrandListInAccountDealOrder?dicCode=order_industry`)
+    const { data } = await axios.get(`http://yapi.ops.tst-weiboyi.com/mock/129/api/operator-gateway/accountDetail/v1/getOverview${props.location.search}`)
+    const brandData = await axios.get(`http://yapi.ops.tst-weiboyi.com/mock/129/api/operator-gateway/accountDetail/v1/getBrandListInAccountDealOrder?dicCode=order_industry`)
+    setData(data.data)
+    const list = brandData.data.data
+    list.unshift({ 'itemKey': 'D00', 'itemValue': '不限' })
+    setBrandList(list)
   }
   return (
     <div className='put-preview'>
       <div className='title-big'>投放预览</div>
       <div className='active-order '>
-        <DataActive />
+        <DataActive data={data} />
         <div className='order-statistics container'>
           <div className='header'>
             <p>投放广告数据表现</p>
             <div className='prediction-icon'
-              onClick={() => setShowModal(true, {
-                content: <Prediction setShowModal={setShowModal} />,
+              onClick={() => props.setShowModal(true, {
+                content: <Prediction setShowModal={props.setShowModal} brandList={brandList} />,
                 title: '投放预测',
                 width: '800px'
               })}>投放预测</div>
           </div>
-          <OrderStatistics />
+          <OrderStatistics dataSource={data.orderDataShowList} />
         </div>
       </div>
     </div>
   );
 }
 
-const DataActive = () => {
-  const data = [
-    { title: '总订单数', subtitle: '（预约|派单）', sum: '14', remark: `（${9}|${5}）` },
-    { title: '品牌数', subtitle: '（订单品牌）', sum: '14', remark: `（${5}）` },
-    { title: '覆盖行业', sum: '14', remark: `` },
+const DataActive = ({ data }) => {
+  const sumList = [
+    { title: '总订单数', subtitle: '（预约|派单）', sum: data.orderNum, remark: `（${data.reservationOrderNum}|${data.campaignOrderNum}）` },
+    { title: '品牌数', subtitle: '（订单品牌）', sum: data.brandNum, remark: `（${data.orderBrandNum}）` },
+    { title: '覆盖行业', sum: data.brandIndustryCategoryNum, remark: `` },
   ]
   return <div className='data-active container'>
     <div className='statistics'>
-      {data.map(item => <NumberItem item={item} key={item.title} />)}
+      {sumList.map(item => <NumberItem item={item} key={item.title} />)}
     </div>
-    <WordCloud />
-    <LineType />
+    <WordCloud data={data.brandList} />
+    <LineType list={data.brandIndustryCategoryList} />
   </div>
 }
 const NumberItem = ({ item }) => {
@@ -62,21 +74,17 @@ const NumberItem = ({ item }) => {
   </div>
 }
 
-const LineType = ({ list = [
-  { name: '母婴', value: "20%" },
-  { name: '音乐', value: "10%" },
-  { name: '其他', value: "30%" },
-  { name: '母婴1', value: "10%" },
-  { name: '音乐1', value: "10%" },
-  { name: '其他1', value: "20%" },
-] }) => {
+const LineType = ({ list = [] }) => {
   const color = { 0: '#FE6E67', 1: '#6091F9', 2: '#FAA051', 3: '#2DD8AA', 4: '#7E78FF', 5: '#E6354B' }
   return <div className='line-type-box'>
     <div className='line-type'>
-      {list.map((item, index) => <div key={item.name}
-        style={{ width: item.value, background: color[index] }}>
-        {item.value}
-      </div>)}
+      {list.map((item, index) => {
+        const value = numeral(item.value).format('0%')
+        return <div key={item.name}
+          style={{ width: value, background: color[index] }}>
+          {value}
+        </div>
+      })}
     </div>
     <div>
       <div className='line-text'>
@@ -88,50 +96,39 @@ const LineType = ({ list = [
     </div>
   </div>
 }
-const OrderStatistics = () => {
-  const dataSource = [
-    {
-      key: '1',
-      name: '平均播放',
-      age: 32,
-      address: '播放量：8989',
-    },
-    {
-      key: '2',
-      name: '平均订单',
-      age: 32,
-      address: '播放量：8989',
-    },
-    {
-      key: '3',
-      name: '平均点赞',
-      age: 32,
-      address: '播放量：8989',
-    },
-  ];
-
+const OrderStatistics = ({ dataSource }) => {
   const columns = [
     {
       title: '',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'rowName',
+      key: 'rowName',
     },
     {
       title: '投放数据',
-      dataIndex: 'age',
-      key: 'age',
+      dataIndex: 'orderMediaAvg',
+      key: 'orderMediaAvg',
+      render: text => {
+        const data = formatWNumberDefult(text)
+        return text > 0 || text == 0 ? <div className='dark-big'>{data.value}<span className='dark-small'>{data.unit}</span></div> : '-'
+      }
     },
     {
       title: 'KOL整体数据',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'kolMediaAvg',
+      key: 'kolMediaAvg',
+      render: text => {
+        const data = formatWNumberDefult(text)
+        return text > 0 || text == 0 ? <div className='dark-big'>{data.value}<span className='dark-small'>{data.unit}</span></div> : '-'
+      }
     }, {
       title: '差异比',
-      dataIndex: 'address1',
-      key: 'address1',
+      dataIndex: 'differRate',
+      key: 'differRate',
+      render: text => text > 0 || text == 0 ? <div className='light-big'>{numeral(text).format('0.0')}<span className='light-small'>%</span></div> : '-'
     }
   ];
   return <Table
     className='put-pre-table table-no-background-add-odd '
-    dataSource={dataSource} columns={columns} pagination={false} />
+    dataSource={dataSource} columns={columns} pagination={false} rowKey='rowName' />
 }
+export default withRouter(PutPreview)

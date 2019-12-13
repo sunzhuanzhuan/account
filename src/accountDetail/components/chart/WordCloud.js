@@ -14,6 +14,7 @@ import {
   Facet,
   Util
 } from "bizcharts";
+import numeral from 'numeral'
 import DataSet from "@antv/data-set";
 import _ from 'lodash'
 import { dataMock } from "./mock.js";
@@ -58,7 +59,7 @@ class Wordcloud extends React.Component {
     const max = range[1];
     dv.transform({
       type: "tag-cloud",
-      fields: ["x", "value"],
+      fields: ["name", "value"],
       size: [width, height],
       font: "Verdana",
       padding: 0,
@@ -107,9 +108,18 @@ class Wordcloud extends React.Component {
           <Geom
             type="point"
             position="x*y"
-            color="category"
+            color="name"
             shape="cloud"
-            tooltip="value*category"
+            tooltip={[
+              "name*value",
+              (name, value) => {
+                value = numeral(value).format('0.0%')
+                return {
+                  name: name,
+                  value: value
+                };
+              }
+            ]}
           />
         </Chart> : <Empty style={{ height: height + 18, paddingTop: 80 }} />}
       </div>

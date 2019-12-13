@@ -18,18 +18,27 @@ function OrderDetail(props) {
   }, [])
   useEffect(() => {
     getDetail(param)
+    console.log("TCL: OrderDetail -> param", param)
   }, [param])
   //详情信息
   async function getDetail(params) {
-    //const { data } = api.post('/orderDetail', { ...params })
-    //const { data } = await api.get('/orderlist')
-    const { data } = await axios.post('http://yapi.ops.tst-weiboyi.com/mock/129/api/operator-gateway/accountDetail/v1/getRecentOrderList', { ...baseSearch, param })
+    //const { data } = await api.post('/operator-gateway/accountDetail/v1/getRecentOrderList',{})
+    const { data } = await axios.post('http://yapi.ops.tst-weiboyi.com/mock/129/api/operator-gateway/accountDetail/v1/getRecentOrderList', {
+      form: {
+        ...baseSearch,
+        signedBrandId: params.signedBrandId,
+        acceptCreatedTime: params.acceptCreatedTime
+      }, page: {
+        currentPage: params.currentPage || 1
+      }
+    })
     setOrderDetail(data.data)
   }
   //下拉框数据
   async function getBrand() {
-    const { data = [] } = api.get('/getBrandList')
-    setBrandList(data)
+    //const { data = [] } = api.get('/operator-gateway/accountDetail/v1/getBrandListInAccountDealOrder'+props.location.search)
+    const { data } = await axios.get('http://yapi.ops.tst-weiboyi.com/mock/129/api/operator-gateway/accountDetail/v1/getBrandListInAccountDealOrder')
+    setBrandList(data.data)
   }
   const columns = [
     {
@@ -70,7 +79,7 @@ function OrderDetail(props) {
       key: 'DcOrderStatistic',
       width: '150px',
       render: (text) => <div>
-        <a href={''}>投放数据</a>
+        <a href={text.mediaUrl}>{text.mediaCaption}</a>
         <div>
           {getDeliverConfig(baseSearch.platformId).map(one => <div key={one.name}>
             {one.name}:{text[one.key]}
@@ -82,7 +91,8 @@ function OrderDetail(props) {
   ];
   //表格排序
   function handleTableChange(pagination, filters, sorter) {
-    setParam({ ...param, [sorter.columnKey]: sorter.order })
+    //此处截取是因为后台参数为asc
+    setParam({ ...param, currentPage: pagination.current, [sorter.columnKey]: sorter.order && sorter.order.substring(0, 3) })
   }
   return <div>
     <div className='title-big'>订单详情</div>
@@ -90,16 +100,16 @@ function OrderDetail(props) {
       <div className='flex-between'>
         <div >
           <Select defaultValue="lucy" style={{ width: 120, margin: '0px 20px 0px 0px' }}
-            onChange={value => setParam({ ...param, page: 1, signedBrandId: value })}>
+            onChange={value => setParam({ ...param, currentPage: 1, signedBrandId: value })} allowClear>
             {brandList.map(item => <Option
-              key={item.id} value={item.id}>
-              {item.name}
+              key={item.signedBrandId} value={item.signedBrandId}>
+              {item.signedBrandName}
             </Option>)}
           </Select>
 
           {/* <Radio.Group
             value={param.isFamous}
-            onChange={e => setParam({ ...param, page: 1, isFamous: e.target.value })}>
+            onChange={e => setParam({ ...param, currentPage: 1, isFamous: e.target.value })}>
             <Radio value={1}>预约</Radio>
             <Radio value={2}>派单</Radio>
           </Radio.Group> */}
@@ -108,8 +118,8 @@ function OrderDetail(props) {
       <div style={{ marginTop: 20 }}>
         <Table dataSource={orderDetail.list} columns={columns}
           pagination={{
-            pageSize: 2,
-            onChange: num => setParam({ ...param, page: num })
+            pageSize: 1,
+            current: param.currentPage,
           }}
           onChange={handleTableChange}
           rowKey='orderId' />
