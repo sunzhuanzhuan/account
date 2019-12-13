@@ -100,11 +100,11 @@ export const getVideo = (platformId) => {
 //页面根据平台获取相应配置信息
 const getTrendConfig = (platformId) => {
   switch (platformId) {
-    case 1:
+    case '1':
       return sina
-    case 9:
+    case '9':
       return weChat
-    case 93:
+    case '93':
       return redBook
     default:
       return getVideo(platformId)

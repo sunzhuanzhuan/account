@@ -27,13 +27,13 @@ const video = [
 
 const getDeliverConfig = (platformId) => {
   switch (platformId) {
-    case 1:
+    case '1':
       return sina
-    case 9:
+    case '9':
       return weChat
-    case 93:
+    case '93':
       return redBook
-    case 115:
+    case '115':
       return douyin
     default:
       return video

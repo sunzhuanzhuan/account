@@ -106,13 +106,6 @@ function OrderDetail(props) {
               {item.signedBrandName}
             </Option>)}
           </Select>
-
-          {/* <Radio.Group
-            value={param.isFamous}
-            onChange={e => setParam({ ...param, currentPage: 1, isFamous: e.target.value })}>
-            <Radio value={1}>预约</Radio>
-            <Radio value={2}>派单</Radio>
-          </Radio.Group> */}
         </div>
       </div>
       <div style={{ marginTop: 20 }}>

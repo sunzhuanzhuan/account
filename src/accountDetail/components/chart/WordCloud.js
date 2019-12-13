@@ -19,7 +19,9 @@ import DataSet from "@antv/data-set";
 import _ from 'lodash'
 import { dataMock } from "./mock.js";
 import { Empty } from "antd";
-
+import {
+  g2Tooltip
+} from "./config";
 class Wordcloud extends React.Component {
   render() {
     const { height = '217',
@@ -103,7 +105,7 @@ class Wordcloud extends React.Component {
           padding={0}
           forceFit
         >
-          <Tooltip showTitle={false} />
+          <Tooltip showTitle={false} g2-tooltip={g2Tooltip} />
           <Coord reflect="y" />
           <Geom
             type="point"

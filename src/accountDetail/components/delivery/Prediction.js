@@ -12,7 +12,6 @@ const Prediction = (props) => {
   const { getFieldDecorator, validateFields } = props.form
   function startPrediction() {
     validateFields((err, values) => {
-      console.log("TCL: startPrediction -> values", values)
       if (!err) {
         getForecast(values)
       }
@@ -23,7 +22,6 @@ const Prediction = (props) => {
     const params = qs.stringify({ ...values, accountId: search.accountId })
     //const { data } = await api.get(`/operator-gateway/accountDetail/v1/getForecast${params}`)
     const { data } = await axios.get(`http://yapi.ops.tst-weiboyi.com/mock/129/api/operator-gateway/accountDetail/v1/getForecast?${params}`)
-    console.log("TCL: getForecast -> data", data)
     setPreResult(data.data)
   }
   return <Form layout='inline'>
@@ -56,7 +54,6 @@ const PredictionForm = Form.create()(Prediction)
 export default withRouter(PredictionForm)
 
 const PredicResult = ({ dataSource = [] }) => {
-  console.log("TCL: PredicResult -> dataSource", dataSource)
   const columns = [
     {
       title: '品牌名称',

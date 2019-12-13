@@ -4,6 +4,8 @@ import { CharTitle, CurveLine } from "./chart";
 import ButtonTab from '../base/ButtonTab'
 import api from '../../api'
 import getTrendConfig from '../constants/DataTrendsConfig'
+import { withRouter } from 'react-router-dom'
+import qs from 'qs'
 function DataTrendsVideo(props) {
   const [trendInfo, setTrendInfo] = useState({})
   useEffect(() => {
@@ -14,10 +16,8 @@ function DataTrendsVideo(props) {
     const { data } = await api.get(`/operator-gateway/accountDetail/v1/getTrend?accountId=${props.accountId}`)
     setTrendInfo(data)
   }
-  const { baseInfo = {} } = props
-  const { base = {} } = baseInfo
-  const { platformId } = base
-  const trendConfig = getTrendConfig(platformId)
+  const searchParam = qs.parse(props.location.search.substring(1))
+  const trendConfig = getTrendConfig(searchParam.platformId)
   function getContentMap() {
     let contentMap = {}
     trendConfig.trend.forEach(item => {
@@ -43,5 +43,5 @@ function DataTrendsVideo(props) {
     </div>
   )
 }
-export default DataTrendsVideo
+export default withRouter(DataTrendsVideo)
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '@/api'
-import { Button, Table, } from 'antd';
+import { Button, Table, Tooltip, } from 'antd';
 import Prediction from './Prediction'
 import { WordCloud } from '../chart'
 import './PutPreview.less'
@@ -80,10 +80,10 @@ const LineType = ({ list = [] }) => {
     <div className='line-type'>
       {list.map((item, index) => {
         const value = numeral(item.value).format('0%')
-        return <div key={item.name}
+        return <Tooltip key={item.name} title={`${item.name}：${value}`}><div
           style={{ width: value, background: color[index] }}>
           {value}
-        </div>
+        </div></Tooltip>
       })}
     </div>
     <div>

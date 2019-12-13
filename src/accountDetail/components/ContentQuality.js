@@ -6,6 +6,9 @@ import { formatWNumber } from "../util";
 import api from '../../api'
 import getQualityConfig, { keyToName } from '../constants/ContentQualityConfig'
 import TopTenList from './TopTenList';
+import AccountHabits from './AccountHabits'
+import { withRouter } from 'react-router-dom'
+import qs from 'qs'
 const dataFormate = (data = {}, type, day) => {
   const low = data[`media${type}Min${day}d`]
   const high = data[`media${type}Max${day}d`]
@@ -25,8 +28,8 @@ const dataFormate = (data = {}, type, day) => {
   }
 }
 function ContentQuality(props) {
-  const { platformId } = props
-  const defaultKey = getQualityConfig(platformId).defaultKey
+  const searchParam = qs.parse(props.location.search.substring(1))
+  const defaultKey = getQualityConfig(searchParam.platformId).defaultKey
   const [dataBox, setDataBox] = useState({})
   const [checkedKey, setCheckedKey] = useState(defaultKey)
   useEffect(() => {
@@ -42,7 +45,7 @@ function ContentQuality(props) {
   }
   function getContentMap() {
     let contentMap = {}
-    getQualityConfig(platformId).quality.forEach(item => {
+    getQualityConfig(searchParam.platformId).quality.forEach(item => {
       contentMap[item.key] = <DataBox data={dataBox[item.key]} />
     });
     return contentMap
@@ -56,7 +59,7 @@ function ContentQuality(props) {
           <div className='last-box-decide'>
             <div className='data-box-left'>
               <ButtonTab
-                buttonList={getQualityConfig(platformId).quality}
+                buttonList={getQualityConfig(searchParam.platformId).quality}
                 onChange={(value) => setCheckedKey(value)}
                 contentMap={getContentMap()}
               />
@@ -65,13 +68,14 @@ function ContentQuality(props) {
           </div>
           {/* 近10条数据 */}
           <TopTenList accountId={props.accountId} platformId={props.platformId} />
+          <AccountHabits />
         </div>
       </div>
     </div>
   )
 }
 
-export default ContentQuality
+export default withRouter(ContentQuality)
 const RightDecide = ({ data = [], type }) => {
   const data90 = data[0] || {}
   const data28 = data[1] || {}
