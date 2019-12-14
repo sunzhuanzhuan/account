@@ -219,6 +219,7 @@ export class NamelessPrice extends Component {
           <PriceTable
             data={this.props.data}
             isEdit
+            priceInfo={priceInfo}
             priceKeys={['costPriceRaw', 'channelPrice', 'publicationPrice']}
             action={this.props.actions.calculatePrice}
             pid={this.props.pid}
@@ -387,6 +388,7 @@ export class FamousPrice extends Component {
             isEdit={_data.right}
             priceKeys={['costPriceRaw', 'channelPrice', 'publicationPrice']}
             data={this.props.data}
+            priceInfo={priceInfo}
             action={this.props.actions.calculatePrice}
           />
         )}
@@ -429,6 +431,7 @@ export class FamousPrice extends Component {
         })(
           <PriceTable
             data={this.props.data}
+            priceInfo={priceInfo}
             isEdit={canEditPrice}
             priceKeys={['nextCostPriceRaw', 'nextChannelPrice', 'nextPublicationPrice']}
             action={this.props.actions.calculatePrice}
@@ -540,12 +543,12 @@ class PriceTable extends Component {
   };
 
   render() {
-    const { isEdit, priceKeys } = this.props;
+    const { isEdit, priceKeys, priceInfo = {} } = this.props;
     const {
       partnerType,
       taxRate,
       invoiceType
-    } = this.props.priceInfo;
+    } = priceInfo;
     const { value } = this.state;
     return <div>
       <span>{partnerType == 1 ? '报价含税（' : '报价不含税'}
