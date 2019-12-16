@@ -21,28 +21,6 @@ import debounce from "lodash/debounce";
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 
-// 合并报价项到当前存在的报价项中
-function assiginPriceKeys(obj1 = {}, obj2 = {}) {
-  let _obj = {};
-  for (let key in obj1) {
-    if (!obj1.hasOwnProperty(key)) continue;
-    _obj[key] = obj2[key] || obj1[key];
-  }
-  return _obj;
-}
-// 过滤空报价
-function filterEmptyPrice(obj1 = {}) {
-  let _obj = {};
-  for (let key in obj1) {
-    if (!obj1.hasOwnProperty(key)) continue;
-    if (obj1[key]) {
-      _obj[key] = obj1[key];
-    } else {
-      _obj[key] = 0;
-    }
-  }
-  return _obj;
-}
 
 // 检查最少一项报价
 const checkPrice = (onOff, otherCheck) => (rule, value = {}, callback) => {
@@ -626,7 +604,7 @@ class PriceTable extends Component {
   }
 }
 
-// 预约账号接单状态
+// 派单账号接单状态
 class NamelessStatus extends Component {
   constructor(props) {
     super(props);
@@ -645,14 +623,6 @@ class NamelessStatus extends Component {
   };
 
   handleForcedOrder = (e) => {
-    this.setState({ forcedOrder: e.target.checked });
-  };
-
-  handleisAllow = (e) => {
-    this.setState({ isAllow: e.target.value });
-  };
-
-  handleforcedOrder = (e) => {
     this.setState({ forcedOrder: e.target.checked });
   };
 

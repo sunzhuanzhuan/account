@@ -3,7 +3,4 @@ module.exports = function (app) {
   app.use(proxy('/api',
     { target: 'http://nb.dev-weiboyi.com', changeOrigin: true }
   ));
-  app.use(proxy('/api/account',
-    { target: 'http://192.168.100.117:30006', changeOrigin: true }
-  ));
 }
