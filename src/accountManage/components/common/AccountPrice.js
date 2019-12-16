@@ -196,9 +196,9 @@ const AccountPriceHelp = () => {
     <img src={require('../../images/help.jpg')} />
   </div>;
   return <div>
-    <Popover getPopupContainer={() => document.querySelector('.price_scroll_container') || document.querySelector('#account-manage-container')} placement="topLeft" title={null} content={content} trigger="click">
+    {/* <Popover getPopupContainer={() => document.querySelector('.price_scroll_container') || document.querySelector('#account-manage-container')} placement="topLeft" title={null} content={content} trigger="click">
       <a>查看订单成本, 收入计算规则</a>
-    </Popover>
+    </Popover> */}
   </div>;
 };
 
