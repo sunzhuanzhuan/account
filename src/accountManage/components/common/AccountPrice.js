@@ -570,8 +570,8 @@ class PriceTable extends Component {
     const { value } = this.state;
     return <div>
       {partnerType ? <span>{partnerType == 1 ? '报价含税（' : '报价不含税'}
-        {partnerType == 1 ? invoiceType == 1 ? '回票类型：增值税专用发票' : '回票类型：增值税普通发票' : null}
-        {partnerType == 1 && invoiceType == 1 ? '税点:' + taxRate * 100 + '%)' : null}
+        {partnerType == 1 ? invoiceType == 1 ? '回票类型：增值税专用发票' : '回票类型：增值税普通发票）' : null}
+        {partnerType == 1 && invoiceType == 1 ? '，税点:' + taxRate * 100 + '%)' : null}
       </span> : null}
       <div className='price-table'>
         <div className='price-table-head'>
