@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import api from '@/api'
 import { Select, Radio, Table } from 'antd'
 import './OrderDetail.less'
-import axios from 'axios'
 import qs from 'qs'
 import { withRouter } from 'react-router-dom'
 import getDeliverConfig from '../../constants/deliveryConfig'
@@ -22,8 +21,7 @@ function OrderDetail(props) {
   }, [param])
   //详情信息
   async function getDetail(params) {
-    //const { data } = await api.post('/operator-gateway/accountDetail/v1/getRecentOrderList',{})
-    const { data } = await axios.post('http://yapi.ops.tst-weiboyi.com/mock/129/api/operator-gateway/accountDetail/v1/getRecentOrderList', {
+    const { data } = await api.post('/operator-gateway/accountDetail/v1/getRecentOrderList', {
       form: {
         ...baseSearch,
         signedBrandId: params.signedBrandId,
@@ -32,13 +30,12 @@ function OrderDetail(props) {
         currentPage: params.currentPage || 1
       }
     })
-    setOrderDetail(data.data)
+    setOrderDetail(data)
   }
   //下拉框数据
   async function getBrand() {
-    //const { data = [] } = api.get('/operator-gateway/accountDetail/v1/getBrandListInAccountDealOrder'+props.location.search)
-    const { data } = await axios.get('http://yapi.ops.tst-weiboyi.com/mock/129/api/operator-gateway/accountDetail/v1/getBrandListInAccountDealOrder')
-    setBrandList(data.data)
+    const { data = [] } = await api.get('/operator-gateway/accountDetail/v1/getBrandListInAccountDealOrder' + props.location.search)
+    setBrandList(data)
   }
   const columns = [
     {

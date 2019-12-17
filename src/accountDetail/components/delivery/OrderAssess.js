@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import './OrderAssess.less'
 import api from '@/api'
 import { List, Rate, Radio } from 'antd'
-import axios from 'axios'
 import qs from 'qs'
 import { withRouter } from 'react-router-dom'
 function OrderAssess(props) {
@@ -12,11 +11,13 @@ function OrderAssess(props) {
   useEffect(() => {
     getOrderlist()
   }, [])
+  useEffect(() => {
+    getOrderlist(searchParam)
+  }, [searchParam])
   async function getOrderlist(param) {
     const baseSearch = qs.parse(props.location.search.substring(1))
-    //const { data } = await api.get('/orderlist')
-    const { data } = await axios.post('http://yapi.ops.tst-weiboyi.com/mock/129/api/operator-gateway/accountDetail/v1/getRecentOrderList', { ...baseSearch, param })
-    setOrderList(data.data)
+    const { data } = await api.post('/operator-gateway/accountDetail/v1/getRecentOrderList', { ...baseSearch, param })
+    setOrderList(data)
   }
   return (
     <div className='order-assess'>

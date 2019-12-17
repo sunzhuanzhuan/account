@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { CharTitle, Histogram } from "./chart";
 import './AccountHabits.less'
-import axios from 'axios';
+import api from '@/api'
 import { withRouter } from 'react-router-dom'
 function AccountHabits(props) {
   const [data, setData] = useState({})
@@ -11,8 +11,8 @@ function AccountHabits(props) {
   //获取数据
   async function getDispatchHabit() {
     const param = props.location.search
-    const { data } = await axios.get('http://yapi.ops.tst-weiboyi.com/mock/129/api/operator-gateway/accountDetail/v1/getDispatchHabit')
-    setData(data.data)
+    const { data } = await api.get(`/operator-gateway/accountDetail/v1/getDispatchHabit${param}`)
+    setData(data)
   }
   return (
     <div className='account-habits'>

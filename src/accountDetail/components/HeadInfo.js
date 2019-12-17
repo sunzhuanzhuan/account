@@ -24,7 +24,8 @@ class HeadInfo extends Component {
       snsName, snsId, followerCount, introduction, platformId = 0,
       url, qrCodeUrl, cooperationTips,
       verifiedStatusName,
-      classification = '-',
+      classificationList = [],
+      brandList = []
     } = base
     const { wholeRank = 0, orderResponseDuration, orderResponsePercentile,
       orderAcceptanceNum = '-', orderAcceptanceRate, orderMajorIndustryCategory, orderCompleteDuration,
@@ -32,6 +33,7 @@ class HeadInfo extends Component {
     //排名处理
     const platformName = platformView[platformId] || '-'
     const wholeRankCN = `${platformName}NO.${wholeRank}`
+
     return (
       <div className="head-info">
         <div className='head-avatar'>
@@ -78,15 +80,15 @@ class HeadInfo extends Component {
           <div className='info-bottom-three'>
             <div className='base-info'>
               <OneLine title='账号标签' content={
-                classification == '-' ? null : <FatLable backColor='#F3F8FD' color='#78A3CE' list={[classification]} />
+                classificationList.length > 0 ? <FatLable backColor='#F3F8FD' color='#78A3CE' list={[classificationList]} /> : null
               } />
               <OneLine title='关联品牌' content={
-                classification == '-' ? null : <div style={{ display: 'flex' }}>
-                  <FatLable backColor='#edf8f4' color='#51a385' list={[classification]} />
+                brandList.length > 0 ? <div style={{ display: 'flex' }}>
+                  <FatLable backColor='#edf8f4' color='#51a385' list={[brandList]} />
                   <a className='look' onClick={() => setShowModal(true, {
                     content: <BrandList />, title: '全部品牌', width: 400
                   })}>  查看全部</a>
-                </div>
+                </div> : '-'
               } />
               <OneLine title='平台认证' content={
                 <div className='content-font'>
@@ -101,13 +103,13 @@ class HeadInfo extends Component {
             </div>
             <div className='type-info'>
               <div className='type-info-row' >
-                <OneType title="内容分类" content={classification} color='#ff4d4b' />
+                <OneType title="内容分类" content={classificationList[0]} color='#ff4d4b' />
                 <OneType title="接单数" content={orderAcceptanceNum} />
-                <OneType title="响应时间" content={FieldMap.getSegmentByFloat(orderResponsePercentile)} last={`${orderResponseDuration ? FieldMap.getTime(orderResponseDuration) : '-'}`} />
+                <OneType title="响应时间" content={FieldMap.getSegmentByFloat(orderResponsePercentile)} last={`${orderResponseDuration ? FieldMap.getTime(orderResponseDuration) : ''}`} />
               </div>
               <div className='type-info-row'>
                 <OneType title="历史服务最多分类" content={orderMajorIndustryCategory || '-'} />
-                <OneType title="接单率" content={FieldMap.getSegmentByFloat(orderAcceptanceRate)} last={orderAcceptanceRate ? numeral(orderAcceptanceRate).format('0%') : '-'} />
+                <OneType title="接单率" content={FieldMap.getSegmentByFloat(orderAcceptanceRate)} last={orderAcceptanceRate ? numeral(orderAcceptanceRate).format('0%') : ''} />
                 <OneType title="平均订单完结周期" content={orderCompleteDuration ? `${numeral(orderCompleteDuration / 3600 / 24).format('0.00')}天` : '-'} last={
                   <a style={{ fontSize: 13 }} onClick={() => setShowModal(true, {
                     content: <RecentPrice />, title: `近期应约（${accountDetail.historyPriceCount}）`, width: 1000

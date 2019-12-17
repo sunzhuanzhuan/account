@@ -20,9 +20,8 @@ const Prediction = (props) => {
   async function getForecast(values) {
     const search = qs.parse(props.location.search.substring(1))
     const params = qs.stringify({ ...values, accountId: search.accountId })
-    //const { data } = await api.get(`/operator-gateway/accountDetail/v1/getForecast${params}`)
-    const { data } = await axios.get(`http://yapi.ops.tst-weiboyi.com/mock/129/api/operator-gateway/accountDetail/v1/getForecast?${params}`)
-    setPreResult(data.data)
+    const { data } = await api.get(`/operator-gateway/accountDetail/v1/getForecast${params}`)
+    setPreResult(data)
   }
   return <Form layout='inline'>
     <Form.Item label="请输入你投放的品牌名称">

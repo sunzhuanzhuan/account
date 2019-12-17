@@ -71,7 +71,7 @@ class AccountDetail extends Component {
       baseInfo, trendInfo,
       queryOrderCooperationList,
       queryIndustryInfoList,
-      isExistCar, newVideoList } = accountDetail
+      isExistCar, newVideoList, feature = {} } = accountDetail
     const { getTrend,
       getQueryOrderCooperationList, addQueryIndustryInfoList,
       getQueryIndustryInfoList, getNewVideo } = actions
@@ -106,7 +106,7 @@ class AccountDetail extends Component {
           {/* 头部基础信息 */}
           <HeadInfo {...headProps} />
           <div className='data-charts'>
-            <div className='updata-time'>数据更新时间：{'接口获取'}</div>
+            <div className='updata-time'>数据更新时间：{feature.featureModifiedTime}</div>
             <Tabs defaultActiveKey="1" onChange={this.changeType} className='detail-tabs' size='large'>
               <TabPane tab="平台数据" key="1">
                 {/* 数据指标 */}

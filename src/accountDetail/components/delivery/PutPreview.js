@@ -4,7 +4,6 @@ import { Button, Table, Tooltip, } from 'antd';
 import Prediction from './Prediction'
 import { WordCloud } from '../chart'
 import './PutPreview.less'
-import axios from 'axios'
 import { withRouter } from 'react-router-dom'
 import numeral from 'numeral'
 import { formatWNumberDefult } from '../../util'
@@ -15,15 +14,13 @@ function PutPreview(props) {
   useEffect(() => {
     getDate()
   }, [])
-  async function getDate() {
-    //const { data } = await api.get(`/operator-gateway/accountDetail/v1/getOverview${props.location.search}`)
-    //const   brandData = await api.get(`/operator-gateway/accountDetail/v1/getBrandListInAccountDealOrder?dicCode=order_industry`)
-    const { data } = await axios.get(`http://yapi.ops.tst-weiboyi.com/mock/129/api/operator-gateway/accountDetail/v1/getOverview${props.location.search}`)
-    const brandData = await axios.get(`http://yapi.ops.tst-weiboyi.com/mock/129/api/operator-gateway/accountDetail/v1/getBrandListInAccountDealOrder?dicCode=order_industry`)
-    setData(data.data)
-    const list = brandData.data.data
-    list.unshift({ 'itemKey': 'D00', 'itemValue': '不限' })
-    setBrandList(list)
+  function getDate() {
+    api.get(`/operator-gateway/accountDetail/v1/getOverview${props.location.search}`).then(({ data }) => { setData(data) })
+    api.get(`/operator-gateway/accountDetail/v1/getBrandListInAccountDealOrder?dicCode=order_industry`).then(({ data }) => {
+      let list = data
+      list.unshift({ 'itemKey': 'D00', 'itemValue': '不限' })
+      setBrandList(list)
+    })
   }
   return (
     <div className='put-preview'>

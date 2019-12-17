@@ -13,23 +13,23 @@ import './CompositeRadar.less'
 
 class DataBox extends Component {
   render() {
-    const { data = [] } = this.props
+    const { data = [], afterText } = this.props
     const { DataView } = DataSet;
     const dataDefault = [
       {
         x: "Oceania",
         low: 1,
-        q1: 9,
+        lowerQuartile: 9,
         median: 16,
-        q3: 22,
-        high: 24
+        upperQuartile: 22,
+        max: 24
       }
     ];
     const dv = new DataView().source(data);
     dv.transform({
       type: "map",
       callback: obj => {
-        obj.range = [obj.low, obj.q1, obj.median, obj.q3, obj.high];
+        obj.range = [obj.low, obj.lowerQuartile, obj.median, obj.upperQuartile, obj.max];
         return obj;
       }
     });
@@ -47,7 +47,12 @@ class DataBox extends Component {
           padding={[20, 80, 45]}
           forceFit
         >
-          <Axis name="x" />
+          <Axis name="x" label={{
+            formatter(text) {
+              let arr = text.split(' ');
+              return `近${arr[0]}${afterText}`;
+            }
+          }} />
           <Axis name="range" label={{
             formatter(text) {
               let arr = text.split(' ');
@@ -65,20 +70,20 @@ class DataBox extends Component {
               }
             }}
             htmlContent={function (title, items) {
-              const { name, high, q3, median, q1, low } = items && items[0]
+              const { name, max, upperQuartile, median, lowerQuartile, low } = items && items[0]
               return `<div class='custom-tooltip' style='width:160px;padding:10px'>
               <div data-index={index} style=&quot;margin-bottom:2px;&quot;>
               <span style=&quot;padding-left: 16px&quot;>
-                最大值：${formatW(high)}
+                最大值：${formatW(max)}
               </span><br/>
               <span style=&quot;padding-left: 16px&quot;>
-                上四分位数：${formatW(q3)}
+                上四分位数：${formatW(upperQuartile)}
               </span><br/>
               <span style=&quot;padding-left: 16px&quot;>
                 中位数：${formatW(median)}</span>
               <br/>
               <span style=&quot;padding-left: 16px&quot;>
-                下四分位数：${formatW(q1)}
+                下四分位数：${formatW(lowerQuartile)}
               </span><br/>
               <span style=&quot;padding-left: 16px&quot;>
                 最小值：${formatW(low)}
@@ -95,15 +100,15 @@ class DataBox extends Component {
             shape="box"
             color={'#1990ff'}
             tooltip={[
-              "x*low*q1*median*q3*high",
-              (x, low, q1, median, q3, high) => {
+              "x*low*lowerQuartile*median*upperQuartile*max",
+              (x, low, lowerQuartile, median, upperQuartile, max) => {
                 return {
                   name: x,
                   low,
-                  q1,
+                  lowerQuartile,
                   median,
-                  q3,
-                  high
+                  upperQuartile,
+                  max
                 };
               }
             ]}

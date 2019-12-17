@@ -9,8 +9,7 @@ import numeral from 'numeral'
 import { Divider, Empty, Tooltip, Table } from "antd";
 import { withRouter } from 'react-router-dom'
 import qs from 'qs'
-//import api from '../../api'
-import axios from 'axios'
+import api from '../../api'
 function DataIndicator(props) {
   const [indicatorData, setIndicatorData] = useState({})
   const [dataIndex, setDataIndex] = useState([])
@@ -20,9 +19,9 @@ function DataIndicator(props) {
   }, [])
 
   async function getData() {
-    const { data } = await axios.get(' http://yapi.ops.tst-weiboyi.com/mock/129/api/operator-gateway/accountDetail/v1/getMediaStatistics')
-    setIndicatorData(data.data)
-    setDataIndex(data.data.comprehensiveIndex.data)
+    const { data } = await api.get('/operator-gateway/accountDetail/v1/getMediaStatistics')
+    setIndicatorData(data)
+    setDataIndex(data.comprehensiveIndex.data)
   }
   console.log("TCL: DataIndicator -> indicatorData", indicatorData)
 
