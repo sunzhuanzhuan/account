@@ -4,16 +4,16 @@ const weChatContent = {
   content: '可观察最近10周账号阅读数和点赞数变化趋势',
   dataKey: 'contentSum',//图表数据对应key值
   BluelineText: '阅读数',
-  BluelineName: 'followerCountFull',
+  BluelineName: 'mediaRead',
   GreenlineText: '点赞数',
-  GreenlineName: 'followerCountIncre'
+  GreenlineName: 'mediaLike'
 }
 //微信数据趋势配置
 export const weChat = {
   trend: [
-    { key: 1, name: '全部', content: { ...weChatContent, dataKey: 'contentSum' } },
-    { key: 2, name: '第一条', content: { ...weChatContent, dataKey: 'contentSum' } },
-    { key: 3, name: '第二条', content: { ...weChatContent, dataKey: 'contentSum' } }
+    { key: 1, name: '全部', content: { ...weChatContent, dataKey: 'allWeChat' } },
+    { key: 2, name: '第一条', content: { ...weChatContent, dataKey: 'positionFirstWeChat' } },
+    { key: 3, name: '第二条', content: { ...weChatContent, dataKey: 'positionSecondWeChat' } }
   ],
 }
 //微博图表配置
@@ -22,16 +22,16 @@ const sinaContent = {
   content: '可观察最近10周账号评论数和点赞数变化趋势',
   dataKey: 'contentSum',//图表数据对应key值
   BluelineText: '评论数',
-  BluelineName: 'followerCountFull',
+  BluelineName: 'mediaCommend',
   GreenlineText: '点赞数',
-  GreenlineName: 'followerCountIncre'
+  GreenlineName: 'mediaLike'
 }
 //微博数据趋势配置
 export const sina = {
   trend: [
-    { key: 1, name: '全部', content: { ...sinaContent, dataKey: 'contentSum' } },
-    { key: 2, name: '直发', content: { ...sinaContent, dataKey: 'contentSum' } },
-    { key: 3, name: '转发', content: { ...sinaContent, dataKey: 'contentSum' } }
+    { key: 1, name: '全部', content: { ...sinaContent, dataKey: 'allSina' } },
+    { key: 2, name: '直发', content: { ...sinaContent, dataKey: 'directSina' } },
+    { key: 3, name: '转发', content: { ...sinaContent, dataKey: 'indirectSina' } }
   ],
 }
 //小红书图表配置
@@ -40,16 +40,16 @@ const redBookContent = {
   content: '可观察最近10周账号评论数和点赞数变化趋势',
   dataKey: 'contentSum',//图表数据对应key值
   BluelineText: '评论数',
-  BluelineName: 'followerCountFull',
+  BluelineName: 'mediaCommend',
   GreenlineText: '点赞数',
-  GreenlineName: 'followerCountIncre'
+  GreenlineName: 'mediaLike'
 }
 //小红书数据趋势配置
 export const redBook = {
   trend: [
-    { key: 1, name: '全部', content: { ...redBookContent, dataKey: 'contentSum' } },
-    { key: 2, name: '图文', content: { ...redBookContent, dataKey: 'contentSum' } },
-    { key: 3, name: '视频', content: { ...redBookContent, dataKey: 'contentSum' } }
+    { key: 1, name: '全部', content: { ...redBookContent, dataKey: 'allSmallRedBook' } },
+    { key: 2, name: '图文', content: { ...redBookContent, dataKey: 'PictureSmallRedBook' } },
+    { key: 3, name: '视频', content: { ...redBookContent, dataKey: 'VideoSmallRedBook' } }
   ]
 }
 //视频数据趋势配置

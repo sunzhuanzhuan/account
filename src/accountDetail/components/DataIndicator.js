@@ -37,7 +37,7 @@ function DataIndicator(props) {
       case '1':
         return <WechatInfo feature={indicatorData.weixin} />
       case '2':
-        return <SinaInfo base={base} feature={indicatorData.weibo} />
+        return <SinaInfo feature={indicatorData.weibo} />
       case '4':
         return <RedBookInfo feature={indicatorData.xiaohongshu} />
       default:
@@ -155,7 +155,7 @@ const VideoInfo = ({ feature = {}, base = {} }) => {
         <div className='fan-release-item '>
           <HeadBox
             title={'总粉丝数'}
-            number={base.followerCount || 21}
+            number={feature.followerCount || 21}
             percent={feature.followerCountRateOnClassificationPriceTag} typeContent='同分类同价格总粉丝数均值' />
           <Divider type="vertical" className='height20-colorE3' />
           <ThreeNumber
