@@ -21,17 +21,15 @@ function DataIndicator(props) {
   async function getData() {
     const { data } = await api.get('/operator-gateway/accountDetail/v1/getMediaStatistics')
     setIndicatorData(data)
-    setDataIndex(data.comprehensiveIndex.data)
+    setDataIndex(data.comprehensiveIndex)
   }
-  console.log("TCL: DataIndicator -> indicatorData", indicatorData)
-
   const { baseInfo = {} } = props
-  const { feature = {}, base = {}, composite = {} } = baseInfo
+  const { base = {}, } = baseInfo
   const {
-    wholeIndex, //综合指数
-    wholeRankOnClassification, //类型排名
-  } = feature
-  const { legend = ['', ''] } = composite
+    comprehensiveCommericalIndex, //综合指数
+    hogwartsComprehensiveCommericalIndexRankOnClassification, //类型排名
+  } = dataIndex
+  const { legend = ['', ''] } = dataIndex
 
   function getChildren() {
     const groupType = searchParams.groupType
@@ -57,19 +55,19 @@ function DataIndicator(props) {
                 <div className='text'>
                   <CharTitle title='商业价值指数' color='#999' content='基于互动指数、内容传播指数、活跃度指数、健康指数、商业适应度指数、成长指数这6个指标加权计算综合指标。' />
                 </div>
-                <div className='score'>{numeral(wholeIndex).format('0')}</div>
+                <div className='score'>{numeral(comprehensiveCommericalIndex).format('0')}</div>
               </div>
               <Divider type="vertical" style={{ height: 40, margin: '0px 20px' }} />
               <div className='left-index'>
                 <div className='text' style={{ marginTop: 7 }}>
                   <CharTitle title={`${legend[1] || '-'}分类排名`} color='#999' />
                 </div>
-                <div>NO.<span className='score'>{wholeRankOnClassification || '-'}</span></div>
+                <div>NO.<span className='score'>{hogwartsComprehensiveCommericalIndexRankOnClassification || '-'}</span></div>
               </div>
             </div>
 
             <div>
-              {dataIndex ? <CompositeRadar data={dataIndex} legendType={legend} /> : <Empty style={{ marginTop: '10%' }} />}
+              {dataIndex ? <CompositeRadar data={dataIndex.data} legendType={legend} /> : <Empty style={{ marginTop: '10%' }} />}
             </div>
           </div>
         </div>
