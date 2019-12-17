@@ -17,7 +17,7 @@ const EditRuleForm = (props) => {
     };
 
     const { showEditRuleModal, editRuleModalClose, type } = props;
-    return <Modal width={800} onOk={handleSubmit} maskClosable={false} mask={false} visible={showEditRuleModal} onCancel={editRuleModalClose}>
+    return <Modal title={'修改规则'} width={1000} onOk={handleSubmit} maskClosable={false} mask={false} visible={showEditRuleModal} onCancel={editRuleModalClose}>
         <Form onSubmit={handleSubmit}>
             {type == 'all' ?
                 <PlatformEdit {...props}></PlatformEdit> :

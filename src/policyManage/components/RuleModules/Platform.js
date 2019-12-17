@@ -13,7 +13,7 @@ import {
 } from '../../constants/dataConfig'
 const formItemLayout = {
     labelCol: { span: 2 },
-    wrapperCol: { span: 21 },
+    wrapperCol: { span: 22 },
 };
 const platformList = [
     { id: 1, name: '新浪微博' },

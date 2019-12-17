@@ -17,7 +17,7 @@ import { PlatformView, PlatformEdit } from '../components/RuleModules/Platform'
 import { AccountView, AccountEdit } from '../components/RuleModules/Account'
 import { DiscountView, DiscountEdit } from '../components/RuleModules/Discount'
 import { RebateView, RebateEdit } from '../components/RuleModules/Rebate'
-
+import './RuleModule.less'
 // let ruleID = 1;
 const RuleModule = (props) => {
     const { type } = props;
@@ -33,26 +33,10 @@ const RuleModule = (props) => {
         wrapperCol: { span: 21 },
     };
 
-    const addRule = () => {
-        const _rules = [...rules];
-        if (_rules.length <= 3) {
-            _rules.push(ruleID)
+    const delRule = () => {
 
-            setRuleID(ruleID + 1);
-            setRules(_rules);
-        } else {
-            //最多可以添加3个规则
-        }
     }
-    const delRule = (ruleID) => {
-        let _rules = [];
-        if (rules.length > 1) {
-            _rules = rules.filter(item => ruleID !== item)
-            setRules(_rules);
-        } else {
-            //至少保留一个规则
-        }
-    }
+
     return <div>
         {/* <div>政策规则：<Button type="link" onClick={addRule}>+添加</Button></div> */}
         {/* <Modal visible={showAddRuleModal} onClose={() => setshowAddRuleModal(false)}> */}
@@ -81,8 +65,6 @@ const RuleModule = (props) => {
                 }
                 <DiscountView></DiscountView>
                 <RebateView></RebateView>
-                {/* <Discount {...props} index={item}></Discount> */}
-                {/* <Rebate {...props} index={item}></Rebate> */}
             </RuleCard>)
         }
 

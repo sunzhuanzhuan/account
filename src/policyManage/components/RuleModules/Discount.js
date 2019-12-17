@@ -14,7 +14,7 @@ import {
 
 const formItemLayout = {
     labelCol: { span: 2 },
-    wrapperCol: { span: 21 },
+    wrapperCol: { span: 22 },
 };
 
 export const DiscountEdit = (props) => {
@@ -27,11 +27,11 @@ export const DiscountEdit = (props) => {
         useType(e.target.value)
     }
     return <Row className='platform-wrap'>
-        <Col className='form-label' span={2}>折扣：</Col>
-        {!visible ? <Col span={19}>
+        <Col className='form-label' span={formItemLayout.labelCol.span}>折扣：</Col>
+        {!visible ? <Col className='ant-form-item-label' span={formItemLayout.wrapperCol.span}>
             <Button type='link' onClick={() => setVisible(true)}>+添加折扣</Button>
         </Col> :
-            <Col span={19} style={{ background: '#eee' }}>
+            <Col span={formItemLayout.wrapperCol.span} style={{ background: '#eee' }}>
                 <Form.Item label="类型：" {...formItemLayout}>
                     {getFieldDecorator(`rules.platform[${index}].type`, {
                         initialValue: Rule_Discount_Ratio,
