@@ -27,12 +27,12 @@ class HeadInfo extends Component {
       classificationList = [],
       brandList = []
     } = base
-    const { wholeRank = 0, orderResponseDuration, orderResponsePercentile,
+    const { hogwartsComprehensiveCommericalIndexRank = 0, orderResponseDuration, orderResponsePercentile,
       orderAcceptanceNum = '-', orderAcceptanceRate, orderMajorIndustryCategory, orderCompleteDuration,
       isVerified, verificationReason } = feature
     //排名处理
     const platformName = platformView[platformId] || '-'
-    const wholeRankCN = `${platformName}NO.${wholeRank}`
+    const wholeRankCN = `${platformName}NO.${hogwartsComprehensiveCommericalIndexRank}`
 
     return (
       <div className="head-info">

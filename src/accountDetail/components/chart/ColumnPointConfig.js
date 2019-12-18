@@ -17,9 +17,9 @@ const readItem = (item) => `<div class='item'>
 <div><img src='${require('../img/read.png')}' width='16'/></div>
 <div>${formatW(item.mediaReadNum)}</div>
 </div>`
-const favoriteItem = (item) => `<div class='item'>
+const collectItem = (item) => `<div class='item'>
 <div><img src='${require('../img/favorite.png')}' width='16'/></div>
-<div>${formatW(item.mediaFavoriteNum)}</div>
+<div>${formatW(item.mediaCollectNum)}</div>
 </div>`
 const playItem = (item) => `<div class='item'>
 <div><img src='${require('../img/play.png')}' width='16'/></div>
@@ -57,7 +57,7 @@ const weChatLabel = (dataItem) => {
   <a class='label-box' href=${dataItem.mediaUrl} target="_blank">
         ${imgCover(dataItem)}
         ${mediaCaption(dataItem)}
-        <div class='media-created-time'>发布位置</div>
+        <div class='media-created-time'>${dataItem.mediaIndex}</div>
         ${createdTime(dataItem)}
         <div class='media-data'>
           ${readItem(dataItem)}
@@ -71,7 +71,7 @@ const sinaLabel = (dataItem) => {
   return `
 <a class='label-box sina-box' href=${dataItem.mediaUrl} target="_blank">
       ${mediaCaption(dataItem)}
-      <div class='media-created-time'>图文微博直发</div>
+      <div class='media-created-time'>图文微博${dataItem.mediaIsDirect}</div>
       ${createdTime(dataItem)}
       <div class='media-data'>
         ${commentItem(dataItem)}
@@ -87,14 +87,14 @@ const redBookLabel = (dataItem) => {
   <a class='label-box' href=${dataItem.mediaUrl} target="_blank">
         ${imgCover(dataItem)}
         ${mediaCaption(dataItem)}
-        <div class='media-created-time'>图文笔记</div>
+        <div class='media-created-time'>${dataItem.mediaType == 'picture' ? '图文' : '视频'}笔记</div>
         ${createdTime(dataItem)}
         <div class='media-data'>
            ${commentItem(dataItem)}
           <div class='line'>|</div>
           ${likeItem(dataItem)}
           <div class='line'>|</div>
-          ${favoriteItem(dataItem)}
+          ${collectItem(dataItem)}
         </div>
   </a>`
 }
