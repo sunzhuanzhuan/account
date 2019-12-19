@@ -106,8 +106,8 @@ class AccountDetail extends Component {
           {/* 头部基础信息 */}
           <HeadInfo {...headProps} />
           <div className='data-charts'>
-            <div className='updata-time'>数据更新时间：{feature.featureModifiedTime}</div>
-            <Tabs defaultActiveKey="1" onChange={this.changeType} className='detail-tabs' size='large'>
+            <div className='updata-time'>数据更新时间：{feature.latestUpdateTime}</div>
+            <Tabs defaultActiveKey="3" onChange={this.changeType} className='detail-tabs' size='large'>
               <TabPane tab="平台数据" key="1">
                 {/* 数据指标 */}
                 <DataIndicator baseInfo={baseInfo} />
@@ -128,7 +128,7 @@ class AccountDetail extends Component {
                 </LazyLoad>}
               </TabPane>
               <TabPane tab="投放数据" key="3">
-                <Delivery setShowModal={this.setShowModal} />
+                <Delivery setShowModal={this.setShowModal} feature={feature} />
               </TabPane>
             </Tabs>
           </div>
@@ -141,6 +141,7 @@ class AccountDetail extends Component {
             onCancel={() => this.setShowModal(false, null)}
             width={showModal.width}
             maskClosable={false}
+            destroyOnClose={true}
           >
             {showModal.content}
           </Modal>

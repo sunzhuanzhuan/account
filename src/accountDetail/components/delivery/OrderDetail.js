@@ -10,17 +10,18 @@ function OrderDetail(props) {
   const [param, setParam] = useState({})
   const [orderDetail, setOrderDetail] = useState({})
   const [brandList, setBrandList] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+
   const baseSearch = qs.parse(props.location.search.substring(1))
   useEffect(() => {
-    getDetail(param)
     getBrand()
   }, [])
   useEffect(() => {
     getDetail(param)
-    console.log("TCL: OrderDetail -> param", param)
   }, [param])
   //详情信息
   async function getDetail(params) {
+    setIsLoading(true)
     const { data } = await api.post('/operator-gateway/accountDetail/v1/getRecentOrderList', {
       form: {
         ...baseSearch,
@@ -31,6 +32,7 @@ function OrderDetail(props) {
       }
     })
     setOrderDetail(data)
+    setIsLoading(false)
   }
   //下拉框数据
   async function getBrand() {
@@ -42,33 +44,38 @@ function OrderDetail(props) {
       title: '项目名称',
       dataIndex: 'projectName',
       key: 'projectName',
+      width: '100px'
     },
     {
       title: '应约时间',
       dataIndex: 'acceptCreatedTime',
       key: 'acceptCreatedTime',
       sorter: true,
+      align: 'center'
     },
     {
       title: '价格名称',
       dataIndex: 'priceLabel',
       key: 'priceLabel',
+      align: 'center'
     },
     {
       title: '投放品牌',
       dataIndex: 'signedBrandName',
       key: 'signedBrandName',
+      align: 'center'
     },
     {
       title: '所属行业',
       dataIndex: 'industryName',
       key: 'industryName',
+      align: 'center'
     },
     {
       title: '成交价格',
       dataIndex: 'dealPrice',
       key: 'dealPrice',
-      //sorter: true,
+      align: 'center'
     },
     {
       title: '投放数据',
@@ -111,6 +118,7 @@ function OrderDetail(props) {
             pageSize: 1,
             current: param.currentPage,
           }}
+          loading={isLoading}
           onChange={handleTableChange}
           rowKey='orderId' />
       </div>

@@ -10,13 +10,12 @@ import { formatWNumberDefult } from '../../util'
 function PutPreview(props) {
   const [data, setData] = useState({})
   const [brandList, setBrandList] = useState({})
-
   useEffect(() => {
     getDate()
   }, [])
   function getDate() {
     api.get(`/operator-gateway/accountDetail/v1/getOverview${props.location.search}`).then(({ data }) => { setData(data) })
-    api.get(`/operator-gateway/accountDetail/v1/getBrandListInAccountDealOrder?dicCode=order_industry`).then(({ data }) => {
+    api.get(`/operator-gateway/common/v1/queryDictionary?dicCode=order_industry`).then(({ data }) => {
       let list = data
       list.unshift({ 'itemKey': 'D00', 'itemValue': '不限' })
       setBrandList(list)

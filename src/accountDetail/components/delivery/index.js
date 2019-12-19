@@ -3,11 +3,11 @@ import './index.less'
 import PutPreview from './PutPreview'
 import OrderDetail from './OrderDetail'
 import OrderAssess from './OrderAssess'
-export default function Delivery({ setShowModal }) {
+export default function Delivery({ setShowModal, feature }) {
   return (
     <>
       <PutPreview setShowModal={setShowModal} />
-      <OrderAssess />
+      <OrderAssess feature={feature} />
       <OrderDetail />
 
     </>

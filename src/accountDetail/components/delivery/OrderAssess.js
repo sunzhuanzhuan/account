@@ -1,32 +1,33 @@
 import React, { useState, useEffect } from 'react'
 import './OrderAssess.less'
 import api from '@/api'
-import { List, Rate, Radio } from 'antd'
+import { List, Rate, Radio, Spin } from 'antd'
 import qs from 'qs'
+import numeral from "numeral";
 import { withRouter } from 'react-router-dom'
 function OrderAssess(props) {
   const [orderList, setOrderList] = useState({})
-  const [searchParam, setSearchParam] = useState({ evaluate_level: 0 })
-
-  useEffect(() => {
-    getOrderlist()
-  }, [])
+  const [isLoading, setIsLoading] = useState(true)
+  const [searchParam, setSearchParam] = useState({ evaluate_level: 0, page_size: 10 })
   useEffect(() => {
     getOrderlist(searchParam)
   }, [searchParam])
   async function getOrderlist(param) {
+    setIsLoading(true)
     const baseSearch = qs.parse(props.location.search.substring(1))
-    const { data } = await api.post('/operator-gateway/accountDetail/v1/getRecentOrderList', { ...baseSearch, param })
+    const query = `?${qs.stringify({ account_id: baseSearch.accountId, ...param })}`
+    const { data } = await api.get(`/export/account/getAccountDetailDegreeList${query}`)
     setOrderList(data)
+    setIsLoading(false)
   }
   return (
     <div className='order-assess'>
       <div className='title-big'>订单评价</div>
       <div className='container'>
-        <Statistics />
+        <Statistics statistic={orderList.statistic} feature={props.feature} />
         <div style={{ margin: '20px 0px 10px' }}>
           <Radio.Group
-            onChange={(e) => setSearchParam({ ...searchParam, evaluate_level: e.target.value })}
+            onChange={(e) => setSearchParam({ ...searchParam, evaluate_level: e.target.value, page: 1 })}
             value={searchParam.evaluate_level}>
             <Radio value={0}>全部</Radio>
             <Radio value={1}>好评</Radio>
@@ -34,34 +35,39 @@ function OrderAssess(props) {
             <Radio value={3}>差评</Radio>
           </Radio.Group>
         </div>
-        <List itemLayout="vertical"
-          size="large"
-          pagination={{
-            onChange: page => {
-              console.log(page);
-            },
-            pageSize: 3,
-          }}
-          dataSource={orderList.list}
-          renderItem={item => (
-            <List.Item >
-              <Item item={item} />
-            </List.Item>
-          )}
-        />
+        <Spin spinning={isLoading}>
+          <List itemLayout="vertical"
+            size="large"
+            pagination={{
+              onChange: page => {
+                setSearchParam({ ...searchParam, page: page })
+              },
+              pageSize: 10,
+            }}
+            dataSource={orderList.rows}
+            renderItem={item => (
+              <List.Item >
+                <Item item={item} />
+              </List.Item>
+            )}
+          />
+        </Spin>
       </div>
     </div>
   )
 }
 // 统计模块
-const Statistics = () => {
+const Statistics = ({ statistic = {}, feature = {} }) => {
+  function getNumber(value) {
+    return numeral(value).format('0.0')
+  }
   const list = [
-    { name: '全部评价数', value: 30 },
-    { name: '好评率', value: '20', unit: '%' },
-    { name: '平均响应速度', value: '5', unit: '分' },
-    { name: '平均配合度', value: 30 },
-    { name: '平均满意度', value: 30 },
-    { name: '商业适应性指数', value: 30 },]
+    { name: '全部评价数', value: statistic.total },
+    { name: '好评率', value: statistic.positiveRate * 100, unit: '%' },
+    { name: '平均响应速度', value: getNumber(statistic.professionalDegreeAvg), unit: '分' },
+    { name: '平均配合度', value: getNumber(statistic.coordinationDegreeAvg), unit: '分' },
+    { name: '平均满意度', value: getNumber(statistic.appearanceDegreeAvg), unit: '分' },
+    { name: '商业适应性指数', value: feature.commercialAdaptationIndex || '-' },]
   return <div className='statistics'>
     {list.map(item => <div key={item.name} className='item'>
       <div className='title'>{item.name}</div>
@@ -75,17 +81,14 @@ const Item = ({ item = {} }) => {
 
   return <div key={item.id} className='common-item'>
     <div>
-      <span className='title'>{item.title}</span>
-      <span className='data-time'>{item.data}</span>
+      <span className='title'>{item.more_comment}</span>
     </div>
     <div className='content'>
-      <div className='more-common'>
-        {item.content && item.content.length > 40 ? `${item.content.slice(0, 40)}……` : item.content}
-      </div>
+      <span className='data-time'>{item.created_time}</span>
       <div className='rate-type-box'>
-        <RateType title='响应速度' value={2} />
-        <RateType title='配合度' value={2} />
-        <RateType title='效果满意' value={5} />
+        <RateType title='响应速度' value={item.professional_degree} />
+        <RateType title='配合度' value={item.coordination_degree} />
+        <RateType title='效果满意' value={item.appearance_degree} />
       </div>
     </div>
   </div>
