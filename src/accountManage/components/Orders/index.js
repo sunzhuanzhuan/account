@@ -29,6 +29,8 @@ const columns = [
         需求：{data}
         <br />
         订单：<a target="_blank" href={requirementPath(record.order_id)}>{record.order_id}</a>
+        <br />
+        {record.is_price_modified == '1' ? <span style={{ background: 'red', color: '#fff', padding: '2px 4px' }}>  已改价</span> : null}
       </div>
     }
   },
