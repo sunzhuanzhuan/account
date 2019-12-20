@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Col, Row, Button, Tag, Modal, Checkbox, Radio, Input, Icon, InputNumber, Form, Select } from 'antd'
-import LadderRatio from './LadderRatio'
+import { LadderRatioEdit, LadderRatioView } from './LadderRatio'
 import {
     ruleDiscount,
     Rule_Discount_Ratio,
@@ -28,11 +28,21 @@ const formItemLayout = {
 };
 
 export const RebateEdit = (props) => {
-    const { getFieldDecorator } = props.form;
+    const { data = {}, form } = props;
+    const { rebateStepRules = [] } = data;
+    const { getFieldDecorator } = form;
     const [type, useType] = useState(Rule_Rebate_Ratio)
     const [ratio, useRatio] = useState();
     const [numeric, useNumeric] = useState();
     const [visible, setVisible] = useState(false);
+
+    const rebateNumbers = rebateStepRules.length == 0 ? [0, 999999999] : rebateStepRules.reduce((acc, cur) => {
+        acc.push(cur.amountHighLimit);
+        return acc;
+    }, [0]);
+    const percentage = rebateStepRules.map(item => item.rebateRatio)
+
+
     const onTypeChange = e => {
         console.log('onTypeChange', e.target.value);
         useType(e.target.value)
@@ -73,34 +83,77 @@ export const RebateEdit = (props) => {
         }
         callback();
     };
-    return <Row className='platform-wrap'>
-        <Col className='form-label' span={formItemLayout.labelCol.span}>返点：</Col>
-        {!visible ? <Col span={formItemLayout.wrapperCol.span}>
-            <Button type='link' onClick={() => setVisible(true)}>+添加折扣</Button>
-        </Col> : <Col span={formItemLayout.wrapperCol.span} style={{ background: '#eee' }}>
+    return <Form.Item label={'返点：'} className='platform-wrap' {...formItemLayout}>
+        {!visible ? <Button type='link' onClick={() => setVisible(true)}>+添加折扣</Button> :
+            <div className='item-wrap' style={{ background: '#eee' }}>
                 <Form.Item label='类型：' {...formItemLayout}>
-                    <Radio.Group options={ruleRebate} onChange={onTypeChange} value={type} />
+                    {
+                        getFieldDecorator("rebateRule.rebateType", {
+                            initialValue: ''
+                        })(<Radio.Group options={ruleRebate} onChange={onTypeChange} />)
+                    }
+
                 </Form.Item>
                 <div>
-                    {type == Rule_Rebate_Ratio ? <Form.Item label='公式：' {...formItemLayout}><span>
-                        执行完成订单时博主收入，返点比例为：<InputNumber max={100} style={{ width: 100 }} suffix="%" value={ratio} onChange={onRatioChange} />
-                    </span></Form.Item> : type == Rule_Rebate_Numeric ? <Form.Item label='公式：' {...formItemLayout}><span>
-                        执行完成订单时博主收入，返点金额为：<InputNumber style={{ width: 100 }} suffix="元" value={numeric} onChange={onNumericChange} />
-                    </span></Form.Item> : <Form.Item label="公式：" {...formItemLayout}>
-                                {getFieldDecorator("price", {
-                                    initialValue: { rebateNumbers: [0, 9999], percentage: [] },
+                    {type == Rule_Rebate_Ratio ? <Form.Item label='公式：' {...formItemLayout}>
+                        {getFieldDecorator("rebateRule.rebateFixedRatio", {
+                            initialValue: '',
+                            rules: [{ validator: checkPrice }]
+                        })(<span>
+                            执行完成订单时博主收入，返点比例为：<InputNumber max={100} style={{ width: 100 }} suffix="%" onChange={onRatioChange} />
+                        </span>)}
+                    </Form.Item> : type == Rule_Rebate_Numeric ? <Form.Item label='公式：' {...formItemLayout}>
+                        {
+                            getFieldDecorator("rebateRule.rebateFixedAmount", {
+                                initialValue: ''
+                            })(
+                                <span>
+                                    执行完成订单时博主收入，返点金额为：<InputNumber style={{ width: 100 }} suffix="元" onChange={onNumericChange} />
+                                </span>
+                            )
+                        }
+                    </Form.Item> : <Form.Item label="公式：" {...formItemLayout}>
+                                {getFieldDecorator("rebateRule.rebateStepRules", {
+                                    initialValue: { rebateNumbers, percentage },
                                     rules: [{ validator: checkPrice }]
-                                })(<LadderRatio />)}
+                                })(<LadderRatioEdit />)}
                             </Form.Item>
                     }
                 </div>
                 <Button onClick={() => setVisible(false)} style={{ position: 'absolute', right: 0, top: 0 }} type="link" >删除</Button>
-            </Col>
+            </div>
         }
 
-    </Row>
+    </Form.Item>
 }
 
 export const RebateView = (props) => {
-    return <div>返点：</div>
+    const { data } = props;
+    const { rebateType, rebateFixedRatio, rebateFixedAmount, rebateStepRules } = data;
+    const rebateTypeName = rebateType == Rule_Rebate_Ratio ? '固定比例' : rebateType == Rule_Rebate_Numeric ? '固定扣减' : '阶梯比例';
+
+    const rebateNumbers = rebateStepRules.reduce((acc, cur) => {
+        acc.push(cur.amountHighLimit);
+        return acc;
+    }, [0]);
+    const percentage = rebateStepRules.map(item => item.rebateRatio)
+
+    return <Form.Item label={'返点：'} className='platform-wrap' {...formItemLayout}>
+        <div className='item-wrap' style={{ background: '#eee' }}>
+            <Form.Item label='类型：' {...formItemLayout}>
+                {rebateTypeName}
+            </Form.Item>
+            <Form.Item label='公式：' {...formItemLayout}>
+                {rebateType == Rule_Rebate_Ratio ?
+                    <span>执行完成订单时博主收入，返点比例为：{rebateFixedRatio * 100}%</span> :
+                    rebateType == Rule_Rebate_Numeric ?
+                        <span>执行完成订单时博主收入，返点金额为：{rebateFixedAmount}元</span> :
+                        <LadderRatioView
+                            rebateNumbers={rebateNumbers}
+                            percentage={percentage}
+                        />
+                }
+            </Form.Item>
+        </div>
+    </Form.Item>
 }

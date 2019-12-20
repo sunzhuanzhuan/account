@@ -29,7 +29,7 @@ class ChannelDiscount extends React.Component {
 		const userId = qs.parse(search)['userId'];
 		const userName = qs.parse(search)['name'];
 		const isEdit = userName === undefined;
-		const payload = isEdit ? {userId} : null;
+		const payload = isEdit ? { userId } : null;
 
 		this.props.getDiscountDetail(payload);
 		this.props.getAvailablePlatformList();
@@ -43,8 +43,8 @@ class ChannelDiscount extends React.Component {
 		const { propsValue } = prevState;
 		let selectedPlatform = [];
 
-		if(!shallowEqual(discountDetail, propsValue)) {
-			if(ruleDTOS.length) {
+		if (!shallowEqual(discountDetail, propsValue)) {
+			if (ruleDTOS.length) {
 				ruleDTOS.forEach(item => {
 					selectedPlatform = selectedPlatform.concat(item.platformIds)
 				});
@@ -59,15 +59,15 @@ class ChannelDiscount extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-        const { progress: prevProgress } = prevProps;
+		const { progress: prevProgress } = prevProps;
 		const { errorMsg = '操作失败', progress, msg } = this.props;
 		const { isEdit, userId } = this.state;
 
-        if(prevProgress !== progress && progress === 'fail') {
-            this.getErrorTips(errorMsg, 'error');
-        }else if(prevProgress !== progress && progress === 'saveSuccess') {
+		if (prevProgress !== progress && progress === 'fail') {
+			this.getErrorTips(errorMsg, 'error');
+		} else if (prevProgress !== progress && progress === 'saveSuccess') {
 			this.getErrorTips(msg, 'success');
-			if(!isEdit) {
+			if (!isEdit) {
 				this.props.history.push(`/account/discount?userId=${userId}`)
 				window.location.reload();
 			}
@@ -78,9 +78,9 @@ class ChannelDiscount extends React.Component {
 		const { itemInfo = {}, ruleIndex, ruleItems = [], modalType } = this.state;
 		let selectedPlatform = [];
 
-		if(modalType === 'add') {
+		if (modalType === 'add') {
 			ruleItems.push(itemInfo)
-		}else {
+		} else {
 			ruleItems.splice(ruleIndex, 1, itemInfo)
 		}
 
@@ -88,7 +88,7 @@ class ChannelDiscount extends React.Component {
 			selectedPlatform = selectedPlatform.concat(item.platformIds)
 		})
 
-		this.setState({selectedPlatform});
+		this.setState({ selectedPlatform });
 
 		this.isShowRuleModal();
 	}
@@ -99,7 +99,7 @@ class ChannelDiscount extends React.Component {
 		const delItem = ruleItems.splice(index, 1)[0];
 		const { platformIds = [] } = delItem;
 		platformIds.forEach(item => {
-			const pIndex = selectedPlatform.findIndex(sItem => { sItem === item});
+			const pIndex = selectedPlatform.findIndex(sItem => { sItem === item });
 			selectedPlatform.splice(pIndex, 1);
 		})
 
@@ -108,10 +108,10 @@ class ChannelDiscount extends React.Component {
 
 	isShowRuleModal = (itemInfo, modalType, ruleIndex) => {
 		const isEdit = modalType === 'edit';
-		this.setState({ 
-			itemInfo: {...itemInfo}, 
+		this.setState({
+			itemInfo: { ...itemInfo },
 			ruleIndex,
-			modalType, 
+			modalType,
 			ruleVisible: !this.state.ruleVisible,
 			discountStatus: isEdit,
 			platformStatus: isEdit
@@ -119,23 +119,23 @@ class ChannelDiscount extends React.Component {
 	}
 
 	isSubmitOk = (submitStatus, type) => {
-		this.setState({[`${type}Status`]: submitStatus})
+		this.setState({ [`${type}Status`]: submitStatus })
 	}
 
 	getErrorTips = (msg, type = 'error') => {
-        try {
-            if (typeof message.destroy === 'function') {
-                message.destroy();
-            }
-            message[type](msg);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+		try {
+			if (typeof message.destroy === 'function') {
+				message.destroy();
+			}
+			message[type](msg);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
-	handleChangeRemarks = ({target: {value}}) => {
+	handleChangeRemarks = ({ target: { value } }) => {
 		const { discountDetail = {} } = this.props;
-		if(value.length > 2000) {
+		if (value.length > 2000) {
 			this.getErrorTips('备注最多可输入2000字');
 			return;
 		}
@@ -144,7 +144,7 @@ class ChannelDiscount extends React.Component {
 	}
 
 	isShowStopModal = () => {
-		this.setState({stopModal: !this.state.stopModal})
+		this.setState({ stopModal: !this.state.stopModal })
 	}
 
 	handleStopDiscount = stopReason => {
@@ -152,9 +152,9 @@ class ChannelDiscount extends React.Component {
 		const { userId, isEdit } = this.state;
 		const { id } = discountDetail;
 
-		this.props.updatePriceInfo({...stopReason, id, userId}, 'stopDiscount').then(() => {
-			if( isEdit )
-				this.props.getDiscountDetail({userId});
+		this.props.updatePriceInfo({ ...stopReason, id, userId }, 'stopDiscount').then(() => {
+			if (isEdit)
+				this.props.getDiscountDetail({ userId });
 		});
 		this.isShowStopModal();
 	}
@@ -165,30 +165,29 @@ class ChannelDiscount extends React.Component {
 		const { ruleDTOS = [] } = discountDetail;
 		const method = isEdit ? 'editDiscount' : 'addDiscount';
 
-		if( !ruleDTOS.length )
-		{
+		if (!ruleDTOS.length) {
 			this.getErrorTips('请添加折扣规则');
 			return;
 		}
-		Object.assign(discountDetail, {userId});
+		Object.assign(discountDetail, { userId });
 		this.props.updatePriceInfo(discountDetail, method).then(() => {
-			if( isEdit )
-				this.props.getDiscountDetail({userId});
+			if (isEdit)
+				this.props.getDiscountDetail({ userId });
 		});
 	}
 
 	render() {
-		const { 
-			isEdit, 
-			userName, 
-			ruleVisible, 
-			stopModal, 
-			ruleItems, 
-			itemInfo = {}, 
-			modalType, 
-			discountStatus, 
-			platformStatus, 
-			selectedPlatform, 
+		const {
+			isEdit,
+			userName,
+			ruleVisible,
+			stopModal,
+			ruleItems,
+			itemInfo = {},
+			modalType,
+			discountStatus,
+			platformStatus,
+			selectedPlatform,
 		} = this.state;
 		const pageTitle = isEdit ? '修改' : '新建';
 		const { discountDetail = {}, progress } = this.props;
@@ -196,12 +195,12 @@ class ChannelDiscount extends React.Component {
 
 		return [
 			<h2 key='policyHeader' className='policyHeader'>
-					{pageTitle}渠道折扣
+				{pageTitle}渠道折扣
 			</h2>,
 			<div key='policyWrapper' className='policyWrapper discountWrapper'>
-				<Spin spinning={progress === 'loading'} style={{position: 'unset'}}>
+				<Spin spinning={progress === 'loading'} style={{ position: 'unset' }}>
 					<Row>
-						<div className='accountName'>
+						<div className='snsName'>
 							主账号名称：{isEdit ? identityName : userName || '未知'}
 						</div>
 						{
@@ -211,8 +210,8 @@ class ChannelDiscount extends React.Component {
 					<Row>
 						<Col span={2} className='commonTitle'>渠道折扣</Col>
 						<Col span={20}>
-							<RulesWrapper 
-								ruleItems={ruleItems} 
+							<RulesWrapper
+								ruleItems={ruleItems}
 								onClick={this.isShowRuleModal}
 								handleDel={this.handleDel}
 							/>
@@ -225,7 +224,7 @@ class ChannelDiscount extends React.Component {
 						</Col>
 					</Row>
 					<Row className='policyFooter'>
-						{ channelDiscountStatus == 1 ? <Button type='primary' onClick={this.isShowStopModal}>停用</Button> : null}
+						{channelDiscountStatus == 1 ? <Button type='primary' onClick={this.isShowStopModal}>停用</Button> : null}
 						<Button type='primary' onClick={this.handleSaveDiscount}>{channelDiscountStatus == 2 ? '启用' : '提交'}</Button>
 					</Row>
 				</Spin>
@@ -245,34 +244,34 @@ class ChannelDiscount extends React.Component {
 						</Button>
 					]}
 				>
-					<RuleContent 
-						itemInfo={itemInfo} 
+					<RuleContent
+						itemInfo={itemInfo}
 						selectedPlatform={selectedPlatform}
-						isSubmitOk={this.isSubmitOk} 
-						isOperate 
+						isSubmitOk={this.isSubmitOk}
+						isOperate
 					/>
 				</Modal>
-				{ stopModal ? <StopReasonModal onCancel={this.isShowStopModal} onOk={this.handleStopDiscount} /> : null }
+				{stopModal ? <StopReasonModal onCancel={this.isShowStopModal} onOk={this.handleStopDiscount} /> : null}
 			</div>
 		]
 	}
 }
 
 const mapStateToProps = (state) => {
-    const { pricePolicyReducer = {}, commonReducers = {} } = state;
+	const { pricePolicyReducer = {}, commonReducers = {} } = state;
 	const { discountDetail, progress, errorMsg, msg } = pricePolicyReducer;
 	const { availablePlatforms = [] } = commonReducers;
-	
-    return { discountDetail, availablePlatforms, progress, errorMsg, msg };
+
+	return { discountDetail, availablePlatforms, progress, errorMsg, msg };
 }
 
 const mapDispatchToProps = (dispatch) => (
-    bindActionCreators({
-        ...actions, getAvailablePlatformList
-    }, dispatch)
+	bindActionCreators({
+		...actions, getAvailablePlatformList
+	}, dispatch)
 )
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+	mapStateToProps,
+	mapDispatchToProps
 )(ChannelDiscount)

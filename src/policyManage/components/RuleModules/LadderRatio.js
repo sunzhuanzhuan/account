@@ -2,7 +2,7 @@ import React from "react";
 
 import { Input, Button } from "antd";
 
-export default class PriceInput extends React.PureComponent {
+export class LadderRatioEdit extends React.PureComponent {
     static getDerivedStateFromProps(nextProps) {
         if ("value" in nextProps) {
             return {
@@ -109,3 +109,21 @@ export default class PriceInput extends React.PureComponent {
         );
     }
 }
+
+export const LadderRatioView = (props) => {
+    const { rebateNumbers, percentage } = props;
+    return <div>
+        <p>公式（是否满足阶梯【例0-100】：按照订单回填执行结果当时的博主收入金额，为计算基础）</p>
+        <ul>
+            {rebateNumbers.slice(1).map((item, index) => (
+                <li key={index}>
+                    大于<span className="rule-number">{rebateNumbers[index]}</span>
+                    且小于等于<span className="rule-input">{item}</span>
+                    时,返点比例为：<span className="rule-input">{percentage[index]}</span>
+                </li>
+            ))}
+        </ul>
+    </div>
+}
+
+

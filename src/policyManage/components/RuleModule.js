@@ -20,55 +20,23 @@ import { RebateView, RebateEdit } from '../components/RuleModules/Rebate'
 import './RuleModule.less'
 // let ruleID = 1;
 const RuleModule = (props) => {
-    const { type } = props;
-    const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = props.form;
-    const [showPlatformModal, setShowPlatformModal] = useState(false);
-    const [showAddRuleModal, setshowAddRuleModal] = useState(false);
-    const [defaultCheckedList, setDefaultCheckedList] = useState([1, 2]);
-    const [rules, setRules] = useState([]);
-    const [ruleID, setRuleID] = useState(1);
-    const { Option } = Select;
-    const formItemLayout = {
-        labelCol: { span: 2 },
-        wrapperCol: { span: 21 },
-    };
+    const { type, data = [] } = props;
 
     const delRule = () => {
 
     }
 
     return <div>
-        {/* <div>政策规则：<Button type="link" onClick={addRule}>+添加</Button></div> */}
-        {/* <Modal visible={showAddRuleModal} onClose={() => setshowAddRuleModal(false)}> */}
-        {/* <Platform
-                platformList={platformList}
-                defaultCheckedList={defaultCheckedList}
-                addPlatform={() => setShowPlatformModal(true)}
-                setDefaultCheckedList={setDefaultCheckedList}
-            ></Platform> */}
-        {/* <Form {...formItemLayout} onSubmit={handleSubmit}>
-                
-            </Form> */}
-        {/* <PlatformModal
-                visible={showPlatformModal}
-                setVisible={setShowPlatformModal}
-                defaultCheckedList={defaultCheckedList}
-                platformList={platformList}
-                setDefaultCheckedList={setDefaultCheckedList}
-            ></PlatformModal> */}
-
-        {/* </Modal> */}
         {
-            rules.map(item => <RuleCard key={item} title={`规则${item}`} onDelBtnClick={() => delRule(item)}>
-                {type == 'all' ? <PlatformView></PlatformView> :
-                    <AccountView></AccountView>
+            data.map(item => <RuleCard key={item.ruleId} title={`规则ID: ${item.ruleId}`} onDelBtnClick={() => delRule(item)}>
+                {type == 'global' ? <PlatformView data={item.platformList}></PlatformView> :
+                    <AccountView accountList={item.accountList}></AccountView>
                 }
-                <DiscountView></DiscountView>
-                <RebateView></RebateView>
+                <DiscountView data={item.discountRule}></DiscountView>
+                <RebateView data={item.rebateRule}></RebateView>
             </RuleCard>)
         }
-
-    </div >
+    </div>
 }
 
 export default RuleModule

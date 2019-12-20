@@ -9,20 +9,14 @@ import {
     ruleRebate,
     Rule_Rebate_Ratio,
     Rule_Rebate_Numeric,
-    Rule_Rebate_LadderRatio
+    Rule_Rebate_LadderRatio,
+    platformList
 } from '../../constants/dataConfig'
 const formItemLayout = {
     labelCol: { span: 2 },
     wrapperCol: { span: 22 },
 };
-const platformList = [
-    { id: 1, name: '新浪微博' },
-    { id: 2, name: '微信' },
-    { id: 3, name: '秒拍' },
-    { id: 4, name: '美拍' },
-    { id: 5, name: '今日头条' },
-    { id: 6, name: '小红书' }
-];
+
 const { Option } = Select;
 
 export const PlatformEdit = (props) => {
@@ -49,7 +43,7 @@ export const PlatformEdit = (props) => {
     </Form.Item>
 }
 export const PlatformView = (props) => {
-    return <Select mode="multiple" placeholder="请选择平台">
-        {[{ name: 'weixin' }].map(item => <Option key={item.id} value={item.id}>{item.name}</Option>)}
-    </Select>
+    return <Form.Item label="平台" {...formItemLayout}>
+        <div>{props.data.map(item => item.platformName)}</div>
+    </Form.Item>
 }
