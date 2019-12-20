@@ -21,28 +21,6 @@ import debounce from "lodash/debounce";
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 
-// 合并报价项到当前存在的报价项中
-function assiginPriceKeys(obj1 = {}, obj2 = {}) {
-  let _obj = {};
-  for (let key in obj1) {
-    if (!obj1.hasOwnProperty(key)) continue;
-    _obj[key] = obj2[key] || obj1[key];
-  }
-  return _obj;
-}
-// 过滤空报价
-function filterEmptyPrice(obj1 = {}) {
-  let _obj = {};
-  for (let key in obj1) {
-    if (!obj1.hasOwnProperty(key)) continue;
-    if (obj1[key]) {
-      _obj[key] = obj1[key];
-    } else {
-      _obj[key] = 0;
-    }
-  }
-  return _obj;
-}
 
 // 检查最少一项报价
 const checkPrice = (onOff, otherCheck) => (rule, value = {}, callback) => {
@@ -181,14 +159,14 @@ function orderStatusView(refuse_status, desc = '') {
   return _C;
 }
 
-// 报价提示信息
-function handlePriceTitle(tax, type) {
-  let key = '1';
-  if (!tax) {
-    key = type == 1 ? '2' : '3';
-  }
-  return priceTitle[key].desc;
-}
+// // 报价提示信息
+// function handlePriceTitle(tax, type) {
+//   let key = '1';
+//   if (!tax) {
+//     key = type == 1 ? '2' : '3';
+//   }
+//   return priceTitle[key].desc;
+// }
 
 // 账号报价帮助信息
 const AccountPriceHelp = () => {
@@ -196,9 +174,9 @@ const AccountPriceHelp = () => {
     <img src={require('../../images/help.jpg')} />
   </div>;
   return <div>
-    <Popover getPopupContainer={() => document.querySelector('.price_scroll_container') || document.querySelector('#account-manage-container')} placement="topLeft" title={null} content={content} trigger="click">
+    {/* <Popover getPopupContainer={() => document.querySelector('.price_scroll_container') || document.querySelector('#account-manage-container')} placement="topLeft" title={null} content={content} trigger="click">
       <a>查看订单成本, 收入计算规则</a>
-    </Popover>
+    </Popover> */}
   </div>;
 };
 
@@ -214,7 +192,9 @@ export class NamelessPrice extends Component {
     const {
       skuList,
       partnerType,
-      taxInPrice
+      taxInPrice,
+      invoiceType,
+      taxRate
     } = priceInfo;
     let val = {};
     skuList && skuList.forEach(({ skuTypeId, costPriceRaw }) => {
@@ -230,7 +210,10 @@ export class NamelessPrice extends Component {
           ]
         })(
           <PriceTable
-            desc={handlePriceTitle(taxInPrice == 1, partnerType)}
+            // desc={handlePriceTitle(taxInPrice == 1, partnerType)}
+            partnerType={partnerType}
+            invoiceType={invoiceType}
+            taxRate={taxRate}
             data={this.props.data}
             isEdit
             priceKeys={['costPriceRaw', 'channelPrice', 'publicationPrice']}
@@ -348,6 +331,8 @@ export class FamousPrice extends Component {
       reviewFailReason,
       taxInPrice, // 在主帐号中有
       partnerType,
+      invoiceType,
+      taxRate,
       skuList
     } = priceInfo;
     /*const orderStatus = {
@@ -410,21 +395,21 @@ export class FamousPrice extends Component {
       <FormItem {...layout.full} label='下期有效期'>
         <span>{nextStar.format('YYYY-MM-DD')}</span><span className='m10-e'>至</span>
         {canEditTime ? getFieldDecorator('nextPriceValidTo', {
-            validateFirst: true,
-            initialValue: nextEnd,
-            rules: [{
-              type: 'object',
-              required: require,
-              message: '请选择结束时间'
-            }, { validator: this.checkDateAndPrice }]
-          })(
+          validateFirst: true,
+          initialValue: nextEnd,
+          rules: [{
+            type: 'object',
+            required: require,
+            message: '请选择结束时间'
+          }, { validator: this.checkDateAndPrice }]
+        })(
           <DatePicker onOpenChange={this.setDefaultValue(disabledDate)} getPopupContainer={() => document.querySelector('#account-manage-container')} disabledDate={current => current && current < disabledDate} />) :
           <span>
-						{getFieldDecorator('nextPriceValidTo', {
+            {getFieldDecorator('nextPriceValidTo', {
               initialValue: moment(nextEnd).endOf('day')
             })(<input type="hidden" />)}
             {nextEnd && nextEnd.format('YYYY-MM-DD')}
-					</span>}
+          </span>}
       </FormItem>
       <FormItem {...layout.full} label='账号报价'>
         {getFieldDecorator('price_next', {
@@ -436,7 +421,10 @@ export class FamousPrice extends Component {
           }]
 
         })(<PriceTable
-          desc={handlePriceTitle(taxInPrice == 1, partnerType)}
+          // desc={handlePriceTitle(taxInPrice == 1, partnerType)}
+          partnerType={partnerType}
+          invoiceType={invoiceType}
+          taxRate={taxRate}
           data={this.props.data}
           isEdit={canEditPrice}
           priceKeys={['nextCostPriceRaw', 'nextChannelPrice', 'nextPublicationPrice']}
@@ -550,10 +538,19 @@ class PriceTable extends Component {
   };
 
   render() {
-    const { isEdit, desc = '', priceKeys } = this.props;
+    const { isEdit,
+      partnerType,
+      invoiceType,
+      taxRate, priceKeys } = this.props;
+    console.log('partnerType', partnerType && partnerType == 1 ? '报价含税（' : '报价不含税')
+    console.log('invoiceType', invoiceType)
+    console.log('taxRate', taxRate)
     const { value } = this.state;
     return <div>
-      {desc ? <span>请填写<span style={{ color: 'red' }}>{desc}</span></span> : null}
+      {partnerType ? <span>{partnerType == 1 ? '报价含税（' : '报价不含税'}
+        {partnerType == 1 ? invoiceType == 1 ? '回票类型：增值税专用发票' : '回票类型：增值税普通发票）' : null}
+        {partnerType == 1 && invoiceType == 1 ? '，发票税率：' + taxRate * 100 + '%)' : null}
+      </span> : null}
       <div className='price-table'>
         <div className='price-table-head'>
           <Row gutter={8}>
@@ -607,7 +604,7 @@ class PriceTable extends Component {
   }
 }
 
-// 预约账号接单状态
+// 派单账号接单状态
 class NamelessStatus extends Component {
   constructor(props) {
     super(props);
@@ -626,14 +623,6 @@ class NamelessStatus extends Component {
   };
 
   handleForcedOrder = (e) => {
-    this.setState({ forcedOrder: e.target.checked });
-  };
-
-  handleisAllow = (e) => {
-    this.setState({ isAllow: e.target.value });
-  };
-
-  handleforcedOrder = (e) => {
     this.setState({ forcedOrder: e.target.checked });
   };
 
@@ -721,7 +710,7 @@ export class FamousPriceView extends Component {
           </div>
         } />
         <FieldView width={80} title="下期报价" value={
-          <PriceTable style={{ lineHeight: '40px' }} isEdit={false}  priceKeys={['nextCostPriceRaw', 'nextChannelPrice', 'nextPublicationPrice']} value={skuList} />
+          <PriceTable style={{ lineHeight: '40px' }} isEdit={false} priceKeys={['nextCostPriceRaw', 'nextChannelPrice', 'nextPublicationPrice']} value={skuList} />
         } />
         <FieldView width={80} title="审核状态" value={
           approvalStatus(reviewStatus, reviewFailReason)
@@ -741,7 +730,10 @@ export class NamelessPriceView extends Component {
       data: { priceInfo }
     } = this.props;
     const {
-      skuList
+      skuList,
+      partnerType,
+      invoiceType,
+      taxRate,
     } = priceInfo;
     let val = {};
     skuList && skuList.forEach(({ skuTypeId, costPriceRaw }) => {
@@ -750,6 +742,9 @@ export class NamelessPriceView extends Component {
     return <div>
       <FieldView width={80} title="账号报价" value={
         <PriceTable
+          partnerType={partnerType}
+          invoiceType={invoiceType}
+          taxRate={taxRate}
           style={{ lineHeight: '40px' }}
           isEdit={false}
           priceKeys={['costPriceRaw', 'channelPrice', 'publicationPrice']}
