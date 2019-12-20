@@ -115,6 +115,11 @@
                     font-size: 14px;
                     color: #333;
                 }
+
+                .look {
+                    margin-left: 10px;
+                    margin-top: 2px;
+                }
             }
 
             .type-info {
@@ -186,10 +191,7 @@
                         border: 1px solid red;
                     }
 
-                    .content {
-                        color: #F4655B;
-                        font-size: 22px;
-                    }
+
 
                     .last {
                         @color999-font12();
@@ -197,5 +199,36 @@
                 }
             }
         }
+    }
+
+    .wachat-table {
+        .ant-table-tbody>tr>td:nth-child(odd) {
+            height: 40px;
+        }
+
+        .ant-table-tbody>tr>td:nth-child(even) {
+            height: 40px;
+        }
+
+        .ant-table-thead>tr>th,
+        .ant-table-tbody>tr>td {
+            padding: 4px 2px;
+        }
+    }
+}
+
+.priceRed {
+    color: #F4655B;
+    font-size: 22px;
+}
+
+.brand-list {
+    display: flex;
+
+    &>div {
+        background: #edf8f4;
+        color: #51a385;
+        margin: 6px;
+        padding: 2px 10px;
     }
 }

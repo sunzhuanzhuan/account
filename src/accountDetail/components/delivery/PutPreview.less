@@ -1,0 +1,123 @@
+@import '../../index.less';
+
+.put-preview {
+
+  .active-order {
+    display: flex;
+  }
+
+  .data-active {
+    flex: 3;
+    min-width: 400px;
+
+    .statistics {
+      display: flex;
+      justify-content: space-around;
+
+      .item {
+        span {
+          @color999-font13()
+        }
+
+        .title {
+          b {
+            @color333-font16();
+            font-weight: 600;
+          }
+        }
+
+        .number {
+          margin-top: 10px;
+
+          .big {
+            @color333-font24();
+          }
+        }
+      }
+    }
+
+  }
+
+  .order-statistics {
+    flex: 4;
+
+    .header {
+      p {
+        color: rgb(51, 51, 51);
+        font-size: 14px;
+      }
+
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+
+
+    }
+  }
+
+
+  .line-type-box {
+    .line-type {
+      display: flex;
+      width: 100%;
+      color: #fff;
+      text-align: center;
+      height: 26px;
+      line-height: 26px;
+
+      &>:first-child {
+        border-top-left-radius: 13px;
+        border-bottom-left-radius: 13px;
+      }
+
+      &>:last-child {
+        border-top-right-radius: 13px;
+        border-bottom-right-radius: 13px;
+      }
+    }
+
+
+
+    .line-text {
+      display: flex;
+
+      .circle-text {
+        display: flex;
+        height: 30px;
+        line-height: 30px;
+
+        .circle {
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          margin: 10px;
+        }
+      }
+    }
+  }
+}
+
+.prediction-icon {
+  width: 85px;
+  height: 30px;
+  background: linear-gradient(103deg, rgba(54, 195, 255, 1) 0%, rgba(25, 144, 255, 1) 100%);
+  border-radius: 2px;
+  font-size: 14px;
+  color: #fff;
+  line-height: 30px;
+  text-align: right;
+  padding-right: 7px;
+  position: relative;
+  cursor: pointer;
+
+  &::before {
+    content: " ";
+    background-image: url('../img/prediction.png');
+    background-size: 16px 16px;
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    left: 3px;
+    top: 7px
+  }
+}

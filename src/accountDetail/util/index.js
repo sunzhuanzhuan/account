@@ -17,6 +17,20 @@ export const formatWNumber = (value) => {
 
   return value
 }
+export const formatWNumberDefult = (value) => {
+  let unit = ''
+  if (value == 0 || value > 0) {
+    if (Math.abs(value) > 10000 || Math.abs(value) == 10000) {
+      value = numeral(value / 10000).format('0.0')
+      unit = '万'
+    } else {
+      value = numeral(value || 0).format('0')
+    }
+  } else {
+    return { value: '-' }
+  }
+  return { value, unit }
+}
 
 export const getQuoteNumber = (value) => {
   if (value) {

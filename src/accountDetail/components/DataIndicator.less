@@ -74,24 +74,25 @@
     }
 
     .operate-four {
-        @flex-between();
+        display: flex;
+        justify-content: space-around;
         margin: 50px 8px 10px;
         flex: 1;
     }
 
     .operate-item {
         flex: none;
-        width: calc((100% - 100px)/4);
         margin-left: 12px;
 
         .avg-sum-flex {
-            @flex-between();
+            display: flex;
+            justify-content: space-around;
             margin-top: 10px;
         }
 
         .back-box {
             margin-top: 4px;
-            display: flex;
+            flex: 1;
             justify-content: center;
         }
     }
@@ -179,4 +180,78 @@
     height: 24px;
     color: #e3e3e3;
     margin-top: 28px;
+}
+
+.info-box {
+    display: flex;
+    background: #fafafa;
+    padding: 20px 0px;
+}
+
+.sina-info {
+
+    .sina-sum {
+        .info-box;
+
+        &>div {
+            flex: 1;
+        }
+
+        &>div:nth-child(3) {
+            flex: 2;
+        }
+    }
+
+    .sina-table {
+        margin-top: 20px;
+
+        .ant-table-thead>tr,
+        .ant-table-tbody>tr {
+            height: 60px;
+        }
+    }
+}
+
+.wechat-info {
+
+    .wechat-sum {
+        .info-box;
+
+        &>div {
+            flex: 1;
+        }
+
+        &>div:nth-child(1) {
+            flex: 2;
+        }
+    }
+
+    .wechat-table {
+        margin-top: 20px;
+
+        .ant-table-thead>tr,
+        .ant-table-tbody>tr {
+            height: 50px;
+        }
+    }
+}
+
+.red-book-info {
+
+    .red-book-sum {
+        .info-box;
+
+        &>div {
+            flex: 1;
+        }
+    }
+
+    .red-book-table {
+        margin-top: 20px;
+
+        .ant-table-thead>tr,
+        .ant-table-tbody>tr {
+            height: 60px;
+        }
+    }
 }
