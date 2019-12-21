@@ -27,7 +27,7 @@ export const formatWNumberDefult = (value) => {
       value = numeral(value || 0).format('0')
     }
   } else {
-    return { value: '-' }
+    return { value: '-', unit: '' }
   }
   return { value, unit }
 }

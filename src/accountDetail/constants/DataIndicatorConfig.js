@@ -51,26 +51,31 @@ export const wechatColumns = [
     title: '平均阅读量',
     dataIndex: 'mediaIndexAvgReadNum',
     key: 'mediaIndexAvgReadNum',
+    render: text => getNumberW(text)
   },
   {
     title: '平均点赞数',
     dataIndex: 'mediaIndexAvgLikeNum',
     key: 'mediaIndexAvgLikeNum',
+    render: text => getNumberW(text)
   },
   {
     title: '最高阅读量',
     dataIndex: 'mediaIndexMaxReadNum',
     key: 'mediaIndexMaxReadNum',
+    render: text => getNumberW(text)
   },
   {
     title: '最高点赞数',
     dataIndex: 'mediaIndexMaxLikeNum',
     key: 'mediaIndexMaxLikeNum',
+    render: text => getNumberW(text)
   },
   {
     title: '10w+阅读文章数',
     dataIndex: 'mediaIndexReadExceed10wMediaCount',
     key: 'mediaIndexReadExceed10wMediaCount',
+    render: text => getNumberW(text)
   },
 ]
 export const getSina = (data = {}) => {
@@ -116,7 +121,7 @@ export const sinaColumns = [
     dataIndex: 'avgread',
     key: 'avgread',
     render(text, record) {
-      return <div>{record.mediaRepostAvg}<Divider type="vertical" />{record.mediaRepostMax}</div>
+      return <div>{getNumberW(record.mediaRepostAvg)}<Divider type="vertical" />{getNumberW(record.mediaRepostMax)}</div>
     }
   },
   {
@@ -124,7 +129,7 @@ export const sinaColumns = [
     dataIndex: 'avgread1',
     key: 'avgread1',
     render(text, record) {
-      return <div>{record.mediaCommentAvg}<Divider type="vertical" />{record.mediaCommentMax}</div>
+      return <div>{getNumberW(record.mediaCommentAvg)}<Divider type="vertical" />{getNumberW(record.mediaCommentMax)}</div>
     }
   },
   {
@@ -132,12 +137,15 @@ export const sinaColumns = [
     dataIndex: 'avgread2',
     key: 'avgread3',
     render(text, record) {
-      return <div>{record.mediaLikeAvg}<Divider type="vertical" />{record.mediaLikeMax}</div>
+      return <div>{getNumberW(record.mediaLikeAvg)}<Divider type="vertical" />{getNumberW(record.mediaLikeMax)}</div>
     }
   },
 ]
 
-
+const getNumberW = (value) => {
+  const data = formatWNumberDefult(value)
+  return `${data.value}${data.unit}`
+}
 export const getRedBook = (data = {}) => {
   return [
     {
@@ -168,25 +176,30 @@ export const redBookColumns = [
     title: '平均播放数',
     dataIndex: 'mediaPlayAvg',
     key: 'mediaPlayAvg',
+    render: text => getNumberW(text)
   },
   {
     title: '平均收藏数',
     dataIndex: 'mediaCollectAvg',
     key: 'mediaCollectAvg',
+    render: text => getNumberW(text)
   },
   {
     title: '平均转发数',
     dataIndex: 'mediaRepostAvg',
     key: 'mediaRepostAvg',
+    render: text => getNumberW(text)
   },
   {
     title: '平均点赞数',
     dataIndex: 'mediaLikeAvg',
     key: 'mediaLikeAvg',
+    render: text => getNumberW(text)
   },
   {
     title: '平均评论数',
     dataIndex: 'mediaCommentAvg',
     key: 'mediaCommentAvg',
+    render: text => getNumberW(text)
   },
 ]

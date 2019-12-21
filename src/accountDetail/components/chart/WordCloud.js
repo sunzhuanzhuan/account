@@ -105,23 +105,13 @@ class Wordcloud extends React.Component {
           padding={0}
           forceFit
         >
-          <Tooltip showTitle={false} g2-tooltip={g2Tooltip} />
+          {/* <Tooltip showTitle={false} g2-tooltip={g2Tooltip} /> */}
           <Coord reflect="y" />
           <Geom
             type="point"
             position="x*y"
             color="key"
             shape="cloud"
-            tooltip={[
-              "key*value",
-              (key, value) => {
-                value = numeral(value).format('0.0%')
-                return {
-                  key: key,
-                  value: value
-                };
-              }
-            ]}
           />
         </Chart> : <Empty style={{ height: height + 18, paddingTop: 80 }} />}
       </div>

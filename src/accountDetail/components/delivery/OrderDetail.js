@@ -3,6 +3,7 @@ import api from '@/api'
 import { Select, Radio, Table } from 'antd'
 import './OrderDetail.less'
 import qs from 'qs'
+import numeral from 'numeral'
 import { withRouter } from 'react-router-dom'
 import getDeliverConfig from '../../constants/deliveryConfig'
 const { Option } = Select;
@@ -75,7 +76,8 @@ function OrderDetail(props) {
       title: '成交价格',
       dataIndex: 'dealPrice',
       key: 'dealPrice',
-      align: 'center'
+      align: 'center',
+      render: text => `${numeral(text).format('0,0')}元`
     },
     {
       title: '投放数据',
@@ -103,13 +105,13 @@ function OrderDetail(props) {
     <div className='container'>
       <div className='flex-between'>
         <div >
-          <Select defaultValue="lucy" style={{ width: 120, margin: '0px 20px 0px 0px' }}
+          {brandList.length > 0 ? <>投放品牌： <Select style={{ width: 120, margin: '0px 20px 0px 0px' }}
             onChange={value => setParam({ ...param, currentPage: 1, signedBrandId: value })} allowClear>
             {brandList.map(item => <Option
               key={item.signedBrandId} value={item.signedBrandId}>
               {item.signedBrandName}
             </Option>)}
-          </Select>
+          </Select></> : null}
         </div>
       </div>
       <div style={{ marginTop: 20 }}>
