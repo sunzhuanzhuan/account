@@ -5,7 +5,8 @@ import api from '../../api'
 import { Empty, Icon } from 'antd'
 import './NewVideo.less'
 import getTopTenConfig from '../constants/TopTenListConfig'
-export default function TopTenList(props) {
+import { withRouter } from 'react-router-dom'
+function TopTenList(props) {
   const [start, setStart] = useState(0)
   const [end, setEnd] = useState(5)
   const [list, setList] = useState([])
@@ -13,7 +14,7 @@ export default function TopTenList(props) {
     getVideoList()
   }, [])
   async function getVideoList() {
-    const { data } = await api.get(`/operator-gateway/accountDetail/v1/getNewVideo?accountId=${props.accountId}`)
+    const { data } = await api.get(`/operator-gateway/accountDetail/v1/getNewVideo${props.location.search}`)
     setList(data.map((one, index) => ({
       ...one,
       label: 'label' + index//添加唯一标识位置
@@ -50,3 +51,4 @@ export default function TopTenList(props) {
     </div>
   )
 }
+export default withRouter(TopTenList)
