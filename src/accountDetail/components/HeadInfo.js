@@ -25,7 +25,7 @@ class HeadInfo extends Component {
       url, qrCodeUrl, cooperationTips,
       verifiedStatusName,
       classificationList = [],
-
+      isFamous
     } = base
     const { hogwartsComprehensiveCommericalIndexRank = 0, orderResponseDuration, orderResponsePercentile,
       orderAcceptanceNum = '-', orderAcceptanceRate, orderMajorIndustryCategory, orderCompleteDuration,
@@ -84,7 +84,7 @@ class HeadInfo extends Component {
               } />
               <OneLine title='关联品牌' content={
                 brandList.length > 0 ? <div style={{ display: 'flex' }}>
-                  <FatLable backColor='#edf8f4' color='#51a385' list={brandList.slice(0, 1)} key='value' valueKey='value' />
+                  <FatLable backColor='#edf8f4' color='#51a385' list={brandList.slice(0, 1)} valueKey='key' />
                   <a className='look' onClick={() => setShowModal(true, {
                     content: <BrandList list={brandList} />, title: '全部品牌', width: 800
                   })}>  查看全部</a>
@@ -123,7 +123,7 @@ class HeadInfo extends Component {
             </div>
             <div className='release-info'>
               {skuList.length > 0 ?
-                platformId == 9 ? <WeChatTable data={skuList} /> : <SkuListBox skuList={skuList} />
+                platformId == 9 ? <WeChatTable data={skuList} isFamous={isFamous} /> : <SkuListBox skuList={skuList} />
                 : <Empty style={{ margin: '0px auto' }} />}
               <div style={{ textAlign: 'center' }}>
                 {isExistCar ? <Button className='add-select-car-button' type='primary' onClick={() => selectCarEdit(true)}>加入选号车</Button> :
@@ -185,14 +185,13 @@ function getPrice(number) {
     {`${(number > 0 || number == 0) ? '¥' + numeral(number).format('0,0') : '-'}`}
   </div>
 }
-const WeChatTable = ({ data = [] }) => {
+const WeChatTable = ({ data = [], isFamous }) => {
   const data2 = data.slice(4, 8) || []
   const data1 = data.slice(0, 4).map((one, index) => ({
     ...one,
     openQuotePrice2: data2[index]
   }))
-  console.log("TCL: WeChatTable -> data1", data1)
-  const columns = [
+  let columns = [
     {
       title: '',
       dataIndex: 'skuTypeName',
@@ -204,13 +203,16 @@ const WeChatTable = ({ data = [] }) => {
       key: 'openQuotePrice',
       render: (text) => getPrice(text)
     },
-    {
+
+  ]
+  if (isFamous == 1) {
+    columns = [...columns, {
       title: '原创+发布',
       dataIndex: 'openQuotePrice2',
       key: 'openQuotePrice2',
       render: (text) => getPrice(text && text.openQuotePrice)
-    }
-  ]
+    }]
+  }
   return <Table dataSource={data1} columns={columns}
     rowKey="skuId" className='table-no-background-add-odd wachat-table'
     pagination={false}
