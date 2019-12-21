@@ -13,7 +13,7 @@ function DataTrendsVideo(props) {
   }, [])
   //获取趋势数据
   async function getTrend() {
-    const { data } = await api.get(`/operator-gateway/accountDetail/v1/getTrend?accountId=${props.accountId}`)
+    const { data } = await api.get(`/operator-gateway/accountDetail/v1/getTrend${props.location.search}`)
     setTrendInfo(data)
   }
   const searchParam = qs.parse(props.location.search.substring(1))

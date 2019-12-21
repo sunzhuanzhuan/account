@@ -19,7 +19,7 @@ function DataIndicator(props) {
   }, [])
 
   async function getData() {
-    const { data } = await api.get('/operator-gateway/accountDetail/v1/getMediaStatistics')
+    const { data } = await api.get('/operator-gateway/accountDetail/v1/getMediaStatistics' + props.location.search)
     setIndicatorData(data)
     setDataIndex(data.comprehensiveIndex)
   }

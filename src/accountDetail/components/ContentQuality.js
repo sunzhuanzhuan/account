@@ -20,7 +20,7 @@ function ContentQuality(props) {
   }, [])
   //获取趋势数据
   async function getTrend() {
-    const { data } = await api.get(`/operator-gateway/accountDetail/v1/getContentQuality?accountId=${props.accountId}`)
+    const { data } = await api.get(`/operator-gateway/accountDetail/v1/getContentQuality${props.location.search}`)
     setDataBox(data)
   }
   function getContentMap() {
