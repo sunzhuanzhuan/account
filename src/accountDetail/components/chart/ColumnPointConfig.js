@@ -11,7 +11,7 @@ const commentItem = (item) => `<div class='item'>
 </div>`
 const forwardItem = (item) => `<div class='item'>
 <div><img src='${require('../img/forward.png')}' width='16'/></div>
-<div>${formatW(item.mediaForwardNum)}</div>
+<div>${formatW(item.mediaRepostNum)}</div>
 </div>`
 const readItem = (item) => `<div class='item'>
 <div><img src='${require('../img/read.png')}' width='16'/></div>
