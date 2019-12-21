@@ -45,9 +45,9 @@ function PutPreview(props) {
 
 const DataActive = ({ data }) => {
   const sumList = [
-    { title: '总订单数', subtitle: '（预约|派单）', sum: data.orderNum, remark: `（${data.reservationOrderNum}|${data.campaignOrderNum}）` },
-    { title: '品牌数', subtitle: '（订单品牌）', sum: data.brandNum, remark: `（${data.orderBrandNum}）` },
-    { title: '覆盖行业', sum: data.brandIndustryCategoryNum, remark: `` },
+    { title: '总订单数', subtitle: '（预约|派单）', sum: data.orderNum, remark: `（${data.reservationOrderNum || '-'}|${data.campaignOrderNum || '-'}）` },
+    { title: '品牌数', subtitle: '（订单品牌）', sum: data.brandNum, remark: `（${data.orderBrandNum || '-'}）` },
+    { title: '覆盖行业', sum: data.brandIndustryCategoryNum || '-', remark: `` },
   ]
   return <div className='data-active container'>
     <div className='statistics'>

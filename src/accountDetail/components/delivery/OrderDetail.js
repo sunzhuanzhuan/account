@@ -82,7 +82,7 @@ function OrderDetail(props) {
       dataIndex: 'DcOrderStatistic',
       key: 'DcOrderStatistic',
       width: '150px',
-      render: (text) => <div>
+      render: (text = {}) => <div>
         <a href={text.mediaUrl}>{text.mediaCaption}</a>
         <div>
           {getDeliverConfig(baseSearch.platformId).map(one => <div key={one.name}>
@@ -115,7 +115,7 @@ function OrderDetail(props) {
       <div style={{ marginTop: 20 }}>
         <Table dataSource={orderDetail.list} columns={columns}
           pagination={{
-            pageSize: 1,
+            pageSize: 10,
             current: param.currentPage,
           }}
           loading={isLoading}

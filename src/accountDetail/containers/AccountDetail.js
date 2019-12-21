@@ -71,7 +71,7 @@ class AccountDetail extends Component {
       baseInfo, trendInfo,
       queryOrderCooperationList,
       queryIndustryInfoList,
-      isExistCar, newVideoList, feature = {} } = accountDetail
+      isExistCar, newVideoList, } = accountDetail
     const { getTrend,
       getQueryOrderCooperationList, addQueryIndustryInfoList,
       getQueryIndustryInfoList, getNewVideo } = actions
@@ -83,7 +83,7 @@ class AccountDetail extends Component {
       getNewVideo,
       newVideoList
     }
-    const { base = {}, } = baseInfo
+    const { base = {}, feature = {} } = baseInfo
     const { platformId = 0 } = base
     const historicalADProps = {
       getQueryOrderCooperationList,

@@ -21,7 +21,7 @@ function DataTrendsVideo(props) {
   function getContentMap() {
     let contentMap = {}
     trendConfig.trend.forEach(item => {
-      const data = trendInfo[item.content.dataKey]
+      const data = trendInfo ? trendInfo[item.content.dataKey] : []
       contentMap[item.key] = <div className='content-char'>
         <CharTitle title={item.content.title} content={item.content.content} />
         <CurveLine data={data}
