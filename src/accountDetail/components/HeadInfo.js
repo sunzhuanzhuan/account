@@ -84,9 +84,9 @@ class HeadInfo extends Component {
               } />
               <OneLine title='关联品牌' content={
                 brandList.length > 0 ? <div style={{ display: 'flex' }}>
-                  <FatLable backColor='#edf8f4' color='#51a385' list={brandList.slice(0, 1)} key='value' valueKey='key' />
+                  <FatLable backColor='#edf8f4' color='#51a385' list={brandList.slice(0, 1)} key='value' valueKey='value' />
                   <a className='look' onClick={() => setShowModal(true, {
-                    content: <BrandList list={brandList} />, title: '全部品牌', width: 400
+                    content: <BrandList list={brandList} />, title: '全部品牌', width: 800
                   })}>  查看全部</a>
                 </div> : '-'
               } />
@@ -172,12 +172,12 @@ const SkuListBox = ({ skuList }) => {
     })}
   </div>
 }
-const FatLable = ({ backColor, color, list = [], key = 'id', valueKey = 'name' }) => {
+const FatLable = ({ backColor, color, list = [], valueKey = 'name' }) => {
   return <div className='fat-lable-flex'>
     {list.map((one, index) => <div
       className='fat-lable'
       style={{ marginLeft: index == 0 ? 0 : '', background: backColor, color: color }}
-      key={one[key]}>{one[valueKey]}</div>)}
+      key={index}>{one[valueKey]}</div>)}
   </div>
 }
 function getPrice(number) {
@@ -186,6 +186,12 @@ function getPrice(number) {
   </div>
 }
 const WeChatTable = ({ data = [] }) => {
+  const data2 = data.slice(4, 8) || []
+  const data1 = data.slice(0, 4).map((one, index) => ({
+    ...one,
+    openQuotePrice2: data2[index]
+  }))
+  console.log("TCL: WeChatTable -> data1", data1)
   const columns = [
     {
       title: '',
@@ -200,17 +206,17 @@ const WeChatTable = ({ data = [] }) => {
     },
     {
       title: '原创+发布',
-      dataIndex: 'name2',
-      key: 'name2',
-      render: (text) => getPrice(text)
+      dataIndex: 'openQuotePrice2',
+      key: 'openQuotePrice2',
+      render: (text) => getPrice(text && text.openQuotePrice)
     }
   ]
-  return <Table dataSource={data} columns={columns}
+  return <Table dataSource={data1} columns={columns}
     rowKey="skuId" className='table-no-background-add-odd wachat-table'
     pagination={false}
   />
 }
 const BrandList = ({ list = ['asd', 'asdasd'] }) => {
-  return <div className='brand-list'>{list.map(one => <div key={one.key}>{one.value}</div>)}</div>
+  return <div className='brand-list'>{list.map(one => <div key={one.key}>{one.key}</div>)}</div>
 }
 export default HeadInfo;

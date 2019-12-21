@@ -40,7 +40,7 @@ class DataBox extends Component {
     };
     return (
       <div style={{ height: 300 }}>
-        <Chart
+        {data.length > 0 ? <Chart
           height={300}
           data={dv}
           scale={cols}
@@ -118,7 +118,7 @@ class DataBox extends Component {
               fill: "#1990ff",
             }}
           />
-        </Chart>
+        </Chart> : <Empty style={{ height: 318, paddingTop: 80 }} />}
       </div>
     );
   }

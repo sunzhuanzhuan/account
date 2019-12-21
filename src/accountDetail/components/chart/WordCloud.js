@@ -61,7 +61,7 @@ class Wordcloud extends React.Component {
     const max = range[1];
     dv.transform({
       type: "tag-cloud",
-      fields: ["name", "value"],
+      fields: ["key", "value"],
       size: [width, height],
       font: "Verdana",
       padding: 0,
@@ -110,14 +110,14 @@ class Wordcloud extends React.Component {
           <Geom
             type="point"
             position="x*y"
-            color="name"
+            color="key"
             shape="cloud"
             tooltip={[
-              "name*value",
-              (name, value) => {
+              "key*value",
+              (key, value) => {
                 value = numeral(value).format('0.0%')
                 return {
-                  name: name,
+                  key: key,
                   value: value
                 };
               }

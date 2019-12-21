@@ -67,7 +67,7 @@ function DataIndicator(props) {
             </div>
 
             <div>
-              {dataIndex ? <CompositeRadar data={dataIndex.data} legendType={legend} /> : <Empty style={{ marginTop: '10%' }} />}
+              {dataIndex.data ? <CompositeRadar data={dataIndex.data} legendType={legend} /> : <Empty style={{ marginTop: '10%' }} />}
             </div>
           </div>
         </div>
@@ -96,7 +96,7 @@ const WechatInfo = ({ feature = {} }) => {
       <Table columns={wechatColumns}
         dataSource={feature.list}
         pagination={false}
-        rowKey='name'
+        rowKey='rowName'
       />
     </div>
   </div>
@@ -118,7 +118,7 @@ const SinaInfo = ({ feature = {} }) => {
       <Table columns={sinaColumns}
         dataSource={feature.list}
         pagination={false}
-        rowKey='name'
+        rowKey='rowName'
       />
     </div>
   </div>
@@ -142,7 +142,7 @@ const RedBookInfo = ({ feature = {} }) => {
       <Table columns={redBookColumns}
         dataSource={feature.list}
         pagination={false}
-        rowKey='name'
+        rowKey='rowName'
       />
     </div>
   </div>
