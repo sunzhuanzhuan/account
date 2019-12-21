@@ -25,11 +25,11 @@ class HeadInfo extends Component {
       url, qrCodeUrl, cooperationTips,
       verifiedStatusName,
       classificationList = [],
-      brandList = []
+
     } = base
     const { hogwartsComprehensiveCommericalIndexRank = 0, orderResponseDuration, orderResponsePercentile,
       orderAcceptanceNum = '-', orderAcceptanceRate, orderMajorIndustryCategory, orderCompleteDuration,
-      isVerified, verificationReason } = feature
+      isVerified, verificationReason, brandList = [] } = feature
     //排名处理
     const platformName = platformView[platformId] || '-'
     const wholeRankCN = `${platformName}NO.${hogwartsComprehensiveCommericalIndexRank}`
@@ -80,13 +80,13 @@ class HeadInfo extends Component {
           <div className='info-bottom-three'>
             <div className='base-info'>
               <OneLine title='账号标签' content={
-                classificationList.length > 0 ? <FatLable backColor='#F3F8FD' color='#78A3CE' list={[classificationList]} /> : null
+                classificationList.length > 0 ? <FatLable backColor='#F3F8FD' color='#78A3CE' list={classificationList} /> : null
               } />
               <OneLine title='关联品牌' content={
                 brandList.length > 0 ? <div style={{ display: 'flex' }}>
-                  <FatLable backColor='#edf8f4' color='#51a385' list={[brandList]} />
+                  <FatLable backColor='#edf8f4' color='#51a385' list={brandList.slice(0, 1)} key='value' valueKey='key' />
                   <a className='look' onClick={() => setShowModal(true, {
-                    content: <BrandList />, title: '全部品牌', width: 400
+                    content: <BrandList list={brandList} />, title: '全部品牌', width: 400
                   })}>  查看全部</a>
                 </div> : '-'
               } />
@@ -100,10 +100,11 @@ class HeadInfo extends Component {
                   <PopoverFormat popoverProps={{ overlayStyle: { width: 400 } }} text={<MultiClamp ellipsis="..." clamp={2}>{introduction}</MultiClamp>} content={introduction} />
                 </div>}
               />
+
             </div>
             <div className='type-info'>
               <div className='type-info-row' >
-                <OneType title="内容分类" content={classificationList[0]} color='#ff4d4b' />
+                <OneType title="内容分类" content={classificationList[0] && classificationList[0].name} color='#ff4d4b' />
                 <OneType title="接单数" content={orderAcceptanceNum} />
                 <OneType title="响应时间" content={FieldMap.getSegmentByFloat(orderResponsePercentile)} last={`${orderResponseDuration ? FieldMap.getTime(orderResponseDuration) : ''}`} />
               </div>
@@ -171,12 +172,12 @@ const SkuListBox = ({ skuList }) => {
     })}
   </div>
 }
-const FatLable = ({ backColor, color, list }) => {
+const FatLable = ({ backColor, color, list = [], key = 'id', valueKey = 'name' }) => {
   return <div className='fat-lable-flex'>
     {list.map((one, index) => <div
       className='fat-lable'
       style={{ marginLeft: index == 0 ? 0 : '', background: backColor, color: color }}
-      key={index}>{one}</div>)}
+      key={one[key]}>{one[valueKey]}</div>)}
   </div>
 }
 function getPrice(number) {
@@ -210,6 +211,6 @@ const WeChatTable = ({ data = [] }) => {
   />
 }
 const BrandList = ({ list = ['asd', 'asdasd'] }) => {
-  return <div className='brand-list'>{list.map(one => <div key={one}>{one}</div>)}</div>
+  return <div className='brand-list'>{list.map(one => <div key={one.key}>{one.value}</div>)}</div>
 }
 export default HeadInfo;
