@@ -12,7 +12,7 @@ import qs from 'qs'
 import api from '../../api'
 function DataIndicator(props) {
   const [indicatorData, setIndicatorData] = useState({})
-  const [dataIndex, setDataIndex] = useState([])
+  const [dataIndex, setDataIndex] = useState({})
   const searchParams = qs.parse(props.location.search.substring(1))
   useEffect(() => {
     getData()
@@ -21,7 +21,7 @@ function DataIndicator(props) {
   async function getData() {
     const { data } = await api.get('/operator-gateway/accountDetail/v1/getMediaStatistics' + props.location.search)
     setIndicatorData(data)
-    setDataIndex(data.comprehensiveIndex)
+    setDataIndex(data && data.comprehensiveIndex || {})
   }
   const { baseInfo = {} } = props
   const { base = {}, } = baseInfo
