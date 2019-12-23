@@ -66,7 +66,6 @@ class Wordcloud extends React.Component {
       font: "Verdana",
       padding: 0,
       timeInterval: 5000,
-
       // max execute time
       rotate() {
         let random = ~~(Math.random() * 4) % 4;
@@ -74,16 +73,15 @@ class Wordcloud extends React.Component {
         if (random == 2) {
           random = 0;
         }
-
         return random * 90; // 0, 90, 270
       },
 
       fontSize(d) {
         if (d.value) {
           const divisor = (max - min) !== 0 ? (max - min) : 1;
-          return ((d.value - min) / divisor) * (12 - 24) + 24;
+          const fontSize = ((d.value - min) / divisor) * (4) + 14;
+          return fontSize > 44 ? 44 : fontSize
         }
-
         return 0;
       }
     });
