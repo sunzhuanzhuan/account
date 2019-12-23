@@ -44,12 +44,31 @@ const cellPhoneColumns = [
     dataIndex: "reason"
   }
 ]
+const paymentColumns = [
+  {
+    title: "修改时间",
+    dataIndex: "createAt"
+  },
+  {
+    title: "修改人",
+    dataIndex: "createByName"
+  },
+  {
+    title: "操作端口",
+    dataIndex: "cellPhone"
+  },
+  {
+    title: "修改结果",
+    dataIndex: "reason"
+  }
+]
 
 
 const UpdateOwnerPage = (props) => {
   const [modal, setModal] = useState(null)
   const [dataForMedia, setMediaData] = useState({})
   const [dataForPhone, setPhoneData] = useState([])
+  const [dataForPayment, setPaymentData] = useState([])
   const [listLoading, setListLoading] = useState(false)
   const [pageLoading, setPageLoading] = useState(false)
   const [showButton, setShowButton] = useState({})
@@ -63,13 +82,16 @@ const UpdateOwnerPage = (props) => {
     onCancel: () => setModal(null)
   }
 
-  // 获取媒介列表账号详情
+  // 获取基本信息
   useEffect(() => {
     setPageLoading(true)
+    // 媒介列表
     props.actions.getMediums({ mcnId: id })
+    // 顶部按钮类型
     props.actions.isCanUpdateUserInfo({ mcnId: id }).then(({ data }) => {
       setShowButton(data)
     })
+    // 主账号详情
     props.actions.getOwnerDetail({ id }).then(() => {
       setPageLoading(false)
     }).catch((err) => {
@@ -108,6 +130,17 @@ const UpdateOwnerPage = (props) => {
         setListLoading(false)
       })
   }
+  const getPaymentList = (currentPage = 1, pageSize = 10) => {
+    setListLoading(true)
+    props.actions.mcnAdminUpdateHistory({
+      page: { currentPage, pageSize },
+      form: { mcnId: linkUserId }
+    }).then(({ data }) => {
+      setPaymentData(data)
+    }).finally(() => {
+      setListLoading(false)
+    })
+  }
 
   const mediaPagination = {
     total: dataForMedia.total,
@@ -115,6 +148,14 @@ const UpdateOwnerPage = (props) => {
     current: dataForMedia.pageNum,
     onChange: (currentPage) => {
       getMediaList(currentPage)
+    }
+  }
+  const paymentPagination = {
+    total: dataForPayment.total,
+    pageSize: dataForPayment.pageSize,
+    current: dataForPayment.pageNum,
+    onChange: (currentPage) => {
+      getPaymentList(currentPage)
     }
   }
 
@@ -125,7 +166,16 @@ const UpdateOwnerPage = (props) => {
   const menu = (
     <Menu>
       <Menu.Item key="1">
-        <Link to={`/account/manage/platform/${linkUserId}`}>增加账号</Link>
+        <a onClick={() => {
+          if (props.ownerInfo.paymentConfirmStatus === 1) {
+             props.history.push(`/account/manage/platform/${linkUserId}`)
+          }else {
+            Modal.info({
+              title: "支付信息未完善",
+              content: "当前主账号的支付信息未完善，无法添加账号，请先完善支付信息后再添加账号！"
+            })
+          }
+        }}>增加账号</a>
       </Menu.Item>
       {showButton.policy > 0 &&
       <Menu.Item key="2">
@@ -192,6 +242,16 @@ const UpdateOwnerPage = (props) => {
             loading={listLoading}
             dataSource={dataForPhone}
             pagination={false}
+            rowKey="id"
+          />
+        </Modal>
+        <Modal {...modalProps} title="修改历史" visible={modal === "payment"}>
+          <Table
+            size="small"
+            columns={paymentColumns}
+            loading={listLoading}
+            dataSource={dataForPayment.list}
+            pagination={paymentPagination}
             rowKey="id"
           />
         </Modal>

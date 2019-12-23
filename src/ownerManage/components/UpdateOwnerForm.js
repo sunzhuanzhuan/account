@@ -22,7 +22,7 @@ const formItemLayout = {
 };
 
 const UpdateOwnerForm = (props) => {
-  const { getFieldDecorator } = props.form;
+  const { getFieldDecorator, getFieldValue } = props.form;
   const [loading, setLoading] = useState(false);
   const [diffPhone, setDiffPhone] = useState(false)
   const [diffMcn, setDiffMcn] = useState(false)
@@ -190,12 +190,35 @@ const UpdateOwnerForm = (props) => {
           rules: [
             { required: true, message: '请选择支付信息！' }
           ]
-        })(<RadioGroup>
+        })(<RadioGroup disabled={props.paymentConfirmStatus === 1}>
+          <a className="form-suffix-action-70" style={{marginRight: -50}} onClick={() => props.setModal('payment')}>修改历史</a>
           <Radio value={1}>报价<span style={{ color: "#f00" }}>含税</span>，后期须提供增值税专用发票后方可提现</Radio>
           <br />
           <Radio value={4}>报价<span style={{ color: "#f00" }}>不含税</span>，提现须授权微播易相关通道平台代扣代缴综合税费</Radio>
         </RadioGroup>)}
       </Form.Item>
+      {getFieldValue('partnerType') === 1 && <Form.Item label="回票类型">
+        {getFieldDecorator('invoiceType', {
+          initialValue: props.invoiceType,
+          rules: [
+            { required: true, message: '请选择回票类型！' }
+          ]
+        })(<RadioGroup disabled={props.paymentConfirmStatus === 1}>
+          <Radio value={1}>增值税普通发票</Radio>
+          <Radio value={2}>增值税专用发票</Radio>
+        </RadioGroup>)}
+      </Form.Item>}
+      {getFieldValue('invoiceType') === 2 && <Form.Item label="发票税率">
+        {getFieldDecorator('taxRate', {
+          initialValue: props.taxRate,
+          rules: [
+            { required: true, message: '请选择发票税率！' }
+          ]
+        })(<RadioGroup disabled={props.paymentConfirmStatus === 1}>
+          <Radio value={0.03}>3%</Radio>
+          <Radio value={0.06}>6%</Radio>
+        </RadioGroup>)}
+      </Form.Item>}
       <Form.Item label="默认账期(天)">
         <span>{props.defaultCycle || '-'}</span>
       </Form.Item>
