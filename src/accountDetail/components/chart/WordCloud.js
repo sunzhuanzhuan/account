@@ -14,19 +14,13 @@ import {
   Facet,
   Util
 } from "bizcharts";
-import numeral from 'numeral'
 import DataSet from "@antv/data-set";
 import _ from 'lodash'
-import { dataMock } from "./mock.js";
-import { Empty } from "antd";
-import {
-  g2Tooltip
-} from "./config";
 class Wordcloud extends React.Component {
   render() {
     const { height = '217',
       width = window.innerWidth / 7 * 3 - 40,
-      data = dataMock } = this.props
+      data = [] } = this.props
     function getTextAttrs(cfg) {
       return _.assign(
         {},
@@ -95,7 +89,7 @@ class Wordcloud extends React.Component {
     };
     return (
       <div>
-        {data.length > 0 ? <Chart
+        <Chart
           height={height}
           width={width}
           data={dv}
@@ -111,7 +105,7 @@ class Wordcloud extends React.Component {
             color="key"
             shape="cloud"
           />
-        </Chart> : <Empty style={{ height: height + 18, paddingTop: 80 }} />}
+        </Chart>
       </div>
     );
   }

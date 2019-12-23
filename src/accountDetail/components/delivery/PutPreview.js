@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '@/api'
-import { Button, Table, Tooltip, } from 'antd';
+import { Button, Table, Tooltip, Empty, Spin, } from 'antd';
 import Prediction from './Prediction'
 import { WordCloud } from '../chart'
 import './PutPreview.less'
@@ -10,11 +10,13 @@ import { formatWNumberDefult } from '../../util'
 function PutPreview(props) {
   const [data, setData] = useState({})
   const [brandList, setBrandList] = useState({})
+  const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
     getDate()
   }, [])
-  function getDate() {
-    api.get(`/operator-gateway/accountDetail/v1/getOverview${props.location.search}`).then(({ data }) => { setData(data) })
+  async function getDate() {
+    await api.get(`/operator-gateway/accountDetail/v1/getOverview${props.location.search}`).then(({ data }) => { setData(data) })
+    setIsLoading(false)
     api.get(`/operator-gateway/common/v1/queryDictionary?dicCode=order_industry`).then(({ data }) => {
       let list = data
       list.unshift({ 'itemKey': 'D00', 'itemValue': '不限' })
@@ -24,21 +26,23 @@ function PutPreview(props) {
   return (
     <div className='put-preview'>
       <div className='title-big'>投放预览</div>
-      <div className='active-order '>
-        <DataActive data={data} />
-        <div className='order-statistics container'>
-          <div className='header'>
-            <p>投放广告数据表现</p>
-            <div className='prediction-icon'
-              onClick={() => props.setShowModal(true, {
-                content: <Prediction setShowModal={props.setShowModal} brandList={brandList} />,
-                title: '投放预测',
-                width: '800px'
-              })}>投放预测</div>
+      <Spin spinning={isLoading}>
+        <div className='active-order '>
+          <DataActive data={data} />
+          <div className='order-statistics container'>
+            <div className='header'>
+              <p>投放广告数据表现</p>
+              <div className='prediction-icon'
+                onClick={() => props.setShowModal(true, {
+                  content: <Prediction setShowModal={props.setShowModal} brandList={brandList} />,
+                  title: '投放预测',
+                  width: '800px'
+                })}>投放预测</div>
+            </div>
+            <OrderStatistics dataSource={data.orderDataShowList} />
           </div>
-          <OrderStatistics dataSource={data.orderDataShowList} />
         </div>
-      </div>
+      </Spin>
     </div>
   );
 }
@@ -53,7 +57,9 @@ const DataActive = ({ data }) => {
     <div className='statistics'>
       {sumList.map(item => <NumberItem item={item} key={item.title} />)}
     </div>
-    <WordCloud data={data.brandList} />
+    {data.brandList && data.brandList.length > 0 ?
+      <WordCloud data={data.brandList} />
+      : <Empty style={{ height: '225', paddingTop: 80 }} />}
     <LineType list={data.brandIndustryCategoryList} />
   </div>
 }

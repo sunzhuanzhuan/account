@@ -101,7 +101,9 @@ function OrderDetail(props) {
     setParam({ ...param, currentPage: pagination.current, [sorter.columnKey]: sorter.order && sorter.order.substring(0, 3) })
   }
   return <div>
-    <div className='title-big'>订单详情</div>
+    <div className='title-big'>订单详情<span
+      style={{ fontSize: 13, color: '#999', fontWeight: 'none' }}
+    >（当前仅展示预约订单）</span></div>
     <div className='container'>
       <div className='flex-between'>
         <div >
