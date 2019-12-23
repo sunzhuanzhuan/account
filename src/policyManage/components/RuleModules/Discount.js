@@ -18,8 +18,6 @@ const formItemLayout = {
 };
 
 export const DiscountEdit = (props) => {
-    console.log("discountType", props);
-    console.log("discountType", props.form.getFieldValue('discountRule.discountType'))
     const { data = {} } = props;
     const { discountType = Rule_Discount_Ratio, discountFixedRatio, discountFixedAmount } = data;
     const { index } = props;

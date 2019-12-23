@@ -12,13 +12,14 @@ import {
 import PageInfo from "../components/PageInfo";
 import StopReasonModal from "../components/StopReasonModal";
 import moment from 'moment';
-import * as actions from '../actions/pricePolicy';
+import actions from '../actions';
 import './PolicyManage.less';
 import qs from 'qs';
 import { ModuleHeader } from '@/components/ModuleHeader';
 import WhiteList from '../components/WhiteList';
 import RuleModule from '../components/RuleModule'
 import EditRuleForm from '../components/RuleModules/EditRuleForm'
+import AddAccountModal from '../components/RuleModules/AddAccountModal'
 import { transBool } from '../constants/dataConfig'
 
 const FormItem = Form.Item;
@@ -65,7 +66,8 @@ class PolicyManage extends React.Component {
 
 		// if (policyId !== undefined)
 		// 	this.props.getPolicyDetail(policyId);
-		this.props.getPolicyDetail(policyId);
+		console.log('getPolicyInfoByMcnId', this.props)
+		this.props.getPolicyInfoByMcnId(policyId);
 		this.setState({ policyId, userName, userId })
 	}
 
@@ -175,20 +177,20 @@ class PolicyManage extends React.Component {
 		return e && e.fileList;
 	};
 	addRule = (type) => {
-		this.setState({ showEditRuleModal: true, type })
+		this.setState({ showEditRuleModal: true, editRuleModalType: type })
 	}
 	editRuleModalClose = e => {
 		this.setState({ showEditRuleModal: false })
 	}
 
 	render() {
-		const { form, policyDetail = {}, progress } = this.props;
-		const { stopModal, policyId, userName, showEditRuleModal } = this.state;
+		const { form, policyInfo = {}, progress } = this.props;
+		const { stopModal, policyId, userName, showEditRuleModal, editRuleModalType } = this.state;
 		const isEdit = policyId !== undefined;
 		const { policyStatus, identityName, illustration,
 			validStartTime, validEndTime, modifyName = '未知', id, modifiedAt, stopReason,
 			globalAccountRules, specialAccountRules, whiteList,
-		} = policyDetail;
+		} = policyInfo;
 		const { getFieldDecorator } = form;
 		const formItemLayout = {
 			labelCol: { span: 2 },
@@ -210,7 +212,6 @@ class PolicyManage extends React.Component {
 				}
 			},
 		};
-		console.log(policyDetail.stepRebateSettlementType, policyDetail.isGuaranteed, "stepRebateSettlementType")
 
 		return [
 			<h2 key='policyHeader' className='policyHeader'>
@@ -248,11 +249,11 @@ class PolicyManage extends React.Component {
 						<ModuleHeader title="白名单"></ModuleHeader>
 						<WhiteList whiteList={whiteList}></WhiteList>
 
-						<ModuleHeader title="返点结算返点规则频次"></ModuleHeader>
+						<ModuleHeader title="返点规则"></ModuleHeader>
 						<FormItem label='返点结算周期' {...formItemLayout}>
 							{
 								getFieldDecorator('rebateSettlementCycle', {
-									initialValue: policyDetail.rebateSettlementCycle
+									initialValue: policyInfo.rebateSettlementCycle
 								})(
 									<Radio.Group options={[{ label: '月', value: 1 }, { label: '季', value: 2 }, { label: '半年', value: 3 }, { label: '年', value: 4 }]} />
 								)
@@ -262,7 +263,7 @@ class PolicyManage extends React.Component {
 
 							{
 								getFieldDecorator('stepRebateSettlementType', {
-									initialValue: policyDetail.stepRebateSettlementType
+									initialValue: policyInfo.stepRebateSettlementType
 								})(<Radio.Group options={[{ label: '阶梯收入计算', value: 1 }, { label: '全量收入计算', value: 2 }]} />)
 							}
 							<cite className='eg-explain'>例：0-100返点3%，100及以上返点5%，博主总收入150<br />
@@ -274,7 +275,7 @@ class PolicyManage extends React.Component {
 						<FormItem label='保底政策' {...formItemLayout}>
 							{
 								getFieldDecorator('isGuaranteed', {
-									initialValue: transBool(policyDetail.isGuaranteed),
+									initialValue: transBool(policyInfo.isGuaranteed),
 									valuePropName: 'checked'
 								})(
 									<Switch checkedChildren="开" unCheckedChildren="关" />
@@ -283,14 +284,14 @@ class PolicyManage extends React.Component {
 						</FormItem>
 						<FormItem label='保底金额' {...formItemLayout}>
 							{
-								getFieldDecorator('guaranteedMinAmount', { initialValue: policyDetail.guaranteedMinAmount })(
+								getFieldDecorator('guaranteedMinAmount', { initialValue: policyInfo.guaranteedMinAmount })(
 									<InputNumber style={{ width: 100 }} max={999999999} suffix="元" />
 								)
 							}
 						</FormItem>
 						<FormItem label='保底备注' {...formItemLayout}>
 							{
-								getFieldDecorator('guaranteedRemark', { initialValue: policyDetail.guaranteedRemark })(
+								getFieldDecorator('guaranteedRemark', { initialValue: policyInfo.guaranteedRemark })(
 									<Input.TextArea rows={4} style={{ width: 100 }} suffix="元" />
 								)
 							}
@@ -299,7 +300,7 @@ class PolicyManage extends React.Component {
 							{getFieldDecorator('contractFileUrl', {
 								valuePropName: 'fileList',
 								getValueFromEvent: this.normFile,
-								// initialValue: policyDetail.contractFileUrl
+								// initialValue: policyInfo.contractFileUrl
 							})(
 								<Upload.Dragger name="files" action="/upload.do">
 									<p className="ant-upload-drag-icon">
@@ -311,7 +312,7 @@ class PolicyManage extends React.Component {
 							)}
 						</Form.Item>
 						<FormItem label="备注"  {...formItemLayout}>
-							{getFieldDecorator('remark', { initialValue: policyDetail.remark })(
+							{getFieldDecorator('remark', { initialValue: policyInfo.remark })(
 								<TextArea className='remarksText' max={1000} />
 							)}
 						</FormItem>
@@ -328,7 +329,8 @@ class PolicyManage extends React.Component {
 				{stopModal ? <StopReasonModal onCancel={this.isShowStopModal} onOk={this.handleStopPolicy} /> : null}
 
 				<EditRuleForm
-					type='all'
+					{...this.props}
+					type={editRuleModalType}
 					showEditRuleModal={showEditRuleModal}
 					editRuleModalClose={this.editRuleModalClose}
 				></EditRuleForm>
@@ -340,12 +342,13 @@ class PolicyManage extends React.Component {
 
 const mapStateToProps = (state) => {
 	const { pricePolicyReducer = {} } = state;
-	const { policyDetail, newPolicyId, progress, errorMsg, msg } = pricePolicyReducer;
+	const { policyInfo, newPolicyId, progress, errorMsg, msg } = pricePolicyReducer;
 
-	return { policyDetail, newPolicyId, progress, errorMsg, msg };
+	return { policyInfo, newPolicyId, progress, errorMsg, msg };
 }
 
 const mapDispatchToProps = (dispatch) => (
+
 	bindActionCreators({
 		...actions
 	}, dispatch)

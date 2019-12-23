@@ -67,55 +67,58 @@ export const RebateEdit = (props) => {
     //   };
 
     const checkPrice = (rule, value, callback) => {
-        console.log("-----", value);
+        // console.log("-----", rule, value);
+        if (rule.field == 'rebateRule.rebateFixedRatio') {
+            value
+        }
+
+        callback('报错');
+    };
+    const checkRebateStepRules = (rule, value, callback) => {
         const { rebateNumbers } = value;
         const isBetterZero = value.percentage.every(item => item <= 100);
-        console.log("isBetterZero", isBetterZero);
+        // console.log("isBetterZero", isBetterZero);
         if (!isBetterZero) {
             callback("返点比例必须大于0，小于等于100");
             return;
         }
+
         for (let i = rebateNumbers.length; i > 0; i--) {
-            console.log(i, rebateNumbers, rebateNumbers[i - 1], rebateNumbers[i]);
+            // console.log(i, rebateNumbers, rebateNumbers[i - 1], rebateNumbers[i]);
             if (rebateNumbers[i - 1] > rebateNumbers[i]) {
                 callback("后面的值必须大于前面的值");
             }
         }
         callback();
-    };
+    }
     return <Form.Item label={'返点：'} className='platform-wrap' {...formItemLayout}>
         {!visible ? <Button type='link' onClick={() => setVisible(true)}>+添加折扣</Button> :
             <div className='item-wrap' style={{ background: '#eee' }}>
                 <Form.Item label='类型：' {...formItemLayout}>
                     {
                         getFieldDecorator("rebateRule.rebateType", {
-                            initialValue: ''
+                            initialValue: '', rules: [{ required: true, message: '类型必填' }]
                         })(<Radio.Group options={ruleRebate} onChange={onTypeChange} />)
                     }
 
                 </Form.Item>
                 <div>
                     {type == Rule_Rebate_Ratio ? <Form.Item label='公式：' {...formItemLayout}>
-                        {getFieldDecorator("rebateRule.rebateFixedRatio", {
+                        执行完成订单时博主收入，返点比例为：{getFieldDecorator("rebateRule.rebateFixedRatio", {
                             initialValue: '',
-                            rules: [{ validator: checkPrice }]
-                        })(<span>
-                            执行完成订单时博主收入，返点比例为：<InputNumber max={100} style={{ width: 100 }} suffix="%" onChange={onRatioChange} />
-                        </span>)}
+                            rules: [{ required: true, message: '返点比例必填' }]
+                        })(<InputNumber max={100} style={{ width: 100 }} suffix="%" onChange={onRatioChange} />)}
                     </Form.Item> : type == Rule_Rebate_Numeric ? <Form.Item label='公式：' {...formItemLayout}>
-                        {
+                        执行完成订单时博主收入，返点金额为：{
                             getFieldDecorator("rebateRule.rebateFixedAmount", {
-                                initialValue: ''
-                            })(
-                                <span>
-                                    执行完成订单时博主收入，返点金额为：<InputNumber style={{ width: 100 }} suffix="元" onChange={onNumericChange} />
-                                </span>
-                            )
+                                initialValue: '',
+                                rules: [{ required: true, message: '返点金额必填' }]
+                            })(<InputNumber style={{ width: 100 }} suffix="元" onChange={onNumericChange} />)
                         }
                     </Form.Item> : <Form.Item label="公式：" {...formItemLayout}>
                                 {getFieldDecorator("rebateRule.rebateStepRules", {
                                     initialValue: { rebateNumbers, percentage },
-                                    rules: [{ validator: checkPrice }]
+                                    rules: [{ validator: checkRebateStepRules }]
                                 })(<LadderRatioEdit />)}
                             </Form.Item>
                     }
