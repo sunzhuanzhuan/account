@@ -57,7 +57,7 @@ const weChatLabel = (dataItem) => {
   <a class='label-box' href=${dataItem.mediaUrl} target="_blank">
         ${imgCover(dataItem)}
         ${mediaCaption(dataItem)}
-        <div class='media-created-time'>${dataItem.mediaIndex}</div>
+        <div class='media-created-time'>${dataItem.mediaIndexName}</div>
         ${createdTime(dataItem)}
         <div class='media-data'>
           ${readItem(dataItem)}
