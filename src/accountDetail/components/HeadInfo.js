@@ -5,7 +5,7 @@ import { PopoverFormat } from "../base/TitleAndDecide";
 import ImgCircle from "../base/ImgCircle";
 
 import "./HeadInfo.less"
-import { Avatar, Button, Divider, Empty, Icon, Popover, Table } from 'antd';
+import { Button, Divider, Empty, Icon, Popover, Table, Tag } from 'antd';
 import MultiClamp from 'react-multi-clamp';
 import { platformView } from "../../accountManage/constants/platform";
 import FieldMap from "../constants/FieldMap";
@@ -29,7 +29,7 @@ class HeadInfo extends Component {
     } = base
     const { hogwartsComprehensiveCommericalIndexRank = 0, orderResponseDuration, orderResponsePercentile,
       orderAcceptanceNum = '-', orderAcceptanceRate, orderMajorIndustryCategory, orderCompleteDuration,
-      isVerified, verificationReason, brandList = [] } = feature
+      isVerified, verificationReason, brandList = [], labelListRecordList = [] } = feature
     //排名处理
     const platformName = platformView[platformId] || '-'
     const wholeRankCN = `${platformName}NO.${hogwartsComprehensiveCommericalIndexRank}`
@@ -80,13 +80,13 @@ class HeadInfo extends Component {
           <div className='info-bottom-three'>
             <div className='base-info'>
               <OneLine title='账号标签' content={
-                classificationList.length > 0 ? <FatLable backColor='#F3F8FD' color='#78A3CE' list={classificationList} /> : null
+                classificationList.length > 0 ? <FatLable classificationList={classificationList} labelListRecordList={labelListRecordList} /> : null
               } />
               <OneLine title='关联品牌' content={
                 brandList.length > 0 ? <div style={{ display: 'flex' }}>
-                  <FatLable backColor='#edf8f4' color='#51a385' list={brandList.slice(0, 1)} valueKey='key' />
+                  <div className='green-tag'>{brandList[0].key}</div>
                   <a className='look' onClick={() => setShowModal(true, {
-                    content: <BrandList list={brandList} />, title: '全部品牌', width: 800
+                    content: <div className='brand-list'>{brandList.map(one => <div color="cyan" key={one.key}>{one.key}</div>)}</div>, title: '全部品牌', width: 800
                   })}>  查看全部</a>
                 </div> : '-'
               } />
@@ -172,12 +172,16 @@ const SkuListBox = ({ skuList }) => {
     })}
   </div>
 }
-const FatLable = ({ backColor, color, list = [], valueKey = 'name' }) => {
+const FatLable = ({ classificationList, labelListRecordList }) => {
   return <div className='fat-lable-flex'>
-    {list.map((one, index) => <div
+    {classificationList.map((one, index) => <div
       className='fat-lable'
-      style={{ marginLeft: index == 0 ? 0 : '', background: backColor, color: color }}
-      key={index}>{one[valueKey]}</div>)}
+      key={index}>{one.name}</div>)}
+    {labelListRecordList.map(one => <div
+      className='fat-lable green'
+      key={one.labelId}>{one.labelName}</div>)
+    }
+
   </div>
 }
 function getPrice(number) {
@@ -218,7 +222,5 @@ const WeChatTable = ({ data = [], isFamous }) => {
     pagination={false}
   />
 }
-const BrandList = ({ list = ['asd', 'asdasd'] }) => {
-  return <div className='brand-list'>{list.map(one => <div key={one.key}>{one.key}</div>)}</div>
-}
+
 export default HeadInfo;
