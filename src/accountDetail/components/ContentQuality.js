@@ -49,7 +49,7 @@ function ContentQuality(props) {
           </div>
           {/* 近10条数据 */}
           <TopTenList accountId={props.accountId} platformId={props.platformId} />
-          <AccountHabits />
+          {searchParam.groupType == 3 ? null : <AccountHabits />}
         </div>
       </div>
     </div>

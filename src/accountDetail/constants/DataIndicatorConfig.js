@@ -97,12 +97,12 @@ export const getSina = (data = {}) => {
     },
     {
       name: "图文微博数",
-      value: getIsShow(data.mediaPictureExistValidMediaCount),
+      value: getIsShow(data.mediaPictureUrlValidCountAll),
       unit: `个`
     },
     {
       name: "视频微博数",
-      value: getIsShow(data.mediaVideoUrlValidMediaCount),
+      value: getIsShow(data.mediaVideoUrlValidCountAll),
       unit: `个`
     },
   ]
