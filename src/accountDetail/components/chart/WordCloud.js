@@ -67,7 +67,7 @@ class Wordcloud extends React.Component {
         if (random == 2) {
           random = 0;
         }
-        return random * 90; // 0, 90, 270
+        return random * 0; // 0, 90, 270
       },
 
       fontSize(d) {
