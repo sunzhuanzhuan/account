@@ -29,6 +29,8 @@ const columns = [
         需求：{data}
         <br />
         订单：<a target="_blank" href={requirementPath(record.order_id)}>{record.order_id}</a>
+        <br />
+        {record.is_price_modified == '1' ? <span style={{ background: 'red', color: '#fff', padding: '2px 4px' }}>  已改价</span> : null}
       </div>
     }
   },
@@ -62,6 +64,14 @@ const columns = [
     render: (name, record) => {
       return <div>
         {name || '-'}
+      </div>
+    }
+  }, {
+    title: '首次应约账号报价（元）',
+    dataIndex: 'first_total_account_quote_price',
+    render: (price, record) => {
+      return <div>
+        {price || '-'}
       </div>
     }
   },
@@ -194,7 +204,7 @@ export default class Orders extends Component {
               loading={this.state.listLoading}
               dataSource={list.map(key => source[key])}
               pagination={pagination}
-              scroll={list.length ? { x: listScrollWidth } : {x: listScrollWidth}}
+              scroll={list.length ? { x: listScrollWidth } : { x: listScrollWidth }}
               columns={columns}
             />
           </ScrollTable>

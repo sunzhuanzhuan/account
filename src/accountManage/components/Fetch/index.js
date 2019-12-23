@@ -37,6 +37,7 @@ export default class Fetch extends React.Component {
     this.isAutoFetch = urlParams['fetch_info'] && decodeURIComponent(urlParams['fetch_info'])
     let isID = /^\d+$/.test(this.isAutoFetch)
     const { platform: configurePlatform } = this.props
+
     let keys = configurePlatform.configure.fetchDefaultKeys
     if (typeof keys === "function") {
       keys = keys(isID)
@@ -145,9 +146,9 @@ export default class Fetch extends React.Component {
     let valida = isSuccess ? {
       help: '账号必须经过抓取才可入库'
     } : {
-      validateStatus: "error",
-      help: '请输入正确的抓取格式!'
-    }
+        validateStatus: "error",
+        help: '请输入正确的抓取格式!'
+      }
     return <div className='module-item-container'>
       <ModuleHeader title={configureModule.title} />
       <section className='content-wrap'>

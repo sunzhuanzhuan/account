@@ -44,6 +44,8 @@ export default class Dashboard extends Component {
       {
         Object.keys(feature).length > 0 ?
           <ul className='content-wrap'>
+            <Empty id="statistic-empty-wrapped" style={{display: (sexs.length || ages.length || areas.length || interests.length || snbt || trueFansRate) ? "none" : "block"
+            }}/>
             {(snbt || trueFansRate) ? <li className='subclass-item-wrap'>
               <h4 className='subclass-head'>
                 <span className='text'>平台统计</span>
@@ -68,7 +70,7 @@ export default class Dashboard extends Component {
                 </div>
               </div>
             </li> : null}
-            <li className='subclass-item-wrap' style={{display: (this.statistic && this.statistic.show) ? 'block' : 'none'}}>
+            <li className='subclass-item-wrap' id="statistic-block-wrapped" style={{display: (this.statistic && this.statistic.show) ? 'block' : 'none'}}>
               <h4 className='subclass-head'>
                 <span className='text'>内容统计</span>
                 <small className='line' />
@@ -82,8 +84,6 @@ export default class Dashboard extends Component {
                 </div>
               </div>
             </li>
-            <Empty style={{display: ((this.statistic && this.statistic.show) || sexs.length || ages.length || areas.length || interests.length || snbt || trueFansRate) ? "none" : "block"
-            }}/>
             {(sexs.length || ages.length || areas.length || interests.length) ?
               <li className='subclass-item-wrap'>
                 <h4 className='subclass-head'>
