@@ -14,19 +14,13 @@ import {
   Facet,
   Util
 } from "bizcharts";
-import numeral from 'numeral'
 import DataSet from "@antv/data-set";
 import _ from 'lodash'
-import { dataMock } from "./mock.js";
-import { Empty } from "antd";
-import {
-  g2Tooltip
-} from "./config";
 class Wordcloud extends React.Component {
   render() {
     const { height = '217',
       width = window.innerWidth / 7 * 3 - 40,
-      data = dataMock } = this.props
+      data = [] } = this.props
     function getTextAttrs(cfg) {
       return _.assign(
         {},
@@ -66,7 +60,6 @@ class Wordcloud extends React.Component {
       font: "Verdana",
       padding: 0,
       timeInterval: 5000,
-
       // max execute time
       rotate() {
         let random = ~~(Math.random() * 4) % 4;
@@ -74,16 +67,15 @@ class Wordcloud extends React.Component {
         if (random == 2) {
           random = 0;
         }
-
         return random * 90; // 0, 90, 270
       },
 
       fontSize(d) {
         if (d.value) {
           const divisor = (max - min) !== 0 ? (max - min) : 1;
-          return ((d.value - min) / divisor) * (12 - 24) + 24;
+          const fontSize = ((d.value - min) / divisor) * (4) + 14;
+          return fontSize > 44 ? 44 : fontSize
         }
-
         return 0;
       }
     });
@@ -97,7 +89,7 @@ class Wordcloud extends React.Component {
     };
     return (
       <div>
-        {data.length > 0 ? <Chart
+        <Chart
           height={height}
           width={width}
           data={dv}
@@ -113,7 +105,7 @@ class Wordcloud extends React.Component {
             color="key"
             shape="cloud"
           />
-        </Chart> : <Empty style={{ height: height + 18, paddingTop: 80 }} />}
+        </Chart>
       </div>
     );
   }
