@@ -73,8 +73,8 @@ class Wordcloud extends React.Component {
       fontSize(d) {
         if (d.value) {
           const divisor = (max - min) !== 0 ? (max - min) : 1;
-          const fontSize = ((d.value - min) / divisor) * (4) + 14;
-          return fontSize > 44 ? 44 : fontSize
+          const fontSize = ((d.value - min) / divisor) * (30) + 14;
+          return fontSize
         }
         return 0;
       }
