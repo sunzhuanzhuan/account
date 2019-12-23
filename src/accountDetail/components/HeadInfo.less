@@ -3,14 +3,23 @@
 
 .fat-lable-flex {
     display: flex;
+    flex-wrap: wrap;
 
     .fat-lable {
         height: 20px;
-        margin-left: 12px;
         line-height: 20px;
         font-size: 14px;
         padding: 0px 8px;
         border-radius: 2px;
+        margin: 0px 0px 8px;
+        margin-right: 12px;
+        background-color: #ebf4fc;
+        color: #58a4e8
+    }
+
+    .green {
+        background: #edf8f4;
+        color: #51a385;
     }
 }
 
@@ -98,16 +107,28 @@
             .base-info {
                 flex-grow: 2;
 
+                .title-font {
+                    line-height: 20px;
+                    min-width: 65px;
+                    @color999-font13();
+                    text-align: right;
+                }
+
                 .base-info-flex {
-                    height: 20px;
-                    margin-top: 19px;
+                    min-height: 20px;
+                    margin-top: 10px;
                     display: flex;
 
                     .title {
-                        line-height: 20px;
-                        min-width: 65px;
-                        @color999-font13();
-                        text-align: right;
+                        .title-font
+                    }
+                }
+
+                .account-label {
+                    display: flex;
+
+                    .title {
+                        .title-font
                     }
                 }
 
@@ -227,9 +248,13 @@
     flex-wrap: wrap;
 
     &>div {
-        background: #edf8f4;
-        color: #51a385;
+        .green-tag;
         margin: 6px;
-        padding: 2px 10px;
     }
+}
+
+.green-tag {
+    background: #fff7e6;
+    color: #f79131;
+    padding: 2px 10px;
 }
