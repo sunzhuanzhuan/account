@@ -5,7 +5,7 @@ import { PopoverFormat } from "../base/TitleAndDecide";
 import ImgCircle from "../base/ImgCircle";
 
 import "./HeadInfo.less"
-import { Button, Divider, Empty, Icon, Popover, Table, Tag } from 'antd';
+import { Button, Divider, Empty, Icon, Popover, Table, } from 'antd';
 import MultiClamp from 'react-multi-clamp';
 import { platformView } from "../../accountManage/constants/platform";
 import FieldMap from "../constants/FieldMap";
@@ -172,16 +172,12 @@ const SkuListBox = ({ skuList }) => {
     })}
   </div>
 }
-const FatLable = ({ classificationList, labelListRecordList }) => {
+const FatLable = ({ classificationList = [], labelListRecordList = [] }) => {
+  const list = Array.from(new Set([...classificationList.map(one => one.name), ...labelListRecordList.map(one => one.labelName)]))
   return <div className='fat-lable-flex'>
-    {classificationList.map((one, index) => <div
+    {list.map(one => <div
       className='fat-lable'
-      key={index}>{one.name}</div>)}
-    {labelListRecordList.map(one => <div
-      className='fat-lable green'
-      key={one.labelId}>{one.labelName}</div>)
-    }
-
+      key={one}>{one}</div>)}
   </div>
 }
 function getPrice(number) {
