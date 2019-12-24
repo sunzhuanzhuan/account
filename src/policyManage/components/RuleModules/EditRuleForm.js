@@ -6,9 +6,10 @@ import { DiscountView, DiscountEdit } from './Discount'
 import { RebateView, RebateEdit } from './Rebate'
 import AddAccountModal from './AddAccountModal'
 const EditRuleForm = (props) => {
-    const { form, showEditRuleModal, editRuleModalClose, type } = props;
+    const { form, showEditRuleModal, editRuleModalClose, type, userId, currentRule } = props;
     const [addAccountModalVisible, setAddAccountModalVisible] = useState(false);
-    const [accountInfo, setAccountInfo] = useState([])
+    const [accountList, setAccountList] = useState([])
+    const [selectedIds, setSelectedIds] = useState([]);
     const handleSubmit = e => {
         e.preventDefault();
         props.form.validateFields((err, values) => {
@@ -27,6 +28,20 @@ const EditRuleForm = (props) => {
                 rebateRule.rebateStepRules = _rebateStepRules;
                 delete rebateRule.rebateNumbers
                 delete rebateRule.percentage
+
+                values.accountIds = selectedIds;
+
+                if (!values.discountRule && !values.rebateRule) {
+                    Modal.error({
+                        title: '错误',
+                        content: '折扣和返点必须填写一个'
+                    })
+                }
+                if (type == 'global') {
+                    props.saveGlobalAccountRule({ ...values, mcnId: userId })
+                } else {
+                    props.saveSpecialAccountRule({ ...values, mcnId: userId, })
+                }
                 // debugger;
                 // !values.accountIds && delete values.accountIds;
                 // !values.platform && delete values.platform;
@@ -35,45 +50,36 @@ const EditRuleForm = (props) => {
             }
         });
     };
+    const updateAccountList = (newAccountList) => {
+        setAccountList([...accountList, ...newAccountList]);
+    }
+    const updateSelectedIds = (ids) => {
+        const newIds = Array.from(new Set([...selectedIds, ...ids]));
+        setSelectedIds(newIds)
+    }
     const addAccount = () => {
         setAddAccountModalVisible(true);
     }
-    const confirmAddAccount = (value) => {
-
-        props.getAccountInfoByIds({ accountIds: value }).then((data) => {
-            const { accountList, notExistAccountIds = [], notExistAccountIdsByMcnId = [] } = data.data;
-
-            (notExistAccountIds.length > 0 || notExistAccountIdsByMcnId.length > 0) && Modal.confirm({
-                title: 'Do you Want to delete these items?',
-                content: <div>{notExistAccountIds.length > 0 && <p>不存在的accountId: {notExistAccountIds}</p>}
-                    {notExistAccountIdsByMcnId.length > 0 && <p>不在该主账号旗下的accountId: {notExistAccountIdsByMcnId}</p>}</div>,
-                onOk() {
-                    setAddAccountModalVisible(false);
-                    setAccountInfo(accountList);
-                },
-                onCancel() {
-                    // console.log('Cancel');
-                    // setAddAccountModalVisible(false);
-                },
-            });
-        })
-    }
-
+    console.log("currentRule====", currentRule)
     return <div>
         {
             showEditRuleModal && <Modal title={'修改规则'} width={1000} onOk={handleSubmit} maskClosable={false} mask={false} visible={true} onCancel={editRuleModalClose}>
                 <Form onSubmit={handleSubmit}>
                     {type == 'global' ?
                         <PlatformEdit {...props}></PlatformEdit> :
-                        <AccountEdit {...props} accountList={accountInfo} onButtonClick={addAccount} />
+                        <AccountEdit {...props} accountList={accountList} onButtonClick={addAccount} />
                     }
                     <DiscountEdit {...props}></DiscountEdit>
                     <RebateEdit {...props}></RebateEdit>
                 </Form>
                 <AddAccountModal
                     form={form}
-                    onOk={confirmAddAccount}
+                    allSelectedIds={selectedIds}
+                    updateSelectedIds={updateSelectedIds}
+                    getAccountInfoByIds={props.getAccountInfoByIds}
                     visible={addAccountModalVisible}
+                    setAddAccountModalVisible={setAddAccountModalVisible}
+                    updateAccountList={updateAccountList}
                 ></AddAccountModal>
             </Modal>
         }

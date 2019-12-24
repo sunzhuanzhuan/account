@@ -18,16 +18,19 @@
 // }
 
 export const interfaceKey = [
-    'getPolicyInfoByMcnId',
-    'getAccountInfoByIds',
-    'delGlobalRuleById',
-    'delSpecialRuleById',
-    'delWhiteListAccount',
-    'delSpecialRuleAccountById'
+    { name: 'getPolicyInfoByMcnId' },
+    { name: 'getAccountInfoByIds' },
+    { name: 'delGlobalRuleById' },
+    { name: 'delSpecialRuleById' },
+    { name: 'delWhiteListAccount' },
+    { name: 'delSpecialRuleAccountById' },
+    { name: 'saveGlobalAccountRule', method: 'post' },
+    { name: 'saveSpecialAccountRule', method: 'post' },
+
 ]
 
 export default interfaceKey.reduce((acc, cur) => {
-    acc[cur] = `/operator-gateway/policy/v1.1/${cur}`;
+    acc[cur.name] = `/operator-gateway/policy/v1.1/${cur.name}`;
     return acc;
 }, {})
 

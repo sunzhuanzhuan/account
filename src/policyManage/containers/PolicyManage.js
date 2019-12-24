@@ -49,13 +49,10 @@ class PolicyManage extends React.Component {
 			stopModal: false,
 			showEditRuleModal: false
 		}
-		// this.rateOption = [
-		// 	{ label: '未知', value: 0 },
-		// 	{ label: '月', value: 1 },
-		// 	{ label: '季', value: 2 },
-		// 	{ label: '半年', value: 3 },
-		// 	{ label: '年', value: 4 },
-		// ];
+		const search = this.props.location.search.substring(1);
+		this.userId = qs.parse(search)['userId'];
+		this.policyId = qs.parse(search)['id'];
+		this.userName = qs.parse(search)['name'];
 	}
 
 	componentDidMount() {
@@ -179,18 +176,27 @@ class PolicyManage extends React.Component {
 	addRule = (type) => {
 		this.setState({ showEditRuleModal: true, editRuleModalType: type })
 	}
+	editRule = (type, currentRuleId) => {
+		console.log("编辑规则", type, currentRuleId)
+		this.setState({ showEditRuleModal: true, editRuleModalType: type, currentRuleId })
+	}
+	delRule = (type, ruleId) => {
+		console.log("删除规则", type, ruleId)
+	}
 	editRuleModalClose = e => {
 		this.setState({ showEditRuleModal: false })
 	}
 
 	render() {
 		const { form, policyInfo = {}, progress } = this.props;
-		const { stopModal, policyId, userName, showEditRuleModal, editRuleModalType } = this.state;
+		const { getAccountInfoByIds } = this.props;
+		const { stopModal, policyId, userName, showEditRuleModal, editRuleModalType, currentRuleId } = this.state;
 		const isEdit = policyId !== undefined;
 		const { policyStatus, identityName, illustration,
 			validStartTime, validEndTime, modifyName = '未知', id, modifiedAt, stopReason,
-			globalAccountRules, specialAccountRules, whiteList,
+			globalAccountRules = [], specialAccountRules = [], whiteList,
 		} = policyInfo;
+		const currentRule = (editRuleModalType == 'global' ? globalAccountRules : specialAccountRules).filter(item => item.ruleId == currentRuleId)
 		const { getFieldDecorator } = form;
 		const formItemLayout = {
 			labelCol: { span: 2 },
@@ -240,7 +246,14 @@ class PolicyManage extends React.Component {
 
 						<ModuleHeader title="全局账号设置"></ModuleHeader>
 						<div>政策规则：<Button onClick={() => this.addRule('global')} type="link">+添加</Button></div>
-						<RuleModule key='globalAccountRules' data={globalAccountRules} type='global' form={form}></RuleModule>
+						<RuleModule
+							key='globalAccountRules'
+							data={globalAccountRules}
+							type='global'
+							editRule={this.editRule}
+							delRule={this.delRule}
+							form={form}
+						></RuleModule>
 
 						<ModuleHeader title="特殊账号设置"></ModuleHeader>
 						<div>政策规则：<Button onClick={() => this.addRule('special')} type="link">+添加</Button></div>
@@ -328,12 +341,16 @@ class PolicyManage extends React.Component {
 				</Spin>
 				{stopModal ? <StopReasonModal onCancel={this.isShowStopModal} onOk={this.handleStopPolicy} /> : null}
 
-				<EditRuleForm
-					{...this.props}
+				{showEditRuleModal && <EditRuleForm
+					userId={this.userId}
+					currentRule={currentRule[0]}
+					getAccountInfoByIds={getAccountInfoByIds}
+					saveSpecialAccountRule={this.props.saveSpecialAccountRule}
+					saveGlobalAccountRule={this.props.saveGlobalAccountRule}
 					type={editRuleModalType}
 					showEditRuleModal={showEditRuleModal}
 					editRuleModalClose={this.editRuleModalClose}
-				></EditRuleForm>
+				></EditRuleForm>}
 
 			</div >
 		]

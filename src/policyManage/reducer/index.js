@@ -19,10 +19,18 @@
 import { combineReducers } from 'redux'
 import { handleAction, handleActions, combineActions } from 'redux-actions';
 
-export const policyInfo = handleAction('getPolicyInfoByMcnId_success', (state, action) => {
-    return {
-        ...state,
-        ...action.payload.data
+export const policyInfo = handleActions({
+    'getPolicyInfoByMcnId_success': (state, action) => {
+        return {
+            ...state,
+            ...action.payload.data
+        }
+    },
+    'saveGlobalAccountRule_success': (state, action) => {
+        return {
+            ...state,
+            globalAccountRules: [action.payload.data, ...state.globalAccountRules]
+        }
     }
 }, {})
 

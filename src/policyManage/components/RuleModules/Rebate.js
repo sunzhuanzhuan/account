@@ -93,7 +93,7 @@ export const RebateEdit = (props) => {
     }
     return <Form.Item label={'返点：'} className='platform-wrap' {...formItemLayout}>
         {!visible ? <Button type='link' onClick={() => setVisible(true)}>+添加折扣</Button> :
-            <div className='item-wrap' style={{ background: '#eee' }}>
+            <div className='item-wrap' style={{ background: '#f7fbff' }}>
                 <Form.Item label='类型：' {...formItemLayout}>
                     {
                         getFieldDecorator("rebateRule.rebateType", {
@@ -131,8 +131,8 @@ export const RebateEdit = (props) => {
 }
 
 export const RebateView = (props) => {
-    const { data } = props;
-    const { rebateType, rebateFixedRatio, rebateFixedAmount, rebateStepRules } = data;
+    const { data = {} } = props;
+    const { rebateType, rebateFixedRatio, rebateFixedAmount, rebateStepRules = [] } = data;
     const rebateTypeName = rebateType == Rule_Rebate_Ratio ? '固定比例' : rebateType == Rule_Rebate_Numeric ? '固定扣减' : '阶梯比例';
 
     const rebateNumbers = rebateStepRules.reduce((acc, cur) => {
@@ -142,11 +142,11 @@ export const RebateView = (props) => {
     const percentage = rebateStepRules.map(item => item.rebateRatio)
 
     return <Form.Item label={'返点：'} className='platform-wrap' {...formItemLayout}>
-        <div className='item-wrap' style={{ background: '#eee' }}>
+        <div className='item-wrap' style={{ background: '#f7fbff' }}>
             <Form.Item label='类型：' {...formItemLayout}>
                 {rebateTypeName}
             </Form.Item>
-            <Form.Item label='公式：' {...formItemLayout}>
+            {<Form.Item label='公式：' {...formItemLayout}>
                 {rebateType == Rule_Rebate_Ratio ?
                     <span>执行完成订单时博主收入，返点比例为：{rebateFixedRatio * 100}%</span> :
                     rebateType == Rule_Rebate_Numeric ?
@@ -156,7 +156,7 @@ export const RebateView = (props) => {
                             percentage={percentage}
                         />
                 }
-            </Form.Item>
+            </Form.Item>}
         </div>
     </Form.Item>
 }

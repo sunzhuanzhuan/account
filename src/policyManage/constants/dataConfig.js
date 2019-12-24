@@ -22,7 +22,7 @@ export const ruleRebate = [
     { label: '固定扣减', value: Rule_Rebate_Numeric },
     { label: '阶梯比例', value: Rule_Rebate_LadderRatio },
 ]
-export const platformList = [
+export const platformListOptions = [
     { id: 1, name: '新浪微博' },
     { id: 2, name: '微信' },
     { id: 3, name: '秒拍' },

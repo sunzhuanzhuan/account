@@ -20,20 +20,28 @@ import { RebateView, RebateEdit } from '../components/RuleModules/Rebate'
 import './RuleModule.less'
 // let ruleID = 1;
 const RuleModule = (props) => {
-    const { type, data = [] } = props;
-
+    const { type, data = [], editRule } = props;
+    console.log("rule, ", editRule, props)
     const delRule = () => {
+
+    }
+    const onEditBtnClick = () => {
 
     }
 
     return <div>
         {
-            data.map(item => <RuleCard key={item.ruleId} title={`规则ID: ${item.ruleId}`} onDelBtnClick={() => delRule(item)}>
+            data.map(item => <RuleCard
+                key={item.ruleId}
+                title={`规则ID: ${item.ruleId}`}
+                onDelBtnClick={() => delRule(item)}
+                onEditBtnClick={() => editRule(type, item.ruleId)}
+            >
                 {type == 'global' ? <PlatformView data={item.platformList}></PlatformView> :
                     <AccountView accountList={item.accountList}></AccountView>
                 }
-                <DiscountView data={item.discountRule}></DiscountView>
-                <RebateView data={item.rebateRule}></RebateView>
+                {item.discountRule && <DiscountView data={item.discountRule}></DiscountView>}
+                {item.rebateRule && <RebateView data={item.rebateRule}></RebateView>}
             </RuleCard>)
         }
     </div>

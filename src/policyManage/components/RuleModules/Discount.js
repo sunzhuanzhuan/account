@@ -18,20 +18,21 @@ const formItemLayout = {
 };
 
 export const DiscountEdit = (props) => {
-    const { data = {} } = props;
-    const { discountType = Rule_Discount_Ratio, discountFixedRatio, discountFixedAmount } = data;
+    const { data = {}, currentRule = {} } = props;
+    const { discountRule = {} } = currentRule;
+    const { discountType = Rule_Discount_Ratio, discountFixedRatio, discountFixedAmount } = discountRule;
     const { index } = props;
     const { getFieldDecorator } = props.form;
     const [type, useType] = useState(Rule_Discount_Ratio)
     const [visible, setVisible] = useState(false);
-
+    console.log("currentRule", currentRule, discountType, Rule_Discount_Ratio, discountFixedRatio, discountFixedAmount)
     const onDiscountRatioChange = e => {
         useType(e.target.value)
     }
     return <Form.Item label={'折扣：'} className='platform-wrap' {...formItemLayout}>
         {/* <Col className='form-label' span={formItemLayout.labelCol.span}>折扣：</Col> */}
         {!visible ? <Button type='link' onClick={() => setVisible(true)}>+添加折扣</Button> :
-            <div className='item-wrap' style={{ background: '#eee' }}>
+            <div className='item-wrap' style={{ background: '#f7fbff' }}>
                 <Form.Item label="类型：" {...formItemLayout}>
                     {getFieldDecorator('discountRule.discountType', {
                         initialValue: discountType,
@@ -42,12 +43,10 @@ export const DiscountEdit = (props) => {
                 </Form.Item>
                 {
                     type == Rule_Discount_Ratio ? <Form.Item label='公式：' {...formItemLayout}>
-                        {getFieldDecorator(`discountRule.discountFixedRatio`, {
+                        <span>刊例价 X {getFieldDecorator(`discountRule.discountFixedRatio`, {
                             initialValue: discountFixedRatio,
-                            rules: [{ required: false, message: '请输入固定比例值' }],
-                        })(
-                            <span>刊例价 X <InputNumber max={100} style={{ width: 100 }} suffix="%" />= 账号报价</span>
-                        )} </Form.Item> :
+                            rules: [{ required: true, message: '请输入固定比例值' }],
+                        })(<InputNumber max={100} style={{ width: 100 }} suffix="%" />)}= 账号报价</span> </Form.Item> :
                         <Form.Item label='公式：' {...formItemLayout}>
                             {getFieldDecorator('discountRule.discountFixedAmount', {
                                 initialValue: discountFixedAmount,
@@ -65,11 +64,11 @@ export const DiscountEdit = (props) => {
 }
 
 export const DiscountView = (props) => {
-    const { data } = props;
+    const { data = {} } = props;
     const { discountType, discountFixedRatio, discountFixedAmount } = data;
     return <Form.Item label={'折扣：'} className='platform-wrap' {...formItemLayout}>
         {
-            <div className='item-wrap' style={{ background: '#eee' }}>
+            <div className='item-wrap' style={{ background: '#f7fbff' }}>
                 <Form.Item label="类型：" {...formItemLayout}>
                     {discountType == Rule_Discount_Ratio ? '固定比例' : '固定扣减'}
                 </Form.Item>

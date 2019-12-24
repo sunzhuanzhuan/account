@@ -15,7 +15,10 @@ console.log(Interface)
 // } = createHttpAction('delGlobalRuleById', Interface.common.searchForCompanyByName)
 
 const obj = interfaceKey.reduce((acc, cur) => {
-    const a = createHttpAction(cur, `/operator-gateway/policy/v1.1/${cur}`)
+    const a = createHttpAction(
+        cur.name,
+        `/operator-gateway/policy/v1.1/${cur.name}`,
+        { method: cur.method || 'get' })
     return { ...acc, ...a };
 }, {})
 
