@@ -186,10 +186,10 @@ const VideoInfo = ({ feature = {}, base = {} }) => {
     </div>
     <div className='operate-four'>
       {/* 快手抖音独有 */}
-      {base.platformId == 103 || base.platformId == 115 ? <>
-        <OperateItem typeText='真实观看率'
-          numberAvg={feature.mediaLikeAvg}
-          percentAvg={feature.mediaLikeAvg30ItemRateOnClassificationPriceTag}
+      {base.platformId == 115 ? <>
+        <ThreeNumber title='真实观看率'
+          number={numeral(feature.trueViewRatio * 100).format('0.0')}
+          unit='%'
         />
         <Divider type="vertical" className='height20-colorE3' />
       </> : null}
@@ -235,7 +235,7 @@ const OperateItem = ({ typeText, numberAvg, percentAvg }) => {
   </div>
 }
 const ThreeNumber = ({ title, number, unit, percent, typeContent, tips }) => {
-  return <div>
+  return <div className='three-number'>
     <div className='font13-color9 text-center'>{tips ? <Tooltip title={tips}>
       {title}
     </Tooltip> : title}</div>

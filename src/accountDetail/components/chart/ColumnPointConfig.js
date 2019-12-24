@@ -71,7 +71,7 @@ const sinaLabel = (dataItem) => {
   return `
 <a class='label-box sina-box' href=${dataItem.mediaUrl} target="_blank">
       ${mediaCaption(dataItem)}
-      <div class='media-created-time'>图文微博${dataItem.mediaIsDirect}</div>
+      <div class='media-created-time'>图文微博${dataItem.mediaIsDirect == 0 ? '转发' : '直发'}</div>
       ${createdTime(dataItem)}
       <div class='media-data'>
         ${commentItem(dataItem)}
