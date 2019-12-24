@@ -20,7 +20,7 @@ export const getWechat = (data = {}) => {
     },
     {
       name: "10w+阅读文章数",
-      value: getIsShow(data.mediaReadExceed10wMediaCount),
+      value: getIsShow(data.mediaReadExceed10wMediaCountAll),
       unit: `个`
     },
     {
