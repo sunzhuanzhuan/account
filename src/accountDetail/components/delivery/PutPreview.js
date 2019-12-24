@@ -126,7 +126,7 @@ const OrderStatistics = ({ dataSource }) => {
       title: '差异比',
       dataIndex: 'differRate',
       key: 'differRate',
-      render: text => text > 0 || text == 0 ? <div className='light-big'>{numeral(text).format('0.0')}<span className='light-small'>%</span></div> : '-'
+      render: text => text > 0 || text == 0 ? <div className='light-big'>{numeral(text * 100).format('0.0')}<span className='light-small'>%</span></div> : '-'
     }
   ];
   return <Table
