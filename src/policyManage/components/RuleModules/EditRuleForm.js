@@ -12,7 +12,7 @@ const EditRuleForm = (props) => {
     const [selectedIds, setSelectedIds] = useState([]);
     const handleSubmit = e => {
         e.preventDefault();
-        props.form.validateFields((err, values) => {
+        props.form.validateFields(async (err, values) => {
             if (!err) {
                 const { rebateRule = {} } = values;
                 const { rebateStepRules = {} } = rebateRule;
@@ -38,10 +38,12 @@ const EditRuleForm = (props) => {
                     })
                 }
                 if (type == 'global') {
-                    props.saveGlobalAccountRule({ ...values, mcnId: userId })
+                    await props.saveGlobalAccountRule({ ...values, mcnId: userId })
                 } else {
-                    props.saveSpecialAccountRule({ ...values, mcnId: userId, })
+                    await props.saveSpecialAccountRule({ ...values, mcnId: userId, })
                 }
+
+                editRuleModalClose();
                 // debugger;
                 // !values.accountIds && delete values.accountIds;
                 // !values.platform && delete values.platform;
@@ -63,7 +65,7 @@ const EditRuleForm = (props) => {
     console.log("currentRule====", currentRule)
     return <div>
         {
-            showEditRuleModal && <Modal title={'修改规则'} width={1000} onOk={handleSubmit} maskClosable={false} mask={false} visible={true} onCancel={editRuleModalClose}>
+            showEditRuleModal && <Modal title={'修改规则'} width={1000} onOk={handleSubmit} maskClosable={true} mask={false} visible={true} onCancel={editRuleModalClose}>
                 <Form onSubmit={handleSubmit}>
                     {type == 'global' ?
                         <PlatformEdit {...props}></PlatformEdit> :

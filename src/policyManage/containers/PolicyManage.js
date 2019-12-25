@@ -174,7 +174,7 @@ class PolicyManage extends React.Component {
 		return e && e.fileList;
 	};
 	addRule = (type) => {
-		this.setState({ showEditRuleModal: true, editRuleModalType: type })
+		this.setState({ showEditRuleModal: true, editRuleModalType: type, currentRuleId: -1 })
 	}
 	editRule = (type, currentRuleId) => {
 		console.log("编辑规则", type, currentRuleId)

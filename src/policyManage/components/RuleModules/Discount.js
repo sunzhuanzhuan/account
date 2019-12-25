@@ -31,7 +31,7 @@ export const DiscountEdit = (props) => {
     }
     return <Form.Item label={'折扣：'} className='platform-wrap' {...formItemLayout}>
         {/* <Col className='form-label' span={formItemLayout.labelCol.span}>折扣：</Col> */}
-        {!visible ? <Button type='link' onClick={() => setVisible(true)}>+添加折扣</Button> :
+        {(!visible && !currentRule.discountRule) ? <Button type='link' onClick={() => setVisible(true)}>+添加折扣</Button> :
             <div className='item-wrap' style={{ background: '#f7fbff' }}>
                 <Form.Item label="类型：" {...formItemLayout}>
                     {getFieldDecorator('discountRule.discountType', {
