@@ -132,7 +132,7 @@ const AddOwnerForm = (props) => {
         })(<Input placeholder='请输入主账号名称' />)}
       </Form.Item>
       <Form.Item label={<span>支付信息{InfoPay}</span>}>
-        {getFieldDecorator('partnerType', {
+        {getFieldDecorator('taxInPrice', {
           validateFirst: true,
           rules: [
             { required: true, message: '请选择支付信息！' }
@@ -140,10 +140,10 @@ const AddOwnerForm = (props) => {
         })(<RadioGroup>
           <Radio value={1}>报价<span style={{ color: "#f00" }}>含税</span>，后期须提供增值税专用发票后方可提现</Radio>
           <br />
-          <Radio value={4}>报价<span style={{ color: "#f00" }}>不含税</span>，提现须授权微播易相关通道平台代扣代缴综合税费</Radio>
+          <Radio value={2}>报价<span style={{ color: "#f00" }}>不含税</span>，提现须授权微播易相关通道平台代扣代缴综合税费</Radio>
         </RadioGroup>)}
       </Form.Item>
-      {getFieldValue('partnerType') === 1 && <Form.Item label="回票类型">
+      {getFieldValue('taxInPrice') === 1 && <Form.Item label="回票类型">
         {getFieldDecorator('invoiceType', {
           rules: [
             { required: true, message: '请选择回票类型！' }

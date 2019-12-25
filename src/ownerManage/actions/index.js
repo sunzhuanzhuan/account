@@ -27,6 +27,13 @@ export const {
   method: "post"
 });
 
+// 主账号支付信息修改列表
+export const {
+  listMcnPaymentInfo
+} = createHttpAction('listMcnPaymentInfo', Interface.listMcnPaymentInfo, {
+  method: "post"
+});
+
 // 更新主账号信息
 export const {
   ownerUpdate

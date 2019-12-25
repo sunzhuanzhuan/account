@@ -55,11 +55,11 @@ const paymentColumns = [
   },
   {
     title: "操作端口",
-    dataIndex: "cellPhone"
+    dataIndex: "createdFromName"
   },
   {
     title: "修改结果",
-    dataIndex: "reason"
+    dataIndex: "contentName"
   }
 ]
 
@@ -130,11 +130,11 @@ const UpdateOwnerPage = (props) => {
         setListLoading(false)
       })
   }
-  const getPaymentList = (currentPage = 1, pageSize = 10) => {
+  const getPaymentList = (pageNum = 1, pageSize = 10) => {
     setListLoading(true)
-    props.actions.mcnAdminUpdateHistory({
-      page: { currentPage, pageSize },
-      form: { mcnId: linkUserId }
+    props.actions.listMcnPaymentInfo({
+      pageNum, pageSize,
+      mcnId: linkUserId
     }).then(({ data }) => {
       setPaymentData(data)
     }).finally(() => {
@@ -167,7 +167,7 @@ const UpdateOwnerPage = (props) => {
     <Menu>
       <Menu.Item key="1">
         <a onClick={() => {
-          if (props.ownerInfo.paymentConfirmStatus === 1) {
+          if (props.ownerInfo.paymentInfoIsComplete === 1) {
              props.history.push(`/account/manage/platform/${linkUserId}`)
           }else {
             Modal.info({
