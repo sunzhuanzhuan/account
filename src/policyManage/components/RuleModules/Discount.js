@@ -11,27 +11,27 @@ import {
     Rule_Rebate_Numeric,
     Rule_Rebate_LadderRatio
 } from '../../constants/dataConfig'
-
+const { _ } = window;
 const formItemLayout = {
     labelCol: { span: 2 },
     wrapperCol: { span: 22 },
 };
 
 export const DiscountEdit = (props) => {
-    const { data = {}, currentRule = {} } = props;
-    const { discountRule = {} } = currentRule;
+    const { currentRule = {} } = props;
+    const [discountRule, setDiscountRule] = useState(currentRule.discountRule)
     const { discountType = Rule_Discount_Ratio, discountFixedRatio, discountFixedAmount } = discountRule;
-    const { index } = props;
+
+    const isEdit = !_.isEmpty(discountRule);
     const { getFieldDecorator } = props.form;
     const [type, useType] = useState(Rule_Discount_Ratio)
-    const [visible, setVisible] = useState(false);
-    console.log("currentRule", currentRule, discountType, Rule_Discount_Ratio, discountFixedRatio, discountFixedAmount)
+    const [visible, setVisible] = useState(isEdit);
+
     const onDiscountRatioChange = e => {
         useType(e.target.value)
     }
     return <Form.Item label={'折扣：'} className='platform-wrap' {...formItemLayout}>
-        {/* <Col className='form-label' span={formItemLayout.labelCol.span}>折扣：</Col> */}
-        {(!visible && !currentRule.discountRule) ? <Button type='link' onClick={() => setVisible(true)}>+添加折扣</Button> :
+        {(!visible) ? <Button type='link' onClick={() => setVisible(true)}>+添加折扣</Button> :
             <div className='item-wrap' style={{ background: '#f7fbff' }}>
                 <Form.Item label="类型：" {...formItemLayout}>
                     {getFieldDecorator('discountRule.discountType', {
@@ -56,7 +56,7 @@ export const DiscountEdit = (props) => {
                         </span>)}
                         </Form.Item>
                 }
-                <Button onClick={() => setVisible(false)} style={{ position: 'absolute', right: 0, top: 0 }} type="link" >删除</Button>
+                <Button onClick={() => { setVisible(false); setDiscountRule({}) }} style={{ position: 'absolute', right: 0, top: 0 }} type="link" >删除</Button>
             </div>
         }
 

@@ -12,7 +12,7 @@ import {
     Rule_Rebate_LadderRatio
 } from '../../constants/dataConfig'
 
-
+const { _ } = window;
 const platformList = [
     { id: 1, name: '新浪微博' },
     { id: 2, name: '微信' },
@@ -30,13 +30,17 @@ const formItemLayout = {
 export const RebateEdit = (props) => {
     console.log("RebateEdit:", props)
     const { form, currentRule = {} } = props;
-    const { rebateRule = {} } = currentRule;
+    // const { rebateRule = {} } = currentRule;
+    const [rebateRule, setRebateRule] = useState(currentRule.rebateRule || {})
     const { rebateType, rebateStepRules = [] } = rebateRule;
     const { getFieldDecorator } = form;
     const [type, useType] = useState(rebateType || Rule_Rebate_Ratio)
     const [ratio, useRatio] = useState();
     const [numeric, useNumeric] = useState();
-    const [visible, setVisible] = useState(false);
+
+    const isEdit = !_.isEmpty(rebateRule);
+    const [visible, setVisible] = useState(isEdit);
+
 
     const rebateNumbers = rebateStepRules.length == 0 ? [0, 999999999] : rebateStepRules.reduce((acc, cur) => {
         acc.push(cur.amountHighLimit);
@@ -94,7 +98,7 @@ export const RebateEdit = (props) => {
         callback();
     }
     return <Form.Item label={'返点：'} className='platform-wrap' {...formItemLayout}>
-        {(!visible && !currentRule.rebateRule) ? <Button type='link' onClick={() => setVisible(true)}>+添加折扣</Button> :
+        {(!visible) ? <Button type='link' onClick={() => setVisible(true)}>+添加折扣</Button> :
             <div className='item-wrap' style={{ background: '#f7fbff' }}>
                 <Form.Item label='类型：' {...formItemLayout}>
                     {
@@ -125,7 +129,7 @@ export const RebateEdit = (props) => {
                             </Form.Item>
                     }
                 </div>
-                <Button onClick={() => setVisible(false)} style={{ position: 'absolute', right: 0, top: 0 }} type="link" >删除</Button>
+                <Button onClick={() => { setVisible(false); setRebateRule({}) }} style={{ position: 'absolute', right: 0, top: 0 }} type="link" >删除</Button>
             </div>
         }
 
