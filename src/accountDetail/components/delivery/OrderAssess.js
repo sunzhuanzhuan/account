@@ -65,7 +65,7 @@ const Statistics = ({ statistic = {}, feature = {} }) => {
   }
   const list = [
     { name: '全部评价数', value: statistic.total },
-    { name: '好评率', value: statistic.positiveRate * 100, unit: '%' },
+    { name: '好评率', value: numeral(statistic.positiveRate * 100).format('0.0'), unit: '%' },
     { name: '平均响应速度', value: getNumber(statistic.professionalDegreeAvg), unit: '分' },
     { name: '平均配合度', value: getNumber(statistic.coordinationDegreeAvg), unit: '分' },
     { name: '平均满意度', value: getNumber(statistic.appearanceDegreeAvg), unit: '分' },
