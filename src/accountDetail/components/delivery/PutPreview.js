@@ -99,6 +99,7 @@ const LineType = ({ list = [] }) => {
   </div>
 }
 const OrderStatistics = ({ dataSource }) => {
+
   const columns = [
     {
       title: '',
@@ -111,7 +112,9 @@ const OrderStatistics = ({ dataSource }) => {
       key: 'orderMediaAvg',
       render: text => {
         const data = formatWNumberDefult(text)
-        return text > 0 || text == 0 ? <div className='dark-big'>{data.value}<span className='dark-small'>{data.unit}</span></div> : '-'
+        return <div className='dark-big'>{text > 0 || text == 0 ? <>
+          {data.value}<span className='dark-small'>{data.unit}</span>
+        </> : '-'}</div>
       }
     },
     {
@@ -120,17 +123,39 @@ const OrderStatistics = ({ dataSource }) => {
       key: 'kolMediaAvg',
       render: text => {
         const data = formatWNumberDefult(text)
-        return text > 0 || text == 0 ? <div className='dark-big'>{data.value}<span className='dark-small'>{data.unit}</span></div> : '-'
+        return <div className='dark-big'> {text > 0 || text == 0 ? <>
+          {data.value}<span className='dark-small'>{data.unit}</span>
+        </> : '-'}</div>
       }
     }, {
       title: '差异比',
       dataIndex: 'differRate',
       key: 'differRate',
-      render: text => text > 0 || text == 0 ? <div className='light-big'>{numeral(text * 100).format('0.0')}<span className='light-small'>%</span></div> : '-'
+      render: (text, record) => {
+        const valueObject = getValue(record.orderMediaAvg, record.kolMediaAvg, text)
+        return <div className='light-big'>{valueObject.value}
+          <span className='light-small'>{valueObject.unit}</span>
+        </div>
+      }
     }
   ];
   return <Table
     className='put-pre-table table-no-background-add-odd '
     dataSource={dataSource} columns={columns} pagination={false} rowKey='rowName' />
+}
+const getValue = (first, second, value) => {
+  let valueNow = value
+  let unit = '%'
+  if (value == 0 || value > 0) {
+    valueNow = numeral(value * 100).format('0.0')
+  } else {
+    valueNow = '-'
+    unit = ''
+  }
+  if ((!first && first != 0) || (!second)) {
+    valueNow = '-'
+    unit = ''
+  }
+  return { value: valueNow, unit }
 }
 export default withRouter(PutPreview)
