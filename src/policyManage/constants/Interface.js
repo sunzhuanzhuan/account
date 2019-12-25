@@ -20,12 +20,12 @@
 export const interfaceKey = [
     { name: 'getPolicyInfoByMcnId' },
     { name: 'getAccountInfoByIds' },
-    { name: 'delGlobalRuleById' },
-    { name: 'delSpecialRuleById' },
-    { name: 'delWhiteListAccount' },
-    { name: 'delSpecialRuleAccountById' },
     { name: 'saveGlobalAccountRule', method: 'post' },
     { name: 'saveSpecialAccountRule', method: 'post' },
+    { name: 'delGlobalRuleById', method: 'post' },          //删除全局账号规则
+    { name: 'delSpecialRuleById', method: 'post' },         //删除特殊账号规则
+    { name: 'delWhiteListAccount', method: 'post' },        //删除白名单账号
+    { name: 'delSpecialRuleAccountById', method: 'post' }, //删除特殊规则账号
 
 ]
 

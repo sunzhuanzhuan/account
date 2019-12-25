@@ -20,21 +20,15 @@ import { RebateView, RebateEdit } from '../components/RuleModules/Rebate'
 import './RuleModule.less'
 // let ruleID = 1;
 const RuleModule = (props) => {
-    const { type, data = [], editRule } = props;
-    console.log("rule, ", editRule, props)
-    const delRule = () => {
-
-    }
-    const onEditBtnClick = () => {
-
-    }
+    const { type, data = [], editRule, delRule } = props;
+    console.log("rule, ", typeof delRule, props)
 
     return <div>
         {
             data.map(item => <RuleCard
                 key={item.ruleId}
                 title={`规则ID: ${item.ruleId}`}
-                onDelBtnClick={() => delRule(item)}
+                onDelBtnClick={() => delRule(type, item.ruleId)}
                 onEditBtnClick={() => editRule(type, item.ruleId)}
             >
                 {type == 'global' ? <PlatformView data={item.platformList}></PlatformView> :

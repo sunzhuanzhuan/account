@@ -38,6 +38,20 @@ export const policyInfo = handleActions({
             specialAccountRules: [action.payload.data, ...state.specialAccountRules]
         }
     },
+    'delGlobalRuleById_success': (state, action) => {
+        return {
+            ...state,
+            globalAccountRules: state.globalAccountRules.filter(item => item.ruleId != action.payload.data.ruleId)
+        }
+    },
+    'delSpecialRuleById_success': (state, action) => {
+        console.log("action", action)
+        return {
+            ...state,
+            specialAccountRules: state.specialAccountRules.filter(item => item.ruleId != action.payload.data.ruleId)
+        }
+    }
+
 }, {})
 
 const accountInfo = handleAction('getAccountInfoByIds_success', (state, action) => {

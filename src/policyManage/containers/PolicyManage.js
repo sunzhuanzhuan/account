@@ -182,6 +182,8 @@ class PolicyManage extends React.Component {
 	}
 	delRule = (type, ruleId) => {
 		console.log("删除规则", type, ruleId)
+		const delRuleById = type == 'global' ? this.props.delGlobalRuleById : this.props.delSpecialRuleById
+		delRuleById({ ruleId, userId: this.userId })
 	}
 	editRuleModalClose = e => {
 		this.setState({ showEditRuleModal: false })
@@ -257,7 +259,14 @@ class PolicyManage extends React.Component {
 
 						<ModuleHeader title="特殊账号设置"></ModuleHeader>
 						<div>政策规则：<Button onClick={() => this.addRule('special')} type="link">+添加</Button></div>
-						<RuleModule key='specialAccountRules' data={specialAccountRules} type='special' form={form}></RuleModule>
+						<RuleModule
+							key='specialAccountRules'
+							data={specialAccountRules}
+							type='special'
+							editRule={this.editRule}
+							delRule={this.delRule}
+							form={form}
+						></RuleModule>
 
 						<ModuleHeader title="白名单"></ModuleHeader>
 						<WhiteList whiteList={whiteList}></WhiteList>
@@ -342,11 +351,12 @@ class PolicyManage extends React.Component {
 				{stopModal ? <StopReasonModal onCancel={this.isShowStopModal} onOk={this.handleStopPolicy} /> : null}
 
 				{showEditRuleModal && <EditRuleForm
-					userId={this.userId}
+					mcnId={this.userId}
 					currentRule={currentRule[0]}
 					getAccountInfoByIds={getAccountInfoByIds}
 					saveSpecialAccountRule={this.props.saveSpecialAccountRule}
 					saveGlobalAccountRule={this.props.saveGlobalAccountRule}
+					delSpecialRuleAccountById={this.props.delSpecialRuleAccountById}
 					type={editRuleModalType}
 					showEditRuleModal={showEditRuleModal}
 					editRuleModalClose={this.editRuleModalClose}

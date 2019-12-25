@@ -18,7 +18,7 @@ const formItemLayout = {
 // const { Option } = Select;
 
 export const AccountEdit = (props) => {
-    const { onButtonClick, accountList = [] } = props;
+    const { onButtonClick, accountList = [], delAccountFromList } = props;
     // const { getFieldDecorator } = props.form;
     const { defaultCheckedList = [1, 2], setDefaultCheckedList } = props;
 
@@ -26,16 +26,17 @@ export const AccountEdit = (props) => {
         const checkeList = defaultCheckedList.filter(item => item !== e);
         setDefaultCheckedList(checkeList);
     }
+    console.log("delAccountFromList: ", typeof delAccountFromList)
     return <>
         <Form.Item label="账号" {...formItemLayout}>
             <Button onClick={onButtonClick}>添加账号</Button>
         </Form.Item>
-        <AccountView accountList={accountList} labelName=' '></AccountView>
+        <AccountView accountList={accountList} delAccountFromList={delAccountFromList} labelName=' '></AccountView>
     </>
 }
 
 export const AccountView = (props) => {
-    const { accountList = [] } = props;
+    const { accountList = [], delAccountFromList } = props;
     const { labelName = '账号' } = props;
     const columns = [
         {
@@ -66,6 +67,6 @@ export const AccountView = (props) => {
     ]
     return <Form.Item label={labelName} {...formItemLayout}>
         <p>已选择{accountList.length}个账号</p>
-        <AccountListTable dataSource={accountList} columns={columns} />
+        <AccountListTable delAccountFromList={delAccountFromList} dataSource={accountList} columns={columns} />
     </Form.Item>
 }

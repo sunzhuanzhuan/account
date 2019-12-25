@@ -6,9 +6,10 @@ import { DiscountView, DiscountEdit } from './Discount'
 import { RebateView, RebateEdit } from './Rebate'
 import AddAccountModal from './AddAccountModal'
 const EditRuleForm = (props) => {
-    const { form, showEditRuleModal, editRuleModalClose, type, userId, currentRule } = props;
+    const { form, showEditRuleModal, editRuleModalClose, type, mcnId, currentRule = {} } = props;
+    const { ruleId } = currentRule
     const [addAccountModalVisible, setAddAccountModalVisible] = useState(false);
-    const [accountList, setAccountList] = useState([])
+    const [accountList, setAccountList] = useState(currentRule.accountList || [])
     const [selectedIds, setSelectedIds] = useState([]);
     const handleSubmit = e => {
         e.preventDefault();
@@ -38,9 +39,9 @@ const EditRuleForm = (props) => {
                     })
                 }
                 if (type == 'global') {
-                    await props.saveGlobalAccountRule({ ...values, mcnId: userId })
+                    await props.saveGlobalAccountRule({ ...values, mcnId })
                 } else {
-                    await props.saveSpecialAccountRule({ ...values, mcnId: userId, })
+                    await props.saveSpecialAccountRule({ ...values, mcnId, })
                 }
 
                 editRuleModalClose();
@@ -54,6 +55,14 @@ const EditRuleForm = (props) => {
     };
     const updateAccountList = (newAccountList) => {
         setAccountList([...accountList, ...newAccountList]);
+    }
+    const delAccountFromList = (accountId) => {
+        console.log("delAccountFromList", accountId, accountList)
+        props.delSpecialRuleAccountById({ accountId, mcnId, ruleId }).then(() => {
+            const newAccountList = accountList.filter(item => item.accountId != accountId);
+            setAccountList(newAccountList)
+        })
+
     }
     const updateSelectedIds = (ids) => {
         const newIds = Array.from(new Set([...selectedIds, ...ids]));
@@ -69,7 +78,12 @@ const EditRuleForm = (props) => {
                 <Form onSubmit={handleSubmit}>
                     {type == 'global' ?
                         <PlatformEdit {...props}></PlatformEdit> :
-                        <AccountEdit {...props} accountList={accountList} onButtonClick={addAccount} />
+                        <AccountEdit
+                            {...props}
+                            accountList={accountList}
+                            delAccountFromList={delAccountFromList}
+                            onButtonClick={addAccount}
+                        />
                     }
                     <DiscountEdit {...props}></DiscountEdit>
                     <RebateEdit {...props}></RebateEdit>

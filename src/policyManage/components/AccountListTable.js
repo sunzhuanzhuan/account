@@ -1,5 +1,5 @@
 import React from "react";
-import { Table } from 'antd';
+import { Table, Button } from 'antd';
 
 class AccountListTable extends React.Component {
     constructor(props) {
@@ -7,6 +7,7 @@ class AccountListTable extends React.Component {
         // this.state = {
         //     currentPage: 1
         // };
+        const { delAccountFromList } = this.props;
         this.columns = [
             {
                 title: 'accountId',
@@ -49,7 +50,8 @@ class AccountListTable extends React.Component {
                 // width: 100,
                 align: 'center',
                 render: (_, record) => {
-                    return <span className='operateText'>删除</span>
+                    console.log(_, record, '========')
+                    return <Button type='link' className='operateText' onClick={() => delAccountFromList(record.accountId)}>删除</Button>
                 }
             },
         ];
