@@ -37,8 +37,8 @@ function OrderDetail(props) {
   }
   //下拉框数据
   async function getBrand() {
-    const { data = [] } = await api.get('/operator-gateway/accountDetail/v1/getBrandListInAccountDealOrder' + props.location.search)
-    setBrandList(data)
+    const { data = [] } = await api.get('/export/account/getBrandListByAccountId/' + props.location.search)
+    setBrandList(data.rows)
   }
   const columns = [
     {
@@ -110,8 +110,8 @@ function OrderDetail(props) {
           {brandList.length > 0 ? <>投放品牌： <Select style={{ width: 120, margin: '0px 20px 0px 0px' }}
             onChange={value => setParam({ ...param, currentPage: 1, signedBrandId: value })} allowClear>
             {brandList.map(item => <Option
-              key={item.signedBrandId} value={item.signedBrandId}>
-              {item.signedBrandName}
+              key={item.signed_brand_id} value={item.signed_brand_id}>
+              {item.signed_brand_name}
             </Option>)}
           </Select></> : null}
         </div>
@@ -121,6 +121,7 @@ function OrderDetail(props) {
           pagination={{
             pageSize: 10,
             current: param.currentPage,
+            total: orderDetail.total
           }}
           loading={isLoading}
           onChange={handleTableChange}

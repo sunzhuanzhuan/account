@@ -43,6 +43,8 @@ function OrderAssess(props) {
                 setSearchParam({ ...searchParam, page: page })
               },
               pageSize: 10,
+              current: orderList.pagination && orderList.pagination.page,
+              total: orderList.pagination && orderList.pagination.total
             }}
             dataSource={orderList.rows}
             renderItem={item => (
