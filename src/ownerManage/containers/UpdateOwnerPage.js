@@ -47,15 +47,19 @@ const cellPhoneColumns = [
 const paymentColumns = [
   {
     title: "修改时间",
-    dataIndex: "createAt"
+    dataIndex: "createdAt",
+    align: "center"
   },
   {
     title: "修改人",
-    dataIndex: "createByName"
+    dataIndex: "createdByName",
+    align: "center"
   },
   {
     title: "操作端口",
-    dataIndex: "createdFromName"
+    dataIndex: "createdFromName",
+    align: "center",
+    width: 60
   },
   {
     title: "修改结果",
@@ -106,6 +110,8 @@ const UpdateOwnerPage = (props) => {
       getMediaList()
     } else if (modal === "cellPhone") {
       getPhoneList()
+    }else if (modal === "payment") {
+      getPaymentList()
     }
   }, [modal])
 
