@@ -18,7 +18,7 @@ import DataSet from "@antv/data-set";
 import _ from 'lodash'
 class Wordcloud extends React.Component {
   render() {
-    const { height = '217',
+    const { height = 217,
       width = window.innerWidth / 7 * 3 - 40,
       data = [] } = this.props
     function getTextAttrs(cfg) {
