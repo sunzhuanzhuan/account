@@ -108,6 +108,7 @@ function OrderDetail(props) {
       <div className='flex-between'>
         <div >
           {brandList.length > 0 ? <>投放品牌： <Select style={{ width: 120, margin: '0px 20px 0px 0px' }}
+            placeholder='请选择'
             onChange={value => setParam({ ...param, currentPage: 1, signedBrandId: value })} allowClear>
             {brandList.map(item => <Option
               key={item.signed_brand_id} value={item.signed_brand_id}>
