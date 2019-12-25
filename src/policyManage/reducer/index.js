@@ -31,7 +31,13 @@ export const policyInfo = handleActions({
             ...state,
             globalAccountRules: [action.payload.data, ...state.globalAccountRules]
         }
-    }
+    },
+    'saveSpecialAccountRule_success': (state, action) => {
+        return {
+            ...state,
+            specialAccountRules: [action.payload.data, ...state.specialAccountRules]
+        }
+    },
 }, {})
 
 const accountInfo = handleAction('getAccountInfoByIds_success', (state, action) => {
