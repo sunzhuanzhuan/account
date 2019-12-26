@@ -57,18 +57,24 @@ export const policyInfo = handleActions({
             ...state,
             whiteList: state.whiteList.filter(item => item.accountId !== action.payload.__query.accountId)
         }
+    },
+    'addWhiteListAccount_success': (state, action) => {
+        return {
+            ...state,
+            whiteList: action.payload.data
+        }
     }
 
 }, {})
 
-const accountInfo = handleAction('getAccountInfoByIds_success', (state, action) => {
-    return {
-        ...state,
-        ...action.payload.data
-    }
-}, {})
+// const accountInfo = handleAction('getAccountInfoByIds_success', (state, action) => {
+//     return {
+//         ...state,
+//         ...action.payload.data
+//     }
+// }, {})
 
 export default combineReducers({
     policyInfo,
-    accountInfo
+    // accountInfo
 })

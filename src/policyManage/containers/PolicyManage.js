@@ -271,6 +271,8 @@ class PolicyManage extends React.Component {
 						<ModuleHeader title="白名单"></ModuleHeader>
 						<WhiteList
 							whiteList={whiteList}
+							getAccountInfoByIds={this.props.getAccountInfoByIds}
+							addWhiteListAccount={this.props.addWhiteListAccount}
 							delWhiteListAccount={this.props.delWhiteListAccount}
 						></WhiteList>
 

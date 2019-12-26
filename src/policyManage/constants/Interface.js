@@ -29,8 +29,11 @@ export const interfaceKey = [
 
 ]
 
+const baseUrl = '/operator-gateway/policy/v1.1/'
+export const getAccountInfoByIds = `${baseUrl}getAccountInfoByIds`;
+
 export default interfaceKey.reduce((acc, cur) => {
-    acc[cur.name] = `/operator-gateway/policy/v1.1/${cur.name}`;
+    acc[cur.name] = `${baseUrl}${cur.name}`;
     return acc;
 }, {})
 

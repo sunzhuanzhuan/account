@@ -7,7 +7,6 @@ import _history from '../util/history'
 import thunkMiddleware from 'redux-thunk';
 import rootReducer from '../reducers';
 import { createAjaxMiddleware } from 'redux-action-extend'
-// import createAjaxMiddleware from './createAjaxMiddleware'
 
 const initialState = {};
 const ajaxMiddleware = createAjaxMiddleware({ toast, showLoading, hideLoading, request });

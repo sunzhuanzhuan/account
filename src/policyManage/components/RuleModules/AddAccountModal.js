@@ -13,7 +13,6 @@ const AddAccountModal = (props) => {
         updateAccountList
     } = props;
 
-    const { getFieldDecorator } = props.form;
     const { visible, onOk } = props;
     const [selectedIds, setSelectedIds] = useState('');
 

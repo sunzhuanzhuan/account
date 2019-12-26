@@ -24,4 +24,12 @@ const obj = interfaceKey.reduce((acc, cur) => {
 
 console.log(obj, 'all action')
 
-export default obj
+export const {
+    addWhiteListAccount,
+    addWhiteListAccount_success,
+} = createHttpAction('addWhiteListAccount', Interface.getAccountInfoByIds)
+
+export default {
+    ...obj,
+    addWhiteListAccount
+}
