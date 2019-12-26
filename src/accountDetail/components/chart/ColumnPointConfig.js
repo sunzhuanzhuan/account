@@ -54,8 +54,7 @@ const videoLabel = (dataItem, isDouyin) => {
 </a>`}
 const weChatLabel = (dataItem) => {
   return `
-  <a class='label-box' href=${dataItem.mediaUrl} target="_blank">
-        ${imgCover(dataItem)}
+  <a class='label-box sina-box' href=${dataItem.mediaUrl} target="_blank">
         ${mediaCaption(dataItem)}
         <div class='media-created-time'>${dataItem.mediaIndexName}</div>
         ${createdTime(dataItem)}
