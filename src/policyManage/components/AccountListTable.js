@@ -7,8 +7,13 @@ class AccountListTable extends React.Component {
         // this.state = {
         //     currentPage: 1
         // };
-        const { delAccountFromList, isEdit } = this.props;
-        this.columns = [
+
+    }
+
+
+    render() {
+        const { dataSource = [], delAccountFromList, isEdit } = this.props;
+        const columns = [
             {
                 title: 'accountId',
                 dataIndex: 'accountId',
@@ -44,27 +49,19 @@ class AccountListTable extends React.Component {
                 width: 100,
                 align: 'center',
             },
-
-        ];
-        if (isEdit) {
-            this.columns.push({
+            {
                 title: '操作',
                 key: 'operate',
-                // width: 100,
+                width: 100,
                 align: 'center',
                 render: (_, record) => {
-                    return <Button type='link' className='operateText' onClick={() => delAccountFromList(record.accountId)}>删除</Button>
+                    return isEdit ? <Button type='link' className='operateText' onClick={() => delAccountFromList(record.accountId)}>删除</Button> : null
                 }
-            })
-        }
-    }
-
-
-    render() {
-        const { dataSource = [] } = this.props;
+            }
+        ];
         return <Table
             key='list'
-            columns={this.columns}
+            columns={columns}
             dataSource={dataSource}
             rowKey={record => record.accountId}
             pagination={false}

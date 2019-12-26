@@ -196,7 +196,7 @@ class PolicyManage extends React.Component {
 		const isEdit = policyId !== undefined;
 		const { policyStatus, identityName, illustration,
 			validStartTime, validEndTime, modifyName = '未知', id, modifiedAt, stopReason,
-			globalAccountRules = [], specialAccountRules = [], whiteList,
+			globalAccountRules = [], specialAccountRules = [], whiteList = [],
 		} = policyInfo;
 		const currentRule = (editRuleModalType == 'global' ? globalAccountRules : specialAccountRules).filter(item => item.ruleId == currentRuleId)
 		const { getFieldDecorator } = form;
@@ -220,7 +220,7 @@ class PolicyManage extends React.Component {
 				}
 			},
 		};
-
+		console.log(whiteList, 'whiteList')
 		return [
 			<h2 key='policyHeader' className='policyHeader'>
 				{isEdit ? '修改政策' : '新增政策'}
@@ -270,6 +270,7 @@ class PolicyManage extends React.Component {
 
 						<ModuleHeader title="白名单"></ModuleHeader>
 						<WhiteList
+							key={whiteList.length}
 							whiteList={whiteList}
 							getAccountInfoByIds={this.props.getAccountInfoByIds}
 							addWhiteListAccount={this.props.addWhiteListAccount}

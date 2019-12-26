@@ -1,48 +1,54 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Input, Button } from 'antd';
 import AccountListTable from './AccountListTable'
 import AddAccountModal from './RuleModules/AddAccountModal'
-class WhiteList extends React.Component {
-	constructor(props) {
-		super(props);
-		const { whiteList = [] } = props;
-		this.state = {
-			whiteList: whiteList,
-			// selectedIds: whiteList.map(item => item.accountId) || [],
-			visible: false
-		}
-	}
-	addAccountBtnClick = () => {
-		this.setState({
-			visible: true
-		})
-	}
-	updateSelectedIds = () => {
+const WhiteList = (props) => {
+	const { delWhiteListAccount } = props;
+	const [whiteList, setWhiteList] = useState(props.whiteList || [])
+	const [visible, setVisible] = useState(false);
 
+	// constructor(props) {
+	// 	super(props);
+	// 	const { whiteList = [] } = props;
+	// 	this.state = {
+	// 		whiteList: whiteList,
+	// 		// selectedIds: whiteList.map(item => item.accountId) || [],
+	// 		visible: false
+	// 	}
+	// }
+
+	useEffect(() => {
+		setWhiteList(props.whiteList || [])
+	}, [])
+
+	const addAccountBtnClick = () => {
+		setVisible(true)
 	}
-	setAddAccountModalVisible = () => {
-		this.setState({
-			visible: false
-		})
+	const setAddAccountModalVisible = () => {
+		// this.setState({
+		// 	visible: false
+		// })
+		setVisible(false)
 	}
 
-	updateAccountList = (newAccountList) => {
-		console.log("new ", newAccountList)
-		const { whiteList } = this.state;
+	const updateAccountList = (newAccountList) => {
+		console.log("new ", [...whiteList, ...newAccountList])
+		// const { whiteList } = this.state;
 		// debugger;
-		this.setState({ whiteList: [...whiteList, ...newAccountList] });
+		setWhiteList([...whiteList, ...newAccountList])
 	}
-	delAccountFromList = (accountId) => {
-		const { delWhiteListAccount } = this.props;
-		const { whiteList } = this.state;
+	function delAccountFromList(accountId) {
+		console.log('accountId', accountId, whiteList)
+		const newAccountList = whiteList.filter(item => item.accountId != accountId);
+		setWhiteList(newAccountList)
+		// const { whiteList } = this.state;
 		// console.log("delAccountFromList", accountId, accountList)
-		delWhiteListAccount({ accountId }).then(() => {
-			const newAccountList = whiteList.filter(item => item.accountId != accountId);
-			this.setState({ whiteList: newAccountList })
-		})
-
+		// delWhiteListAccount({ accountId }).then(() => {
+		// 	const newAccountList = whiteList.filter(item => item.accountId != accountId);
+		// 	setWhiteList(newAccountList)
+		// })
 	}
-	updateSelectedIds = (ids) => {
+	const updateSelectedIds = (ids) => {
 		// const { selectedIds } = this.state;
 		// const newIds = Array.from(new Set([...selectedIds, ...ids]));
 
@@ -51,37 +57,37 @@ class WhiteList extends React.Component {
 		// })
 	}
 
-	render() {
-		// console.log("=====", this.props.whiteList)
-		const { visible, whiteList = [] } = this.state;
-		// const { whiteList = [] } = this.props;
-		console.log("====", whiteList)
-		const allSelectedIds = whiteList.map(item => item.accountId)
-		return <div className='white-list'>
-			<div className='search-bar'>
-				<span className='label' span={3}>account_id: </span>
-				<Input />
-				<span className='label' span={3}>账号名称:</span>
-				<Input />
-				<Button type='primary'>查询</Button>
-				<Button>重置</Button>
-				<Button onClick={this.addAccountBtnClick}>添加</Button>
-			</div>
-			<AccountListTable
-				isEdit={true}
-				dataSource={whiteList}
-				delAccountFromList={this.delAccountFromList}
-			></AccountListTable>
-			<AddAccountModal
-				allSelectedIds={allSelectedIds}
-				visible={visible}
-				updateSelectedIds={this.updateSelectedIds}
-				setAddAccountModalVisible={this.setAddAccountModalVisible}
-				updateAccountList={this.updateAccountList}
-				getAccountInfoByIds={this.props.getAccountInfoByIds}
-			></AddAccountModal>
+	// render() {
+	// console.log("=====", this.props.whiteList)
+	// const { visible, whiteList = [] } = this.state;
+	// const { whiteList = [] } = this.props;
+	console.log("====", whiteList)
+	const allSelectedIds = whiteList.map(item => item.accountId)
+	return <div className='white-list'>
+		<div className='search-bar'>
+			<span className='label' span={3}>account_id: </span>
+			<Input />
+			<span className='label' span={3}>账号名称:</span>
+			<Input />
+			<Button type='primary'>查询</Button>
+			<Button>重置</Button>
+			<Button onClick={addAccountBtnClick}>添加</Button>
 		</div>
-	}
+		<AccountListTable
+			isEdit={true}
+			dataSource={whiteList}
+			delAccountFromList={delAccountFromList}
+		></AccountListTable>
+		<AddAccountModal
+			allSelectedIds={allSelectedIds}
+			visible={visible}
+			updateSelectedIds={updateSelectedIds}
+			setAddAccountModalVisible={setAddAccountModalVisible}
+			updateAccountList={updateAccountList}
+			getAccountInfoByIds={props.getAccountInfoByIds}
+		></AddAccountModal>
+	</div>
+	// }
 }
 
 export default WhiteList;
