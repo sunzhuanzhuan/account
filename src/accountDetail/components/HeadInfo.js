@@ -25,7 +25,7 @@ class HeadInfo extends Component {
       url, qrCodeUrl, cooperationTips,
       verifiedStatusName,
       classificationList = [],
-      isFamous
+      isFamous, verifiedStatus
     } = base
     const { hogwartsComprehensiveCommericalIndexRank = 0, orderResponseDuration, orderResponsePercentile,
       orderAcceptanceNum = '-', orderAcceptanceRate, orderMajorIndustryCategory, orderCompleteDuration,
@@ -51,10 +51,14 @@ class HeadInfo extends Component {
               /> </span> : null}
               <PopoverFormat text={<div className='account-name'>{snsName}</div>} content={snsName} />
 
-              {isVerified == 1 ? <PopoverFormat text={<VerificationIcon
-                platformId={platformId}
-                status={isVerified}
-              />} content={verificationReason} /> : null}
+              {isVerified == 1 ? <div>
+                <VerificationIcon
+                  platformId={platformId}
+                  status={verifiedStatus}
+                />
+                {verificationReason ? `（${verificationReason}）` : ''}
+              </div> : null}
+
               <LookIndex url={url} qrCodeUrl={qrCodeUrl} platformName={platformName} />
               {authVisble ?
                 <span><Divider type='vertical' />
@@ -90,7 +94,7 @@ class HeadInfo extends Component {
                   })}>  查看全部</a>
                 </div> : '-'
               } />
-              <OneLine title='平台认证' content={
+              <OneLine title='认证信息' content={
                 <div className='content-font'>
                   {verifiedStatusName ? verifiedStatusName : '-'}
                 </div>}
