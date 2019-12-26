@@ -149,11 +149,11 @@ const AddOwnerForm = (props) => {
             { required: true, message: '请选择回票类型！' }
           ]
         })(<RadioGroup>
-          <Radio value={1}>增值税普通发票</Radio>
-          <Radio value={2}>增值税专用发票</Radio>
+          <Radio value={2}>增值税普通发票</Radio>
+          <Radio value={1}>增值税专用发票</Radio>
         </RadioGroup>)}
       </Form.Item>}
-      {getFieldValue('invoiceType') === 2 && <Form.Item label="发票税率">
+      {getFieldValue('invoiceType') === 1 && <Form.Item label="发票税率">
         {getFieldDecorator('taxRate', {
           rules: [
             { required: true, message: '请选择发票税率！' }
