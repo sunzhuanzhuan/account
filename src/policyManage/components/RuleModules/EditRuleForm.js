@@ -37,6 +37,7 @@ const EditRuleForm = (props) => {
                         title: '错误',
                         content: '折扣和返点必须填写一个'
                     })
+                    return;
                 }
                 if (type == 'global') {
                     await props.saveGlobalAccountRule({ ...values, mcnId })

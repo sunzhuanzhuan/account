@@ -31,42 +31,15 @@ export const AccountEdit = (props) => {
         <Form.Item label="账号" {...formItemLayout}>
             <Button onClick={onButtonClick}>添加账号</Button>
         </Form.Item>
-        <AccountView accountList={accountList} delAccountFromList={delAccountFromList} labelName=' '></AccountView>
+        <AccountView isEdit={true} accountList={accountList} delAccountFromList={delAccountFromList} labelName=' '></AccountView>
     </>
 }
 
 export const AccountView = (props) => {
-    const { accountList = [], delAccountFromList } = props;
+    const { accountList = [], delAccountFromList, isEdit } = props;
     const { labelName = '账号' } = props;
-    const columns = [
-        {
-            title: 'account_id',
-            dataIndex: 'accountId',
-            key: 'accountId',
-        },
-        {
-            title: '平台',
-            dataIndex: 'platformName',
-            key: 'platformName',
-        },
-        {
-            title: '账号名称',
-            dataIndex: 'snsName',
-            key: 'snsName',
-        },
-        {
-            title: '账号ID',
-            dataIndex: 'snsId',
-            key: 'snsId',
-        },
-        {
-            title: '粉丝数',
-            dataIndex: 'followerCount',
-            key: 'followerCount',
-        },
-    ]
     return <Form.Item label={labelName} {...formItemLayout}>
         <p>已选择{accountList.length}个账号</p>
-        <AccountListTable delAccountFromList={delAccountFromList} dataSource={accountList} columns={columns} />
+        <AccountListTable isEdit={isEdit} delAccountFromList={delAccountFromList} dataSource={accountList} />
     </Form.Item>
 }
