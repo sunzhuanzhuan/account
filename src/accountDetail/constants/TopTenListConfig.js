@@ -21,7 +21,8 @@ export const redBook = {
   dataKey: 'mediaLikeNum',
   //近10个笔记的数据表现：近10篇笔记封面图、跳转链接、评论、点赞、收藏、类型（eg：图文/视频 笔记）、发布日期、标题
   fireText: '最火笔记',
-  dataText: '点赞'
+  dataText: '点赞',
+  padding: [60, 100, 140, 100]
 }
 
 

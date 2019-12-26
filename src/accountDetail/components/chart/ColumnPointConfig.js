@@ -83,8 +83,7 @@ const sinaLabel = (dataItem) => {
 }
 const redBookLabel = (dataItem) => {
   return `
-  <a class='label-box' href=${dataItem.mediaUrl} target="_blank">
-        ${imgCover(dataItem)}
+  <a class='label-box sina-box' href=${dataItem.mediaUrl} target="_blank">
         ${mediaCaption(dataItem)}
         <div class='media-created-time'>${dataItem.mediaType == 'picture' ? '图文' : '视频'}笔记</div>
         ${createdTime(dataItem)}

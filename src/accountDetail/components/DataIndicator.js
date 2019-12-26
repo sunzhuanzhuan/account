@@ -180,7 +180,7 @@ const VideoInfo = ({ feature = {}, base = {} }) => {
           <Divider type="vertical" className='height20-colorE3' />
           <ThreeNumber title='爆款视频数' number={feature.hotMediaCount} unit='个' tips='近90天发布的爆款视频数' />
           <Divider type="vertical" className='height20-colorE3' />
-          <ThreeNumber title='近28天发布频率' number={numeral(feature.mediaWeeklyNum).format('0.0')} unit='个/周' />
+          <ThreeNumber title='近28天发布频率' number={numeral(feature.mediaWeeklyFloatCount28d).format('0.0')} unit='个/周' />
         </div>
       </div>
     </div>
