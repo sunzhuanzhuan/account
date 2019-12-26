@@ -78,7 +78,7 @@
     "react-router-redux": "^4.0.8",
     "react-scripts": "1.1.1",
     "redux": "^3.7.2",
-    "redux-action-extend": "1.1.1",
+    "redux-action-extend": "^1.1.3",
     "redux-actions": "^2.3.0",
     "redux-devtools-extension": "^2.13.5",
     "redux-logger": "^3.0.6",

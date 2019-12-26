@@ -50,6 +50,13 @@ export const policyInfo = handleActions({
             ...state,
             specialAccountRules: state.specialAccountRules.filter(item => item.ruleId != action.payload.data.ruleId)
         }
+    },
+    'delWhiteListAccount_success': (state, action) => {
+        console.log("action", action)
+        return {
+            ...state,
+            whiteList: state.whiteList.filter(item => item.accountId !== action.payload.__query.accountId)
+        }
     }
 
 }, {})

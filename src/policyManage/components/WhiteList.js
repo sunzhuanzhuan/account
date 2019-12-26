@@ -5,6 +5,10 @@ class WhiteList extends React.Component {
 	constructor(props) {
 		super(props);
 	}
+	delAccountFromList = (accountId) => {
+		const { delWhiteListAccount } = this.props;
+		delWhiteListAccount({ accountId })
+	}
 
 	render() {
 		const { whiteList = [] } = this.props;
@@ -16,7 +20,11 @@ class WhiteList extends React.Component {
 				<Input />
 				<Button type='primary'>查询</Button><Button>重置</Button><Button>添加</Button>
 			</div>
-			<AccountListTable dataSource={whiteList}></AccountListTable>
+			<AccountListTable
+				isEdit={true}
+				dataSource={whiteList}
+				delAccountFromList={this.delAccountFromList}
+			></AccountListTable>
 		</div>
 	}
 }

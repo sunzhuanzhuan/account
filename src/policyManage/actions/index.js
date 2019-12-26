@@ -1,6 +1,6 @@
 import Interface, { interfaceKey } from '../constants/Interface'
 import { createHttpAction } from 'redux-action-extend'
-import { createAction } from 'redux-actions';
+// import { createAction } from 'redux-actions';
 console.log(Interface)
 // //根据accountId数组获取账号信息列表
 // export const {

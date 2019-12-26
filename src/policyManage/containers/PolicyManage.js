@@ -269,7 +269,10 @@ class PolicyManage extends React.Component {
 						></RuleModule>
 
 						<ModuleHeader title="白名单"></ModuleHeader>
-						<WhiteList whiteList={whiteList}></WhiteList>
+						<WhiteList
+							whiteList={whiteList}
+							delWhiteListAccount={this.props.delWhiteListAccount}
+						></WhiteList>
 
 						<ModuleHeader title="返点规则"></ModuleHeader>
 						<FormItem label='返点结算周期' {...formItemLayout}>
