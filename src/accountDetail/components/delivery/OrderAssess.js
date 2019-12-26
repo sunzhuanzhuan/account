@@ -60,8 +60,8 @@ function OrderAssess(props) {
 }
 // 统计模块
 const Statistics = ({ statistic = {}, feature = {} }) => {
-  function getNumber(value) {
-    return numeral(value).format('0.0')
+  function getNumber(value, type = '0.0') {
+    return value == 0 || value > 0 ? numeral(value).format(type) : '-'
   }
   const list = [
     { name: '全部评价数', value: statistic.total },
@@ -69,7 +69,7 @@ const Statistics = ({ statistic = {}, feature = {} }) => {
     { name: '平均响应速度', value: getNumber(statistic.professionalDegreeAvg), unit: '分' },
     { name: '平均配合度', value: getNumber(statistic.coordinationDegreeAvg), unit: '分' },
     { name: '平均满意度', value: getNumber(statistic.appearanceDegreeAvg), unit: '分' },
-    { name: '商业适应性指数', value: feature.commercialAdaptationIndex || '-' },]
+    { name: '商业适应性指数', value: getNumber(feature.commercialAdaptationIndex, '0') },]
   return <div className='statistics'>
     {list.map(item => <div key={item.name} className='item'>
       <div className='title'>{item.name}</div>
