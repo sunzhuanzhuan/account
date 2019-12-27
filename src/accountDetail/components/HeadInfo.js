@@ -201,20 +201,28 @@ const WeChatTable = ({ data = [], isFamous }) => {
       dataIndex: 'skuTypeName',
       key: 'skuTypeName',
     },
-    {
-      title: '发布',
-      dataIndex: 'openQuotePrice',
-      key: 'openQuotePrice',
-      render: (text) => getPrice(text)
-    },
+
 
   ]
   if (isFamous == 1) {
     columns = [...columns, {
-      title: '原创+发布',
+      title: '发布',
       dataIndex: 'openQuotePrice2',
       key: 'openQuotePrice2',
       render: (text) => getPrice(text && text.openQuotePrice)
+    }, {
+      title: '原创+发布',
+      dataIndex: 'openQuotePrice',
+      key: 'openQuotePrice',
+      render: (text) => getPrice(text)
+    }]
+  }
+  if (isFamous == 2) {
+    columns = [...columns, {
+      title: '发布',
+      dataIndex: 'openQuotePrice',
+      key: 'openQuotePrice',
+      render: (text) => getPrice(text)
     }]
   }
   return <Table dataSource={data1} columns={columns}
