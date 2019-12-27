@@ -186,7 +186,7 @@ const UpdateOwnerForm = (props) => {
       <Form.Item label={<span>支付信息{InfoPay}</span>}>
         {getFieldDecorator('taxInPrice', {
           validateFirst: true,
-          initialValue: props.taxInPrice,
+          initialValue: props.taxInPrice || undefined,
           rules: [
             { required: true, message: '请选择支付信息！' }
           ]
