@@ -199,7 +199,7 @@ const UpdateOwnerForm = (props) => {
       </Form.Item>
       {getFieldValue('taxInPrice') === 1 && <Form.Item label="回票类型">
         {getFieldDecorator('invoiceType', {
-          initialValue: props.invoiceType,
+          initialValue: props.invoiceType || undefined,
           rules: [
             { required: true, message: '请选择回票类型！' }
           ]
@@ -210,7 +210,7 @@ const UpdateOwnerForm = (props) => {
       </Form.Item>}
       {getFieldValue('invoiceType') === 1 && <Form.Item label="发票税率">
         {getFieldDecorator('taxRate', {
-          initialValue: props.taxRate,
+          initialValue: props.taxRate || undefined,
           rules: [
             { required: true, message: '请选择发票税率！' }
           ]
