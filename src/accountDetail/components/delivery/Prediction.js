@@ -59,6 +59,8 @@ const PredicResult = ({ dataSource = [] }) => {
       title: '品牌名称',
       dataIndex: 'brandName',
       key: 'brandName',
+      render: text => text ? text : '-'
+
     },
     {
       title: '成交价格',
