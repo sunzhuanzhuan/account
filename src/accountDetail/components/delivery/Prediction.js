@@ -64,7 +64,7 @@ const PredicResult = ({ dataSource = [] }) => {
       title: '成交价格',
       dataIndex: 'dealPriceAvg',
       key: 'dealPriceAvg',
-      render: text => `￥${text}左右`
+      render: text => text ? `￥${text}左右` : '-'
     },
     {
       title: '投放数据表现',
