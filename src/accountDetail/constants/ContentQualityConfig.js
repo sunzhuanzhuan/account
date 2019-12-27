@@ -10,7 +10,7 @@ export const weChat = {
 //微博数据箱体配置
 export const sina = {
   defaultKey: 'comment',
-  afterText: '文章',
+  afterText: '博文',
   quality: [
     { key: 'comment', name: '评论' },
     { key: 'like', name: '点赞' },
@@ -20,7 +20,7 @@ export const sina = {
 //小红书数据箱体配置
 export const redBook = {
   defaultKey: 'comment',
-  afterText: '文章',
+  afterText: '笔记',
   quality: [
     { key: 'comment', name: '评论' },
     { key: 'like', name: '点赞' },

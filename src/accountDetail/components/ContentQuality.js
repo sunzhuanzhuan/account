@@ -31,12 +31,13 @@ function ContentQuality(props) {
     });
     return contentMap
   }
+  const { afterText } = getQualityConfig(searchParam.platformId)
   return (
     <div>
       <div className='content-data'>
         <div className='title-big' >内容质量</div>
         <div className='content-char'>
-          <CharTitle title='内容数据箱线图' />
+          <CharTitle title={`${afterText}内容数据箱线图`} />
           <div className='last-box-decide'>
             <div className='data-box-left'>
               <ButtonTab
@@ -45,7 +46,7 @@ function ContentQuality(props) {
                 contentMap={getContentMap()}
               />
             </div>
-            <RightDecide data={dataBox[checkedKey]} type={keyToName[checkedKey]} />
+            <RightDecide data={dataBox[checkedKey]} type={keyToName[checkedKey]} afterText={afterText} />
           </div>
           {/* 近10条数据 */}
           <TopTenList accountId={props.accountId} platformId={props.platformId} />
@@ -57,7 +58,7 @@ function ContentQuality(props) {
 }
 
 export default withRouter(ContentQuality)
-const RightDecide = ({ data = [], type }) => {
+const RightDecide = ({ data = [], type, afterText }) => {
   const data90 = data[0] || {}
   const data28 = data[1] || {}
   //箱子图文案判断
@@ -67,17 +68,17 @@ const RightDecide = ({ data = [], type }) => {
     <div className='right-title'><a>箱线图分析说明</a></div>
     <div className='left-content'>
       <p>内容表现</p>
-      <div>近90天视频：平均{type}量{formatWNumber(data90.avg)}，
+      <div>近90天{afterText}：平均{type}量{formatWNumber(data90.avg)}，
       数据集中分布在{formatWNumber(data90.lowerQuartile)} - {formatWNumber(data90.upperQuartile)}
       </div>
-      <div>近28天视频：平均{type}量{formatWNumber(data28.avg)}，
+      <div>近28天{afterText}：平均{type}量{formatWNumber(data28.avg)}，
       数据集中分布在{formatWNumber(data28.lowerQuartile)} - {formatWNumber(data28.upperQuartile)}
       </div>
     </div>
     <div className='left-content '>
       <p>趋势说明</p>
       <div>1.近期内容整体质量{avgText} </div>
-      <div>2.视频的内容质量的{upperQuartileLesslowerQuartileText}</div>
+      <div>2.{afterText}的内容质量的{upperQuartileLesslowerQuartileText}</div>
     </div>
   </div >
   </div>
