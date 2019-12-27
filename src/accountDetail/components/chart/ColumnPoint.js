@@ -44,10 +44,10 @@ class ColumnPoint extends React.Component {
     return (
       <div >
         <div className='legend-customize'>
-          <div>
+          {fireText ? <div>
             <div className='block-legend fire'></div>
             <div>{fireText}</div>
-          </div>
+          </div> : null}
           <div>
             <div className='block-legend blue'></div>
             <div>{dataText}</div>

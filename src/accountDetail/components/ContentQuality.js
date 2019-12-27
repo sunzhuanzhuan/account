@@ -65,7 +65,7 @@ const RightDecide = ({ data = [], type, afterText }) => {
   const avgText = (data28.avg || 0) > (data90.avg || 0) ? '上升' : '下降'
   const upperQuartileLesslowerQuartileText = ((data28.upperQuartile - data28.lowerQuartile) || 0) < ((data90.upperQuartile - data90.lowerQuartile) || 0) ? '更趋于稳定' : '波动性更大'
   return <div className='right-decide' >< div >
-    <div className='right-title'><a>箱线图分析说明</a></div>
+    <div className='right-title'>箱线图分析说明</div>
     <div className='left-content'>
       <p>内容表现</p>
       <div>近90天{afterText}：平均{type}量{formatWNumber(data90.avg)}，
