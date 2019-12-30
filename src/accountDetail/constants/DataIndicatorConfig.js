@@ -90,7 +90,7 @@ export const getSina = (data = {}) => {
       unit: `%`
     },
     {
-      name: "博文总数（原创 | 转发）",
+      name: "博文总数（直发 | 转发）",
       value: getIsShow(data.mediaCountAll),
       unit: `个（${getIsShow(data.mediaDirectCountAll)} | 
                 ${getIsShow(data.mediaIndirectCountAll)}）`

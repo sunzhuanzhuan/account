@@ -77,7 +77,7 @@ function OrderDetail(props) {
       dataIndex: 'dealPrice',
       key: 'dealPrice',
       align: 'center',
-      render: text => `${numeral(text).format('0,0')}元`
+      render: text => text == 0 | text > 0 ? `${numeral(text).format('0,0')}元` : '-'
     },
     {
       title: '投放数据',
