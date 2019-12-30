@@ -113,6 +113,7 @@ class HistogramLine extends Component {
           <Legend
             {...legendPosition}
             offsetY={-30}
+            clickable={false}
             items={[
               {
                 value: boxText,
