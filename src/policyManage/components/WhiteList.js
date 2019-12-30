@@ -7,16 +7,6 @@ const WhiteList = (props) => {
 	const [whiteList, setWhiteList] = useState(props.whiteList || [])
 	const [visible, setVisible] = useState(false);
 
-	// constructor(props) {
-	// 	super(props);
-	// 	const { whiteList = [] } = props;
-	// 	this.state = {
-	// 		whiteList: whiteList,
-	// 		// selectedIds: whiteList.map(item => item.accountId) || [],
-	// 		visible: false
-	// 	}
-	// }
-
 	useEffect(() => {
 		setWhiteList(props.whiteList || [])
 	}, [])
@@ -25,28 +15,17 @@ const WhiteList = (props) => {
 		setVisible(true)
 	}
 	const setAddAccountModalVisible = () => {
-		// this.setState({
-		// 	visible: false
-		// })
 		setVisible(false)
 	}
 
 	const updateAccountList = (newAccountList) => {
-		console.log("new ", [...whiteList, ...newAccountList])
-		// const { whiteList } = this.state;
-		// debugger;
 		setWhiteList([...whiteList, ...newAccountList])
 	}
 	function delAccountFromList(accountId) {
-		console.log('accountId', accountId, whiteList)
-		const newAccountList = whiteList.filter(item => item.accountId != accountId);
-		setWhiteList(newAccountList)
-		// const { whiteList } = this.state;
-		// console.log("delAccountFromList", accountId, accountList)
-		// delWhiteListAccount({ accountId }).then(() => {
-		// 	const newAccountList = whiteList.filter(item => item.accountId != accountId);
-		// 	setWhiteList(newAccountList)
-		// })
+		delWhiteListAccount({ accountId }).then(() => {
+			const newAccountList = whiteList.filter(item => item.accountId != accountId);
+			setWhiteList(newAccountList)
+		})
 	}
 	const updateSelectedIds = (ids) => {
 		// const { selectedIds } = this.state;
@@ -57,11 +36,6 @@ const WhiteList = (props) => {
 		// })
 	}
 
-	// render() {
-	// console.log("=====", this.props.whiteList)
-	// const { visible, whiteList = [] } = this.state;
-	// const { whiteList = [] } = this.props;
-	console.log("====", whiteList)
 	const allSelectedIds = whiteList.map(item => item.accountId)
 	return <div className='white-list'>
 		<div className='search-bar'>
@@ -91,3 +65,4 @@ const WhiteList = (props) => {
 }
 
 export default WhiteList;
+

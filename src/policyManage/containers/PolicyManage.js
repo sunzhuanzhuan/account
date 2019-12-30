@@ -64,7 +64,7 @@ class PolicyManage extends React.Component {
 		// if (policyId !== undefined)
 		// 	this.props.getPolicyDetail(policyId);
 		console.log('getPolicyInfoByMcnId', this.props)
-		this.props.getPolicyInfoByMcnId(policyId);
+		this.props.getPolicyInfoByMcnId({ mcnId: userId, policyPeriodIdentity: 1 });
 		this.setState({ policyId, userName, userId })
 	}
 
@@ -270,7 +270,7 @@ class PolicyManage extends React.Component {
 
 						<ModuleHeader title="白名单"></ModuleHeader>
 						<WhiteList
-							key={whiteList.length}
+							// key={whiteList.length}
 							whiteList={whiteList}
 							getAccountInfoByIds={this.props.getAccountInfoByIds}
 							addWhiteListAccount={this.props.addWhiteListAccount}

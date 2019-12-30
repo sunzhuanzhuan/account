@@ -33,7 +33,7 @@ export const PlatformEdit = (props) => {
         setDefaultCheckedList(checkeList);
     }
     return <Form.Item label="平台" {...formItemLayout}>
-        {getFieldDecorator(`platform`, {
+        {getFieldDecorator(`platformIds`, {
             initialValue: platformList.map(item => item.platformId),
             rules: [
                 { required: true, message: '请选择平台', type: 'array' },

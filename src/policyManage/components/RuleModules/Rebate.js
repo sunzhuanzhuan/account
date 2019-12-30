@@ -154,7 +154,7 @@ export const RebateView = (props) => {
             </Form.Item>
             {<Form.Item label='公式：' {...formItemLayout}>
                 {rebateType == Rule_Rebate_Ratio ?
-                    <span>执行完成订单时博主收入，返点比例为：{rebateFixedRatio * 100}%</span> :
+                    <span>执行完成订单时博主收入，返点比例为：{rebateFixedRatio}%</span> :
                     rebateType == Rule_Rebate_Numeric ?
                         <span>执行完成订单时博主收入，返点金额为：{rebateFixedAmount}元</span> :
                         <LadderRatioView

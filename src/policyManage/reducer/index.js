@@ -52,7 +52,6 @@ export const policyInfo = handleActions({
         }
     },
     'delWhiteListAccount_success': (state, action) => {
-        console.log("action", action)
         return {
             ...state,
             whiteList: state.whiteList.filter(item => item.accountId !== action.payload.__query.accountId)
@@ -67,14 +66,14 @@ export const policyInfo = handleActions({
 
 }, {})
 
-// const accountInfo = handleAction('getAccountInfoByIds_success', (state, action) => {
-//     return {
-//         ...state,
-//         ...action.payload.data
-//     }
-// }, {})
+const accountInfo = handleAction('getAccountInfoByIds_success', (state, action) => {
+    return {
+        ...state,
+        ...action.payload.data
+    }
+}, {})
 
 export default combineReducers({
     policyInfo,
-    // accountInfo
+    accountInfo
 })
