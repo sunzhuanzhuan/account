@@ -66,7 +66,7 @@ const UpdateOwnerForm = (props) => {
   const forceSaveConfirm = (result, values) => {
     Modal.confirm({
       title: "提示",
-      content: result.map((text,n) => <p key={n}>{`${n+1}.${text}`}</p>),
+      content: result.map((text, n) => <p key={n}>{`${n + 1}.${text}`}</p>),
       okText: '确认转移',
       cancelText: '放弃转移',
       onOk: (hide) => {
@@ -120,7 +120,7 @@ const UpdateOwnerForm = (props) => {
   }
 
   return (
-    <Form {...formItemLayout} onSubmit={handleSubmit} className="" colon={false}>
+    <Form {...formItemLayout} onSubmit={props.disabled ? () => {} : handleSubmit} className="" colon={false}>
       <Form.Item label="资源媒介">
         {getFieldDecorator('ownerAdminId', {
           validateFirst: true,
@@ -129,7 +129,7 @@ const UpdateOwnerForm = (props) => {
             { required: true }
           ]
         })(
-          <Select placeholder="请选择" onChange={handleDiffMcn}>
+          <Select placeholder="请选择" onChange={handleDiffMcn} disabled={props.disabled}>
             {
               props.mediumsOptions.map((item) => {
                 return <Option key={item.mediumId} value={item.mediumId}>{item.mediumName}</Option>
@@ -151,7 +151,7 @@ const UpdateOwnerForm = (props) => {
               message: '请输入4-22位字母、数字或下划线组合，首字符必须为字母'
             }
           ]
-        })(<Input placeholder='请输入渠道登录名' />)}
+        })(<Input placeholder='请输入渠道登录名' disabled={props.disabled} />)}
       </Form.Item>
       <Form.Item label="主账号类型">
         {getFieldDecorator('userType', {
@@ -161,7 +161,7 @@ const UpdateOwnerForm = (props) => {
             { required: true }
           ]
         })(
-          <Select placeholder="请选择">
+          <Select placeholder="请选择" disabled={props.disabled}>
             <Option value={1}>个人号</Option>
             <Option value={2}>账号集团</Option>
             <Option value={3}>中介</Option>
@@ -181,7 +181,7 @@ const UpdateOwnerForm = (props) => {
               message: '请输入字母、数字、汉字、下划线,长度为4-60字符'
             }
           ]
-        })(<Input placeholder='请输入主账号名称' />)}
+        })(<Input placeholder='请输入主账号名称' disabled={props.disabled} />)}
       </Form.Item>
       <Form.Item label={<span>支付信息{InfoPay}</span>}>
         {getFieldDecorator('taxInPrice', {
@@ -190,8 +190,8 @@ const UpdateOwnerForm = (props) => {
           rules: [
             { required: true, message: '请选择支付信息！' }
           ]
-        })(<RadioGroup disabled={props.paymentInfoIsComplete === 1}>
-          <a className="form-suffix-action-70" style={{marginRight: -50}} onClick={() => props.setModal('payment')}>修改历史</a>
+        })(<RadioGroup disabled={props.disabled || props.paymentInfoIsComplete === 1}>
+          <a className="form-suffix-action-70" style={{ marginRight: -50 }} onClick={() => props.setModal('payment')}>修改历史</a>
           <Radio value={1}>报价<span style={{ color: "#f00" }}>含税</span>，后期须提供增值税专用发票后方可提现</Radio>
           <br />
           <Radio value={2}>报价<span style={{ color: "#f00" }}>不含税</span>，提现须授权微播易相关通道平台代扣代缴综合税费</Radio>
@@ -203,7 +203,7 @@ const UpdateOwnerForm = (props) => {
           rules: [
             { required: true, message: '请选择回票类型！' }
           ]
-        })(<RadioGroup disabled={props.paymentInfoIsComplete === 1}>
+        })(<RadioGroup disabled={props.disabled || props.paymentInfoIsComplete === 1}>
           <Radio value={2}>增值税普通发票</Radio>
           <Radio value={1}>增值税专用发票</Radio>
         </RadioGroup>)}
@@ -214,7 +214,7 @@ const UpdateOwnerForm = (props) => {
           rules: [
             { required: true, message: '请选择发票税率！' }
           ]
-        })(<RadioGroup disabled={props.paymentInfoIsComplete === 1}>
+        })(<RadioGroup disabled={props.disabled || props.paymentInfoIsComplete === 1}>
           <Radio value={0.03}>3%</Radio>
           <Radio value={0.06}>6%</Radio>
         </RadioGroup>)}
@@ -235,7 +235,7 @@ const UpdateOwnerForm = (props) => {
               message: '真实姓名应为2-15个字符或者数字'
             }
           ]
-        })(<Input placeholder='真实姓名' />)}
+        })(<Input placeholder='真实姓名' disabled={props.disabled} />)}
       </Form.Item>
       <Form.Item label="公司名称">
         {getFieldDecorator('company', {
@@ -247,7 +247,7 @@ const UpdateOwnerForm = (props) => {
               message: '公司名称应为3-30位字符或者数字，不包含空格'
             }
           ]
-        })(<Input placeholder='公司名称' />)}
+        })(<Input placeholder='公司名称' disabled={props.disabled} />)}
       </Form.Item>
       <Form.Item label="联系电话">
         {getFieldDecorator('contactPhone', {
@@ -256,21 +256,21 @@ const UpdateOwnerForm = (props) => {
             pattern: /^\d{3,4}-\d{7,8}-\d{3,6}$/,
             message: '联系电话应为区号-电话号码-分机号'
           }]
-        })(<Input placeholder="请输入您的联系电话" />)}
+        })(<Input placeholder="请输入您的联系电话" disabled={props.disabled} />)}
       </Form.Item>
       <Form.Item label="手机号码">
         {props.auth["mcn.cellphone.edit"] ? getFieldDecorator('cellPhone', {
-          validateFirst: true,
-          initialValue: props.cellPhone,
-          rules: [
-            {
-              required: true,
-              pattern: /^[1]([3-9])[0-9]{9}$/,
-              message: '请输入正确的手机号码'
-            }
-          ]
-        })(
-          <Input addonBefore="+86" placeholder="请输入手机号码" onChange={handleDiffPhone} />):
+            validateFirst: true,
+            initialValue: props.cellPhone,
+            rules: [
+              {
+                required: true,
+                pattern: /^[1]([3-9])[0-9]{9}$/,
+                message: '请输入正确的手机号码'
+              }
+            ]
+          })(
+          <Input addonBefore="+86" placeholder="请输入手机号码" onChange={handleDiffPhone} disabled={props.disabled} />) :
           <span>{props.cellPhone}</span>
         }
         <a className="form-suffix-action-70" onClick={() => props.setModal('cellPhone')}>修改历史</a>
@@ -285,25 +285,25 @@ const UpdateOwnerForm = (props) => {
             }
           ]
         })(
-          <Input placeholder="请输入修改原因" />)}
+          <Input placeholder="请输入修改原因" disabled={props.disabled} />)}
       </Form.Item>
       }
-      <ContactTypesLeastOne form={props.form} qq={props.qq} weixinId={props.weixinId} email={props.email} />
+      <ContactTypesLeastOne form={props.form} qq={props.qq} weixinId={props.weixinId} email={props.email} disabled={props.disabled} />
       <Form.Item label="是否提前打款">
         {getFieldDecorator('isPrepayment', {
           validateFirst: true,
           initialValue: props.isPrepayment
         })(
-          <Select placeholder="请选择">
+          <Select placeholder="请选择" disabled={props.disabled}>
             <Option value={2}>否</Option>
             <Option value={1}>是</Option>
           </Select>
         )}
       </Form.Item>
       <Form.Item label="其他联系人" wrapperCol={{ xs: { span: 24 }, sm: { span: 20 } }}>
-        <ContactExtend form={props.form} data={props.mcnContactInfoList} />
+        <ContactExtend form={props.form} data={props.mcnContactInfoList} disabled={props.disabled} />
       </Form.Item>
-      <div style={{ textAlign: 'center', padding: 20 }}>
+      {props.disabled ? null : <div style={{ textAlign: 'center', padding: 20 }}>
         <Button
           type="primary"
           htmlType="submit"
@@ -312,7 +312,7 @@ const UpdateOwnerForm = (props) => {
         >
           提交
         </Button>
-      </div>
+      </div>}
     </Form>
   );
 };

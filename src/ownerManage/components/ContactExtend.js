@@ -91,7 +91,7 @@ const ContactExtend = (props) => {
               validateFirst: true,
               initialValue: first.realName
             })(
-              <Input placeholder="请输入" onChange={() => validateRequired("mcnContactInfoList[0].realName")} />)}
+              <Input placeholder="请输入" onChange={() => validateRequired("mcnContactInfoList[0].realName")} disabled={props.disabled} />)}
           </Form.Item>
         </td>
         <td>
@@ -106,7 +106,7 @@ const ContactExtend = (props) => {
                 }
               ]
             })(
-              <Input addonBefore="+86" placeholder="请输入手机号码" onChange={() => validateRequired("mcnContactInfoList[0].cellPhone")} />)}
+              <Input addonBefore="+86" placeholder="请输入手机号码" onChange={() => validateRequired("mcnContactInfoList[0].cellPhone")} disabled={props.disabled} />)}
           </Form.Item>
         </td>
         <td>
@@ -115,7 +115,7 @@ const ContactExtend = (props) => {
               validateFirst: true,
               initialValue: first.other
             })(
-              <Input placeholder="请输入" onChange={() => validateRequired("mcnContactInfoList[0].other")} />)}
+              <Input placeholder="请输入" onChange={() => validateRequired("mcnContactInfoList[0].other")} disabled={props.disabled} />)}
           </Form.Item>
         </td>
       </tr>
@@ -133,7 +133,7 @@ const ContactExtend = (props) => {
               validateFirst: true,
               initialValue: second.realName
             })(
-              <Input placeholder="请输入" onChange={() => validateRequired("mcnContactInfoList[1].realName")}  />)}
+              <Input placeholder="请输入" onChange={() => validateRequired("mcnContactInfoList[1].realName")} disabled={props.disabled}  />)}
           </Form.Item>
         </td>
         <td>
@@ -148,7 +148,7 @@ const ContactExtend = (props) => {
                 }
               ]
             })(
-              <Input addonBefore="+86" placeholder="请输入手机号码" onChange={() => validateRequired("mcnContactInfoList[1].cellPhone")}  />)}
+              <Input addonBefore="+86" placeholder="请输入手机号码" onChange={() => validateRequired("mcnContactInfoList[1].cellPhone")} disabled={props.disabled}  />)}
           </Form.Item>
         </td>
         <td>
@@ -156,7 +156,7 @@ const ContactExtend = (props) => {
             {getFieldDecorator('mcnContactInfoList[1].other', {
               validateFirst: true,
               initialValue: second.other
-            })(<Input placeholder="请输入" onChange={() => validateRequired("mcnContactInfoList[1].other")} />)}
+            })(<Input placeholder="请输入" onChange={() => validateRequired("mcnContactInfoList[1].other")} disabled={props.disabled} />)}
           </Form.Item>
         </td>
       </tr>

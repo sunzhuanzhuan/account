@@ -45,7 +45,7 @@ const ContactTypesLeastOne = (props) => {
             message: '请填写正确的QQ号码，以便我们及时与您取得联系'
           }
         ]
-      })(<Input placeholder="请输入你的QQ号码" />)}
+      })(<Input placeholder="请输入你的QQ号码"  disabled={props.disabled}/>)}
     </Form.Item>,
     <Form.Item label="微信号" key="weixinId">
       {getFieldDecorator('weixinId', {
@@ -58,7 +58,7 @@ const ContactTypesLeastOne = (props) => {
             message: '请输入6~20个字母、数字、下划线和减号，必须以字母开头'
           }
         ]
-      })(<Input placeholder="请输入你的微信号码" />)}
+      })(<Input placeholder="请输入你的微信号码" disabled={props.disabled} />)}
     </Form.Item>,
     <Form.Item label="邮箱" key="email">
       {getFieldDecorator('email', {
@@ -71,7 +71,7 @@ const ContactTypesLeastOne = (props) => {
             message: '邮箱格式不正确'
           }
         ]
-      })(<Input placeholder='邮箱' />)}
+      })(<Input placeholder='邮箱' disabled={props.disabled} />)}
     </Form.Item>
   ]);
 };
