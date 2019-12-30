@@ -5,6 +5,7 @@ import { List, Rate, Radio, Spin } from 'antd'
 import qs from 'qs'
 import numeral from "numeral";
 import { withRouter } from 'react-router-dom'
+import TitleAndDecide from '../../base/TitleAndDecide'
 function OrderAssess(props) {
   const [orderList, setOrderList] = useState({})
   const [isLoading, setIsLoading] = useState(true)
@@ -22,7 +23,17 @@ function OrderAssess(props) {
   }
   return (
     <div className='order-assess'>
-      <div className='title-big'>订单评价</div>
+      <div className='title-big'>订单评价<TitleAndDecide
+        type='question-circle'
+        content=
+        {
+          <div>
+            好评：响应速度+配合度+效果满意度 评分求和大于等于12分<br />
+            中评：响应速度+配合度+效果满意度 评分求和 大于6分小于12分<br />
+            差评：响应速度+配合度+效果满意度 评分求和  小于等于6分
+          </div>
+        } />
+      </div>
       <div className='container'>
         <Statistics statistic={orderList.statistic} feature={props.feature} />
         <div style={{ margin: '20px 0px 10px' }}>
