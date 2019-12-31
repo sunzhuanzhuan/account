@@ -7,9 +7,12 @@ import api from '@/api'
 import { formatW } from '../../util'
 import qs from 'qs'
 import { withRouter } from 'react-router-dom'
+import getDeliverConfig from '../../constants/deliveryConfig'
+
 const Prediction = (props) => {
   const [preResult, setPreResult] = useState(false)
   const { getFieldDecorator, validateFields } = props.form
+  const search = qs.parse(props.location.search.substring(1))
   function startPrediction() {
     validateFields((err, values) => {
       if (!err) {
@@ -18,7 +21,6 @@ const Prediction = (props) => {
     });
   }
   async function getForecast(values) {
-    const search = qs.parse(props.location.search.substring(1))
     const params = qs.stringify({ ...values, accountId: search.accountId })
     const { data } = await api.get(`/operator-gateway/accountDetail/v1/getForecast?${params}`)
     setPreResult(data)
@@ -45,7 +47,7 @@ const Prediction = (props) => {
     </Form.Item>
     {preResult ? <div>
       <h2>预测结果</h2>
-      <PredicResult dataSource={preResult} />
+      <PredicResult dataSource={preResult} search={search} />
     </div> : null}
   </Form>
 }
@@ -53,7 +55,7 @@ const PredictionForm = Form.create()(Prediction)
 
 export default withRouter(PredictionForm)
 
-const PredicResult = ({ dataSource = [] }) => {
+const PredicResult = ({ dataSource = [], search }) => {
   const columns = [
     {
       title: '品牌名称',
@@ -66,17 +68,19 @@ const PredicResult = ({ dataSource = [] }) => {
       title: '成交价格',
       dataIndex: 'dealPriceAvg',
       key: 'dealPriceAvg',
-      render: text => text ? `￥${text}左右` : '-'
+      render: text => text ? `￥${formatW(text)}左右` : '-'
     },
     {
       title: '投放数据表现',
       dataIndex: 'address',
       key: 'address',
-      render: (text, record) => <div>
-        <p>播放量：{formatW(record.mediaPlayNum)}</p>
-        <p>评论数：{formatW(record.mediaCommentNum)}</p>
-        <p>点赞数：{formatW(record.mediaLikeNum)}</p>
-        <p>转发数：{formatW(record.mediaRepostNum)}</p>
+      render: (text = {}, record) => <div>
+        {getDeliverConfig(search.platformId).map(one => {
+          const value = record[one.key]
+          return <div key={one.name}>
+            {one.name}：{value > 0 || value == 0 ? formatW(value) : '-'}
+          </div>
+        })}
       </div>
     }, {
       title: '投放效果',
