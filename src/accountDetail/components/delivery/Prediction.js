@@ -87,8 +87,8 @@ const PredicResult = ({ dataSource = [], search }) => {
       dataIndex: 'address1',
       key: 'address1',
       render: (text, record) => <div>
-        <p>CPM：{record.cpm || '-'}元</p>
-        <p>CPE：{record.cpe || '-'}元</p>
+        <div>CPM：{record.cpm || '-'}元</div>
+        <div>CPE：{record.cpe || '-'}元</div>
       </div>
     }
   ];
