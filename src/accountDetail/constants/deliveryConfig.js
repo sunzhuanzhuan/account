@@ -5,19 +5,19 @@ const weChat = [
 
 const sina = [
 
-  { name: '评论数', key: 'mediaPlayNum' },
+  { name: '评论数', key: 'mediaCommentNum' },
   { name: '点赞数', key: 'mediaLikeNum' },
   { name: '转发数', key: 'mediaRepostNum' },
 ]
 
 const redBook = [
-  { name: '评论数', key: 'mediaPlayNum' },
+  { name: '评论数', key: 'mediaCommentNum' },
   { name: '点赞数', key: 'mediaLikeNum' },
   { name: '收藏数', key: 'mediaCollectNum' },
 ]
 
 const douyin = [
-  { name: '评论数', key: 'mediaPlayNum' },
+  { name: '评论数', key: 'mediaCommentNum' },
   { name: '点赞数', key: 'mediaLikeNum' },
   { name: '转发数', key: 'mediaRepostNum' },
 ]

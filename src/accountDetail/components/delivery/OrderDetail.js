@@ -90,8 +90,8 @@ function OrderDetail(props) {
     },
     {
       title: '投放数据',
-      dataIndex: 'DcOrderStatistic',
-      key: 'DcOrderStatistic',
+      dataIndex: 'dcOrderStatistic',
+      key: 'dcOrderStatistic',
       width: '150px',
       render: (text = {}) => {
         return <div>
