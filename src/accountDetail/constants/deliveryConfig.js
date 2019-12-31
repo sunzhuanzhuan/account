@@ -1,12 +1,13 @@
 const weChat = [
-  { name: '评论数', key: 'mediaPlayNum' },
+  { name: '阅读数', key: 'mediaReadNum' },
   { name: '点赞数', key: 'mediaLikeNum' },
-  { name: '转发数', key: 'mediaRepostNum' },
 ]
 
 const sina = [
-  { name: '阅读数', key: 'mediaReadNum' },
+
+  { name: '评论数', key: 'mediaPlayNum' },
   { name: '点赞数', key: 'mediaLikeNum' },
+  { name: '转发数', key: 'mediaRepostNum' },
 ]
 
 const redBook = [

@@ -45,32 +45,41 @@ function OrderDetail(props) {
       title: '项目名称',
       dataIndex: 'projectName',
       key: 'projectName',
-      width: '100px'
+      width: '100px',
+      render: text => text ? text : '-'
+
     },
     {
       title: '应约时间',
       dataIndex: 'acceptCreatedTime',
       key: 'acceptCreatedTime',
       sorter: true,
-      align: 'center'
+      align: 'center',
+      render: text => text ? text : '-'
+
     },
     {
       title: '价格名称',
       dataIndex: 'priceLabel',
       key: 'priceLabel',
-      align: 'center'
+      align: 'center',
+      render: text => text ? text : '-'
+
     },
     {
       title: '投放品牌',
       dataIndex: 'signedBrandName',
       key: 'signedBrandName',
-      align: 'center'
+      align: 'center',
+      render: text => text ? text : '-'
     },
     {
       title: '所属行业',
       dataIndex: 'industryName',
       key: 'industryName',
-      align: 'center'
+      align: 'center',
+      render: text => text ? text : '-'
+
     },
     {
       title: '成交价格',
@@ -84,14 +93,19 @@ function OrderDetail(props) {
       dataIndex: 'DcOrderStatistic',
       key: 'DcOrderStatistic',
       width: '150px',
-      render: (text = {}) => <div>
-        <a href={text.mediaUrl}>{text.mediaCaption}</a>
-        <div>
-          {getDeliverConfig(baseSearch.platformId).map(one => <div key={one.name}>
-            {one.name}:{text[one.key]}
-          </div>)}
+      render: (text = {}) => {
+        return <div>
+          <a href={text.mediaUrl}>{text.mediaCaption}</a>
+          <div>
+            {getDeliverConfig(baseSearch.platformId).map(one => {
+              const value = text[one.key]
+              return <div key={one.name}>
+                {one.name}:{value > 0 || value == 0 ? value : '-'}
+              </div>
+            })}
+          </div>
         </div>
-      </div>
+      }
     },
 
   ];
