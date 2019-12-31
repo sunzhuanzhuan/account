@@ -4,8 +4,7 @@ export default ({
 	toast = () => { },
 	showLoading = () => { },
 	hideLoading = () => { },
-	request,
-	sensors
+	request
 }) => store => next => (action) => {
 	const {
 		endpoint,
@@ -15,10 +14,7 @@ export default ({
 		ignoreLoading,
 		method,
 		dataType,
-		isTrack = false,
-		trackResult = () => { return null },
 	} = (action.payload && action.payload[CALL_API]) || {};
-	console.log("action.payload", action.payload)
 	if (!endpoint || !types) {
 		return next(action)
 	}
@@ -44,10 +40,10 @@ export default ({
 				dataType,
 				method: method || 'GET',
 			});
+			res.__query = data;
 			resolve(res);
 			hideLoading();
 			console.log('请求:success', 'response', res, { endpoint, data });
-			isTrack && sensors.track(endpoint, trackResult(data, res.data))
 			false && console.warn(store);
 			return next(successType(res))
 		} catch (ex) {

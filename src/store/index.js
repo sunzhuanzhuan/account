@@ -6,8 +6,7 @@ import { toast, showLoading, hideLoading, request } from '../util'
 import _history from '../util/history'
 import thunkMiddleware from 'redux-thunk';
 import rootReducer from '../reducers';
-// import { createAjaxMiddleware } from 'redux-action-extend'
-import createAjaxMiddleware from './createAjaxMiddleware'
+import { createAjaxMiddleware } from 'redux-action-extend'
 
 const initialState = {};
 const ajaxMiddleware = createAjaxMiddleware({ toast, showLoading, hideLoading, request });
@@ -15,13 +14,13 @@ const ajaxMiddleware = createAjaxMiddleware({ toast, showLoading, hideLoading, r
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const createStoreWithMiddleware = composeEnhancers(applyMiddleware(
-	thunkMiddleware, ajaxMiddleware
+  thunkMiddleware, ajaxMiddleware
 ))(createStore);
 
 const store = createStoreWithMiddleware(rootReducer, initialState);
 export const history = syncHistoryWithStore(_history, store);
 
-if(process.env.NODE_ENV === 'production'){
+if (process.env.NODE_ENV === 'production') {
   window.store = store;
 }
 export default store;

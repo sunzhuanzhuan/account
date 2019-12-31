@@ -19,7 +19,7 @@
   .ant-spin-nested-loading, .ant-spin-container {
     position: unset;
   }
-  .accountName {
+  .snsName {
     margin-bottom: 10px;
   }
   .pageInfo {
@@ -118,6 +118,16 @@
     .ant-btn {
       margin-right: 10px;
     }
+  }
+
+  .form-label{
+    display: inline-block;
+    overflow: hidden;
+    line-height: 39.9999px;
+    white-space: nowrap;
+    text-align: right;
+    vertical-align: middle;
+    color:rgba(0, 0, 0, 0.85);
   }
 }
 .disCountPopover {
@@ -263,4 +273,35 @@
 
 .stopPopover {
   max-width: 300px;
+}
+
+//解释说明
+.eg-explain{
+  display: block;
+  line-height: 1.5em;
+  color:#999;
+}
+
+//white-list 白名单组件样式
+.white-list{
+  .search-bar{
+    padding: 10px 0;
+    input{
+      width:200px;
+      margin-right: 10px;
+    }
+    button{
+      margin-right: 10px;
+      &:last-child{
+        float: right;
+      }
+    }
+  }
+  .label{
+    height: 32px;
+    line-height: 32px;
+    text-align: right;
+    
+    padding: 0 10px;
+  }
 }

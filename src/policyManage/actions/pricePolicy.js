@@ -3,7 +3,7 @@ import api from '../../api/index';
 import { GET_PROGRESS, GET_DISCOUNT_DETAIL, GET_POLICY_DETAIL } from '../constants/ActionTypes';
 
 function getSaveMsg(urlName) {
-  switch(urlName) {
+  switch (urlName) {
     case 'addDiscount':
     case 'editDiscount':
     case 'addPolicy':
@@ -19,22 +19,22 @@ function getSaveMsg(urlName) {
 // 更新渠道折扣及政策信息
 export function updatePriceInfo(payload, urlName) {
   return dispatch => {
-    dispatch({ type:GET_PROGRESS, progress: 'loading' });
+    dispatch({ type: GET_PROGRESS, progress: 'loading' });
     return api.post(Interface[urlName], payload)
       .then(result => {
-          dispatch({
-              type:GET_PROGRESS,
-              progress: 'saveSuccess',
-              newPolicyId: urlName === 'addPolicy' ? result.data : null, 
-              msg: getSaveMsg(urlName)
-          });
+        dispatch({
+          type: GET_PROGRESS,
+          progress: 'saveSuccess',
+          newPolicyId: urlName === 'addPolicy' ? result.data : null,
+          msg: getSaveMsg(urlName)
+        });
       })
-      .catch(({errorMsg}) => {
-          dispatch({
-              type:GET_PROGRESS,
-              progress: 'fail',
-              errorMsg
-          })
+      .catch(({ errorMsg }) => {
+        dispatch({
+          type: GET_PROGRESS,
+          progress: 'fail',
+          errorMsg
+        })
       });
   }
 }
@@ -42,24 +42,24 @@ export function updatePriceInfo(payload, urlName) {
 // 获取渠道折扣详情
 export function getDiscountDetail(payload) {
   return dispatch => {
-    dispatch({ type:GET_PROGRESS, progress: 'loading' });
+    dispatch({ type: GET_PROGRESS, progress: 'loading' });
 
-    if(payload)
+    if (payload)
       return api.post(Interface.getDiscount, payload)
-      .then(result => {
+        .then(result => {
           dispatch({
-              type:GET_DISCOUNT_DETAIL,
-              progress: 'success',
-              discountDetail: result.data
+            type: GET_DISCOUNT_DETAIL,
+            progress: 'success',
+            discountDetail: result.data
           })
-      })
-      .catch( ({errorMsg}) => {
+        })
+        .catch(({ errorMsg }) => {
           dispatch({
-              type:GET_DISCOUNT_DETAIL,
-              progress: 'fail',
-              errorMsg
+            type: GET_DISCOUNT_DETAIL,
+            progress: 'fail',
+            errorMsg
           })
-      });
+        });
 
     dispatch({
       type: GET_DISCOUNT_DETAIL,
@@ -74,24 +74,24 @@ export function getDiscountDetail(payload) {
 // 获取政策详情
 export function getPolicyDetail(id) {
   return dispatch => {
-    dispatch({ type:GET_PROGRESS, progress: 'loading' });
+    dispatch({ type: GET_PROGRESS, progress: 'loading' });
 
-    return api.get(`${Interface.getPolicy}?id=${id}`)
-    .then(result => {
+    return api.get(`${Interface.getPolicyInfoByMcnId}?id=${id}`)
+      .then(result => {
         dispatch({
-            type:GET_POLICY_DETAIL,
-            policyDetail: result.data,
-            progress: 'success'
+          type: GET_POLICY_DETAIL,
+          policyDetail: result.data,
+          progress: 'success'
         })
-    })
-    .catch( ({errorMsg}) => {
+      })
+      .catch(({ errorMsg }) => {
         dispatch({
-            type:GET_POLICY_DETAIL,
-            policyDetail: {},
-            progress: 'fail',
-            errorMsg
+          type: GET_POLICY_DETAIL,
+          policyDetail: {},
+          progress: 'fail',
+          errorMsg
         })
-    });
+      });
   }
 }
 
