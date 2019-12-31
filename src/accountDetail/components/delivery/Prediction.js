@@ -4,7 +4,7 @@ import { Button, Form, Input, Select, Table } from 'antd';
 import './PutPreview.less'
 import axios from 'axios'
 import api from '@/api'
-import { formatW } from '../../util'
+import { formatW, formatWNumber } from '../../util'
 import qs from 'qs'
 import { withRouter } from 'react-router-dom'
 import getDeliverConfig from '../../constants/deliveryConfig'
@@ -68,7 +68,7 @@ const PredicResult = ({ dataSource = [], search }) => {
       title: '成交价格',
       dataIndex: 'dealPriceAvg',
       key: 'dealPriceAvg',
-      render: text => text ? `￥${formatW(text)}左右` : '-'
+      render: text => text ? `￥${formatWNumber(text)}左右` : '-'
     },
     {
       title: '投放数据表现',
@@ -78,7 +78,7 @@ const PredicResult = ({ dataSource = [], search }) => {
         {getDeliverConfig(search.platformId).map(one => {
           const value = record[one.key]
           return <div key={one.name}>
-            {one.name}：{value > 0 || value == 0 ? formatW(value) : '-'}
+            {one.name}：{value > 0 || value == 0 ? formatWNumber(value) : '-'}
           </div>
         })}
       </div>
@@ -86,10 +86,13 @@ const PredicResult = ({ dataSource = [], search }) => {
       title: '投放效果',
       dataIndex: 'address1',
       key: 'address1',
-      render: (text, record) => <div>
-        <div>CPM：{record.cpm || '-'}元</div>
-        <div>CPE：{record.cpe || '-'}元</div>
-      </div>
+      render: (text, record) => {
+        const { cpm, cpe } = record
+        return <div>
+          <div>CPM：{cpm > 0 || cpm > 0 ? `${formatWNumber(cpm)}元` : '-'}</div>
+          <div>CPE：{cpe > 0 || cpe == 0 ? `${formatWNumber(cpe)}元` : '-'}</div>
+        </div>
+      }
     }
   ];
 
