@@ -55,14 +55,14 @@ function DataIndicator(props) {
                 <div className='text'>
                   <CharTitle title='商业价值指数' color='#999' content='基于互动指数、内容传播指数、活跃度指数、健康指数、商业适应度指数、成长指数这6个指标加权计算综合指标。' />
                 </div>
-                <div className='score'>{numeral(comprehensiveCommericalIndex).format('0')}</div>
+                <div className='score'>{comprehensiveCommericalIndex && numeral(comprehensiveCommericalIndex).format('0') || '-'}</div>
               </div>
               <Divider type="vertical" style={{ height: 40, margin: '0px 20px' }} />
               <div className='left-index'>
                 <div className='text' style={{ marginTop: 7 }}>
                   <CharTitle title={`${legend[1] || '-'}分类排名`} color='#999' />
                 </div>
-                <div>NO.<span className='score'>{hogwartsComprehensiveCommericalIndexRankOnClassification || '-'}</span></div>
+                <div><span className='score'>{hogwartsComprehensiveCommericalIndexRankOnClassification ? `NO.${hogwartsComprehensiveCommericalIndexRankOnClassification}` : '-'}</span></div>
               </div>
             </div>
 
