@@ -20,60 +20,59 @@ import { combineReducers } from 'redux'
 import { handleAction, handleActions, combineActions } from 'redux-actions';
 
 export const policyInfo = handleActions({
-    'getPolicyInfoByMcnId_success': (state, action) => {
-        return {
-            ...state,
-            ...action.payload.data
-        }
-    },
-    'saveGlobalAccountRule_success': (state, action) => {
-        return {
-            ...state,
-            globalAccountRules: [action.payload.data, ...state.globalAccountRules]
-        }
-    },
-    'saveSpecialAccountRule_success': (state, action) => {
-        return {
-            ...state,
-            specialAccountRules: [action.payload.data, ...state.specialAccountRules]
-        }
-    },
-    'delGlobalRuleById_success': (state, action) => {
-        return {
-            ...state,
-            globalAccountRules: state.globalAccountRules.filter(item => item.ruleId != action.payload.data.ruleId)
-        }
-    },
-    'delSpecialRuleById_success': (state, action) => {
-        console.log("action", action)
-        return {
-            ...state,
-            specialAccountRules: state.specialAccountRules.filter(item => item.ruleId != action.payload.data.ruleId)
-        }
-    },
-    'delWhiteListAccount_success': (state, action) => {
-        return {
-            ...state,
-            whiteList: state.whiteList.filter(item => item.accountId !== action.payload.__query.accountId)
-        }
-    },
-    'addWhiteListAccount_success': (state, action) => {
-        return {
-            ...state,
-            whiteList: action.payload.data
-        }
-    }
-
-}, {})
-
-const accountInfo = handleAction('getAccountInfoByIds_success', (state, action) => {
+  'getPolicyInfoByMcnId_success': (state, action) => {
     return {
-        ...state,
-        ...action.payload.data
+      ...action.payload.data
     }
+  },
+  // 'saveGlobalAccountRule_success': (state, action) => {
+  //   return {
+  //     ...state,
+  //     globalAccountRules: [action.payload.data, ...(state.globalAccountRules || [])]
+  //   }
+  // },
+  // 'saveSpecialAccountRule_success': (state, action) => {
+
+  //     return {
+  //         ...state,
+  //         specialAccountRules: [action.payload.data, ...(state.specialAccountRules || [])]
+  //     }
+  // },
+  // 'delGlobalRuleById_success': (state, action) => {
+  //     return {
+  //         ...state,
+  //         globalAccountRules: state.globalAccountRules.filter(item => item.ruleId != action.payload.__query.ruleId)
+  //     }
+  // },
+  // 'delSpecialRuleById_success': (state, action) => {
+  //     return {
+  //         ...state,
+  //         specialAccountRules: state.specialAccountRules.filter(item => item.ruleId != action.payload.data.ruleId)
+  //     }
+  // },
+  // 'delWhiteListAccount_success': (state, action) => {
+  //     return {
+  //         ...state,
+  //         whiteList: state.whiteList.filter(item => item.accountId !== action.payload.__query.accountId)
+  //     }
+  // },
+  // 'addWhiteListAccount_success': (state, action) => {
+  //   return {
+  //     ...state,
+  //     whiteList: action.payload.data
+  //   }
+  // }
+
 }, {})
+
+const newBPlatforms = handleAction('getNewBPlatforms_success', (state, action) => {
+  return [
+    ...state,
+    ...action.payload.data
+  ]
+}, [])
 
 export default combineReducers({
-    policyInfo,
-    accountInfo
+  policyInfo,
+  newBPlatforms
 })

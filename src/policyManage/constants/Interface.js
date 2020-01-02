@@ -16,7 +16,7 @@
 //     delWhiteListAccount: 'delWhiteListAccount',
 //     delSpecialRuleAccountById: 'delSpecialRuleAccountById'
 // }
-
+const baseUrl = '/operator-gateway/policy/v1.1/'
 export const interfaceKey = [
     { name: 'getPolicyInfoByMcnId' },
     { name: 'getAccountInfoByIds' },
@@ -26,14 +26,16 @@ export const interfaceKey = [
     { name: 'delSpecialRuleById', method: 'post' },         //删除特殊账号规则
     { name: 'delWhiteListAccount', method: 'post' },        //删除白名单账号
     { name: 'delSpecialRuleAccountById', method: 'post' }, //删除特殊规则账号
+    { name: 'saveProcurementPolicyInfo', method: 'post' },
+    { name: 'getNewBPlatforms', baseUrl: '/operator-gateway/common/v1/' }
 
-]
-
-const baseUrl = '/operator-gateway/policy/v1.1/'
-export const getAccountInfoByIds = `${baseUrl}getAccountInfoByIds`;
+].map(item => {
+    item.baseUrl = item.baseUrl || baseUrl;
+    return item;
+})
 
 export default interfaceKey.reduce((acc, cur) => {
-    acc[cur.name] = `${baseUrl}${cur.name}`;
+    acc[cur.name] = `${cur.baseUrl}${cur.name}`;
     return acc;
 }, {})
 
