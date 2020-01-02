@@ -39,7 +39,7 @@ function PutPreview(props) {
                   width: '800px'
                 })}>投放预测</div>
             </div>
-            <OrderStatistics dataSource={data.orderDataShowList} />
+            <OrderStatistics dataSource={data && data.orderDataShowList} />
           </div>
         </div>
       </Spin>
@@ -47,7 +47,7 @@ function PutPreview(props) {
   );
 }
 
-const DataActive = ({ data }) => {
+const DataActive = ({ data = {} }) => {
   const sumList = [
     { title: '总订单数', subtitle: '（预约|派单）', sum: data.orderNum, remark: `（${data.reservationOrderNum || '-'}|${data.campaignOrderNum || '-'}）` },
     { title: '品牌数', subtitle: '（订单品牌）', sum: data.brandNum, remark: `（${data.orderBrandNum || '-'}）` },
