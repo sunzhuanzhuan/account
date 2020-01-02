@@ -41,7 +41,7 @@ export const PlatformEdit = (props) => {
             ],
         })(
             <Select mode="multiple" placeholder="请选择平台">
-                {newBPlatforms.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>)}
+                {newBPlatforms.map(item => <Option key={item.id} value={item.id}>{item.platformName}</Option>)}
             </Select>
         )}
     </Form.Item>

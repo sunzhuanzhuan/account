@@ -39,3 +39,11 @@ export const Boolean_MAP = {
 export const transBool = (value) => {
     return value == 1 ? true : false
 }
+
+export const POLICYSTATUS = {
+    "-1": "未添加",
+    1: "待开始",
+    2: "进行中",
+    3: "已过期",
+    4: "已停用",
+}

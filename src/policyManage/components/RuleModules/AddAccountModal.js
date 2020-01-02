@@ -32,7 +32,7 @@ const AddAccountModal = (props) => {
             });
             return;
         }
-        props.getAccountInfoByIds({ accountIds: _selectedIds }).then((data) => {
+        props.getAccountInfoByIds({ accountIds: _selectedIds.join(",") }).then((data) => {
             const { accountList, notExistAccountIds = [], notExistAccountIdsByMcnId = [] } = data.data;
 
             (notExistAccountIds.length > 0 || notExistAccountIdsByMcnId.length > 0) && Modal.confirm({

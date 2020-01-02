@@ -29,23 +29,23 @@ export const policyInfo = handleActions({
     'saveGlobalAccountRule_success': (state, action) => {
         return {
             ...state,
-            globalAccountRules: [action.payload.data, ...state.globalAccountRules]
+            globalAccountRules: [action.payload.data, ...(state.globalAccountRules || [])]
         }
     },
     'saveSpecialAccountRule_success': (state, action) => {
+
         return {
             ...state,
-            specialAccountRules: [action.payload.data, ...state.specialAccountRules]
+            specialAccountRules: [action.payload.data, ...(state.specialAccountRules || [])]
         }
     },
     'delGlobalRuleById_success': (state, action) => {
         return {
             ...state,
-            globalAccountRules: state.globalAccountRules.filter(item => item.ruleId != action.payload.data.ruleId)
+            globalAccountRules: state.globalAccountRules.filter(item => item.ruleId != action.payload.__query.ruleId)
         }
     },
     'delSpecialRuleById_success': (state, action) => {
-        console.log("action", action)
         return {
             ...state,
             specialAccountRules: state.specialAccountRules.filter(item => item.ruleId != action.payload.data.ruleId)

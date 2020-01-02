@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
 	Button, Icon, Form, DatePicker, Spin, Input, message,
-	Radio, Switch, InputNumber, Upload, Modal
+	Radio, Switch, InputNumber, Menu, Alert
 } from 'antd';
 
 // import CommonTitle from "../components/CommonTitle";
@@ -19,8 +19,8 @@ import { ModuleHeader } from '@/components/ModuleHeader';
 import WhiteList from '../components/WhiteList';
 import RuleModule from '../components/RuleModule'
 import EditRuleForm from '../components/RuleModules/EditRuleForm'
-import AddAccountModal from '../components/RuleModules/AddAccountModal'
-import { transBool } from '../constants/dataConfig'
+// import AddAccountModal from '../components/RuleModules/AddAccountModal'
+import { transBool, POLICYSTATUS } from '../constants/dataConfig'
 
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
@@ -53,6 +53,7 @@ class PolicyManage extends React.Component {
 		this.userId = qs.parse(search)['userId'];
 		this.policyId = qs.parse(search)['id'];
 		this.userName = qs.parse(search)['name'];
+		this.policyPeriodIdentity = qs.parse(search)['policyPeriodIdentity'] || 1
 	}
 
 	componentDidMount() {
@@ -64,8 +65,8 @@ class PolicyManage extends React.Component {
 		// if (policyId !== undefined)
 		// 	this.props.getPolicyDetail(policyId);
 		console.log('getPolicyInfoByMcnId', this.props)
-		this.props.getPolicyInfoByMcnId({ mcnId: userId, policyPeriodIdentity: 1 });
-		this.props.getNewBPlatforms();
+		this.props.getPolicyInfoByMcnId({ mcnId: userId, policyPeriodIdentity: this.policyPeriodIdentity });
+		this.props.getNewBPlatforms({ version: '1.1' });
 		this.setState({ policyId, userName, userId })
 	}
 
@@ -104,13 +105,11 @@ class PolicyManage extends React.Component {
 	}
 
 	handleSavePolicy = () => {
-		const { form, policyDetail = {}, policyPeriodIdentity = 1 } = this.props;
-		const { policyId, userId } = this.state;
-		const { id, policyStatus } = policyDetail;
+		const { form, policyInfo = {}, policyPeriodIdentity = 1 } = this.props;
+		const { id } = policyInfo;
 		const { userId: mcnId } = this;
-
 		form.validateFields((err, values) => {
-			console.log("=====", values)
+			console.log("=====", values, err)
 			if (err) return;
 			const { policyTime = [] } = values;
 			values.validStartTime = policyTime[0].format('YYYY-MM-DD 00:00:00');
@@ -195,12 +194,19 @@ class PolicyManage extends React.Component {
 		this.setState({ showEditRuleModal: true, editRuleModalType: type, currentRuleId })
 	}
 	delRule = (type, ruleId) => {
-		console.log("删除规则", type, ruleId)
+		const { policyDetail = {} } = this.props;
+		const { id } = policyDetail;
+
 		const delRuleById = type == 'global' ? this.props.delGlobalRuleById : this.props.delSpecialRuleById
-		delRuleById({ ruleId, userId: this.userId })
+		delRuleById({ id, mcnId: this.userId, ruleId, policyPeriodIdentity: this.policyPeriodIdentity })
 	}
 	editRuleModalClose = e => {
 		this.setState({ showEditRuleModal: false })
+	}
+	onMenuClick = ({ item, key, keyPath }) => {
+		console.log("onMenuClick", item, key, keyPath)
+		this.props.history.replace(`/account/policy?userId=${this.userId}&policyPeriodIdentity=${key}`);
+		window.location.reload();
 	}
 
 	render() {
@@ -211,6 +217,8 @@ class PolicyManage extends React.Component {
 		const { policyStatus, identityName, illustration,
 			validStartTime, validEndTime, modifyName = '未知', id, modifiedAt, stopReason,
 			globalAccountRules = [], specialAccountRules = [], whiteList = [],
+			isDraft,
+			nextPolicyStatus
 		} = policyInfo;
 		const currentRule = (editRuleModalType == 'global' ? globalAccountRules : specialAccountRules).filter(item => item.ruleId == currentRuleId)
 		const { getFieldDecorator } = form;
@@ -218,6 +226,7 @@ class PolicyManage extends React.Component {
 			labelCol: { span: 2 },
 			wrapperCol: { span: 22 },
 		};
+		const MenuSelectedKeys = [this.policyPeriodIdentity]
 		const contractUploadProps = {
 			name: 'file',
 			multiple: true,
@@ -234,18 +243,26 @@ class PolicyManage extends React.Component {
 				}
 			},
 		};
-		console.log(whiteList, 'whiteList')
+		// console.log(whiteList, 'whiteList')
 		return [
-			<h2 key='policyHeader' className='policyHeader'>
-				{isEdit ? '修改政策' : '新增政策'}
-			</h2>,
+			// <h2 key='policyHeader' className='policyHeader'>
+			// 	{isEdit ? '修改政策' : '新增政策'}
+			// 	<Button>当期政策</Button>
+			// </h2>,
+			<div key="alertMessage">{isDraft == 1 ? <Alert message="当前为草稿状态" type="warning" /> : null}</div>,
+			<Menu key='policyMenu' mode="horizontal" onClick={this.onMenuClick} selectedKeys={MenuSelectedKeys}>
+				<Menu.Item key="1">本期政策</Menu.Item>
+				<Menu.Item key="2">下期政策({POLICYSTATUS[nextPolicyStatus]})</Menu.Item>
+				{/* <Menu.Item key="3">往期政策</Menu.Item> */}
+			</Menu>,
 			<div key='policyWrapper' className='policyWrapper'>
 				<Spin spinning={progress === 'loading'}>
 					{isEdit ? <PageInfo policyId={id} status={policyStatus} stopReason={stopReason} editor={modifyName} editTime={moment(modifiedAt).format('YYYY-MM-DD HH:mm:ss')} /> : null}
 					<Form>
-						{/* <FormItem label='主账号名称' {...formItemLayout}>
-							{isEdit ? identityName : userName || '未知'}
-						</FormItem> */}
+						<FormItem label='主账号名称' {...formItemLayout}>
+							{/* {isEdit ? identityName : userName || '未知'} */}
+							{identityName}
+						</FormItem>
 						<FormItem label="政策有效期"  {...formItemLayout}>
 							{getFieldDecorator('policyTime', {
 								rules: [{ type: 'array', required: true, message: 'Please select time!' }],
@@ -284,7 +301,7 @@ class PolicyManage extends React.Component {
 
 						<ModuleHeader title="白名单"></ModuleHeader>
 						<WhiteList
-							// key={whiteList.length}
+							key={whiteList.length}
 							whiteList={whiteList}
 							getAccountInfoByIds={this.props.getAccountInfoByIds}
 							addWhiteListAccount={this.props.addWhiteListAccount}
@@ -302,7 +319,6 @@ class PolicyManage extends React.Component {
 							}
 						</FormItem>
 						<FormItem label='阶梯返点结算' {...formItemLayout}>
-
 							{
 								getFieldDecorator('stepRebateSettlementType', {
 									initialValue: policyInfo.stepRebateSettlementType
@@ -338,7 +354,7 @@ class PolicyManage extends React.Component {
 								)
 							}
 						</FormItem>
-						<Form.Item label="合同附件" {...formItemLayout} {...contractUploadProps}>
+						{/* <Form.Item label="合同附件" {...formItemLayout} {...contractUploadProps}>
 							{getFieldDecorator('contractFileUrl', {
 								valuePropName: 'fileList',
 								getValueFromEvent: this.normFile,
@@ -352,7 +368,7 @@ class PolicyManage extends React.Component {
 									<p className="ant-upload-hint">Support for a single or bulk upload.</p>
 								</Upload.Dragger>,
 							)}
-						</Form.Item>
+						</Form.Item> */}
 						<FormItem label="备注"  {...formItemLayout}>
 							{getFieldDecorator('remark', { initialValue: policyInfo.remark })(
 								<TextArea className='remarksText' max={1000} />
@@ -372,6 +388,8 @@ class PolicyManage extends React.Component {
 
 				{showEditRuleModal && <EditRuleForm
 					mcnId={this.userId}
+					policyId={id}
+					policyPeriodIdentity={this.policyPeriodIdentity}
 					currentRule={currentRule[0]}
 					getAccountInfoByIds={getAccountInfoByIds}
 					saveSpecialAccountRule={this.props.saveSpecialAccountRule}
@@ -390,9 +408,9 @@ class PolicyManage extends React.Component {
 
 const mapStateToProps = (state) => {
 	const { pricePolicyReducer = {} } = state;
-	const { policyInfo, newBPlatforms, newPolicyId, progress, errorMsg, msg } = pricePolicyReducer;
+	// const { policyInfo, newBPlatforms, newPolicyId, progress, errorMsg, msg, id } = pricePolicyReducer;
 
-	return { policyInfo, newBPlatforms, newPolicyId, progress, errorMsg, msg };
+	return pricePolicyReducer;
 }
 
 const mapDispatchToProps = (dispatch) => (

@@ -6,11 +6,12 @@ import { DiscountView, DiscountEdit } from './Discount'
 import { RebateView, RebateEdit } from './Rebate'
 import AddAccountModal from './AddAccountModal'
 const EditRuleForm = (props) => {
-    const { form, showEditRuleModal, editRuleModalClose, type, mcnId, currentRule = {}, policyPeriodIdentity = 1 } = props;
+    const { form, showEditRuleModal, editRuleModalClose, type, mcnId, policyId, currentRule = {}, policyPeriodIdentity = 1 } = props;
     const { ruleId } = currentRule
     const [addAccountModalVisible, setAddAccountModalVisible] = useState(false);
     const [accountList, setAccountList] = useState(currentRule.accountList || [])
     const [selectedIds, setSelectedIds] = useState([]);
+    console.log("==========", policyId)
     const handleSubmit = e => {
         e.preventDefault();
         props.form.validateFields(async (err, values) => {
@@ -43,10 +44,10 @@ const EditRuleForm = (props) => {
                 }
                 if (type == 'global') {
                     delete values.accountIds;
-                    await props.saveGlobalAccountRule({ ...values, mcnId, policyPeriodIdentity })
+                    await props.saveGlobalAccountRule({ ...values, mcnId, id: policyId, policyPeriodIdentity })
                 } else {
                     delete values.platform;
-                    await props.saveSpecialAccountRule({ ...values, mcnId, policyPeriodIdentity })
+                    await props.saveSpecialAccountRule({ ...values, mcnId, id: policyId, policyPeriodIdentity })
                 }
 
                 editRuleModalClose();
