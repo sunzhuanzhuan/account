@@ -189,6 +189,13 @@ class PolicyManage extends React.Component {
   editRuleModalClose = e => {
     this.setState({ showEditRuleModal: false })
   }
+  getDefaultQuery = () => {
+    const { mcnId, policyPeriodIdentity } = this;
+    const { currentRuleId } = this.state;
+    const { policyDetail = {} } = this.props;
+    const { id } = policyDetail;
+    return { id, mcnId, currentRuleId, policyPeriodIdentity }
+  }
   saveAccountRule = (type, values) => {
     const { mcnId, policyPeriodIdentity } = this;
     const { currentRuleId } = this.state;
@@ -198,6 +205,20 @@ class PolicyManage extends React.Component {
     saveAccountRule({ ...values, mcnId, ruleId: currentRuleId, id, policyPeriodIdentity }).then(() => {
       this.getPolicyInfoByMcnId();
     })
+  }
+  saveWhiteAccount = async (ids = []) => {
+    const { id, mcnId, policyPeriodIdentity } = this.getDefaultQuery();
+    const { policyInfo = {} } = this.props;
+    const { whiteList = {} } = policyInfo;
+    const whiteAccountList = whiteList.accountList || [];
+    const accountIds = whiteAccountList.map(item => item.accountId).concat(ids)
+    await this.props.saveWhiteList({ id, mcnId, policyPeriodIdentity, accountIds })
+    this.getPolicyInfoByMcnId();
+  }
+  delWhiteListAccount = async (accountId) => {
+    const { id, mcnId, policyPeriodIdentity } = this.getDefaultQuery();
+    await this.props.delWhiteListAccount({ id, mcnId, policyPeriodIdentity, accountId })
+    this.getPolicyInfoByMcnId();
   }
   onMenuClick = ({ key }) => {
     this.props.history.replace(`/account/policy?userId=}&policyPeriodIdentity=${key}`);
@@ -301,11 +322,12 @@ class PolicyManage extends React.Component {
 
             <ModuleHeader title="白名单"></ModuleHeader>
             <WhiteList
+              mcnId={mcnId}
               key={whiteList.length}
               whiteList={whiteList}
+              saveWhiteAccount={this.saveWhiteAccount}
               getAccountInfoByIds={this.props.getAccountInfoByIds}
-              addWhiteListAccount={this.props.addWhiteListAccount}
-              delWhiteListAccount={this.props.delWhiteListAccount}
+              delWhiteListAccount={this.delWhiteListAccount}
             ></WhiteList>
 
             <ModuleHeader title="返点规则"></ModuleHeader>

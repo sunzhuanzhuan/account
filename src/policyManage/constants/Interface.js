@@ -27,6 +27,7 @@ export const interfaceKey = [
     { name: 'delWhiteListAccount', method: 'post' },        //删除白名单账号
     { name: 'delSpecialRuleAccountById', method: 'post' }, //删除特殊规则账号
     { name: 'saveProcurementPolicyInfo', method: 'post' },
+    { name: 'saveWhiteList', method: 'post' },
     { name: 'getNewBPlatforms', baseUrl: '/operator-gateway/common/v1/' }
 
 ].map(item => {

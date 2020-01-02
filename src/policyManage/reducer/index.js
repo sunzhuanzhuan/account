@@ -56,12 +56,12 @@ export const policyInfo = handleActions({
   //         whiteList: state.whiteList.filter(item => item.accountId !== action.payload.__query.accountId)
   //     }
   // },
-  // 'addWhiteListAccount_success': (state, action) => {
-  //   return {
-  //     ...state,
-  //     whiteList: action.payload.data
-  //   }
-  // }
+  'saveWhiteList_success': (state, action) => {
+    return {
+      ...state,
+      whiteList: action.payload.data.whiteList
+    }
+  }
 
 }, {})
 

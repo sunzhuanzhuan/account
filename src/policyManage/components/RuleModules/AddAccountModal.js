@@ -9,7 +9,6 @@ const AddAccountModal = (props) => {
   const {
     mcnId,
     setAddAccountModalVisible,
-    updateSelectedIds,
     allSelectedIds,
     updateAccountList
   } = props;
