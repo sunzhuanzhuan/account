@@ -48,8 +48,8 @@ const redBookContent = {
 export const redBook = {
   trend: [
     { key: 1, name: '全部', content: { ...redBookContent, dataKey: 'allSmallRedBook' } },
-    { key: 2, name: '图文', content: { ...redBookContent, dataKey: 'PictureSmallRedBook' } },
-    { key: 3, name: '视频', content: { ...redBookContent, dataKey: 'VideoSmallRedBook' } }
+    { key: 2, name: '图文', content: { ...redBookContent, dataKey: 'pictureSmallRedBook' } },
+    { key: 3, name: '视频', content: { ...redBookContent, dataKey: 'videoSmallRedBooks' } }
   ]
 }
 //视频数据趋势配置
