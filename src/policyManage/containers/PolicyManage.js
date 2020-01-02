@@ -65,6 +65,7 @@ class PolicyManage extends React.Component {
 		// 	this.props.getPolicyDetail(policyId);
 		console.log('getPolicyInfoByMcnId', this.props)
 		this.props.getPolicyInfoByMcnId({ mcnId: userId, policyPeriodIdentity: 1 });
+		this.props.getNewBPlatforms();
 		this.setState({ policyId, userName, userId })
 	}
 
@@ -103,19 +104,18 @@ class PolicyManage extends React.Component {
 	}
 
 	handleSavePolicy = () => {
-		const { form, policyDetail = {} } = this.props;
+		const { form, policyDetail = {}, policyPeriodIdentity = 1 } = this.props;
 		const { policyId, userId } = this.state;
 		const { id, policyStatus } = policyDetail;
+		const { userId: mcnId } = this;
 
 		form.validateFields((err, values) => {
 			console.log("=====", values)
-			// if (err) return;
-			// const { policyTime = [], illustration } = values;
-			// const updateObj = {
-			// 	validStartTime: policyTime[0].format('YYYY-MM-DD 00:00:00'),
-			// 	validEndTime: policyTime[1].format('YYYY-MM-DD 00:00:00'),
-			// 	illustration
-			// };
+			if (err) return;
+			const { policyTime = [] } = values;
+			values.validStartTime = policyTime[0].format('YYYY-MM-DD 00:00:00');
+			values.validEndTime = policyTime[1].format('YYYY-MM-DD 00:00:00');
+			delete values.policyTime;
 			// const isEdit = policyId !== undefined;
 			// let method = isEdit ? 'editPolicy' : 'addPolicy';
 
@@ -129,7 +129,21 @@ class PolicyManage extends React.Component {
 			// 	if (isEdit)
 			// 		this.props.getPolicyDetail(policyId);
 			// });
+			values.policyPeriodIdentity = policyPeriodIdentity;
+			values.mcnId = mcnId;
+			values.id = id;
+
+			const _values = Object.keys(values).reduce((acc, cur) => {
+				if (values[cur]) {
+					acc[cur] = values[cur]
+					return acc;
+				}
+				return acc;
+			}, {})
+			this.props.saveProcurementPolicyInfo(_values)
 		})
+
+
 	}
 
 	handleChangeDate = (timeRange) => {
@@ -190,7 +204,7 @@ class PolicyManage extends React.Component {
 	}
 
 	render() {
-		const { form, policyInfo = {}, progress } = this.props;
+		const { form, policyInfo = {}, progress, newBPlatforms } = this.props;
 		const { getAccountInfoByIds } = this.props;
 		const { stopModal, policyId, userName, showEditRuleModal, editRuleModalType, currentRuleId } = this.state;
 		const isEdit = policyId !== undefined;
@@ -366,6 +380,7 @@ class PolicyManage extends React.Component {
 					type={editRuleModalType}
 					showEditRuleModal={showEditRuleModal}
 					editRuleModalClose={this.editRuleModalClose}
+					newBPlatforms={newBPlatforms}
 				></EditRuleForm>}
 
 			</div >
@@ -375,9 +390,9 @@ class PolicyManage extends React.Component {
 
 const mapStateToProps = (state) => {
 	const { pricePolicyReducer = {} } = state;
-	const { policyInfo, newPolicyId, progress, errorMsg, msg } = pricePolicyReducer;
+	const { policyInfo, newBPlatforms, newPolicyId, progress, errorMsg, msg } = pricePolicyReducer;
 
-	return { policyInfo, newPolicyId, progress, errorMsg, msg };
+	return { policyInfo, newBPlatforms, newPolicyId, progress, errorMsg, msg };
 }
 
 const mapDispatchToProps = (dispatch) => (

@@ -66,14 +66,14 @@ export const policyInfo = handleActions({
 
 }, {})
 
-const accountInfo = handleAction('getAccountInfoByIds_success', (state, action) => {
-    return {
+const newBPlatforms = handleAction('getNewBPlatforms_success', (state, action) => {
+    return [
         ...state,
         ...action.payload.data
-    }
-}, {})
+    ]
+}, [])
 
 export default combineReducers({
     policyInfo,
-    accountInfo
+    newBPlatforms
 })

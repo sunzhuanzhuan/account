@@ -20,6 +20,7 @@ const formItemLayout = {
 const { Option } = Select;
 
 export const PlatformEdit = (props) => {
+    const { newBPlatforms } = props;
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = props.form;
     const { addPlatform, defaultCheckedList = [1, 2], setDefaultCheckedList, currentRule = {} } = props;
     // const platformListMap = platformList.reduce((obj, item) => {
@@ -27,7 +28,7 @@ export const PlatformEdit = (props) => {
     //     return obj;
     // }, {})
     const { platformList = [] } = currentRule
-    console.log("currentRule", currentRule)
+    console.log("currentRule", currentRule, props.newBPlatforms)
     const onClose = (e) => {
         const checkeList = defaultCheckedList.filter(item => item !== e);
         setDefaultCheckedList(checkeList);
@@ -40,7 +41,7 @@ export const PlatformEdit = (props) => {
             ],
         })(
             <Select mode="multiple" placeholder="请选择平台">
-                {platformListOptions.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>)}
+                {newBPlatforms.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>)}
             </Select>
         )}
     </Form.Item>
