@@ -7,8 +7,8 @@ class LookIndex extends Component {
     const { qrCodeUrl, url, platformName } = this.props
     return (
       <PopoverFormat popoverProps={{ overlayStyle: { width: 150 } }}
-        text={<div style={{ marginLeft: 10, }}><a>
-          <Icon type="home" style={{ padding: '0px 3px' }} />查看主页
+        text={<div style={{ marginLeft: 10 }}><a>
+          <Icon type="home" style={{ padding: '0px 3px 4px' }} />查看主页
           </a></div>}
         content={
           <div >
