@@ -2,8 +2,8 @@ import React from "react";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
-	Button, Icon, Form, DatePicker, Spin, Input, message,
-	Radio, Switch, InputNumber, Menu, Alert
+  Button, Icon, Form, DatePicker, Spin, Input, message,
+  Radio, Switch, InputNumber, Menu, Alert
 } from 'antd';
 
 // import CommonTitle from "../components/CommonTitle";
@@ -28,333 +28,333 @@ const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
 const RuleDiscountRatio = (props) => {
-	const { getFieldDecorator } = props.form
-	return <Form.Item>
-		{getFieldDecorator('password', {
-			rules: [{ required: true, message: 'Please input your Password!' }],
-		})(
-			<Input
-				prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-				type="password"
-				placeholder="Password"
-			/>,
-		)}
-	</Form.Item>
+  const { getFieldDecorator } = props.form
+  return <Form.Item>
+    {getFieldDecorator('password', {
+      rules: [{ required: true, message: 'Please input your Password!' }],
+    })(
+      <Input
+        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+        type="password"
+        placeholder="Password"
+      />,
+    )}
+  </Form.Item>
 }
 
 class PolicyManage extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			stopModal: false,
-			showEditRuleModal: false
-		}
-		const search = this.props.location.search.substring(1);
-		this.userId = qs.parse(search)['userId'];
-		this.policyId = qs.parse(search)['id'];
-		this.userName = qs.parse(search)['name'];
-		this.policyPeriodIdentity = qs.parse(search)['policyPeriodIdentity'] || 1
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+      stopModal: false,
+      showEditRuleModal: false
+    }
+    const search = this.props.location.search.substring(1);
+    this.mcnId = qs.parse(search)['userId'];
+    this.policyPeriodIdentity = qs.parse(search)['policyPeriodIdentity'] || 1
+  }
 
-	componentDidMount() {
-		const search = this.props.location.search.substring(1);
-		const userId = qs.parse(search)['userId'];
-		const policyId = qs.parse(search)['id'];
-		const userName = qs.parse(search)['name'];
+  componentDidMount() {
+    this.getPolicyInfoByMcnId();
+    this.props.getNewBPlatforms({ version: '1.1' });
+  }
+  getPolicyInfoByMcnId = () => {
+    const { policyInfo = {} } = this.props;
+    const { id } = policyInfo;
+    const { mcnId, policyPeriodIdentity } = this;
 
-		// if (policyId !== undefined)
-		// 	this.props.getPolicyDetail(policyId);
-		console.log('getPolicyInfoByMcnId', this.props)
-		this.props.getPolicyInfoByMcnId({ mcnId: userId, policyPeriodIdentity: this.policyPeriodIdentity });
-		this.props.getNewBPlatforms({ version: '1.1' });
-		this.setState({ policyId, userName, userId })
-	}
+    this.props.getPolicyInfoByMcnId({ mcnId, id, policyPeriodIdentity });
+  }
 
-	componentDidUpdate(prevProps) {
-		const { progress: prevProgress } = prevProps;
-		const { errorMsg = '操作失败', newPolicyId, progress, msg = '操作成功' } = this.props;
+  // componentDidUpdate(prevProps) {
+  //   const { progress: prevProgress } = prevProps;
+  //   const { errorMsg = '操作失败', newPolicyId, progress, msg = '操作成功' } = this.props;
 
-		if (prevProgress !== progress && progress === 'fail') {
-			this.getErrorTips(errorMsg, 'error');
-		} else if (prevProgress !== progress && progress === 'saveSuccess') {
-			this.getErrorTips(msg, 'success');
-			if (newPolicyId) {
-				this.props.history.replace(`/account/policy?id=${newPolicyId}`)
-				window.location.reload();
-			}
-		}
-	}
+  //   if (prevProgress !== progress && progress === 'fail') {
+  //     this.getErrorTips(errorMsg, 'error');
+  //   } else if (prevProgress !== progress && progress === 'saveSuccess') {
+  //     this.getErrorTips(msg, 'success');
+  //     if (newPolicyId) {
+  //       this.props.history.replace(`/account/policy?id=${newPolicyId}`)
+  //       window.location.reload();
+  //     }
+  //   }
+  // }
 
-	getErrorTips = (msg, type = 'error') => {
-		try {
-			if (typeof message.destroy === 'function') {
-				message.destroy();
-			}
-			message[type](msg);
-		} catch (error) {
-			console.log(error);
-		}
-	};
+  // getErrorTips = (msg, type = 'error') => {
+  //   try {
+  //     if (typeof message.destroy === 'function') {
+  //       message.destroy();
+  //     }
+  //     message[type](msg);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-	getDisabledDate = (current) => {
-		const { timeRange = [] } = this.state;
+  // getDisabledDate = (current) => {
+  //   const { timeRange = [] } = this.state;
 
-		if (timeRange[0])
-			// return !(!(current && current <= moment().subtract(1, 'days').endOf('day')) && current.diff(timeRange[0], 'days') > 60); //60天内不可选
-			return current && current <= moment().subtract(1, 'days').endOf('day');
-	}
+  //   if (timeRange[0])
+  //     // return !(!(current && current <= moment().subtract(1, 'days').endOf('day')) && current.diff(timeRange[0], 'days') > 60); //60天内不可选
+  //     return current && current <= moment().subtract(1, 'days').endOf('day');
+  // }
 
-	handleSavePolicy = () => {
-		const { form, policyInfo = {}, policyPeriodIdentity = 1 } = this.props;
-		const { id } = policyInfo;
-		const { userId: mcnId } = this;
-		form.validateFields((err, values) => {
-			console.log("=====", values, err)
-			if (err) return;
-			const { policyTime = [] } = values;
-			values.validStartTime = policyTime[0].format('YYYY-MM-DD 00:00:00');
-			values.validEndTime = policyTime[1].format('YYYY-MM-DD 00:00:00');
-			delete values.policyTime;
-			// const isEdit = policyId !== undefined;
-			// let method = isEdit ? 'editPolicy' : 'addPolicy';
+  //提交全部表单
+  handleSavePolicy = () => {
+    const { form, policyInfo = {} } = this.props;
+    const { id } = policyInfo;
+    const { mcnId, policyPeriodIdentity } = this;
+    form.validateFields((err, values) => {
+      console.log("=====", values, err)
+      if (err) return;
+      const { policyTime = [] } = values;
+      values.validStartTime = policyTime[0].format('YYYY-MM-DD 00:00:00');
+      values.validEndTime = policyTime[1].format('YYYY-MM-DD 00:00:00');
+      delete values.policyTime;
 
-			// if (isEdit) {
-			// 	Object.assign(updateObj, { id, policyStatus })
-			// } else {
-			// 	Object.assign(updateObj, { userId })
-			// }
+      values.policyPeriodIdentity = policyPeriodIdentity;
+      values.mcnId = mcnId;
+      values.id = id;
 
-			// this.props.updatePriceInfo(updateObj, method).then(() => {
-			// 	if (isEdit)
-			// 		this.props.getPolicyDetail(policyId);
-			// });
-			values.policyPeriodIdentity = policyPeriodIdentity;
-			values.mcnId = mcnId;
-			values.id = id;
+      const _values = Object.keys(values).reduce((acc, cur) => {
+        if (values[cur]) {
+          acc[cur] = values[cur]
+          return acc;
+        }
+        return acc;
+      }, {})
+      this.props.saveProcurementPolicyInfo(_values)
+    })
+  }
 
-			const _values = Object.keys(values).reduce((acc, cur) => {
-				if (values[cur]) {
-					acc[cur] = values[cur]
-					return acc;
-				}
-				return acc;
-			}, {})
-			this.props.saveProcurementPolicyInfo(_values)
-		})
+  // handleChangeDate = (timeRange) => {
+  //   this.setState({ timeRange });
+  // }
 
+  // handleChangeDateRange = () => {
+  //   this.setState({ timeRange: [] })
+  // }
 
-	}
+  judgeInputLenth = (_, value, callback) => {
+    if (value && value.length <= 2000) {
+      callback();
+    } else if (!value) {
+      callback('请输入政策说明')
+    } else if (value.length > 200) {
+      callback('政策说明最多可输入2000字')
+    }
+  }
 
-	handleChangeDate = (timeRange) => {
-		this.setState({ timeRange });
-	}
+  isShowStopModal = () => {
+    this.setState({ stopModal: !this.state.stopModal })
+  }
 
-	handleChangeDateRange = () => {
-		this.setState({ timeRange: [] })
-	}
+  // handleStopPolicy = (value) => {
+  //   const { policyDetail = {} } = this.props;
+  //   const { policyId } = this.state;
+  //   const { id, policyStatus } = policyDetail;
+  //   Object.assign(value, { id, policyStatus });
 
-	judgeInputLenth = (_, value, callback) => {
-		if (value && value.length <= 2000) {
-			callback();
-		} else if (!value) {
-			callback('请输入政策说明')
-		} else if (value.length > 200) {
-			callback('政策说明最多可输入2000字')
-		}
-	}
+  //   this.props.updatePriceInfo(value, 'stopPolicy').then(() => {
+  //     if (policyId !== undefined)
+  //       this.props.getPolicyDetail(policyId);
+  //   });
+  //   this.isShowStopModal();
+  // }
+  // normFile = e => {
+  //   console.log('Upload event:', e);
+  //   if (Array.isArray(e)) {
+  //     return e;
+  //   }
+  //   return e && e.fileList;
+  // };
+  addRule = (type) => {
+    this.setState({ showEditRuleModal: true, editRuleModalType: type, currentRuleId: null })
+  }
+  editRule = (type, currentRuleId) => {
+    console.log("编辑规则", type, currentRuleId)
+    this.setState({ showEditRuleModal: true, editRuleModalType: type, currentRuleId })
+  }
+  delRule = (type, ruleId) => {
+    const { mcnId, policyPeriodIdentity } = this;
+    const { policyDetail = {} } = this.props;
+    const { id } = policyDetail;
 
-	isShowStopModal = () => {
-		this.setState({ stopModal: !this.state.stopModal })
-	}
+    const delRuleById = type == 'global' ? this.props.delGlobalRuleById : this.props.delSpecialRuleById
+    delRuleById({ id, mcnId, ruleId, policyPeriodIdentity }).then(() => {
+      this.getPolicyInfoByMcnId();
+    })
+  }
+  editRuleModalClose = e => {
+    this.setState({ showEditRuleModal: false })
+  }
+  saveAccountRule = (type, values) => {
+    const { mcnId, policyPeriodIdentity } = this;
+    const { currentRuleId } = this.state;
+    const { policyDetail = {} } = this.props;
+    const { id } = policyDetail;
+    const saveAccountRule = type == 'global' ? this.props.saveGlobalAccountRule : this.props.saveSpecialAccountRule
+    saveAccountRule({ ...values, mcnId, ruleId: currentRuleId, id, policyPeriodIdentity }).then(() => {
+      this.getPolicyInfoByMcnId();
+    })
+  }
+  onMenuClick = ({ key }) => {
+    this.props.history.replace(`/account/policy?userId=}&policyPeriodIdentity=${key}`);
+    window.location.reload();
+  }
 
-	handleStopPolicy = (value) => {
-		const { policyDetail = {} } = this.props;
-		const { policyId } = this.state;
-		const { id, policyStatus } = policyDetail;
-		Object.assign(value, { id, policyStatus });
+  render() {
+    const { mcnId } = this;
+    const { form, policyInfo = {}, progress, newBPlatforms } = this.props;
+    const { getAccountInfoByIds } = this.props;
+    const { stopModal, policyId, showEditRuleModal, editRuleModalType, currentRuleId } = this.state;
+    const isEdit = policyId !== undefined;
+    const { policyStatus, identityName,
+      validStartTime, validEndTime, modifyName = '未知', id, modifiedAt, stopReason,
+      globalAccountRules = [], specialAccountRules = [], whiteList = [],
+      isDraft,
+      nextPolicyStatus
+    } = policyInfo;
 
-		this.props.updatePriceInfo(value, 'stopPolicy').then(() => {
-			if (policyId !== undefined)
-				this.props.getPolicyDetail(policyId);
-		});
-		this.isShowStopModal();
-	}
-	normFile = e => {
-		console.log('Upload event:', e);
-		if (Array.isArray(e)) {
-			return e;
-		}
-		return e && e.fileList;
-	};
-	addRule = (type) => {
-		this.setState({ showEditRuleModal: true, editRuleModalType: type, currentRuleId: -1 })
-	}
-	editRule = (type, currentRuleId) => {
-		console.log("编辑规则", type, currentRuleId)
-		this.setState({ showEditRuleModal: true, editRuleModalType: type, currentRuleId })
-	}
-	delRule = (type, ruleId) => {
-		const { policyDetail = {} } = this.props;
-		const { id } = policyDetail;
+    const currentRule = (editRuleModalType == 'global' ? globalAccountRules : specialAccountRules).filter(item => item.ruleId == currentRuleId)
+    const { getFieldDecorator } = form;
+    const formItemLayout = {
+      labelCol: { span: 2 },
+      wrapperCol: { span: 22 },
+    };
+    console.log("=====", editRuleModalType, currentRuleId, currentRule)
+    const menuSelectedKeys = [String(this.policyPeriodIdentity)]
 
-		const delRuleById = type == 'global' ? this.props.delGlobalRuleById : this.props.delSpecialRuleById
-		delRuleById({ id, mcnId: this.userId, ruleId, policyPeriodIdentity: this.policyPeriodIdentity })
-	}
-	editRuleModalClose = e => {
-		this.setState({ showEditRuleModal: false })
-	}
-	onMenuClick = ({ item, key, keyPath }) => {
-		console.log("onMenuClick", item, key, keyPath)
-		this.props.history.replace(`/account/policy?userId=${this.userId}&policyPeriodIdentity=${key}`);
-		window.location.reload();
-	}
+    console.log("MenuSelectedKeys", menuSelectedKeys)
+    const contractUploadProps = {
+      name: 'file',
+      multiple: true,
+      action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+      onChange(info) {
+        const { status } = info.file;
+        if (status !== 'uploading') {
+          console.log(info.file, info.fileList);
+        }
+        if (status === 'done') {
+          message.success(`${info.file.name} file uploaded successfully.`);
+        } else if (status === 'error') {
+          message.error(`${info.file.name} file upload failed.`);
+        }
+      },
+    };
 
-	render() {
-		const { form, policyInfo = {}, progress, newBPlatforms } = this.props;
-		const { getAccountInfoByIds } = this.props;
-		const { stopModal, policyId, userName, showEditRuleModal, editRuleModalType, currentRuleId } = this.state;
-		const isEdit = policyId !== undefined;
-		const { policyStatus, identityName, illustration,
-			validStartTime, validEndTime, modifyName = '未知', id, modifiedAt, stopReason,
-			globalAccountRules = [], specialAccountRules = [], whiteList = [],
-			isDraft,
-			nextPolicyStatus
-		} = policyInfo;
-		const currentRule = (editRuleModalType == 'global' ? globalAccountRules : specialAccountRules).filter(item => item.ruleId == currentRuleId)
-		const { getFieldDecorator } = form;
-		const formItemLayout = {
-			labelCol: { span: 2 },
-			wrapperCol: { span: 22 },
-		};
-		const MenuSelectedKeys = [this.policyPeriodIdentity]
-		const contractUploadProps = {
-			name: 'file',
-			multiple: true,
-			action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-			onChange(info) {
-				const { status } = info.file;
-				if (status !== 'uploading') {
-					console.log(info.file, info.fileList);
-				}
-				if (status === 'done') {
-					message.success(`${info.file.name} file uploaded successfully.`);
-				} else if (status === 'error') {
-					message.error(`${info.file.name} file upload failed.`);
-				}
-			},
-		};
-		// console.log(whiteList, 'whiteList')
-		return [
-			// <h2 key='policyHeader' className='policyHeader'>
-			// 	{isEdit ? '修改政策' : '新增政策'}
-			// 	<Button>当期政策</Button>
-			// </h2>,
-			<div key="alertMessage">{isDraft == 1 ? <Alert message="当前为草稿状态" type="warning" /> : null}</div>,
-			<Menu key='policyMenu' mode="horizontal" onClick={this.onMenuClick} selectedKeys={MenuSelectedKeys}>
-				<Menu.Item key="1">本期政策</Menu.Item>
-				<Menu.Item key="2">下期政策({POLICYSTATUS[nextPolicyStatus]})</Menu.Item>
-				{/* <Menu.Item key="3">往期政策</Menu.Item> */}
-			</Menu>,
-			<div key='policyWrapper' className='policyWrapper'>
-				<Spin spinning={progress === 'loading'}>
-					{isEdit ? <PageInfo policyId={id} status={policyStatus} stopReason={stopReason} editor={modifyName} editTime={moment(modifiedAt).format('YYYY-MM-DD HH:mm:ss')} /> : null}
-					<Form>
-						<FormItem label='主账号名称' {...formItemLayout}>
-							{/* {isEdit ? identityName : userName || '未知'} */}
-							{identityName}
-						</FormItem>
-						<FormItem label="政策有效期"  {...formItemLayout}>
-							{getFieldDecorator('policyTime', {
-								rules: [{ type: 'array', required: true, message: 'Please select time!' }],
-								initialValue: [moment(validStartTime), moment(validEndTime)]
-							})(
-								<RangePicker
-									className='policyTime'
-									onCalendarChange={this.handleChangeDate}
-									onChange={this.handleChangeDateRange}
-								// disabledDate={this.getDisabledDate} 
-								/>
-							)}
-						</FormItem>
+    return [
+      // <h2 key='policyHeader' className='policyHeader'>
+      // 	{isEdit ? '修改政策' : '新增政策'}
+      // 	<Button>当期政策</Button>
+      // </h2>,
+      <div key="alertMessage">{isDraft == 1 ? <Alert message="当前为草稿状态" type="warning" /> : null}</div>,
+      <Menu key='policyMenu' mode="horizontal" onClick={this.onMenuClick} selectedKeys={menuSelectedKeys}>
+        <Menu.Item key="1">本期政策</Menu.Item>
+        <Menu.Item key="2">下期政策({POLICYSTATUS[nextPolicyStatus]})</Menu.Item>
+        {/* <Menu.Item key="3">往期政策</Menu.Item> */}
+      </Menu>,
+      <div key='policyWrapper' className='policyWrapper'>
+        <Spin spinning={progress === 'loading'}>
+          {isEdit ? <PageInfo policyId={id} status={policyStatus} stopReason={stopReason} editor={modifyName} editTime={moment(modifiedAt).format('YYYY-MM-DD HH:mm:ss')} /> : null}
+          <Form>
+            <FormItem label='主账号名称' {...formItemLayout}>
+              {/* {isEdit ? identityName : userName || '未知'} */}
+              {identityName}
+            </FormItem>
+            <FormItem label="政策有效期"  {...formItemLayout}>
+              {getFieldDecorator('policyTime', {
+                rules: [{ type: 'array', required: true, message: 'Please select time!' }],
+                initialValue: [moment(validStartTime), moment(validEndTime)]
+              })(
+                <RangePicker
+                  className='policyTime'
+                  onCalendarChange={this.handleChangeDate}
+                  onChange={this.handleChangeDateRange}
+                // disabledDate={this.getDisabledDate} 
+                />
+              )}
+            </FormItem>
 
-						<ModuleHeader title="全局账号设置"></ModuleHeader>
-						<div>政策规则：<Button onClick={() => this.addRule('global')} type="link">+添加</Button></div>
-						<RuleModule
-							key='globalAccountRules'
-							data={globalAccountRules}
-							type='global'
-							editRule={this.editRule}
-							delRule={this.delRule}
-							form={form}
-						></RuleModule>
+            <ModuleHeader title="全局账号设置"></ModuleHeader>
+            <div>政策规则：<Button onClick={() => this.addRule('global')} type="link">+添加</Button></div>
+            <RuleModule
+              key='globalAccountRules'
+              data={globalAccountRules}
+              type='global'
+              editRule={this.editRule}
+              delRule={this.delRule}
+              form={form}
+            ></RuleModule>
 
-						<ModuleHeader title="特殊账号设置"></ModuleHeader>
-						<div>政策规则：<Button onClick={() => this.addRule('special')} type="link">+添加</Button></div>
-						<RuleModule
-							key='specialAccountRules'
-							data={specialAccountRules}
-							type='special'
-							editRule={this.editRule}
-							delRule={this.delRule}
-							form={form}
-						></RuleModule>
+            <ModuleHeader title="特殊账号设置"></ModuleHeader>
+            <div>政策规则：<Button onClick={() => this.addRule('special')} type="link">+添加</Button></div>
+            <RuleModule
+              key='specialAccountRules'
+              data={specialAccountRules}
+              type='special'
+              editRule={this.editRule}
+              delRule={this.delRule}
+              form={form}
+            ></RuleModule>
 
-						<ModuleHeader title="白名单"></ModuleHeader>
-						<WhiteList
-							key={whiteList.length}
-							whiteList={whiteList}
-							getAccountInfoByIds={this.props.getAccountInfoByIds}
-							addWhiteListAccount={this.props.addWhiteListAccount}
-							delWhiteListAccount={this.props.delWhiteListAccount}
-						></WhiteList>
+            <ModuleHeader title="白名单"></ModuleHeader>
+            <WhiteList
+              key={whiteList.length}
+              whiteList={whiteList}
+              getAccountInfoByIds={this.props.getAccountInfoByIds}
+              addWhiteListAccount={this.props.addWhiteListAccount}
+              delWhiteListAccount={this.props.delWhiteListAccount}
+            ></WhiteList>
 
-						<ModuleHeader title="返点规则"></ModuleHeader>
-						<FormItem label='返点结算周期' {...formItemLayout}>
-							{
-								getFieldDecorator('rebateSettlementCycle', {
-									initialValue: policyInfo.rebateSettlementCycle
-								})(
-									<Radio.Group options={[{ label: '月', value: 1 }, { label: '季', value: 2 }, { label: '半年', value: 3 }, { label: '年', value: 4 }]} />
-								)
-							}
-						</FormItem>
-						<FormItem label='阶梯返点结算' {...formItemLayout}>
-							{
-								getFieldDecorator('stepRebateSettlementType', {
-									initialValue: policyInfo.stepRebateSettlementType
-								})(<Radio.Group options={[{ label: '阶梯收入计算', value: 1 }, { label: '全量收入计算', value: 2 }]} />)
-							}
-							<cite className='eg-explain'>例：0-100返点3%，100及以上返点5%，博主总收入150<br />
-								阶梯收入计算=（100*3%）+（50*5%）<br />
-								全量收入计算=150*5%
+            <ModuleHeader title="返点规则"></ModuleHeader>
+            <FormItem label='返点结算周期' {...formItemLayout}>
+              {
+                getFieldDecorator('rebateSettlementCycle', {
+                  initialValue: policyInfo.rebateSettlementCycle
+                })(
+                  <Radio.Group options={[{ label: '月', value: 1 }, { label: '季', value: 2 }, { label: '半年', value: 3 }, { label: '年', value: 4 }]} />
+                )
+              }
+            </FormItem>
+            <FormItem label='阶梯返点结算' {...formItemLayout}>
+              {
+                getFieldDecorator('stepRebateSettlementType', {
+                  initialValue: policyInfo.stepRebateSettlementType
+                })(<Radio.Group options={[{ label: '阶梯收入计算', value: 1 }, { label: '全量收入计算', value: 2 }]} />)
+              }
+              <cite className='eg-explain'>例：0-100返点3%，100及以上返点5%，博主总收入150<br />
+                阶梯收入计算=（100*3%）+（50*5%）<br />
+                全量收入计算=150*5%
 							</cite>
 
-						</FormItem>
-						<FormItem label='保底政策' {...formItemLayout}>
-							{
-								getFieldDecorator('isGuaranteed', {
-									initialValue: transBool(policyInfo.isGuaranteed),
-									valuePropName: 'checked'
-								})(
-									<Switch checkedChildren="开" unCheckedChildren="关" />
-								)
-							}
-						</FormItem>
-						<FormItem label='保底金额' {...formItemLayout}>
-							{
-								getFieldDecorator('guaranteedMinAmount', { initialValue: policyInfo.guaranteedMinAmount })(
-									<InputNumber style={{ width: 100 }} max={999999999} suffix="元" />
-								)
-							}
-						</FormItem>
-						<FormItem label='保底备注' {...formItemLayout}>
-							{
-								getFieldDecorator('guaranteedRemark', { initialValue: policyInfo.guaranteedRemark })(
-									<Input.TextArea rows={4} style={{ width: 100 }} suffix="元" />
-								)
-							}
-						</FormItem>
-						{/* <Form.Item label="合同附件" {...formItemLayout} {...contractUploadProps}>
+            </FormItem>
+            <FormItem label='保底政策' {...formItemLayout}>
+              {
+                getFieldDecorator('isGuaranteed', {
+                  initialValue: transBool(policyInfo.isGuaranteed),
+                  valuePropName: 'checked'
+                })(
+                  <Switch checkedChildren="开" unCheckedChildren="关" />
+                )
+              }
+            </FormItem>
+            <FormItem label='保底金额' {...formItemLayout}>
+              {
+                getFieldDecorator('guaranteedMinAmount', { initialValue: policyInfo.guaranteedMinAmount })(
+                  <InputNumber style={{ width: 100 }} max={999999999} suffix="元" />
+                )
+              }
+            </FormItem>
+            <FormItem label='保底备注' {...formItemLayout}>
+              {
+                getFieldDecorator('guaranteedRemark', { initialValue: policyInfo.guaranteedRemark })(
+                  <Input.TextArea rows={4} style={{ width: 100 }} suffix="元" />
+                )
+              }
+            </FormItem>
+            {/* <Form.Item label="合同附件" {...formItemLayout} {...contractUploadProps}>
 							{getFieldDecorator('contractFileUrl', {
 								valuePropName: 'fileList',
 								getValueFromEvent: this.normFile,
@@ -369,58 +369,59 @@ class PolicyManage extends React.Component {
 								</Upload.Dragger>,
 							)}
 						</Form.Item> */}
-						<FormItem label="备注"  {...formItemLayout}>
-							{getFieldDecorator('remark', { initialValue: policyInfo.remark })(
-								<TextArea className='remarksText' max={1000} />
-							)}
-						</FormItem>
+            <FormItem label="备注"  {...formItemLayout}>
+              {getFieldDecorator('remark', { initialValue: policyInfo.remark })(
+                <TextArea className='remarksText' max={1000} />
+              )}
+            </FormItem>
 
-						<FormItem className='policyFooter'>
-							{
-								policyStatus == 1 || policyStatus == 2 ?
-									<Button type='primary' onClick={this.isShowStopModal}>停用</Button> : null
-							}
-							<Button type='primary' onClick={this.handleSavePolicy}>{policyStatus == 4 ? '启用' : '提交'}</Button>
-						</FormItem>
-					</Form>
-				</Spin>
-				{stopModal ? <StopReasonModal onCancel={this.isShowStopModal} onOk={this.handleStopPolicy} /> : null}
+            <FormItem className='policyFooter'>
+              {
+                policyStatus == 1 || policyStatus == 2 ?
+                  <Button type='primary' onClick={this.isShowStopModal}>停用</Button> : null
+              }
+              <Button type='primary' onClick={this.handleSavePolicy}>{policyStatus == 4 ? '启用' : '提交'}</Button>
+            </FormItem>
+          </Form>
+        </Spin>
+        {stopModal ? <StopReasonModal onCancel={this.isShowStopModal} onOk={this.handleStopPolicy} /> : null}
 
-				{showEditRuleModal && <EditRuleForm
-					mcnId={this.userId}
-					policyId={id}
-					policyPeriodIdentity={this.policyPeriodIdentity}
-					currentRule={currentRule[0]}
-					getAccountInfoByIds={getAccountInfoByIds}
-					saveSpecialAccountRule={this.props.saveSpecialAccountRule}
-					saveGlobalAccountRule={this.props.saveGlobalAccountRule}
-					delSpecialRuleAccountById={this.props.delSpecialRuleAccountById}
-					type={editRuleModalType}
-					showEditRuleModal={showEditRuleModal}
-					editRuleModalClose={this.editRuleModalClose}
-					newBPlatforms={newBPlatforms}
-				></EditRuleForm>}
+        {showEditRuleModal && <EditRuleForm
+          mcnId={mcnId}
+          policyId={id}
+          policyPeriodIdentity={this.policyPeriodIdentity}
+          currentRule={currentRule[0]}
+          getAccountInfoByIds={getAccountInfoByIds}
+          saveAccountRule={this.saveAccountRule}
+          // saveSpecialAccountRule={this.props.saveSpecialAccountRule}
+          // saveGlobalAccountRule={this.props.saveGlobalAccountRule}
+          // delSpecialRuleAccountById={this.props.delSpecialRuleAccountById}
+          type={editRuleModalType}
+          showEditRuleModal={showEditRuleModal}
+          editRuleModalClose={this.editRuleModalClose}
+          newBPlatforms={newBPlatforms}
+        ></EditRuleForm>}
 
-			</div >
-		]
-	}
+      </div >
+    ]
+  }
 }
 
 const mapStateToProps = (state) => {
-	const { pricePolicyReducer = {} } = state;
-	// const { policyInfo, newBPlatforms, newPolicyId, progress, errorMsg, msg, id } = pricePolicyReducer;
+  const { pricePolicyReducer = {} } = state;
+  // const { policyInfo, newBPlatforms, newPolicyId, progress, errorMsg, msg, id } = pricePolicyReducer;
 
-	return pricePolicyReducer;
+  return pricePolicyReducer;
 }
 
 const mapDispatchToProps = (dispatch) => (
 
-	bindActionCreators({
-		...actions
-	}, dispatch)
+  bindActionCreators({
+    ...actions
+  }, dispatch)
 )
 
 export default connect(
-	mapStateToProps,
-	mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Form.create()(PolicyManage))
