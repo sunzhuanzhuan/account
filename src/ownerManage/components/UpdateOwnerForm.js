@@ -271,7 +271,9 @@ const UpdateOwnerForm = (props) => {
             ]
           })(
           <Input addonBefore="+86" placeholder="请输入手机号码" onChange={handleDiffPhone} disabled={props.disabled} />) :
-          <span>{props.cellPhone}</span>
+          getFieldDecorator('cellPhone', {
+            initialValue: props.cellPhone
+          })(<span>{props.cellPhone}</span>)
         }
         <a className="form-suffix-action-70" onClick={() => props.setModal('cellPhone')}>修改历史</a>
       </Form.Item>
