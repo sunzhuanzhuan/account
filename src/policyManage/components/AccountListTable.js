@@ -12,7 +12,7 @@ class AccountListTable extends React.Component {
 
 
     render() {
-        const { dataSource = [], delAccountFromList, isEdit } = this.props;
+        const { dataSource = [], delWhiteListAccount, isEdit } = this.props;
         const columns = [
             {
                 title: 'accountId',
@@ -55,7 +55,7 @@ class AccountListTable extends React.Component {
                 width: 100,
                 align: 'center',
                 render: (_, record) => {
-                    return isEdit ? <Button type='link' className='operateText' onClick={() => delAccountFromList(record.accountId)}>删除</Button> : null
+                    return isEdit ? <Button type='link' className='operateText' onClick={() => delWhiteListAccount(record.accountId)}>删除</Button> : null
                 }
             }
         ];
