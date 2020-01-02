@@ -169,18 +169,18 @@ const VideoInfo = ({ feature = {}, base = {} }) => {
             title='粉丝互动率'
             number={feature.mediaInteractionProportion ? numeral(feature.mediaInteractionProportion * 100).format('0.0') : '-'}
             unit={'%'}
-            percent={feature.mediaInteractionProportion30ItemRateOnClassificationPriceTag}
+            percent={feature.mediaInteractionProportion30ItemRateOnClassificationPriceTag || '-'}
             typeContent='同分类同价格粉丝数互动率均值' />
         </div>
       </div>
       <div className='back-padding flex1'>
         <div className='bold-font-size-16'>视频数据</div>
         <div className='fan-release-item'>
-          <ThreeNumber title='总发布数' number={feature.mediaCount} unit='个' />
+          <ThreeNumber title='总发布数' number={feature.mediaCount || '-'} unit='个' />
           <Divider type="vertical" className='height20-colorE3' />
-          <ThreeNumber title='爆款视频数' number={feature.hotMediaCount} unit='个' tips='近90天发布的爆款视频数' />
+          <ThreeNumber title='爆款视频数' number={feature.hotMediaCount || '-'} unit='个' tips='近90天发布的爆款视频数' />
           <Divider type="vertical" className='height20-colorE3' />
-          <ThreeNumber title='近28天发布频率' number={numeral(feature.mediaWeeklyFloatCount28d).format('0.0')} unit='个/周' />
+          <ThreeNumber title='近28天发布频率' number={feature.mediaWeeklyFloatCount28d ? numeral(feature.mediaWeeklyFloatCount28d).format('0.0') : '-'} unit='个/周' />
         </div>
       </div>
     </div>
