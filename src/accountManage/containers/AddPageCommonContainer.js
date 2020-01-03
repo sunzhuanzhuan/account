@@ -4,6 +4,7 @@ import MainAccountInfos from "../components/MainAccountInfos";
 import { scroll } from "../components/ScrollWrap"
 import { Form, Button } from 'antd';
 import { WrapPanel } from "../components";
+import { policyRuleType } from "@/accountManage/constants";
 
 const FormItem = Form.Item;
 
@@ -16,14 +17,16 @@ export default class AddPageCommonContainer extends Component {
   render() {
     const { data: { accountInfo, priceInfo }, submitLoading } = this.props.params
     const {
-      policyInfoId
+      policyId,
+      ruleType,
+      ruleId
     } = priceInfo;
     return <div className='account-info-container add-page'>
       <h2>
         账号入库
-      {policyInfoId ?
+      {policyId ?
           <small className='policyInfo-id-display'>
-            价格政策ID: <a target='_blank' href={"/account/policy?id=" + policyInfoId}>{policyInfoId}</a></small>
+            价格政策ID: <a target='_blank' href={"/account/policy?id=" + policyId}>{policyId}-{policyRuleType[ruleType]}-{ruleId}</a></small>
           : null}
       </h2>
       <div>
