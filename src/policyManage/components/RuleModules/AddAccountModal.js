@@ -37,8 +37,10 @@ const AddAccountModal = (props) => {
       const { accountList, notExistAccountIds = [], notExistAccountIdsByMcnId = [] } = data.data;
       Modal.confirm({
         title: '以下账号ID不存在',
-        content: <div>{notExistAccountIds.length > 0 && <p>不存在的accountId: {notExistAccountIds}</p>}
-          {notExistAccountIdsByMcnId.length > 0 && <p>不在该主账号旗下的accountId: {notExistAccountIdsByMcnId}</p>}</div>,
+        content: <div>
+          {notExistAccountIds.length > 0 && <p>不存在的accountId: {notExistAccountIds.join(", ")}</p>}
+          {notExistAccountIdsByMcnId.length > 0 && <p>不在该主账号旗下的accountId: {notExistAccountIdsByMcnId.join(', ')}</p>}
+        </div>,
         onOk() {
           onCancel();
           updateAccountList(accountList);

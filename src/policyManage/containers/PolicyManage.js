@@ -143,7 +143,7 @@ class PolicyManage extends React.Component {
     this.setState({ showEditRuleModal: true, editRuleModalType: type, currentRuleId: null })
   }
   editRule = (type, currentRuleId) => {
-    console.log("编辑规则", type, currentRuleId)
+
     this.setState({ showEditRuleModal: true, editRuleModalType: type, currentRuleId })
   }
   delRule = (type, ruleId) => {
@@ -163,15 +163,16 @@ class PolicyManage extends React.Component {
     const { id } = policyInfo;
     return { id, mcnId, currentRuleId, policyPeriodIdentity }
   }
-  saveAccountRule = async (type, values) => {
+  saveAccountRule = (type, values) => {
     const { id, mcnId, policyPeriodIdentity } = this.getDefaultQuery();
     const { currentRuleId: ruleId } = this.state;
     const query = { ...values, mcnId, ruleId, id, policyPeriodIdentity }
-    // const saveAccountRule = type == 'global' ? this.props.saveGlobalAccountRule : this.props.saveSpecialAccountRule
 
     const saveAccountRule = this.props[type == 'global' ? 'saveGlobalAccountRule' : 'saveSpecialAccountRule']
-    await saveAccountRule(query)
-    this.getPolicyInfoByMcnId();
+    saveAccountRule(query).then(() => {
+      this.getPolicyInfoByMcnId();
+      this.editRuleModalClose()
+    })
   }
   saveWhiteAccount = async (ids = []) => {
     const { id, mcnId, policyPeriodIdentity } = this.getDefaultQuery();
@@ -188,7 +189,7 @@ class PolicyManage extends React.Component {
     this.getPolicyInfoByMcnId();
   }
   onMenuClick = ({ key }) => {
-    this.props.history.replace(`/account/policy?userId=}&policyPeriodIdentity=${key}`);
+    this.props.history.replace(`/account/policy?userId=${this.mcnId}&policyPeriodIdentity=${key}`);
     window.location.reload();
   }
 
@@ -211,10 +212,10 @@ class PolicyManage extends React.Component {
       labelCol: { span: 2 },
       wrapperCol: { span: 22 },
     };
-    console.log("=====", editRuleModalType, currentRuleId, currentRule)
+
     const menuSelectedKeys = [String(this.policyPeriodIdentity)]
 
-    console.log("MenuSelectedKeys", menuSelectedKeys)
+
     const contractUploadProps = {
       name: 'file',
       multiple: true,
@@ -231,7 +232,7 @@ class PolicyManage extends React.Component {
         }
       },
     };
-
+    const nextPolicyStatusName = this.policyPeriodIdentity == 2 ? POLICYSTATUS[nextPolicyStatus] : POLICYSTATUS[policyStatus]
     return [
       // <h2 key='policyHeader' className='policyHeader'>
       // 	{isEdit ? '修改政策' : '新增政策'}
@@ -240,7 +241,7 @@ class PolicyManage extends React.Component {
       <div key="alertMessage">{isDraft == 1 ? <Alert message="当前为草稿状态" type="warning" /> : null}</div>,
       <Menu key='policyMenu' mode="horizontal" onClick={this.onMenuClick} selectedKeys={menuSelectedKeys}>
         <Menu.Item key="1">本期政策</Menu.Item>
-        <Menu.Item key="2">下期政策({POLICYSTATUS[nextPolicyStatus]})</Menu.Item>
+        <Menu.Item key="2">下期政策({nextPolicyStatusName})</Menu.Item>
         {/* <Menu.Item key="3">往期政策</Menu.Item> */}
       </Menu>,
       <div key='policyWrapper' className='policyWrapper'>

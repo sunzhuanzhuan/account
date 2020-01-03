@@ -49,7 +49,7 @@ const EditRuleForm = (props) => {
         }
 
         props.saveAccountRule(type, values)
-        editRuleModalClose();
+        // editRuleModalClose();
         console.log('Received values of form: ', values);
         // console.log('Merged values:', keys.map(key => names[key]));
       }
@@ -58,7 +58,7 @@ const EditRuleForm = (props) => {
   const updateAccountList = (newAccountList) => {
     setAccountList([...accountList, ...newAccountList]);
   }
-  const delAccountFromList = (accountId) => {
+  const delWhiteListAccount = (accountId) => {
     const newAccountList = accountList.filter(item => item.accountId != accountId);
     setAccountList(newAccountList)
   }
@@ -79,7 +79,7 @@ const EditRuleForm = (props) => {
             <AccountEdit
               {...props}
               accountList={accountList}
-              delAccountFromList={delAccountFromList}
+              delWhiteListAccount={delWhiteListAccount}
               onButtonClick={addAccount}
             />
           }
