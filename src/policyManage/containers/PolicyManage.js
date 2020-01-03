@@ -24,24 +24,7 @@ import { transBool, POLICYSTATUS } from '../constants/dataConfig'
 
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
-// const RadioGroup = Radio.Group;
 const { TextArea } = Input;
-
-const RuleDiscountRatio = (props) => {
-  const { getFieldDecorator } = props.form
-  return <Form.Item>
-    {getFieldDecorator('password', {
-      rules: [{ required: true, message: 'Please input your Password!' }],
-    })(
-      <Input
-        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-        type="password"
-        placeholder="Password"
-      />,
-    )}
-  </Form.Item>
-}
-
 class PolicyManage extends React.Component {
   constructor(props) {
     super(props);
@@ -106,7 +89,6 @@ class PolicyManage extends React.Component {
     const { id } = policyInfo;
     const { mcnId, policyPeriodIdentity } = this;
     form.validateFields((err, values) => {
-      console.log("=====", values, err)
       if (err) return;
       const { policyTime = [] } = values;
       values.validStartTime = policyTime[0].format('YYYY-MM-DD 00:00:00');
@@ -136,32 +118,20 @@ class PolicyManage extends React.Component {
   //   this.setState({ timeRange: [] })
   // }
 
-  judgeInputLenth = (_, value, callback) => {
-    if (value && value.length <= 2000) {
-      callback();
-    } else if (!value) {
-      callback('请输入政策说明')
-    } else if (value.length > 200) {
-      callback('政策说明最多可输入2000字')
-    }
-  }
-
   isShowStopModal = () => {
     this.setState({ stopModal: !this.state.stopModal })
   }
 
-  // handleStopPolicy = (value) => {
-  //   const { policyDetail = {} } = this.props;
-  //   const { policyId } = this.state;
-  //   const { id, policyStatus } = policyDetail;
-  //   Object.assign(value, { id, policyStatus });
+  handleStopPolicy = ({ policyStopReason }) => {
+    const { id } = this.getDefaultQuery();
 
-  //   this.props.updatePriceInfo(value, 'stopPolicy').then(() => {
-  //     if (policyId !== undefined)
-  //       this.props.getPolicyDetail(policyId);
-  //   });
-  //   this.isShowStopModal();
-  // }
+    this.props.stopPolicy({ id, policyStopReason })
+    this.isShowStopModal();
+  }
+  handleStartPolicy = () => {
+    const { id } = this.getDefaultQuery();
+    this.props.startPolicy({ id })
+  }
   // normFile = e => {
   //   console.log('Upload event:', e);
   //   if (Array.isArray(e)) {
@@ -177,34 +147,31 @@ class PolicyManage extends React.Component {
     this.setState({ showEditRuleModal: true, editRuleModalType: type, currentRuleId })
   }
   delRule = (type, ruleId) => {
-    const { mcnId, policyPeriodIdentity } = this;
-    const { policyDetail = {} } = this.props;
-    const { id } = policyDetail;
-
+    const { id, mcnId, policyPeriodIdentity } = this.getDefaultQuery();
     const delRuleById = type == 'global' ? this.props.delGlobalRuleById : this.props.delSpecialRuleById
     delRuleById({ id, mcnId, ruleId, policyPeriodIdentity }).then(() => {
       this.getPolicyInfoByMcnId();
     })
   }
-  editRuleModalClose = e => {
+  editRuleModalClose = () => {
     this.setState({ showEditRuleModal: false })
   }
   getDefaultQuery = () => {
     const { mcnId, policyPeriodIdentity } = this;
     const { currentRuleId } = this.state;
-    const { policyDetail = {} } = this.props;
-    const { id } = policyDetail;
+    const { policyInfo = {} } = this.props;
+    const { id } = policyInfo;
     return { id, mcnId, currentRuleId, policyPeriodIdentity }
   }
-  saveAccountRule = (type, values) => {
-    const { mcnId, policyPeriodIdentity } = this;
-    const { currentRuleId } = this.state;
-    const { policyDetail = {} } = this.props;
-    const { id } = policyDetail;
-    const saveAccountRule = type == 'global' ? this.props.saveGlobalAccountRule : this.props.saveSpecialAccountRule
-    saveAccountRule({ ...values, mcnId, ruleId: currentRuleId, id, policyPeriodIdentity }).then(() => {
-      this.getPolicyInfoByMcnId();
-    })
+  saveAccountRule = async (type, values) => {
+    const { id, mcnId, policyPeriodIdentity } = this.getDefaultQuery();
+    const { currentRuleId: ruleId } = this.state;
+    const query = { ...values, mcnId, ruleId, id, policyPeriodIdentity }
+    // const saveAccountRule = type == 'global' ? this.props.saveGlobalAccountRule : this.props.saveSpecialAccountRule
+
+    const saveAccountRule = this.props[type == 'global' ? 'saveGlobalAccountRule' : 'saveSpecialAccountRule']
+    await saveAccountRule(query)
+    this.getPolicyInfoByMcnId();
   }
   saveWhiteAccount = async (ids = []) => {
     const { id, mcnId, policyPeriodIdentity } = this.getDefaultQuery();
@@ -400,9 +367,10 @@ class PolicyManage extends React.Component {
             <FormItem className='policyFooter'>
               {
                 policyStatus == 1 || policyStatus == 2 ?
-                  <Button type='primary' onClick={this.isShowStopModal}>停用</Button> : null
+                  <Button type='primary' onClick={this.isShowStopModal}>停用</Button> : policyStatus == 4 ?
+                    <Button type='primary' onClick={this.handleStartPolicy}>启用</Button> : null
               }
-              <Button type='primary' onClick={this.handleSavePolicy}>{policyStatus == 4 ? '启用' : '提交'}</Button>
+              {policyStatus != 4 ? <Button type='primary' onClick={this.handleSavePolicy}>提交</Button> : null}
             </FormItem>
           </Form>
         </Spin>
