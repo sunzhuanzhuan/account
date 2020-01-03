@@ -109,8 +109,14 @@ class PolicyManage extends React.Component {
       values.policyPeriodIdentity = policyPeriodIdentity;
       values.mcnId = mcnId;
       values.id = id;
-      if (values.contractFile) {
-        values.contractFileUrl = values.contractFile[0].url
+      if (values.contractFileUrl) {
+        const item = values.contractFile[0]
+        values.contractFileUrl = JSON.stringify([{
+          uid: '-1',
+          name: item.name,
+          status: 'done',
+          url: item.url,
+        }])
       }
       const _values = Object.keys(values).reduce((acc, cur) => {
         if (values[cur]) {
@@ -227,8 +233,6 @@ class PolicyManage extends React.Component {
     };
 
     const menuSelectedKeys = [String(this.policyPeriodIdentity)]
-
-
     const contractUploadProps = {
       name: 'file',
       multiple: true,
@@ -376,6 +380,8 @@ class PolicyManage extends React.Component {
               {getFieldDecorator('contractFile', {
                 valuePropName: 'fileList',
                 getValueFromEvent: e => e && e.fileList,
+                initialValue: policyInfo.contractFileUrl && JSON.parse(policyInfo.contractFileUrl)
+
                 // rules: [
                 //    { message: '请上传截图', required: true, type: "array" }
                 // ]
