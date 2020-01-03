@@ -109,7 +109,7 @@ class PolicyManage extends React.Component {
       values.policyPeriodIdentity = policyPeriodIdentity;
       values.mcnId = mcnId;
       values.id = id;
-      const item = values.contractFile[0] || {}
+      const item = values.contractFile && values.contractFile[0] || {}
       values.contractFileUrl = item.url || ''
       values.contractFileName = item.name || ''
       // const _values = Object.keys(values).reduce((acc, cur) => {
