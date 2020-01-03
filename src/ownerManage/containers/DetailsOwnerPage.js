@@ -90,7 +90,7 @@ const DetailsOwnerPage = (props) => {
   useEffect(() => {
     setPageLoading(true)
     // 媒介列表
-    props.actions.getMediums({ mcnId: id })
+    // props.actions.getMediums({ mcnId: id })
 
     // 主账号详情
     props.actions.getOwnerDetail({ id }).then(() => {
