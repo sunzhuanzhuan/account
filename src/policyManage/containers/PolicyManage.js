@@ -5,6 +5,8 @@ import {
   Button, Icon, Form, DatePicker, Spin, Input, message,
   Radio, Switch, InputNumber, Menu, Alert
 } from 'antd';
+import request from '@/api'
+import { OssUpload } from 'wbyui'
 
 // import CommonTitle from "../components/CommonTitle";
 // import RulesWrapper from "../components/RulesWrapper";
@@ -30,7 +32,8 @@ class PolicyManage extends React.Component {
     super(props);
     this.state = {
       stopModal: false,
-      showEditRuleModal: false
+      showEditRuleModal: false,
+      token: ''
     }
     const search = this.props.location.search.substring(1);
     this.mcnId = qs.parse(search)['userId'];
@@ -40,6 +43,9 @@ class PolicyManage extends React.Component {
   componentDidMount() {
     this.getPolicyInfoByMcnId();
     this.props.getNewBPlatforms({ version: '1.1' });
+    this.getToken().then(token => {
+      this.setState({ token: token })
+    })
   }
   getPolicyInfoByMcnId = () => {
     const { policyInfo = {} } = this.props;
@@ -48,7 +54,12 @@ class PolicyManage extends React.Component {
 
     this.props.getPolicyInfoByMcnId({ mcnId, id, policyPeriodIdentity });
   }
-
+  //上传获取token接口请求
+  getToken = () => {
+    return request.get('/toolbox-gateway/file/v1/getToken').then(({ data }) => {
+      return data
+    })
+  }
   // componentDidUpdate(prevProps) {
   //   const { progress: prevProgress } = prevProps;
   //   const { errorMsg = '操作失败', newPolicyId, progress, msg = '操作成功' } = this.props;
@@ -98,7 +109,9 @@ class PolicyManage extends React.Component {
       values.policyPeriodIdentity = policyPeriodIdentity;
       values.mcnId = mcnId;
       values.id = id;
-
+      if (values.contractFile) {
+        values.contractFileUrl = values.contractFile[0].url
+      }
       const _values = Object.keys(values).reduce((acc, cur) => {
         if (values[cur]) {
           acc[cur] = values[cur]
@@ -197,7 +210,7 @@ class PolicyManage extends React.Component {
     const { mcnId } = this;
     const { form, policyInfo = {}, progress, newBPlatforms } = this.props;
     const { getAccountInfoByIds } = this.props;
-    const { stopModal, policyId, showEditRuleModal, editRuleModalType, currentRuleId } = this.state;
+    const { stopModal, policyId, showEditRuleModal, editRuleModalType, currentRuleId, token } = this.state;
     const isEdit = policyId !== undefined;
     const { policyStatus, identityName,
       validStartTime, validEndTime, modifyName = '未知', id, modifiedAt, stopReason,
@@ -359,6 +372,26 @@ class PolicyManage extends React.Component {
 								</Upload.Dragger>,
 							)}
 						</Form.Item> */}
+            <Form.Item label='合同附件' {...formItemLayout}>
+              {getFieldDecorator('contractFile', {
+                valuePropName: 'fileList',
+                getValueFromEvent: e => e && e.fileList,
+                // rules: [
+                //    { message: '请上传截图', required: true, type: "array" }
+                // ]
+              })(
+                <OssUpload
+                  authToken={token}
+                  rule={{
+                    bizzCode: 'MCN_PROCUREMENT_POLICY_CONTRACT',
+                    max: 50,
+                    suffix: 'pdf,docx,doc,dot,dotx'
+                  }}
+                  len={1}//可以上传几个
+                  tipContent={() => '支持pdf,docx,doc,dot,dotx格式,不小于50m的文件上传'}
+                />
+              )}
+            </Form.Item>
             <FormItem label="备注"  {...formItemLayout}>
               {getFieldDecorator('remark', { initialValue: policyInfo.remark })(
                 <TextArea className='remarksText' max={1000} />
@@ -416,3 +449,4 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Form.create()(PolicyManage))
+
