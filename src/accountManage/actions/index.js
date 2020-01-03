@@ -246,11 +246,11 @@ export const clearAccountInfo = createAction('clearAccountInfo', () => {
 export const {
   getPolicyIdAndDiscount,
   getPolicyIdAndDiscount_success,
-} = createHttpAction('getPolicyIdAndDiscount', Interface.getPolicyIdAndDiscount)
+} = createHttpAction('getPolicyIdAndDiscount', Interface.getPolicyRuleInfoByAccount)
 export const {
   getInfoIdsByUserIdAndPlatformId,
   getInfoIdsByUserIdAndPlatformId_success,
-} = createHttpAction('getInfoIdsByUserIdAndPlatformId', Interface.getInfoIdsByUserIdAndPlatformId)
+} = createHttpAction('getInfoIdsByUserIdAndPlatformId', Interface.getPolicyRuleInfoByPlatform)
 // 计算刊例价
 export const {
   calculatePrice,

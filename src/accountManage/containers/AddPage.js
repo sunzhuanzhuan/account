@@ -136,7 +136,7 @@ class AddPage extends Component {
     })
     getPlatformInfo({ id: pid })
     getUserInvoiceInfo({ userIds: userId })
-    getInfoIdsByUserIdAndPlatformId({ userId: userId, platformId: pid })
+    getInfoIdsByUserIdAndPlatformId({ mcnId: userId, platformId: pid })
   }
   // 立即添加报价
   addQuote = () => {
