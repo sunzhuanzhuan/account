@@ -31,7 +31,8 @@ export const interfaceKey = [
   { name: 'getNewBPlatforms', baseUrl: '/operator-gateway/common/v1/' },
   { name: 'startPolicy', method: 'post' },
   { name: 'stopPolicy', method: 'post' },
-  { name: 'getPastPolicyListByMcnId' }
+  { name: 'getPastPolicyListByMcnId' },
+  { name: 'getPolicyInfoById' }
 
 ].map(item => {
   item.baseUrl = item.baseUrl || baseUrl;

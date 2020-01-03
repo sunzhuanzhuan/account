@@ -10,52 +10,53 @@ import actions from '../actions';
 import './PolicyManage.less';
 import qs from 'qs';
 
-const viewDetail = (id) => {
-  console.log("item.id", id)
+let mcnId = ''
+const viewDetail = (props, id) => {
+  props.history.push(`/account/policy?userId=${mcnId}&id=${id}`)
 }
 
-const getColumns = () => {
+const getColumns = (props) => {
   return [
     {
       title: '政策Id',
       dataIndex: 'id',
-      width: '20%',
+      // width: '20%',
     },
     {
       title: '状态',
       dataIndex: 'policyStatus',
-      width: '20%',
+      // width: '20%',
     },
     {
       title: '政策有效期',
       // dataIndex: 'policyStatus',
       render: item => `${item.validEndTime}~${item.validEndTime}`,
-      width: '20%',
+      // width: '20%',
     },
     {
       title: '执行订单',
       dataIndex: 'executionOrderCount',
-      width: '20%',
+      // width: '20%',
     },
     {
       title: '执行金额',
       dataIndex: 'executionAmount',
-      width: '20%',
+      // width: '20%',
     },
     {
       title: '修订人',
       dataIndex: 'modifiedByName',
-      width: '20%',
+      // width: '20%',
     },
     {
       title: '修订时间',
       dataIndex: 'modifiedAt',
-      width: '20%',
+      // width: '20%',
     },
     {
       title: '操作',
       key: 'action',
-      render: item => <Button onClick={viewDetail(item.id)}></Button>
+      render: item => <Button type="primary" onClick={() => viewDetail(props, item.id)}>查看详情</Button>
     },
   ];
 }
@@ -67,17 +68,17 @@ class PolicyManage extends React.Component {
       loading: false
     }
     const search = this.props.location.search.substring(1);
-    this.mcnId = qs.parse(search)['userId'];
+    mcnId = this.mcnId = qs.parse(search)['userId'];
     this.policyPeriodIdentity = qs.parse(search)['policyPeriodIdentity'] || 3
   }
 
   componentDidMount() {
-    this.getPastPolicyListByMcnId();
+    this._getPastPolicyListByMcnId();
   }
   _getPastPolicyListByMcnId = async (values = {}) => {
     const { mcnId } = this;
     this.setState({ loading: true })
-    await this.props.getPolicyInfoByMcnId({ mcnId, ...values })
+    await this.props.getPastPolicyListByMcnId({ mcnId, pageNum: 1, pageSize: 10, ...values })
     this.setState({ loading: false })
   }
   handleSubmit = (e) => {
@@ -85,29 +86,29 @@ class PolicyManage extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
-        this.getPastPolicyListByMcnId(values)
+        this._getPastPolicyListByMcnId({ ...values, pageNum: 1 })
       }
     });
   }
   handleTableChange = (pagination) => {
     console.log("pagination", pagination)
-    this._getPolicyInfoByMcnId(pagination);
+    this._getPastPolicyListByMcnId(pagination);
   }
   render() {
 
     function hasErrors(fieldsError) {
       return Object.keys(fieldsError).some(field => fieldsError[field]);
     }
-    const { pastPolicyList, form } = this.props;
+    const { pastPolicyList = {}, form } = this.props;
     const { pageNum, pageSize, size, pages, total, list } = pastPolicyList;
     const pagination = {
       current: pageNum,
       pageSize,
       total
     }
-
+    console.log("list", this.props)
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = form;
-    const columns = getColumns();
+    const columns = getColumns(this.props);
     return <div>
       <h1>往期政策</h1>
       <Form layout="inline" onSubmit={this.handleSubmit}>
@@ -139,8 +140,10 @@ class PolicyManage extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const { pastPolicyList = {} } = state;
-  return pastPolicyList;
+  const { pricePolicyReducer } = state;
+  const { pastPolicyList } = pricePolicyReducer
+  console.log("state", state)
+  return { pastPolicyList };
 }
 
 const mapDispatchToProps = (dispatch) => (

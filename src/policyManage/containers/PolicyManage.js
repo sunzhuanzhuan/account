@@ -202,6 +202,10 @@ class PolicyManage extends React.Component {
     this.getPolicyInfoByMcnId();
   }
   onMenuClick = ({ key }) => {
+    if (key == 3) {
+      this.props.history.push('/account/policyList')
+      return false;
+    }
     this.props.history.replace(`/account/policy?userId=${this.mcnId}&policyPeriodIdentity=${key}`);
     window.location.reload();
   }
@@ -243,7 +247,7 @@ class PolicyManage extends React.Component {
         }
       },
     };
-    const nextPolicyStatusName = this.policyPeriodIdentity == 2 ? POLICYSTATUS[nextPolicyStatus] : POLICYSTATUS[policyStatus]
+    const nextPolicyStatusName = this.policyPeriodIdentity == 1 ? POLICYSTATUS[nextPolicyStatus] : POLICYSTATUS[policyStatus]
     return [
       // <h2 key='policyHeader' className='policyHeader'>
       // 	{isEdit ? '修改政策' : '新增政策'}
@@ -253,7 +257,7 @@ class PolicyManage extends React.Component {
       <Menu key='policyMenu' mode="horizontal" onClick={this.onMenuClick} selectedKeys={menuSelectedKeys}>
         <Menu.Item key="1">本期政策</Menu.Item>
         <Menu.Item key="2">下期政策({nextPolicyStatusName})</Menu.Item>
-        {/* <Menu.Item key="3">往期政策</Menu.Item> */}
+        <Menu.Item key="3">往期政策</Menu.Item>
       </Menu>,
       <div key='policyWrapper' className='policyWrapper'>
         <Spin spinning={progress === 'loading'}>
