@@ -1,7 +1,7 @@
 import React from "react";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Form, Menu } from 'antd';
+import { Form, Menu, Button } from 'antd';
 import request from '@/api'
 
 import actions from '../actions';
@@ -60,29 +60,26 @@ class PolicyManage extends React.Component {
 
   render() {
     const { mcnId } = this;
-    const { form, policyInfo = {}, progress, newBPlatforms } = this.props;
+    const { form, pastPolicyDetail = {}, progress, newBPlatforms } = this.props;
 
 
     const { policyStatus, identityName,
       validStartTime, validEndTime,
       globalAccountRules = [], specialAccountRules = [], whiteList = [],
       nextPolicyStatus
-    } = policyInfo;
+    } = pastPolicyDetail;
 
     const formItemLayout = {
       labelCol: { span: 2 },
       wrapperCol: { span: 22 },
     };
+    console.log("globalAccountRules", globalAccountRules, this.props)
 
-    const menuSelectedKeys = [String(this.policyPeriodIdentity)]
 
-    const nextPolicyStatusName = this.policyPeriodIdentity == 1 ? POLICYSTATUS[nextPolicyStatus] : POLICYSTATUS[policyStatus]
+
+
     return [
-      <Menu key='policyMenu' mode="horizontal" onClick={this.onMenuClick} selectedKeys={menuSelectedKeys}>
-        <Menu.Item key="1">本期政策</Menu.Item>
-        <Menu.Item key="2">下期政策({nextPolicyStatusName})</Menu.Item>
-        <Menu.Item key="3">往期政策</Menu.Item>
-      </Menu>,
+      <Button key={'back'} onClick={() => this.props.history.goBack()}>返回</Button>,
       <div key='policyWrapper' className='policyWrapper'>
         <Form>
           <FormItem label='主账号名称' {...formItemLayout}>
@@ -93,7 +90,6 @@ class PolicyManage extends React.Component {
           </FormItem>
 
           <ModuleHeader title="全局账号设置"></ModuleHeader>
-          <div>政策规则：</div>
           <RuleModule
             disable={true}
             key='globalAccountRules'
@@ -103,7 +99,7 @@ class PolicyManage extends React.Component {
           ></RuleModule>
 
           <ModuleHeader title="特殊账号设置"></ModuleHeader>
-          <div>政策规则</div>
+
           <RuleModule
             disable={true}
             key='specialAccountRules'
@@ -114,6 +110,7 @@ class PolicyManage extends React.Component {
 
           <ModuleHeader title="白名单"></ModuleHeader>
           <WhiteList
+            disable={true}
             mcnId={mcnId}
             key={whiteList.length}
             whiteList={whiteList}
@@ -122,31 +119,31 @@ class PolicyManage extends React.Component {
           <ModuleHeader title="返点规则"></ModuleHeader>
           <FormItem label='返点结算周期' {...formItemLayout}>
             {
-              REBATE_SETTLEMENT_CYCLE[policyInfo.rebateSettlementCycle]
+              REBATE_SETTLEMENT_CYCLE[pastPolicyDetail.rebateSettlementCycle]
             }
 
           </FormItem>
           <FormItem label='阶梯返点结算' {...formItemLayout}>
-            {policyInfo.stepRebateSettlementType == 1 ? '阶梯收入计算' : '全量收入计算'}
+            {pastPolicyDetail.stepRebateSettlementType == 1 ? '阶梯收入计算' : '全量收入计算'}
             <cite className='eg-explain'>例：0-100返点3%，100及以上返点5%，博主总收入150<br />
               阶梯收入计算=（100*3%）+（50*5%）<br />
               全量收入计算=150*5%
 							</cite>
           </FormItem>
           <FormItem label='保底政策' {...formItemLayout}>
-            {transBool(policyInfo.isGuaranteed) ? '开' : '关'}
+            {transBool(pastPolicyDetail.isGuaranteed) ? '开' : '关'}
           </FormItem>
           <FormItem label='保底金额' {...formItemLayout}>
-            {policyInfo.guaranteedMinAmount}元
+            {pastPolicyDetail.guaranteedMinAmount}元
             </FormItem>
           <FormItem label='保底备注' {...formItemLayout}>
-            {policyInfo.guaranteedRemark}
+            {pastPolicyDetail.guaranteedRemark}
           </FormItem>
           <Form.Item label='合同附件' {...formItemLayout}>
-            <a href={policyInfo.contractFileUrl}>{policyInfo.contractFileName}</a>
+            <a href={pastPolicyDetail.contractFileUrl}>{pastPolicyDetail.contractFileName}</a>
           </Form.Item>
           <FormItem label="备注"  {...formItemLayout}>
-            {policyInfo.remark}
+            {pastPolicyDetail.remark}
           </FormItem>
         </Form>
       </div >

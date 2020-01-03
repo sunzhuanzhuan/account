@@ -2,18 +2,19 @@ import React from "react";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
-  Table, Form, Input, Button
+  Table, Form, Input, Button, Menu
 
 } from 'antd';
 
 import actions from '../actions';
 import './PolicyManage.less';
 import qs from 'qs';
-
+import { REBATE_SETTLEMENT_CYCLE, POLICYSTATUS } from '../constants/dataConfig'
 let mcnId = ''
 const viewDetail = (props, id) => {
-  props.history.push(`/account/policy?userId=${mcnId}&id=${id}`)
+  props.history.push(`/account/PastPolicyDetail?id=${id}`)
 }
+
 
 const getColumns = (props) => {
   return [
@@ -94,6 +95,14 @@ class PolicyManage extends React.Component {
     console.log("pagination", pagination)
     this._getPastPolicyListByMcnId(pagination);
   }
+  onMenuClick = ({ key }) => {
+    if (key == 3) {
+      this.props.history.push(`/account/policyList?userId=${this.mcnId}`)
+      return false;
+    }
+    this.props.history.replace(`/account/policy?userId=${this.mcnId}&policyPeriodIdentity=${key}`);
+    window.location.reload();
+  }
   render() {
 
     function hasErrors(fieldsError) {
@@ -109,7 +118,14 @@ class PolicyManage extends React.Component {
     console.log("list", this.props)
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = form;
     const columns = getColumns(this.props);
+    const menuSelectedKeys = [String(this.policyPeriodIdentity)];
+
     return <div>
+      <Menu key='policyMenu' mode="horizontal" onClick={this.onMenuClick} selectedKeys={menuSelectedKeys}>
+        <Menu.Item key="1">本期政策</Menu.Item>
+        <Menu.Item key="2">下期政策</Menu.Item>
+        <Menu.Item key="3">往期政策</Menu.Item>
+      </Menu>,
       <h1>往期政策</h1>
       <Form layout="inline" onSubmit={this.handleSubmit}>
         <Form.Item>

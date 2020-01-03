@@ -77,9 +77,15 @@ const pastPolicyList = handleAction('getPastPolicyListByMcnId_success', (state, 
     ...action.payload.data
   }
 }, {})
+const pastPolicyDetail = handleAction('getPolicyInfoById_success', (state, action) => {
+  return {
+    ...action.payload.data
+  }
+}, {})
 
 export default combineReducers({
   policyInfo,
   newBPlatforms,
-  pastPolicyList
+  pastPolicyList,
+  pastPolicyDetail
 })
