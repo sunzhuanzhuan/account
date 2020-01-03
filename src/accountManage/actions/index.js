@@ -79,7 +79,6 @@ export const {
   method: 'post',
 });
 
-
 // 获取报价项信息
 export const {
   getSkuTypeList,
