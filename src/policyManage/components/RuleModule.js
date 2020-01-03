@@ -20,12 +20,13 @@ import { RebateView, RebateEdit } from '../components/RuleModules/Rebate'
 import './RuleModule.less'
 // let ruleID = 1;
 const RuleModule = (props) => {
-    const { type, data = [], editRule, delRule } = props;
+    const { type, data = [], editRule, delRule, disable } = props;
     console.log("rule, ", typeof delRule, props)
 
     return <div>
         {
             data.map(item => <RuleCard
+                disable={disable}
                 key={item.ruleId}
                 title={`规则ID: ${item.ruleId}`}
                 onDelBtnClick={() => delRule(type, item.ruleId)}
