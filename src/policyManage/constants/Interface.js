@@ -18,25 +18,27 @@
 // }
 const baseUrl = '/operator-gateway/policy/v1.1/'
 export const interfaceKey = [
-    { name: 'getPolicyInfoByMcnId' },
-    { name: 'getAccountInfoByIds' },
-    { name: 'saveGlobalAccountRule', method: 'post' },
-    { name: 'saveSpecialAccountRule', method: 'post' },
-    { name: 'delGlobalRuleById', method: 'post' },          //删除全局账号规则
-    { name: 'delSpecialRuleById', method: 'post' },         //删除特殊账号规则
-    { name: 'delWhiteListAccount', method: 'post' },        //删除白名单账号
-    { name: 'delSpecialRuleAccountById', method: 'post' }, //删除特殊规则账号
-    { name: 'saveProcurementPolicyInfo', method: 'post' },
-    { name: 'saveWhiteList', method: 'post' },
-    { name: 'getNewBPlatforms', baseUrl: '/operator-gateway/common/v1/' }
+  { name: 'getPolicyInfoByMcnId' },
+  { name: 'getAccountInfoByIds' },
+  { name: 'saveGlobalAccountRule', method: 'post' },
+  { name: 'saveSpecialAccountRule', method: 'post' },
+  { name: 'delGlobalRuleById', method: 'post' },          //删除全局账号规则
+  { name: 'delSpecialRuleById', method: 'post' },         //删除特殊账号规则
+  { name: 'delWhiteListAccount', method: 'post' },        //删除白名单账号
+  { name: 'delSpecialRuleAccountById', method: 'post' }, //删除特殊规则账号
+  { name: 'saveProcurementPolicyInfo', method: 'post' },
+  { name: 'saveWhiteList', method: 'post' },
+  { name: 'getNewBPlatforms', baseUrl: '/operator-gateway/common/v1/' },
+  { name: 'startPolicy', method: 'post' },
+  { name: 'stopPolicy', method: 'post' },
 
 ].map(item => {
-    item.baseUrl = item.baseUrl || baseUrl;
-    return item;
+  item.baseUrl = item.baseUrl || baseUrl;
+  return item;
 })
 
 export default interfaceKey.reduce((acc, cur) => {
-    acc[cur.name] = `${cur.baseUrl}${cur.name}`;
-    return acc;
+  acc[cur.name] = `${cur.baseUrl}${cur.name}`;
+  return acc;
 }, {})
 

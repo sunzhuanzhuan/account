@@ -42,18 +42,32 @@ export const DiscountEdit = (props) => {
                     )}
                 </Form.Item>
                 {
-                    type == Rule_Discount_Ratio ? <Form.Item label='公式：' {...formItemLayout}>
-                        <span>刊例价 X {getFieldDecorator(`discountRule.discountFixedRatio`, {
-                            initialValue: discountFixedRatio,
-                            rules: [{ required: true, message: '请输入固定比例值' }],
-                        })(<InputNumber max={100} style={{ width: 100 }} suffix="%" />)}= 账号报价</span> </Form.Item> :
+                    type == Rule_Discount_Ratio ?
                         <Form.Item label='公式：' {...formItemLayout}>
-                            {getFieldDecorator('discountRule.discountFixedAmount', {
-                                initialValue: discountFixedAmount,
-                                rules: [{ required: true, message: '请输入固定扣减值!' }],
-                            })(<span>
-                                刊例价 -<InputNumber style={{ width: 100 }} suffix="元" /> = 账号报价
-                        </span>)}
+                            <span>刊例价 X {getFieldDecorator(`discountRule.discountFixedRatio`, {
+                                initialValue: discountFixedRatio,
+                                rules: [{ required: true, message: '请输入固定比例值' }],
+                            })(
+                                <InputNumber
+                                    max={100}
+                                    formatter={value => `${value}%`}
+                                    parser={value => value.replace('%', '')}
+                                    style={{ width: 100 }}
+                                />)}= 账号报价</span>
+                        </Form.Item> :
+                        <Form.Item label='公式：' {...formItemLayout}>
+                            <span>
+                                刊例价 -
+                                {getFieldDecorator('discountRule.discountFixedAmount', {
+                                    initialValue: discountFixedAmount,
+                                    rules: [{ required: true, message: '请输入固定扣减值!' }],
+                                })(
+                                    <InputNumber
+                                        formatter={value => `${value}元`}
+                                        parser={value => value.replace('元', '')} style={{ width: 100 }} />
+                                )}
+                                = 账号报价
+                        </span>
                         </Form.Item>
                 }
                 <Button onClick={() => { setVisible(false); setDiscountRule({}) }} style={{ position: 'absolute', right: 0, top: 0 }} type="link" >删除</Button>
