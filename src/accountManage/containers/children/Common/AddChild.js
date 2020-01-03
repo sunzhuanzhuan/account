@@ -11,7 +11,7 @@ import {
 } from '../../../components/Unique'
 import { Fans } from '../../../components/Fans'
 import { WrapPanel } from '../../../components/index'
-import { NamelessPrice } from "../../../components/AccountPrice";
+import { NamelessPrice } from "../../../components/AccountPriceForAddPage";
 import { OnSaleInfoForAdd } from "../../../components/OnSaleInfo";
 import { Alert } from "antd";
 import numeral from "@/util/numeralExpand";

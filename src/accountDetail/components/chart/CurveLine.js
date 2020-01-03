@@ -11,75 +11,50 @@ import DataSet from "@antv/data-set";
 import { formatW } from "../../util";
 import { Empty } from 'antd';
 import numeral from 'numeral'
-
+const colList = [
+  { name: '阅读数', key: 'mediaRead' },
+  { name: '点赞数', key: 'mediaLike' },
+  { name: '评论数', key: 'mediaCommend' },
+  { name: '粉丝累计量', key: 'followerCountFull' },
+  { name: '粉丝增量', key: 'followerCountIncre' },
+  { name: '评论增量', key: 'mediaCommentAvgIncre' },
+  { name: '点赞增量', key: 'mediaLikeAvgIncre' },
+  { name: '播放增量', key: 'mediaPlayAvgIncre' },
+  { name: '互动数', key: 'mediaInteractionAvgIncre' },
+  { name: '平均点赞数', key: 'mediaLikeAvgFull' },
+  { name: '视频发布数', key: 'mediaCountIncre' },
+]
 class CurveLine extends Component {
 
   render() {
     // mediaCountIncre: '发布净增数' 
-    // followerCountFull: '粉丝累计数', 
+    // followerCountFull: '粉丝累计数',  
     // mediaLikeSumIncre: '点赞净增数',
     const { data = [],
       GreenlineName, GreenlineText,
       BluelineText, BluelineName, boxLeft, boxRight, height = 300,
     } = this.props
+    const colObject = {}
+    colList.forEach(item => {
+      colObject[item.key] = {
+        alias: item.name,
+        formatter: val => {
+          return formatW(val)
+        }
+      }
+    });
     const cols = {
       dateRange: {
         tickCount: data && data.length,
       },
-      followerCountFull: {
-        alias: '粉丝累计量',
-        formatter: val => {
-          return formatW(val)
-        }
-      },
-      followerCountIncre: {
-        alias: '粉丝增量',
-        formatter: val => {
-          return formatW(val);
-        }
-      },
-      mediaLikeAvgFull: {
-        alias: '平均点赞数',
-        formatter: val => {
-          return formatW(val);
-        }
-      },
-      mediaCountIncre: {
-        alias: '视频发布数',
-        formatter: val => {
-          return formatW(val)
-        }
-      },
-      mediaInteractionAvgIncre: {
-        alias: '互动数',
-        formatter: val => {
-          return formatW(val);
-        }
-      },
+      ...colObject,
       interactionProportionIncre: {
         alias: '互动率',
         formatter: val => {
           return numeral(val || 0).format('0.0%')
         }
       },
-      mediaLikeAvgIncre: {
-        alias: '点赞增量',
-        formatter: val => {
-          return formatW(val);
-        }
-      },
-      mediaCommentAvgIncre: {
-        alias: '评论增量',
-        formatter: val => {
-          return formatW(val);
-        }
-      },
-      mediaPlayAvgIncre: {
-        alias: '播放增量',
-        formatter: val => {
-          return formatW(val);
-        }
-      }
+
     };
     return (
       data.length > 0 ? <div className='histogram-line' key={BluelineText}>
