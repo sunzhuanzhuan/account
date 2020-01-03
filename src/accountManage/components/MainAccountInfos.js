@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { Row, Col } from 'antd'
 
 export default class MainAccountInfos extends Component {
-  componentWillMount() {}
+  componentWillMount() { }
 
   render() {
     const { identityName, userId, ownerAdminRealName, volAdminRealName } = this.props.accountInfo
