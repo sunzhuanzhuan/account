@@ -9,7 +9,6 @@ const EditRuleForm = (props) => {
   const { form, showEditRuleModal, editRuleModalClose, type, mcnId, id, currentRule = {}, policyPeriodIdentity } = props;
   const [addAccountModalVisible, setAddAccountModalVisible] = useState(false);
   const [accountList, setAccountList] = useState(currentRule.accountList || [])
-  console.log("===accountList", accountList, currentRule)
   // const [selectedIds, setSelectedIds] = useState([]);
   const allSelectedIds = accountList.map(item => item.accountId)
   const handleSubmit = e => {
@@ -50,7 +49,6 @@ const EditRuleForm = (props) => {
 
         props.saveAccountRule(type, values)
         // editRuleModalClose();
-        console.log('Received values of form: ', values);
         // console.log('Merged values:', keys.map(key => names[key]));
       }
     });

@@ -28,7 +28,6 @@ export const PlatformEdit = (props) => {
   //     return obj;
   // }, {})
   const { platformList = [] } = currentRule
-  console.log("currentRule", currentRule, props.newBPlatforms)
   const onClose = (e) => {
     const checkeList = defaultCheckedList.filter(item => item !== e);
     setDefaultCheckedList(checkeList);
@@ -47,7 +46,6 @@ export const PlatformEdit = (props) => {
   </Form.Item>
 }
 export const PlatformView = (props) => {
-  console.log("====", props.data)
   return <Form.Item label="平台" {...formItemLayout}>
     <div>{props.data.map(item => item.platformName).join(", ")}</div>
   </Form.Item>

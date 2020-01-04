@@ -28,7 +28,6 @@ const formItemLayout = {
 };
 
 export const RebateEdit = (props) => {
-  console.log("RebateEdit:", props)
   const { form, currentRule = {} } = props;
   // const { rebateRule = {} } = currentRule;
   const [rebateRule, setRebateRule] = useState(currentRule.rebateRule || {})
@@ -50,7 +49,6 @@ export const RebateEdit = (props) => {
 
 
   const onTypeChange = e => {
-    console.log('onTypeChange', e.target.value);
     useType(e.target.value)
   }
   const onRatioChange = e => {

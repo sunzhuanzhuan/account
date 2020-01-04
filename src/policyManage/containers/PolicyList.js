@@ -86,13 +86,11 @@ class PolicyManage extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
         this._getPastPolicyListByMcnId({ ...values, pageNum: 1 })
       }
     });
   }
   handleTableChange = (pagination) => {
-    console.log("pagination", pagination)
     this._getPastPolicyListByMcnId(pagination);
   }
   onMenuClick = ({ key }) => {
@@ -115,7 +113,6 @@ class PolicyManage extends React.Component {
       pageSize,
       total
     }
-    console.log("list", this.props)
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = form;
     const columns = getColumns(this.props);
     const menuSelectedKeys = [String(this.policyPeriodIdentity)];
@@ -158,7 +155,6 @@ class PolicyManage extends React.Component {
 const mapStateToProps = (state) => {
   const { pricePolicyReducer } = state;
   const { pastPolicyList } = pricePolicyReducer
-  console.log("state", state)
   return { pastPolicyList };
 }
 
