@@ -62,6 +62,9 @@ const EditRuleForm = (props) => {
     const newAccountList = accountList.filter(item => item.accountId != accountId);
     setAccountList(newAccountList)
   }
+  const cleanWhiteListAccount = () => {
+    setAccountList([])
+  }
   // const updateSelectedIds = (ids) => {
   //   const newIds = Array.from(new Set([...selectedIds, ...ids]));
   //   setSelectedIds(newIds)
@@ -69,7 +72,6 @@ const EditRuleForm = (props) => {
   const addAccount = () => {
     setAddAccountModalVisible(true);
   }
-  console.log("====== currentRule: ", currentRule.accountList, accountList)
   return <div>
     {
       showEditRuleModal && <Modal title={'修改规则'} width={1000} onOk={handleSubmit} maskClosable={true} mask={false} visible={true} onCancel={editRuleModalClose}>
@@ -81,6 +83,7 @@ const EditRuleForm = (props) => {
               accountList={accountList}
               delWhiteListAccount={delWhiteListAccount}
               onButtonClick={addAccount}
+              cleanWhiteListAccount={cleanWhiteListAccount}
             />
           }
           <DiscountEdit {...props}></DiscountEdit>
