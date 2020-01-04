@@ -23,13 +23,14 @@ const AddAccountModal = (props) => {
     setAddAccountModalVisible(false);
   }
   const onModalOk = () => {
+
     // debugger;
     const _selectedIds = _.uniq(_.trim(selectedIds).split('\n')).filter(item => item && allSelectedIds.indexOf(item) == -1);
-    // updateSelectedIds(_selectedIds);
     if (_selectedIds.length == 0) {
       Modal.warning({
         title: '警告',
-        content: '以下账号已经被添加' + selectedIds
+        //content: '以下账号已经被添加' + selectedIds
+        content: '添加账号不能为空',
       });
       return;
     }
