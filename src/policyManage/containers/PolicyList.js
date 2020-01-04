@@ -12,7 +12,7 @@ import qs from 'qs';
 import { REBATE_SETTLEMENT_CYCLE, POLICYSTATUS } from '../constants/dataConfig'
 let mcnId = ''
 const viewDetail = (props, id) => {
-  props.history.push(`/account/PastPolicyDetail?id=${id}`)
+  props.history.push(`/account/PastPolicyDetail${props.location.search}&id=${id}`)
 }
 
 
