@@ -14,7 +14,7 @@ let mcnId = ''
 const viewDetail = (props, id) => {
   props.history.push(`/account/PastPolicyDetail${props.location.search}&id=${id}`)
 }
-
+const policyStatus = { 1: '待开始', 2: '进行中', 3: '已过期', 4: '已停用', }
 
 const getColumns = (props) => {
   return [
@@ -26,7 +26,7 @@ const getColumns = (props) => {
     {
       title: '状态',
       dataIndex: 'policyStatus',
-      // width: '20%',
+      render: (text) => policyStatus[text]
     },
     {
       title: '政策有效期',

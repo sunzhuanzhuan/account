@@ -210,8 +210,7 @@ class PolicyManage extends React.Component {
       return false;
     } else {
       this.props.history.replace(`/account/policy?userId=${this.mcnId}&policyPeriodIdentity=${key}`);
-      this.getPolicyInfoByMcnId({ policyPeriodIdentity: key });
-      this.policyPeriodIdentity = key
+      window.location.reload();
     }
 
   }
