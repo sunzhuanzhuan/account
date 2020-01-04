@@ -15,7 +15,6 @@ const WhiteList = (props) => {
   }
 
   const updateAccountList = (newAccountList = []) => {
-    console.log("updateAccountList:", newAccountList)
     // setWhiteList([...whiteList, ...newAccountList])
     const ids = newAccountList.map(item => item.accountId)
     props.saveWhiteAccount(ids)
