@@ -55,8 +55,7 @@ class PolicyManage extends React.Component {
       this.props.history.push('/account/policyList')
       return false;
     }
-    this.props.history.replace(`/account/policy?userId=${this.mcnId}&policyPeriodIdentity=${key}`);
-    window.location.reload();
+    this.props.history.push(`/account/policy?userId=${this.mcnId}&policyPeriodIdentity=${key}`);
   }
 
   render() {
