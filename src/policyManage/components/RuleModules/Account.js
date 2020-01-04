@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Input, Form, Select, Button } from 'antd'
+import { Table, Input, Form, Select, Button, Icon } from 'antd'
 import AccountListTable from '../AccountListTable'
 // import {
 //     ruleDiscount,
@@ -18,7 +18,7 @@ const formItemLayout = {
 // const { Option } = Select;
 
 export const AccountEdit = (props) => {
-  const { onButtonClick, accountList = [], delWhiteListAccount } = props;
+  const { onButtonClick, accountList = [], delWhiteListAccount, cleanWhiteListAccount } = props;
   // const { getFieldDecorator } = props.form;
   const { defaultCheckedList = [1, 2], setDefaultCheckedList } = props;
 
@@ -26,20 +26,19 @@ export const AccountEdit = (props) => {
     const checkeList = defaultCheckedList.filter(item => item !== e);
     setDefaultCheckedList(checkeList);
   }
-  console.log("delWhiteListAccount: ", typeof delWhiteListAccount)
   return <>
     <Form.Item label="账号" {...formItemLayout}>
       <Button onClick={onButtonClick}>添加账号</Button>
     </Form.Item>
-    <AccountView isEdit={true} accountList={accountList} delWhiteListAccount={delWhiteListAccount} labelName=' '></AccountView>
+    <AccountView isEdit={true} accountList={accountList} delWhiteListAccount={delWhiteListAccount} cleanWhiteListAccount={cleanWhiteListAccount} labelName=' '></AccountView>
   </>
 }
 
 export const AccountView = (props) => {
-  const { accountList = [], delWhiteListAccount, isEdit } = props;
+  const { accountList = [], delWhiteListAccount, cleanWhiteListAccount, isEdit } = props;
   const { labelName = '账号' } = props;
   return <Form.Item label={labelName} {...formItemLayout}>
-    <p>已选择{accountList.length}个账号</p>
+    <p>已选择{accountList.length}个账号 {isEdit ? <a onClick={cleanWhiteListAccount} style={{ float: "right" }}><Icon type="rest" />清空</a> : null}</p>
     <AccountListTable isEdit={isEdit} delWhiteListAccount={delWhiteListAccount} dataSource={accountList} />
   </Form.Item>
 }

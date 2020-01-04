@@ -1,7 +1,7 @@
 import React from "react";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Form, Menu, Button } from 'antd';
+import { Form, Menu, Button, Icon } from 'antd';
 import request from '@/api'
 
 import actions from '../actions';
@@ -12,6 +12,7 @@ import WhiteList from '../components/WhiteList';
 import RuleModule from '../components/RuleModule'
 
 import { transBool, POLICYSTATUS, REBATE_SETTLEMENT_CYCLE } from '../constants/dataConfig'
+import { Link } from "react-router-dom";
 
 const FormItem = Form.Item;
 
@@ -73,13 +74,8 @@ class PolicyManage extends React.Component {
       labelCol: { span: 2 },
       wrapperCol: { span: 22 },
     };
-    console.log("globalAccountRules", globalAccountRules, this.props)
-
-
-
-
-    return [
-      <Button key={'back'} onClick={() => this.props.history.goBack()}>返回</Button>,
+    return <>
+      <h2>    <Link to={`/account/policyList?userId=${this.mcnId}`}>往期政策<Icon type="left" /></Link>往期政策详情</h2>
       <div key='policyWrapper' className='policyWrapper'>
         <Form>
           <FormItem label='主账号名称' {...formItemLayout}>
@@ -147,7 +143,7 @@ class PolicyManage extends React.Component {
           </FormItem>
         </Form>
       </div >
-    ]
+    </>
   }
 }
 

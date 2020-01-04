@@ -24,7 +24,7 @@ const WhiteList = (props) => {
   const allSelectedIds = whiteAccountList.map(item => item.accountId)
   return <div className='white-list'>
     <div className='search-bar'>
-      {isEdit ? <Button onClick={addAccountBtnClick}>添加</Button> : null}
+      {isEdit && whiteAccountList.length < 20 ? <Button type='primary' onClick={addAccountBtnClick} style={{ marginBottom: 10 }}>添加</Button> : null}
     </div>
     <AccountListTable
       isEdit={isEdit}
