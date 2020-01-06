@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
   Button, Icon, Form, DatePicker, Spin, Input, message,
-  Radio, Switch, InputNumber, Menu, Alert
+  Radio, Switch, InputNumber, Menu, Alert, Modal
 } from 'antd';
 import request from '@/api'
 import { OssUpload } from 'wbyui'
@@ -119,7 +119,9 @@ class PolicyManage extends React.Component {
       //   }
       //   return acc;
       // }, {})
-      this.props.saveProcurementPolicyInfo(values)
+      this.props.saveProcurementPolicyInfo(values).then(() => {
+        Modal.success({ content: '政策保存成功' })
+      })
     })
   }
 
@@ -224,7 +226,7 @@ class PolicyManage extends React.Component {
     const { policyStatus, identityName,
       validStartTime, validEndTime, modifyName = '未知', id, modifiedAt, stopReason,
       globalAccountRules = [], specialAccountRules = [], whiteList = [],
-      isDraft,
+      isDraft, selectedPlatformIds,
       nextPolicyStatus
     } = policyInfo;
 
@@ -417,6 +419,7 @@ class PolicyManage extends React.Component {
         {showEditRuleModal && <EditRuleForm
           mcnId={mcnId}
           policyId={id}
+          selectedPlatformIds={selectedPlatformIds}
           policyPeriodIdentity={this.policyPeriodIdentity}
           currentRule={currentRule[0]}
           getAccountInfoByIds={getAccountInfoByIds}

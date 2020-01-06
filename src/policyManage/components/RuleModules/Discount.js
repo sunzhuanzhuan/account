@@ -50,10 +50,11 @@ export const DiscountEdit = (props) => {
               })(
                 <InputNumber
                   max={100}
-                  formatter={value => `${value}%`}
-                  parser={value => value.replace('%', '')}
+                  precision={0}
+                  // formatter={value => `${value}%`}
+                  // parser={value => value.replace('%', '')}
                   style={{ width: 100 }}
-                />)}= 账号报价</span>
+                />)}% = 账号报价</span>
             </Form.Item> :
             <Form.Item label='公式：' {...formItemLayout}>
               <span>
@@ -63,10 +64,11 @@ export const DiscountEdit = (props) => {
                   rules: [{ required: true, message: '请输入固定扣减值!' }],
                 })(
                   <InputNumber
-                    formatter={value => `${value}元`}
-                    parser={value => value.replace('元', '')} style={{ width: 100 }} />
+                    // formatter={value => `${value}元`}
+                    // parser={value => value.replace('元', '')} 
+                    style={{ width: 100 }} />
                 )}
-                = 账号报价
+                元 = 账号报价
                         </span>
             </Form.Item>
         }

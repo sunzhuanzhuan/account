@@ -115,11 +115,12 @@ export const RebateEdit = (props) => {
                   rules: [{ required: true, message: '返点比例必填' }]
                 })(
                   <InputNumber
-                    formatter={value => `${value}%`}
-                    parser={value => value.replace('%', '')}
+                    precision={0}
+                    // formatter={value => `${value}%`}
+                    // parser={value => value.replace('%', '')}
                     max={100} style={{ width: 120 }} onChange={onRatioChange}
                   />
-                )}
+                )}%
             </Form.Item> : type == Rule_Rebate_Numeric ?
               <Form.Item label='公式：' {...formItemLayout}>
                 执行完成订单时博主收入，返点金额为：{
@@ -129,12 +130,12 @@ export const RebateEdit = (props) => {
                   })(
                     <InputNumber
                       style={{ width: 120 }}
-                      formatter={value => `${value}元`}
-                      parser={value => value.replace('元', '')}
+                      // formatter={value => `${value}元`}
+                      // parser={value => value.replace('元', '')}
                       onChange={onNumericChange}
                     />
                   )
-                }
+                }元
               </Form.Item> :
               <Form.Item label="公式：" {...formItemLayout}>
                 {getFieldDecorator("rebateRule.rebateStepRules", {

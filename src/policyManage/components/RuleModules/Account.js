@@ -29,7 +29,7 @@ export const AccountEdit = (props) => {
   }
   return <>
     <Form.Item label="账号" {...formItemLayout}>
-      <Button onClick={onButtonClick}>添加账号</Button>
+      {accountList.length < 20 && <Button onClick={onButtonClick}>添加账号</Button>}
     </Form.Item>
     <AccountView isEdit={true} accountList={accountList} delWhiteListAccount={delWhiteListAccount} cleanWhiteListAccount={cleanWhiteListAccount} labelName=' '></AccountView>
   </>

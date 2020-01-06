@@ -84,8 +84,7 @@ export class LadderRatioEdit extends React.PureComponent {
               大于<span className="rule-number">{rebateNumbers[index]}</span>
               且小于等于
                             <span className="rule-input">
-                <Input
-                  type="text"
+                <InputNumber
                   onChange={e => this.handleRatioChange(e, index + 1)}
                   value={item}
                 />
@@ -93,14 +92,11 @@ export class LadderRatioEdit extends React.PureComponent {
               时,返点比例为：
                             <span className="rule-input">
                 <InputNumber
-                  type="text"
                   onChange={e => this.handlePercentageChange(e, index)}
                   value={percentage[index]}
-                  formatter={value => `${value}%`}
-                  parser={value => value.replace('%', '')}
-                />
+                /> %
               </span>
-              <Button type="link" onClick={() => this.addRule(index + 1)}>添加</Button>
+              {rebateNumbers.length <= 10 && <Button type="link" onClick={() => this.addRule(index + 1)}>添加</Button>}
               {index !== 0 && (
                 <Button type="link" onClick={() => this.delRule(index)}>删除</Button>
               )}

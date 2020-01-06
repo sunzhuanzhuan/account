@@ -18,11 +18,22 @@
 
 import { combineReducers } from 'redux'
 import { handleAction, handleActions, combineActions } from 'redux-actions';
+const selectedPlatformIds = (state = []) => {
 
+  return state.reduce((acc, item) => {
+    return acc.concat(item.platformList)
+  }, []).reduce((acc, item) => {
+    acc[item.platformId] = true;
+    return acc
+  }, {});
+}
 export const policyInfo = handleActions({
+
   'getPolicyInfoByMcnId_success': (state, action) => {
+    const { globalAccountRules } = action.payload.data || {}
     return {
-      ...action.payload.data
+      ...action.payload.data,
+      selectedPlatformIds: selectedPlatformIds(globalAccountRules)
     }
   },
   // 'saveGlobalAccountRule_success': (state, action) => {
@@ -57,6 +68,7 @@ export const policyInfo = handleActions({
   //     }
   // },
   'saveWhiteList_success': (state, action) => {
+
     return {
       ...state,
       whiteList: action.payload.data.whiteList
