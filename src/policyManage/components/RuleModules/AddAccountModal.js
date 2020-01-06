@@ -39,6 +39,8 @@ const AddAccountModal = (props) => {
       Modal.confirm({
         title: '以下账号ID不存在',
         content: <div>
+          {accountList.length > 0 ? `${accountList.length}个账号添加成功` : ''}
+          <p>以下账号ID不存在</p>
           {notExistAccountIds.length > 0 && <p>不存在的accountId: {notExistAccountIds.join(", ")}</p>}
           {notExistAccountIdsByMcnId.length > 0 && <p>不在该主账号旗下的accountId: {notExistAccountIdsByMcnId.join(', ')}</p>}
         </div>,
@@ -48,15 +50,16 @@ const AddAccountModal = (props) => {
         }
       });
     }
-    props.getAccountInfoByIds({ mcnId, accountIds: _selectedIds.join(",") }).then((data) => {
 
-      const { accountList, notExistAccountIds = [], notExistAccountIdsByMcnId = [] } = data.data;
-      if (notExistAccountIds.length > 0 || notExistAccountIdsByMcnId.length > 0) {
-        notExist(data);
-      } else {
-        onCancel();
-        updateAccountList(accountList);
-      }
+    props.getAccountInfoByIds({ mcnId, accountIds: _selectedIds.join(",") }).then((data) => {
+      notExist(data);
+      // const { accountList, notExistAccountIds = [], notExistAccountIdsByMcnId = [] } = data.data;
+      // if (notExistAccountIds.length > 0 || notExistAccountIdsByMcnId.length > 0) {
+      //   notExist(data);
+      // } else {
+      //   onCancel();
+      //   updateAccountList(accountList);
+      // }
     })
   }
   const onChange = (e) => {

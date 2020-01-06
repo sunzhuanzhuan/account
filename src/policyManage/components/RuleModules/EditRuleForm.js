@@ -5,6 +5,7 @@ import { AccountEdit } from './Account'
 import { DiscountEdit } from './Discount'
 import { RebateEdit } from './Rebate'
 import AddAccountModal from './AddAccountModal'
+const { _ } = window;
 const EditRuleForm = (props) => {
   const { form, showEditRuleModal, editRuleModalClose, type, mcnId, id, currentRule = {}, policyPeriodIdentity } = props;
   const [addAccountModalVisible, setAddAccountModalVisible] = useState(false);
@@ -45,6 +46,10 @@ const EditRuleForm = (props) => {
           delete values.accountIds;
         } else {
           delete values.platform;
+          if (values.accountIds > 20) {
+            Modal.error({ content: '每个规则最多添加20个账号' })
+            return;
+          }
         }
 
         props.saveAccountRule(type, values)
@@ -54,7 +59,9 @@ const EditRuleForm = (props) => {
     });
   };
   const updateAccountList = (newAccountList) => {
-    setAccountList([...accountList, ...newAccountList]);
+    const _accountList = [...accountList, ...newAccountList]
+    console.log("_accountList", JSON.stringify(_accountList))
+    setAccountList(_.uniqBy(_accountList, 'accountId'));
   }
   const delWhiteListAccount = (accountId) => {
     const newAccountList = accountList.filter(item => item.accountId != accountId);
