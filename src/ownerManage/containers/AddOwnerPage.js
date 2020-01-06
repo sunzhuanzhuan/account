@@ -13,7 +13,7 @@ const AddOwnerPage = (props) => {
 
   // 获取媒介列表
   useEffect(() => {
-    props.actions.getMediums()
+    // props.actions.getMediums()
 
   }, [])
   return (
@@ -23,7 +23,10 @@ const AddOwnerPage = (props) => {
       </h2>
       <OwnerForm
         config={props.config}
-        defaultMediums={props.userInfo.user_id}
+        defaultMedium={{
+          id: parseInt(props.userInfo.user_id),
+          name: props.userInfo.real_name
+        }}
         mediumsOptions={props.mediums}
         action={props.actions.ownerAdd}
       />

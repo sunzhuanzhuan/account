@@ -221,10 +221,10 @@ const UpdateOwnerForm = (props) => {
         </RadioGroup>)}
       </Form.Item>}
       <Form.Item label="默认账期(天)">
-        <span>{props.defaultCycle || '-'}</span>
+        <span>{props.defaultCycle === 0 ? '0' : (props.defaultCycle || '-')}</span>
       </Form.Item>
       <Form.Item label={<span>实际账期{InfoCycle}</span>}>
-        <span>{props.actualCycle || '-'}</span>
+        <span>{props.actualCycle === 0 ? '0' : (props.actualCycle || '-')}</span>
       </Form.Item>
       <Form.Item label="真实姓名">
         {getFieldDecorator('realName', {

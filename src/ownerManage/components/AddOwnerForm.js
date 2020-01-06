@@ -21,6 +21,20 @@ const formItemLayout = {
   }
 };
 
+const InfoCycle = <QuestionTip title="实际账期时间" content={
+  <div>
+    根据主账号最近一年内订单打款时间和执行完成时间计算得出，具体算法如下：
+    <br />
+    1、筛选出主账号最近一年所有已打款的所有类型订单
+    <br />
+    2、计算所筛选订单“订单打款时间-订单执行完成时间”总和
+    <br />
+    3、计算实际账期时间，实际账期时间=上文时间总和/（24*订单数），数值以天为单位，保留整数，遇到小数向上取整
+    <br />
+    注：提前打款的订单计算出的实际账期为负数
+  </div>
+} />
+
 const AddOwnerForm = (props) => {
   const { getFieldDecorator, getFieldValue } = props.form;
   const [loading, setLoading] = useState(false);
@@ -75,12 +89,13 @@ const AddOwnerForm = (props) => {
       <Form.Item label="资源媒介">
         {getFieldDecorator('ownerAdminId', {
           validateFirst: true,
-          initialValue: props.defaultMediums && parseInt(props.defaultMediums),
+          initialValue: props.defaultMedium.id,
           rules: [
             { required: true }
           ]
         })(
           <Select placeholder="请选择">
+            <Option key={props.defaultMedium.id} value={props.defaultMedium.id}>{props.defaultMedium.name}</Option>
             {
               props.mediumsOptions.map((item) => {
                 return <Option key={item.mediumId} value={item.mediumId}>{item.mediumName}</Option>
@@ -105,7 +120,6 @@ const AddOwnerForm = (props) => {
       <Form.Item label="主账号类型">
         {getFieldDecorator('userType', {
           validateFirst: true,
-          initialValue: '1',
           rules: [
             { required: true }
           ]
@@ -163,6 +177,12 @@ const AddOwnerForm = (props) => {
           <Radio value={0.06}>6%</Radio>
         </RadioGroup>)}
       </Form.Item>}
+      <Form.Item label="默认账期(天)">
+        <span>-</span>
+      </Form.Item>
+      <Form.Item label={<span>实际账期{InfoCycle}</span>}>
+        <span>-</span>
+      </Form.Item>
       <Form.Item label="真实姓名">
         {getFieldDecorator('realName', {
           validateFirst: true,
