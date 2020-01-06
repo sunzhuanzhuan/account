@@ -97,7 +97,9 @@ const AddOwnerForm = (props) => {
           <Select placeholder="请选择">
             <Option key={props.defaultMedium.id} value={props.defaultMedium.id}>{props.defaultMedium.name}</Option>
             {
-              props.mediumsOptions.map((item) => {
+              props.mediumsOptions
+                .filter(({mediumId}) => mediumId !== props.defaultMedium.id)
+                .map((item) => {
                 return <Option key={item.mediumId} value={item.mediumId}>{item.mediumName}</Option>
 
               })

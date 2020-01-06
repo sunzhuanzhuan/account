@@ -132,7 +132,9 @@ const UpdateOwnerForm = (props) => {
           <Select placeholder="请选择" onChange={handleDiffMcn} disabled={props.disabled}>
             <Option key={props.ownerAdminId} value={props.ownerAdminId}>{props.ownerAdminName}</Option>
             {
-              props.mediumsOptions.map((item) => {
+              props.mediumsOptions
+                .filter(({mediumId}) => mediumId !== props.ownerAdminId)
+                .map((item) => {
                 return <Option key={item.mediumId} value={item.mediumId}>{item.mediumName}</Option>
 
               })

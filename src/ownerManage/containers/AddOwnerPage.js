@@ -13,7 +13,7 @@ const AddOwnerPage = (props) => {
 
   // 获取媒介列表
   useEffect(() => {
-    // props.actions.getMediums()
+    props.actions.getMediums()
 
   }, [])
   return (
