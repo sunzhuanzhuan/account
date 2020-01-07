@@ -174,7 +174,7 @@ const UpdateOwnerPage = (props) => {
       <Menu.Item key="1">
         <a onClick={() => {
           if (props.ownerInfo.paymentInfoIsComplete === 1) {
-             props.history.push(`/account/manage/platform/${linkUserId}`)
+             window.open(`/account/manage/platform/${linkUserId}`)
           }else {
             Modal.info({
               title: "支付信息未完善",
@@ -185,19 +185,19 @@ const UpdateOwnerPage = (props) => {
       </Menu.Item>
       {showButton.policy > 0 &&
       <Menu.Item key="2">
-        <Link to={`/account/policy?id=${showButton.policy}`}>修改政策</Link>
+        <Link target="_blank" to={`/account/policy?id=${showButton.policy}`}>修改政策</Link>
       </Menu.Item>}
       {showButton.policy < 0 &&
       <Menu.Item key="3">
-        <Link to={`/account/policy?userId=${linkUserId}&name=${linkUserName}`}>添加政策</Link>
+        <Link target="_blank" to={`/account/policy?userId=${linkUserId}&name=${linkUserName}`}>添加政策</Link>
       </Menu.Item>}
       {showButton.channelDiscount > 0 &&
       <Menu.Item key="4">
-        <Link to={`/account/discount?userId=${linkUserId}`}>修改渠道折扣</Link>
+        <Link target="_blank" to={`/account/discount?userId=${linkUserId}`}>修改渠道折扣</Link>
       </Menu.Item>}
       {showButton.channelDiscount < 0 &&
       <Menu.Item key="5">
-        <Link to={`/account/discount?userId=${linkUserId}&name=${linkUserName}`}>添加渠道折扣</Link>
+        <Link target="_blank" to={`/account/discount?userId=${linkUserId}&name=${linkUserName}`}>添加渠道折扣</Link>
       </Menu.Item>}
     </Menu>
   );
@@ -209,13 +209,13 @@ const UpdateOwnerPage = (props) => {
           修改主账号
           <div>
             {showButton.grossPayment > 0 &&
-            <Button type="primary" href={`${linkHost}/payment/manager/paymentlist/serviceProvider/1/userId/${linkUserId}`}>修改自营支付方式</Button>}
+            <Button type="primary" target="_blank" href={`${linkHost}/payment/manager/paymentlist/serviceProvider/1/userId/${linkUserId}`}>修改自营支付方式</Button>}
             {showButton.grossPayment < 0 &&
-            <Button type="primary" href={`${linkHost}/payment/manager/paymentlist/serviceProvider/1/userId/${linkUserId}`}>添加自营支付方式</Button>}
+            <Button type="primary" target="_blank" href={`${linkHost}/payment/manager/paymentlist/serviceProvider/1/userId/${linkUserId}`}>添加自营支付方式</Button>}
             {showButton.netPayment > 0 &&
-            <Button type="primary" href={`${linkHost}/payment/manager/paymentlist/serviceProvider/2/userId/${linkUserId}`}>修改直供支付方式</Button>}
+            <Button type="primary" target="_blank" href={`${linkHost}/payment/manager/paymentlist/serviceProvider/2/userId/${linkUserId}`}>修改直供支付方式</Button>}
             {showButton.netPayment < 0 &&
-            <Button type="primary" href={`${linkHost}/payment/manager/paymentlist/serviceProvider/2/userId/${linkUserId}`}>添加直供支付方式</Button>}
+            <Button type="primary" target="_blank" href={`${linkHost}/payment/manager/paymentlist/serviceProvider/2/userId/${linkUserId}`}>添加直供支付方式</Button>}
             <Dropdown overlay={menu} trigger={['click']}>
               <Button>
                 其他操作 <Icon type="down" />
