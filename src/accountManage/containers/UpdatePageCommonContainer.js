@@ -14,7 +14,7 @@ export default class UpdatePageCommonContainer extends Component {
         账号维护
         {policyId ?
           <small className='policyInfo-id-display'>
-            价格政策ID: <a target='_blank' href={"/account/policy?id=" + policyId}>{policyId}-{policyRuleType[ruleType]}-{ruleId}</a></small>
+            价格政策ID: <a target='_blank' href={"/account/policy?policyPeriodIdentity=1&userId=" + policyId}>{policyId}-{policyRuleType[ruleType]}-{ruleId}</a></small>
           : null}
       </h2>
       {this.props.children}

@@ -32,7 +32,7 @@ const EditRuleForm = (props) => {
         }
         delete rebateRule.rebateNumbers
         delete rebateRule.percentage
-
+        console.log("=====", allSelectedIds, accountList)
         values.accountIds = allSelectedIds;
 
         if (!values.discountRule && !values.rebateRule) {
@@ -46,7 +46,7 @@ const EditRuleForm = (props) => {
           delete values.accountIds;
         } else {
           delete values.platform;
-          if (values.accountIds > 20) {
+          if (values.accountIds.length > 20) {
             Modal.error({ content: '每个规则最多添加20个账号' })
             return;
           }
@@ -60,7 +60,6 @@ const EditRuleForm = (props) => {
   };
   const updateAccountList = (newAccountList) => {
     const _accountList = [...accountList, ...newAccountList]
-    console.log("_accountList", JSON.stringify(_accountList))
     setAccountList(_.uniqBy(_accountList, 'accountId'));
   }
   const delWhiteListAccount = (accountId) => {

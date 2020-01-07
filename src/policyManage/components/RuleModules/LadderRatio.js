@@ -42,7 +42,7 @@ export class LadderRatioEdit extends React.PureComponent {
 
   handleRatioChange = (e, index) => {
     const rebateNumbers = [...this.state.rebateNumbers];
-    const number = parseInt(e.target.value || 0, 10);
+    const number = parseInt(e || 0, 10);
     if (isNaN(number)) {
       return;
     }
