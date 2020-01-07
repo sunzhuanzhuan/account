@@ -65,6 +65,6 @@
     "Set": true,
     "__dirname": true,
     "Reflect": true,
-    "Event": true
+    "Event": true,
   }
 }

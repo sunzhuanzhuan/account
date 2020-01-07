@@ -47,3 +47,9 @@ export const POLICYSTATUS = {
     3: "已过期",
     4: "已停用",
 }
+/**
+ * 返点结算周期
+ */
+export const REBATE_SETTLEMENT_CYCLE = {
+    1: '月', 2: '季', 3: '半年', 4: '年'
+}

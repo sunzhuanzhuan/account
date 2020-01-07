@@ -9,8 +9,19 @@
     font-size: @font-size;
 }
 
+.container {
+    max-width: 100%;
+    margin: 20px 10px 0px;
+    background: #fff;
+    padding: 20px;
+}
+
 .title-big {
-    @color333-font20();
+    display: flex;
+    align-items: center;
+    color: #333;
+    font-size: 20px;
+    margin: 29px 0px 8px 20px;
 }
 
 @nowrap-hidden-ellipsis: {
@@ -31,13 +42,18 @@
     line-height: 22px;
 }
 
+@color999-font12: {
+    .font-color(#999, 12px);
+}
+
 @color999-font13: {
     .font-color(#999, 13px);
 }
 
-@color999-font12: {
-    .font-color(#999, 12px);
+@color999-font24: {
+    .font-color(#999, 24px);
 }
+
 
 @color333-font16: {
     .font-color(#333, 16px);
@@ -49,6 +65,10 @@
 
 @color333-font13: {
     .font-color(#333, 13px);
+}
+
+@color333-font24: {
+    .font-color(#333, 24px);
 }
 
 @flex-between: {
@@ -73,10 +93,7 @@
     flex-direction: column;
 }
 
-@color333-font20: {
-    .font-color(#333, 20px);
-    margin: 29px 0px 8px 20px;
-}
+
 
 @hover-shadow: {
     cursor: pointer;
@@ -94,4 +111,43 @@
 
 .mt20 {
     margin-top: 20px;
+}
+
+.gray-font {
+    color: #666;
+    font-weight: 400;
+}
+
+.table-no-background-add-odd {
+    .ant-table-thead>tr>th {
+        background: #fff;
+        @color999-font13();
+        font-weight: 400;
+    }
+
+    .ant-table-tbody>tr>td:nth-child(odd) {
+        height: 50px;
+        @color999-font13();
+    }
+
+    .ant-table-tbody>tr>td:nth-child(even) {
+        height: 50px;
+        color: #000;
+    }
+
+    .dark-big {
+        @color333-font24()
+    }
+
+    .dark-small {
+        @color333-font14()
+    }
+
+    .light-big {
+        @color999-font24()
+    }
+
+    .light-small {
+        .font-color(#999, 14px);
+    }
 }

@@ -5,11 +5,11 @@ import { AccountEdit } from './Account'
 import { DiscountEdit } from './Discount'
 import { RebateEdit } from './Rebate'
 import AddAccountModal from './AddAccountModal'
+const { _ } = window;
 const EditRuleForm = (props) => {
   const { form, showEditRuleModal, editRuleModalClose, type, mcnId, id, currentRule = {}, policyPeriodIdentity } = props;
   const [addAccountModalVisible, setAddAccountModalVisible] = useState(false);
   const [accountList, setAccountList] = useState(currentRule.accountList || [])
-  console.log("===accountList", accountList, currentRule)
   // const [selectedIds, setSelectedIds] = useState([]);
   const allSelectedIds = accountList.map(item => item.accountId)
   const handleSubmit = e => {
@@ -32,7 +32,7 @@ const EditRuleForm = (props) => {
         }
         delete rebateRule.rebateNumbers
         delete rebateRule.percentage
-
+        console.log("=====", allSelectedIds, accountList)
         values.accountIds = allSelectedIds;
 
         if (!values.discountRule && !values.rebateRule) {
@@ -46,21 +46,28 @@ const EditRuleForm = (props) => {
           delete values.accountIds;
         } else {
           delete values.platform;
+          if (values.accountIds.length > 20) {
+            Modal.error({ content: '每个规则最多添加20个账号' })
+            return;
+          }
         }
 
         props.saveAccountRule(type, values)
-        editRuleModalClose();
-        console.log('Received values of form: ', values);
+        // editRuleModalClose();
         // console.log('Merged values:', keys.map(key => names[key]));
       }
     });
   };
   const updateAccountList = (newAccountList) => {
-    setAccountList([...accountList, ...newAccountList]);
+    const _accountList = [...accountList, ...newAccountList]
+    setAccountList(_.uniqBy(_accountList, 'accountId'));
   }
-  const delAccountFromList = (accountId) => {
+  const delWhiteListAccount = (accountId) => {
     const newAccountList = accountList.filter(item => item.accountId != accountId);
     setAccountList(newAccountList)
+  }
+  const cleanWhiteListAccount = () => {
+    setAccountList([])
   }
   // const updateSelectedIds = (ids) => {
   //   const newIds = Array.from(new Set([...selectedIds, ...ids]));
@@ -69,7 +76,6 @@ const EditRuleForm = (props) => {
   const addAccount = () => {
     setAddAccountModalVisible(true);
   }
-  console.log("====== currentRule: ", currentRule.accountList, accountList)
   return <div>
     {
       showEditRuleModal && <Modal title={'修改规则'} width={1000} onOk={handleSubmit} maskClosable={true} mask={false} visible={true} onCancel={editRuleModalClose}>
@@ -79,8 +85,9 @@ const EditRuleForm = (props) => {
             <AccountEdit
               {...props}
               accountList={accountList}
-              delAccountFromList={delAccountFromList}
+              delWhiteListAccount={delWhiteListAccount}
               onButtonClick={addAccount}
+              cleanWhiteListAccount={cleanWhiteListAccount}
             />
           }
           <DiscountEdit {...props}></DiscountEdit>

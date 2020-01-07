@@ -3,8 +3,10 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
   Button, Icon, Form, DatePicker, Spin, Input, message,
-  Radio, Switch, InputNumber, Menu, Alert
+  Radio, Switch, InputNumber, Menu, Alert, Modal
 } from 'antd';
+import request from '@/api'
+import { OssUpload } from 'wbyui'
 
 // import CommonTitle from "../components/CommonTitle";
 // import RulesWrapper from "../components/RulesWrapper";
@@ -22,32 +24,18 @@ import EditRuleForm from '../components/RuleModules/EditRuleForm'
 // import AddAccountModal from '../components/RuleModules/AddAccountModal'
 import { transBool, POLICYSTATUS } from '../constants/dataConfig'
 
+
+
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
-// const RadioGroup = Radio.Group;
 const { TextArea } = Input;
-
-const RuleDiscountRatio = (props) => {
-  const { getFieldDecorator } = props.form
-  return <Form.Item>
-    {getFieldDecorator('password', {
-      rules: [{ required: true, message: 'Please input your Password!' }],
-    })(
-      <Input
-        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-        type="password"
-        placeholder="Password"
-      />,
-    )}
-  </Form.Item>
-}
-
 class PolicyManage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       stopModal: false,
-      showEditRuleModal: false
+      showEditRuleModal: false,
+      token: '',
     }
     const search = this.props.location.search.substring(1);
     this.mcnId = qs.parse(search)['userId'];
@@ -57,15 +45,23 @@ class PolicyManage extends React.Component {
   componentDidMount() {
     this.getPolicyInfoByMcnId();
     this.props.getNewBPlatforms({ version: '1.1' });
+    this.getToken().then(token => {
+      this.setState({ token: token })
+    })
   }
-  getPolicyInfoByMcnId = () => {
+  getPolicyInfoByMcnId = (props) => {
     const { policyInfo = {} } = this.props;
     const { id } = policyInfo;
     const { mcnId, policyPeriodIdentity } = this;
 
-    this.props.getPolicyInfoByMcnId({ mcnId, id, policyPeriodIdentity });
+    this.props.getPolicyInfoByMcnId({ mcnId, id, policyPeriodIdentity, props });
   }
-
+  //上传获取token接口请求
+  getToken = () => {
+    return request.get('/toolbox-gateway/file/v1/getToken').then(({ data }) => {
+      return data
+    })
+  }
   // componentDidUpdate(prevProps) {
   //   const { progress: prevProgress } = prevProps;
   //   const { errorMsg = '操作失败', newPolicyId, progress, msg = '操作成功' } = this.props;
@@ -99,14 +95,43 @@ class PolicyManage extends React.Component {
   //     // return !(!(current && current <= moment().subtract(1, 'days').endOf('day')) && current.diff(timeRange[0], 'days') > 60); //60天内不可选
   //     return current && current <= moment().subtract(1, 'days').endOf('day');
   // }
+  notExist = async (data) => {
+    const { accountList, notExistAccountIds = [], notExistAccountIdsByMcnId = [], alreadyHaveRuleAccountIds } = data.data;
+    return new Promise((resolve, reject) => {
+      Modal.confirm({
+        title: '以下账号ID不存在',
+        content: <div>
+          {
+            accountList.length > 0 ?
+              `${accountList.length}个账号添加成功`
+              : `请重新添加账号, ${alreadyHaveRuleAccountIds.length > 0 ? <p>
+                以下账号已有规则{alreadyHaveRuleAccountIds.join(', ')}
+              </p> : ''}`
+          }
+          <p>以下账号ID不存在</p>
+          {notExistAccountIds.length > 0 && <p>不存在的accountId: {notExistAccountIds.join(", ")}</p>}
+          {notExistAccountIdsByMcnId.length > 0 && <p>不在该主账号旗下的accountId: {notExistAccountIdsByMcnId.join(', ')}</p>}
+        </div>,
+        onOk() {
+          if (accountList.length != 0) {
+            resolve();
+          } else {
+            reject();
+          }
+        },
+        onCancel() {
+          reject()
+        }
 
+      });
+    })
+  }
   //提交全部表单
   handleSavePolicy = () => {
     const { form, policyInfo = {} } = this.props;
     const { id } = policyInfo;
     const { mcnId, policyPeriodIdentity } = this;
     form.validateFields((err, values) => {
-      console.log("=====", values, err)
       if (err) return;
       const { policyTime = [] } = values;
       values.validStartTime = policyTime[0].format('YYYY-MM-DD 00:00:00');
@@ -116,15 +141,19 @@ class PolicyManage extends React.Component {
       values.policyPeriodIdentity = policyPeriodIdentity;
       values.mcnId = mcnId;
       values.id = id;
-
-      const _values = Object.keys(values).reduce((acc, cur) => {
-        if (values[cur]) {
-          acc[cur] = values[cur]
-          return acc;
-        }
-        return acc;
-      }, {})
-      this.props.saveProcurementPolicyInfo(_values)
+      const item = values.contractFile && values.contractFile[0] || {}
+      values.contractFileUrl = item.url || ''
+      values.contractFileName = item.name || ''
+      // const _values = Object.keys(values).reduce((acc, cur) => {
+      //   if (values[cur]) {
+      //     acc[cur] = values[cur]
+      //     return acc;
+      //   }
+      //   return acc;
+      // }, {})
+      this.props.saveProcurementPolicyInfo(values).then(() => {
+        Modal.success({ content: '政策保存成功' })
+      })
     })
   }
 
@@ -136,32 +165,23 @@ class PolicyManage extends React.Component {
   //   this.setState({ timeRange: [] })
   // }
 
-  judgeInputLenth = (_, value, callback) => {
-    if (value && value.length <= 2000) {
-      callback();
-    } else if (!value) {
-      callback('请输入政策说明')
-    } else if (value.length > 200) {
-      callback('政策说明最多可输入2000字')
-    }
-  }
-
   isShowStopModal = () => {
     this.setState({ stopModal: !this.state.stopModal })
   }
-
-  // handleStopPolicy = (value) => {
-  //   const { policyDetail = {} } = this.props;
-  //   const { policyId } = this.state;
-  //   const { id, policyStatus } = policyDetail;
-  //   Object.assign(value, { id, policyStatus });
-
-  //   this.props.updatePriceInfo(value, 'stopPolicy').then(() => {
-  //     if (policyId !== undefined)
-  //       this.props.getPolicyDetail(policyId);
-  //   });
-  //   this.isShowStopModal();
-  // }
+  //停用原因提交操作
+  handleStopPolicy = async ({ policyStopReason }) => {
+    const { id } = this.getDefaultQuery();
+    await this.props.stopPolicy({ id, policyStopReason })
+    message.success('操作成功')
+    this.isShowStopModal();
+    this.getPolicyInfoByMcnId();
+  }
+  handleStartPolicy = async () => {
+    const { id } = this.getDefaultQuery();
+    await this.props.startPolicy({ id })
+    message.success('操作成功')
+    this.getPolicyInfoByMcnId();
+  }
   // normFile = e => {
   //   console.log('Upload event:', e);
   //   if (Array.isArray(e)) {
@@ -173,38 +193,36 @@ class PolicyManage extends React.Component {
     this.setState({ showEditRuleModal: true, editRuleModalType: type, currentRuleId: null })
   }
   editRule = (type, currentRuleId) => {
-    console.log("编辑规则", type, currentRuleId)
+
     this.setState({ showEditRuleModal: true, editRuleModalType: type, currentRuleId })
   }
   delRule = (type, ruleId) => {
-    const { mcnId, policyPeriodIdentity } = this;
-    const { policyDetail = {} } = this.props;
-    const { id } = policyDetail;
-
+    const { id, mcnId, policyPeriodIdentity } = this.getDefaultQuery();
     const delRuleById = type == 'global' ? this.props.delGlobalRuleById : this.props.delSpecialRuleById
     delRuleById({ id, mcnId, ruleId, policyPeriodIdentity }).then(() => {
       this.getPolicyInfoByMcnId();
     })
   }
-  editRuleModalClose = e => {
+  editRuleModalClose = () => {
     this.setState({ showEditRuleModal: false })
   }
   getDefaultQuery = () => {
     const { mcnId, policyPeriodIdentity } = this;
     const { currentRuleId } = this.state;
-    const { policyDetail = {} } = this.props;
-    const { id } = policyDetail;
+    const { policyInfo = {} } = this.props;
+    const { id } = policyInfo;
     return { id, mcnId, currentRuleId, policyPeriodIdentity }
   }
-  saveAccountRule = (type, values) => {
-    const { mcnId, policyPeriodIdentity } = this;
-    const { currentRuleId } = this.state;
-    const { policyDetail = {} } = this.props;
-    const { id } = policyDetail;
-    const saveAccountRule = type == 'global' ? this.props.saveGlobalAccountRule : this.props.saveSpecialAccountRule
-    saveAccountRule({ ...values, mcnId, ruleId: currentRuleId, id, policyPeriodIdentity }).then(() => {
-      this.getPolicyInfoByMcnId();
-    })
+  saveAccountRule = async (type, values) => {
+    const { id, mcnId, policyPeriodIdentity } = this.getDefaultQuery();
+    const { currentRuleId: ruleId } = this.state;
+    const query = { ...values, mcnId, ruleId, id, policyPeriodIdentity }
+
+    const saveAccountRule = this.props[type == 'global' ? 'saveGlobalAccountRule' : 'saveSpecialAccountRule']
+    const data = await saveAccountRule(query);
+    await this.notExist(data);
+    this.getPolicyInfoByMcnId();
+    this.editRuleModalClose()
   }
   saveWhiteAccount = async (ids = []) => {
     const { id, mcnId, policyPeriodIdentity } = this.getDefaultQuery();
@@ -221,21 +239,27 @@ class PolicyManage extends React.Component {
     this.getPolicyInfoByMcnId();
   }
   onMenuClick = ({ key }) => {
-    this.props.history.replace(`/account/policy?userId=}&policyPeriodIdentity=${key}`);
-    window.location.reload();
+    if (key == 3) {
+      this.props.history.push(`/account/policyList?userId=${this.mcnId}`)
+      return false;
+    } else {
+      this.props.history.replace(`/account/policy?userId=${this.mcnId}&policyPeriodIdentity=${key}`);
+      window.location.reload();
+    }
+
   }
 
   render() {
     const { mcnId } = this;
     const { form, policyInfo = {}, progress, newBPlatforms } = this.props;
     const { getAccountInfoByIds } = this.props;
-    const { stopModal, policyId, showEditRuleModal, editRuleModalType, currentRuleId } = this.state;
+    const { stopModal, policyId, showEditRuleModal, editRuleModalType, currentRuleId, token } = this.state;
     const isEdit = policyId !== undefined;
     const { policyStatus, identityName,
-      validStartTime, validEndTime, modifyName = '未知', id, modifiedAt, stopReason,
+      validStartTime, validEndTime, id, modifiedAt, stopReason,
       globalAccountRules = [], specialAccountRules = [], whiteList = [],
-      isDraft,
-      nextPolicyStatus
+      isDraft, selectedPlatformIds,
+      nextPolicyStatus, modifiedByName
     } = policyInfo;
 
     const currentRule = (editRuleModalType == 'global' ? globalAccountRules : specialAccountRules).filter(item => item.ruleId == currentRuleId)
@@ -244,41 +268,25 @@ class PolicyManage extends React.Component {
       labelCol: { span: 2 },
       wrapperCol: { span: 22 },
     };
-    console.log("=====", editRuleModalType, currentRuleId, currentRule)
+
     const menuSelectedKeys = [String(this.policyPeriodIdentity)]
 
-    console.log("MenuSelectedKeys", menuSelectedKeys)
-    const contractUploadProps = {
-      name: 'file',
-      multiple: true,
-      action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-      onChange(info) {
-        const { status } = info.file;
-        if (status !== 'uploading') {
-          console.log(info.file, info.fileList);
-        }
-        if (status === 'done') {
-          message.success(`${info.file.name} file uploaded successfully.`);
-        } else if (status === 'error') {
-          message.error(`${info.file.name} file upload failed.`);
-        }
-      },
-    };
+    const nextPolicyStatusName = this.policyPeriodIdentity == 1 ? POLICYSTATUS[nextPolicyStatus] : POLICYSTATUS[policyStatus]
+    return <>
+      {/*  <h2 key='policyHeader' className='policyHeader'>
+       	{isEdit ? '修改政策' : '新增政策'}
+       	<Button>当期政策</Button>
+       </h2>*/}
 
-    return [
-      // <h2 key='policyHeader' className='policyHeader'>
-      // 	{isEdit ? '修改政策' : '新增政策'}
-      // 	<Button>当期政策</Button>
-      // </h2>,
-      <div key="alertMessage">{isDraft == 1 ? <Alert message="当前为草稿状态" type="warning" /> : null}</div>,
+      <div key="alertMessage">{isDraft == 1 ? <Alert message="当前为草稿状态" type="warning" /> : null}</div>
       <Menu key='policyMenu' mode="horizontal" onClick={this.onMenuClick} selectedKeys={menuSelectedKeys}>
         <Menu.Item key="1">本期政策</Menu.Item>
-        <Menu.Item key="2">下期政策({POLICYSTATUS[nextPolicyStatus]})</Menu.Item>
-        {/* <Menu.Item key="3">往期政策</Menu.Item> */}
-      </Menu>,
+        <Menu.Item key="2">下期政策({nextPolicyStatusName})</Menu.Item>
+        <Menu.Item key="3">往期政策</Menu.Item>
+      </Menu>
       <div key='policyWrapper' className='policyWrapper'>
         <Spin spinning={progress === 'loading'}>
-          {isEdit ? <PageInfo policyId={id} status={policyStatus} stopReason={stopReason} editor={modifyName} editTime={moment(modifiedAt).format('YYYY-MM-DD HH:mm:ss')} /> : null}
+          <PageInfo policyId={id} status={policyStatus} stopReason={stopReason} editor={modifiedByName} editTime={moment(modifiedAt).format('YYYY-MM-DD HH:mm:ss')} />
           <Form>
             <FormItem label='主账号名称' {...formItemLayout}>
               {/* {isEdit ? identityName : userName || '未知'} */}
@@ -299,7 +307,10 @@ class PolicyManage extends React.Component {
             </FormItem>
 
             <ModuleHeader title="全局账号设置"></ModuleHeader>
-            <div>政策规则：<Button onClick={() => this.addRule('global')} type="link">+添加</Button></div>
+            <div>政策规则：
+            {globalAccountRules.length < 6 ?
+                <Button onClick={() => this.addRule('global')} type="link">+添加</Button> : null}
+            </div>
             <RuleModule
               key='globalAccountRules'
               data={globalAccountRules}
@@ -310,7 +321,9 @@ class PolicyManage extends React.Component {
             ></RuleModule>
 
             <ModuleHeader title="特殊账号设置"></ModuleHeader>
-            <div>政策规则：<Button onClick={() => this.addRule('special')} type="link">+添加</Button></div>
+            <div>政策规则：{specialAccountRules.length < 20 ?
+              <Button onClick={() => this.addRule('special')} type="link">+添加</Button>
+              : null}</div>
             <RuleModule
               key='specialAccountRules'
               data={specialAccountRules}
@@ -365,14 +378,14 @@ class PolicyManage extends React.Component {
             <FormItem label='保底金额' {...formItemLayout}>
               {
                 getFieldDecorator('guaranteedMinAmount', { initialValue: policyInfo.guaranteedMinAmount })(
-                  <InputNumber style={{ width: 100 }} max={999999999} suffix="元" />
+                  <InputNumber style={{ width: 400 }} max={9999999999} suffix="元" />
                 )
               }
             </FormItem>
             <FormItem label='保底备注' {...formItemLayout}>
               {
                 getFieldDecorator('guaranteedRemark', { initialValue: policyInfo.guaranteedRemark })(
-                  <Input.TextArea rows={4} style={{ width: 100 }} suffix="元" />
+                  <Input.TextArea rows={4} style={{ width: 400 }} suffix="元" />
                 )
               }
             </FormItem>
@@ -391,6 +404,33 @@ class PolicyManage extends React.Component {
 								</Upload.Dragger>,
 							)}
 						</Form.Item> */}
+            <Form.Item label='合同附件' {...formItemLayout}>
+              {getFieldDecorator('contractFile', {
+                valuePropName: 'fileList',
+                getValueFromEvent: e => e && e.fileList,
+                initialValue: policyInfo.contractFileUrl ?
+                  [{
+                    uid: '-1',
+                    name: policyInfo.contractFileName,
+                    status: 'done',
+                    url: policyInfo.contractFileUrl,
+                  }] : null
+                // rules: [
+                //    { message: '请上传截图', required: true, type: "array" }
+                // ]
+              })(
+                <OssUpload
+                  authToken={token}
+                  rule={{
+                    bizzCode: 'MCN_PROCUREMENT_POLICY_CONTRACT',
+                    max: 50,
+                    suffix: 'pdf,docx,doc,dot,dotx'
+                  }}
+                  len={1}//可以上传几个
+                  tipContent={() => '支持pdf,docx,doc,dot,dotx格式,小于50M的文件上传'}
+                />
+              )}
+            </Form.Item>
             <FormItem label="备注"  {...formItemLayout}>
               {getFieldDecorator('remark', { initialValue: policyInfo.remark })(
                 <TextArea className='remarksText' max={1000} />
@@ -400,9 +440,10 @@ class PolicyManage extends React.Component {
             <FormItem className='policyFooter'>
               {
                 policyStatus == 1 || policyStatus == 2 ?
-                  <Button type='primary' onClick={this.isShowStopModal}>停用</Button> : null
+                  <Button type='primary' onClick={this.isShowStopModal}>停用</Button> : policyStatus == 4 ?
+                    <Button type='primary' onClick={this.handleStartPolicy}>启用</Button> : null
               }
-              <Button type='primary' onClick={this.handleSavePolicy}>{policyStatus == 4 ? '启用' : '提交'}</Button>
+              {policyStatus != 4 ? <Button type='primary' onClick={this.handleSavePolicy}>提交</Button> : null}
             </FormItem>
           </Form>
         </Spin>
@@ -411,6 +452,7 @@ class PolicyManage extends React.Component {
         {showEditRuleModal && <EditRuleForm
           mcnId={mcnId}
           policyId={id}
+          selectedPlatformIds={selectedPlatformIds}
           policyPeriodIdentity={this.policyPeriodIdentity}
           currentRule={currentRule[0]}
           getAccountInfoByIds={getAccountInfoByIds}
@@ -425,7 +467,7 @@ class PolicyManage extends React.Component {
         ></EditRuleForm>}
 
       </div >
-    ]
+    </>
   }
 }
 
@@ -447,3 +489,4 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Form.create()(PolicyManage))
+

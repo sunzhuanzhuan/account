@@ -1,17 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Card, Col, Row, Button, Tag, Modal, Checkbox, Radio, Input, Icon, InputNumber, Form, Select } from 'antd'
+import React, { useState } from 'react';
+import { Form, Select } from 'antd'
 
-import {
-  ruleDiscount,
-  Rule_Discount_Ratio,
-  Rule_Discount_Numeric,
-
-  ruleRebate,
-  Rule_Rebate_Ratio,
-  Rule_Rebate_Numeric,
-  Rule_Rebate_LadderRatio,
-  platformListOptions
-} from '../../constants/dataConfig'
 const formItemLayout = {
   labelCol: { span: 2 },
   wrapperCol: { span: 22 },
@@ -20,34 +9,44 @@ const formItemLayout = {
 const { Option } = Select;
 
 export const PlatformEdit = (props) => {
+
   const { newBPlatforms } = props;
-  const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = props.form;
-  const { addPlatform, defaultCheckedList = [1, 2], setDefaultCheckedList, currentRule = {} } = props;
-  // const platformListMap = platformList.reduce((obj, item) => {
-  //     obj[item.id] = item;
-  //     return obj;
-  // }, {})
-  const { platformList = [] } = currentRule
-  console.log("currentRule", currentRule, props.newBPlatforms)
-  const onClose = (e) => {
-    const checkeList = defaultCheckedList.filter(item => item !== e);
-    setDefaultCheckedList(checkeList);
+  const { getFieldDecorator } = props.form;
+  const { currentRule = {}, selectedPlatformIds } = props;
+  const { platformList = [] } = currentRule;
+
+  const currentSelectedIds = platformList.map(item => item.platformId)
+  currentSelectedIds.forEach(element => {
+    selectedPlatformIds[element] = false;
+  });
+  const [selectedIds, setSelectedIds] = useState(selectedPlatformIds)
+
+  const onDeselect = (value) => {
+    setSelectedIds({ ...selectedIds, [value]: false })
   }
   return <Form.Item label="平台" {...formItemLayout}>
     {getFieldDecorator(`platformIds`, {
-      initialValue: platformList.map(item => item.platformId),
+      initialValue: currentSelectedIds,
       rules: [
-        { required: true, message: '请选择平台', type: 'array' },
+        { required: true, message: '请选择平台' },
       ],
     })(
-      <Select mode="multiple" placeholder="请选择平台">
-        {newBPlatforms.map(item => <Option key={item.id} value={item.id}>{item.platformName}</Option>)}
+      <Select mode="multiple"
+        onDeselect={onDeselect} placeholder="请选择平台"
+      >
+        {newBPlatforms.map(item =>
+          <Option
+            disabled={selectedIds[item.id]}
+            key={item.id}
+            value={item.id}
+
+          >{item.platformName}</Option>)
+        }
       </Select>
     )}
   </Form.Item>
 }
 export const PlatformView = (props) => {
-  console.log("====", props.data)
   return <Form.Item label="平台" {...formItemLayout}>
     <div>{props.data.map(item => item.platformName).join(", ")}</div>
   </Form.Item>

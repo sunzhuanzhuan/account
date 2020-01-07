@@ -5,7 +5,7 @@ import { PopoverFormat } from "../base/TitleAndDecide";
 import ImgCircle from "../base/ImgCircle";
 
 import "./HeadInfo.less"
-import { Avatar, Button, Divider, Empty, Icon, Popover } from 'antd';
+import { Button, Divider, Empty, Icon, Popover, Table, } from 'antd';
 import MultiClamp from 'react-multi-clamp';
 import { platformView } from "../../accountManage/constants/platform";
 import FieldMap from "../constants/FieldMap";
@@ -24,14 +24,16 @@ class HeadInfo extends Component {
       snsName, snsId, followerCount, introduction, platformId = 0,
       url, qrCodeUrl, cooperationTips,
       verifiedStatusName,
-      classification = '-',
+      classificationList = [],
+      isFamous, verifiedStatus
     } = base
-    const { wholeRank = 0, orderResponseDuration, orderResponsePercentile,
+    const { hogwartsComprehensiveCommericalIndexRank = 0, orderResponseDuration, orderResponsePercentile,
       orderAcceptanceNum = '-', orderAcceptanceRate, orderMajorIndustryCategory, orderCompleteDuration,
-      isVerified, verificationReason } = feature
+      isVerified, verificationReason, brandList = [], labelListRecordList = [] } = feature
     //排名处理
     const platformName = platformView[platformId] || '-'
-    const wholeRankCN = `${platformName}NO.${wholeRank}`
+    const wholeRankCN = `${platformName}NO.${hogwartsComprehensiveCommericalIndexRank}`
+
     return (
       <div className="head-info">
         <div className='head-avatar'>
@@ -49,10 +51,14 @@ class HeadInfo extends Component {
               /> </span> : null}
               <PopoverFormat text={<div className='account-name'>{snsName}</div>} content={snsName} />
 
-              {isVerified == 1 ? <PopoverFormat text={<VerificationIcon
-                platformId={platformId}
-                status={isVerified}
-              />} content={verificationReason} /> : null}
+              {isVerified == 1 ? <div>
+                <VerificationIcon
+                  platformId={platformId}
+                  status={verifiedStatus}
+                />
+                {verificationReason ? `（${verificationReason}）` : ''}
+              </div> : null}
+
               <LookIndex url={url} qrCodeUrl={qrCodeUrl} platformName={platformName} />
               {authVisble ?
                 <span><Divider type='vertical' />
@@ -78,9 +84,17 @@ class HeadInfo extends Component {
           <div className='info-bottom-three'>
             <div className='base-info'>
               <OneLine title='账号标签' content={
-                classification == '-' ? null : <FatLable backColor='#F3F8FD' color='#78A3CE' list={[classification]} />
+                classificationList.length > 0 ? <FatLable classificationList={classificationList} labelListRecordList={labelListRecordList} /> : null
               } />
-              <OneLine title='平台认证' content={
+              <OneLine title='关联品牌' content={
+                brandList.length > 0 ? <div style={{ display: 'flex' }}>
+                  <div className='green-tag'>{brandList[0].key}</div>
+                  <a className='look' onClick={() => setShowModal(true, {
+                    content: <div className='brand-list'>{brandList.map(one => <div color="cyan" key={one.key}>{one.key}</div>)}</div>, title: '全部品牌', width: 800
+                  })}>  查看全部</a>
+                </div> : '-'
+              } />
+              <OneLine title='认证信息' content={
                 <div className='content-font'>
                   {verifiedStatusName ? verifiedStatusName : '-'}
                 </div>}
@@ -90,16 +104,17 @@ class HeadInfo extends Component {
                   <PopoverFormat popoverProps={{ overlayStyle: { width: 400 } }} text={<MultiClamp ellipsis="..." clamp={2}>{introduction}</MultiClamp>} content={introduction} />
                 </div>}
               />
+
             </div>
             <div className='type-info'>
               <div className='type-info-row' >
-                <OneType title="内容分类" content={classification} color='#ff4d4b' />
+                <OneType title="内容分类" content={classificationList[0] && classificationList[0].name} color='#ff4d4b' />
                 <OneType title="接单数" content={orderAcceptanceNum} />
-                <OneType title="响应时间" content={FieldMap.getSegmentByFloat(orderResponsePercentile)} last={`${orderResponseDuration ? FieldMap.getTime(orderResponseDuration) : '-'}`} />
+                <OneType title="响应时间" content={FieldMap.getSegmentByFloat(orderResponsePercentile)} last={`${orderResponseDuration ? FieldMap.getTime(orderResponseDuration) : ''}`} />
               </div>
               <div className='type-info-row'>
                 <OneType title="历史服务最多分类" content={orderMajorIndustryCategory || '-'} />
-                <OneType title="接单率" content={FieldMap.getSegmentByFloat(orderAcceptanceRate)} last={orderAcceptanceRate ? numeral(orderAcceptanceRate).format('0%') : '-'} />
+                <OneType title="接单率" content={FieldMap.getSegmentByFloat(orderAcceptanceRate)} last={orderAcceptanceRate ? numeral(orderAcceptanceRate).format('0%') : ''} />
                 <OneType title="平均订单完结周期" content={orderCompleteDuration ? `${numeral(orderCompleteDuration / 3600 / 24).format('0.00')}天` : '-'} last={
                   <a style={{ fontSize: 13 }} onClick={() => setShowModal(true, {
                     content: <RecentPrice />, title: `近期应约（${accountDetail.historyPriceCount}）`, width: 1000
@@ -107,20 +122,16 @@ class HeadInfo extends Component {
                     近期应约（{accountDetail.historyPriceCount}）
                 </a>
                 }
-
                 />
               </div>
             </div>
             <div className='release-info'>
-
-              <div className='release-info-box'>
-                {skuList.length > 0 ? skuList.slice(0, 4).map((one, index) => <OneRelease key={one.skuId} title={one.skuTypeName} content={one.openQuotePrice} last={one.unitPrice} isDefense={index == 0 && one.isPreventShielding == 1} />) :
-                  <Empty style={{ margin: '0px auto' }} />}
-              </div>
+              {skuList.length > 0 ?
+                platformId == 9 ? <WeChatTable data={skuList} isFamous={isFamous} /> : <SkuListBox skuList={skuList} />
+                : <Empty style={{ margin: '0px auto' }} />}
               <div style={{ textAlign: 'center' }}>
                 {isExistCar ? <Button className='add-select-car-button' type='primary' onClick={() => selectCarEdit(true)}>加入选号车</Button> :
                   <Button className='remove-select-car-button' onClick={() => selectCarEdit(false)}>移出选号车</Button>}
-
               </div>
               {/* <div style={{ textAlign: "center", marginTop: 12 }}>加入收藏<span className='collect'>（100人已收藏）</span></div> */}
             </div>
@@ -147,25 +158,77 @@ const OneType = ({ title, content, last, color, lastContent }) => {
 
   </div>
 }
-const OneRelease = ({ title = '-', content, last = '-', isDefense }) => {
-  return <div className='release-info-three'>
-    <div className='title'>{title}{isDefense ?
-      <Popover content='该参考报价为含防屏蔽的报价'>
-        <span className='defense'>防</span>
-      </Popover>
-      : null}</div>
-    <div className='two-line-flex'>
-      <div className='content'>{`${content ? '¥' + numeral(content).format('0,0') : '-'}`}</div>
-      <PopoverFormat text={<div className='last'>{last}元/千粉丝</div>} content='平均每千粉丝单价' />
-    </div>
+const SkuListBox = ({ skuList }) => {
+  return <div className='release-info-box'>
+    {skuList.slice(0, 4).map((one, index) => {
+      const isDefense = index == 0 && one.isPreventShielding == 1
+      return <div className='release-info-three' key={one.skuId}>
+        <div className='title'>{one.skuTypeName}{isDefense ?
+          <Popover content='该参考报价为含防屏蔽的报价'>
+            <span className='defense'>防</span>
+          </Popover>
+          : null}</div>
+        <div className='two-line-flex'>
+          <div className='content'>{getPrice(one.openQuotePrice)}</div>
+          <PopoverFormat text={<div className='last'>{one.unitPrice}元/千粉丝</div>} content='平均每千粉丝单价' />
+        </div>
+      </div>
+    })}
   </div>
 }
-const FatLable = ({ backColor, color, list }) => {
+const FatLable = ({ classificationList = [], labelListRecordList = [] }) => {
+  const list = Array.from(new Set([...classificationList.map(one => one.name), ...labelListRecordList.map(one => one.labelName)]))
   return <div className='fat-lable-flex'>
-    {list.map((one, index) => <div
+    {list.map(one => <div
       className='fat-lable'
-      style={{ marginLeft: index == 0 ? 0 : '', background: backColor, color: color }}
-      key={index}>{one}</div>)}
+      key={one}>{one}</div>)}
   </div>
 }
+function getPrice(number) {
+  return <div className='priceRed fs18'>
+    {`${(number > 0 || number == 0) ? '¥' + numeral(number).format('0,0') : '-'}`}
+  </div>
+}
+const WeChatTable = ({ data = [], isFamous }) => {
+  const data2 = data.slice(4, 8) || []
+  const data1 = data.slice(0, 4).map((one, index) => ({
+    ...one,
+    openQuotePrice2: data2[index]
+  }))
+  let columns = [
+    {
+      title: '',
+      dataIndex: 'skuTypeName',
+      key: 'skuTypeName',
+    },
+
+
+  ]
+  if (isFamous == 1) {
+    columns = [...columns, {
+      title: '发布',
+      dataIndex: 'openQuotePrice2',
+      key: 'openQuotePrice2',
+      render: (text) => getPrice(text && text.openQuotePrice)
+    }, {
+      title: '原创+发布',
+      dataIndex: 'openQuotePrice',
+      key: 'openQuotePrice',
+      render: (text) => getPrice(text)
+    }]
+  }
+  if (isFamous == 2) {
+    columns = [...columns, {
+      title: '发布',
+      dataIndex: 'openQuotePrice',
+      key: 'openQuotePrice',
+      render: (text) => getPrice(text)
+    }]
+  }
+  return <Table dataSource={data1} columns={columns}
+    rowKey="skuId" className='table-no-background-add-odd wachat-table'
+    pagination={false}
+  />
+}
+
 export default HeadInfo;
