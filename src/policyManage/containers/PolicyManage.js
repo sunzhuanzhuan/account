@@ -2,7 +2,7 @@ import React from "react";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
-  Button, Icon, Form, DatePicker, Spin, Input, message,
+  Button, Form, DatePicker, Spin, Input, message,
   Radio, Switch, InputNumber, Menu, Alert, Modal
 } from 'antd';
 import request from '@/api'
@@ -24,8 +24,6 @@ import EditRuleForm from '../components/RuleModules/EditRuleForm'
 // import AddAccountModal from '../components/RuleModules/AddAccountModal'
 import { transBool, POLICYSTATUS } from '../constants/dataConfig'
 
-
-
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
@@ -35,15 +33,19 @@ class PolicyManage extends React.Component {
     this.state = {
       stopModal: false,
       showEditRuleModal: false,
-      token: '',
+      token: ''
     }
+
     const search = this.props.location.search.substring(1);
     this.mcnId = qs.parse(search)['userId'];
     this.policyPeriodIdentity = qs.parse(search)['policyPeriodIdentity'] || 1
   }
 
   componentDidMount() {
-    this.getPolicyInfoByMcnId();
+    this.getPolicyInfoByMcnId().then((data) => {
+      const { isGuaranteed = {} } = data.data
+      this.setState({ isGuaranteedStatus: transBool(isGuaranteed) })
+    })
     this.props.getNewBPlatforms({ version: '1.1' });
     this.getToken().then(token => {
       this.setState({ token: token })
@@ -54,7 +56,7 @@ class PolicyManage extends React.Component {
     const { id } = policyInfo;
     const { mcnId, policyPeriodIdentity } = this;
 
-    this.props.getPolicyInfoByMcnId({ mcnId, id, policyPeriodIdentity, props });
+    return this.props.getPolicyInfoByMcnId({ mcnId, id, policyPeriodIdentity, props });
   }
   //上传获取token接口请求
   getToken = () => {
@@ -97,18 +99,19 @@ class PolicyManage extends React.Component {
   // }
   notExist = async (data) => {
     const { accountList, notExistAccountIds = [], notExistAccountIdsByMcnId = [], alreadyHaveRuleAccountIds } = data.data;
+
     return new Promise((resolve, reject) => {
       Modal.confirm({
-        title: '以下账号ID不存在',
         content: <div>
           {
             accountList.length > 0 ?
               `${accountList.length}个账号添加成功`
-              : `请重新添加账号, ${alreadyHaveRuleAccountIds.length > 0 ? <p>
-                以下账号已有规则{alreadyHaveRuleAccountIds.join(', ')}
-              </p> : ''}`
+              : '请重新添加账号'
           }
-          <p>以下账号ID不存在</p>
+          {accountList.length == 0 && alreadyHaveRuleAccountIds.length > 0 && <p>
+            以下账号已有规则{alreadyHaveRuleAccountIds.join(', ')}
+          </p>}
+          {notExistAccountIds.length > 0 || notExistAccountIdsByMcnId.length > 0 && <p>以下账号ID不存在</p>}
           {notExistAccountIds.length > 0 && <p>不存在的accountId: {notExistAccountIds.join(", ")}</p>}
           {notExistAccountIdsByMcnId.length > 0 && <p>不在该主账号旗下的accountId: {notExistAccountIdsByMcnId.join(', ')}</p>}
         </div>,
@@ -248,12 +251,15 @@ class PolicyManage extends React.Component {
     }
 
   }
+  onGuaranteedChange = (checked) => {
+    this.setState({ isGuaranteedStatus: checked })
+  }
 
   render() {
     const { mcnId } = this;
     const { form, policyInfo = {}, progress, newBPlatforms } = this.props;
     const { getAccountInfoByIds } = this.props;
-    const { stopModal, policyId, showEditRuleModal, editRuleModalType, currentRuleId, token } = this.state;
+    const { stopModal, policyId, showEditRuleModal, editRuleModalType, currentRuleId, token, isGuaranteedStatus } = this.state;
     const isEdit = policyId !== undefined;
     const { policyStatus, identityName,
       validStartTime, validEndTime, id, modifiedAt, stopReason,
@@ -371,24 +377,24 @@ class PolicyManage extends React.Component {
                   initialValue: transBool(policyInfo.isGuaranteed),
                   valuePropName: 'checked'
                 })(
-                  <Switch checkedChildren="开" unCheckedChildren="关" />
+                  <Switch onChange={this.onGuaranteedChange} checkedChildren="开" unCheckedChildren="关" />
                 )
               }
             </FormItem>
-            <FormItem label='保底金额' {...formItemLayout}>
+            {isGuaranteedStatus && <FormItem label='保底金额' {...formItemLayout}>
               {
                 getFieldDecorator('guaranteedMinAmount', { initialValue: policyInfo.guaranteedMinAmount })(
                   <InputNumber style={{ width: 400 }} max={9999999999} suffix="元" />
                 )
               }
-            </FormItem>
-            <FormItem label='保底备注' {...formItemLayout}>
+            </FormItem>}
+            {isGuaranteedStatus && <FormItem label='保底备注' {...formItemLayout}>
               {
                 getFieldDecorator('guaranteedRemark', { initialValue: policyInfo.guaranteedRemark })(
                   <Input.TextArea rows={4} style={{ width: 400 }} suffix="元" />
                 )
               }
-            </FormItem>
+            </FormItem>}
             {/* <Form.Item label="合同附件" {...formItemLayout} {...contractUploadProps}>
 							{getFieldDecorator('contractFileUrl', {
 								valuePropName: 'fileList',
