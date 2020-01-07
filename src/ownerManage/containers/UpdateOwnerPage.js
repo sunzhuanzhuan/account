@@ -193,11 +193,11 @@ const UpdateOwnerPage = (props) => {
       </Menu.Item>}
       {showButton.channelDiscount > 0 &&
       <Menu.Item key="4">
-        <Link to={`/account/policy?userId=${linkUserId}`}>修改渠道折扣</Link>
+        <Link to={`/account/discount?userId=${linkUserId}`}>修改渠道折扣</Link>
       </Menu.Item>}
       {showButton.channelDiscount < 0 &&
       <Menu.Item key="5">
-        <Link to={`/account/policy?userId=${linkUserId}&name=${linkUserName}`}>添加渠道折扣</Link>
+        <Link to={`/account/discount?userId=${linkUserId}&name=${linkUserName}`}>添加渠道折扣</Link>
       </Menu.Item>}
     </Menu>
   );
