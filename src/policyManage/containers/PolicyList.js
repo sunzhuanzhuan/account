@@ -127,7 +127,7 @@ class PolicyManage extends React.Component {
       <Form layout="inline" onSubmit={this.handleSubmit}>
         <Form.Item>
           {getFieldDecorator('id', {
-            rules: [{ required: true, message: '请输入政策ID' }],
+            rules: [{ required: false, message: '请输入政策ID' }],
           })(
             <Input placeholder="请输入政策ID" />,
           )}

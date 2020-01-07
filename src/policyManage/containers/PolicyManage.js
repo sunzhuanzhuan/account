@@ -24,6 +24,8 @@ import EditRuleForm from '../components/RuleModules/EditRuleForm'
 // import AddAccountModal from '../components/RuleModules/AddAccountModal'
 import { transBool, POLICYSTATUS } from '../constants/dataConfig'
 
+
+
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
@@ -93,7 +95,37 @@ class PolicyManage extends React.Component {
   //     // return !(!(current && current <= moment().subtract(1, 'days').endOf('day')) && current.diff(timeRange[0], 'days') > 60); //60天内不可选
   //     return current && current <= moment().subtract(1, 'days').endOf('day');
   // }
+  notExist = async (data) => {
+    const { accountList, notExistAccountIds = [], notExistAccountIdsByMcnId = [], alreadyHaveRuleAccountIds } = data.data;
+    return new Promise((resolve, reject) => {
+      Modal.confirm({
+        title: '以下账号ID不存在',
+        content: <div>
+          {
+            accountList.length > 0 ?
+              `${accountList.length}个账号添加成功`
+              : `请重新添加账号, ${alreadyHaveRuleAccountIds.length > 0 ? <p>
+                以下账号已有规则{alreadyHaveRuleAccountIds.join(', ')}
+              </p> : ''}`
+          }
+          <p>以下账号ID不存在</p>
+          {notExistAccountIds.length > 0 && <p>不存在的accountId: {notExistAccountIds.join(", ")}</p>}
+          {notExistAccountIdsByMcnId.length > 0 && <p>不在该主账号旗下的accountId: {notExistAccountIdsByMcnId.join(', ')}</p>}
+        </div>,
+        onOk() {
+          if (accountList.length != 0) {
+            resolve();
+          } else {
+            reject();
+          }
+        },
+        onCancel() {
+          reject()
+        }
 
+      });
+    })
+  }
   //提交全部表单
   handleSavePolicy = () => {
     const { form, policyInfo = {} } = this.props;
@@ -181,16 +213,16 @@ class PolicyManage extends React.Component {
     const { id } = policyInfo;
     return { id, mcnId, currentRuleId, policyPeriodIdentity }
   }
-  saveAccountRule = (type, values) => {
+  saveAccountRule = async (type, values) => {
     const { id, mcnId, policyPeriodIdentity } = this.getDefaultQuery();
     const { currentRuleId: ruleId } = this.state;
     const query = { ...values, mcnId, ruleId, id, policyPeriodIdentity }
 
     const saveAccountRule = this.props[type == 'global' ? 'saveGlobalAccountRule' : 'saveSpecialAccountRule']
-    saveAccountRule(query).then(() => {
-      this.getPolicyInfoByMcnId();
-      this.editRuleModalClose()
-    })
+    const data = await saveAccountRule(query);
+    await this.notExist(data);
+    this.getPolicyInfoByMcnId();
+    this.editRuleModalClose()
   }
   saveWhiteAccount = async (ids = []) => {
     const { id, mcnId, policyPeriodIdentity } = this.getDefaultQuery();
@@ -224,10 +256,10 @@ class PolicyManage extends React.Component {
     const { stopModal, policyId, showEditRuleModal, editRuleModalType, currentRuleId, token } = this.state;
     const isEdit = policyId !== undefined;
     const { policyStatus, identityName,
-      validStartTime, validEndTime, modifyName = '未知', id, modifiedAt, stopReason,
+      validStartTime, validEndTime, id, modifiedAt, stopReason,
       globalAccountRules = [], specialAccountRules = [], whiteList = [],
       isDraft, selectedPlatformIds,
-      nextPolicyStatus
+      nextPolicyStatus, modifiedByName
     } = policyInfo;
 
     const currentRule = (editRuleModalType == 'global' ? globalAccountRules : specialAccountRules).filter(item => item.ruleId == currentRuleId)
@@ -245,6 +277,7 @@ class PolicyManage extends React.Component {
        	{isEdit ? '修改政策' : '新增政策'}
        	<Button>当期政策</Button>
        </h2>*/}
+
       <div key="alertMessage">{isDraft == 1 ? <Alert message="当前为草稿状态" type="warning" /> : null}</div>
       <Menu key='policyMenu' mode="horizontal" onClick={this.onMenuClick} selectedKeys={menuSelectedKeys}>
         <Menu.Item key="1">本期政策</Menu.Item>
@@ -253,7 +286,7 @@ class PolicyManage extends React.Component {
       </Menu>
       <div key='policyWrapper' className='policyWrapper'>
         <Spin spinning={progress === 'loading'}>
-          {isEdit ? <PageInfo policyId={id} status={policyStatus} stopReason={stopReason} editor={modifyName} editTime={moment(modifiedAt).format('YYYY-MM-DD HH:mm:ss')} /> : null}
+          <PageInfo policyId={id} status={policyStatus} stopReason={stopReason} editor={modifiedByName} editTime={moment(modifiedAt).format('YYYY-MM-DD HH:mm:ss')} />
           <Form>
             <FormItem label='主账号名称' {...formItemLayout}>
               {/* {isEdit ? identityName : userName || '未知'} */}
@@ -394,7 +427,7 @@ class PolicyManage extends React.Component {
                     suffix: 'pdf,docx,doc,dot,dotx'
                   }}
                   len={1}//可以上传几个
-                  tipContent={() => '支持pdf,docx,doc,dot,dotx格式,不小于50m的文件上传'}
+                  tipContent={() => '支持pdf,docx,doc,dot,dotx格式,小于50M的文件上传'}
                 />
               )}
             </Form.Item>
