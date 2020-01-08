@@ -176,10 +176,16 @@ class PolicyManage extends React.Component {
     await this.props.saveWhiteList({ id, mcnId, policyPeriodIdentity, accountIds })
     this.getPolicyInfoByMcnId();
   }
-  delWhiteListAccount = async (accountId) => {
+  delWhiteListAccount = (accountId) => {
     const { id, mcnId, policyPeriodIdentity } = this.getDefaultQuery();
-    await this.props.delWhiteListAccount({ id, mcnId, policyPeriodIdentity, accountId })
-    this.getPolicyInfoByMcnId();
+    Modal.confirm({
+      title: '确定删除？',
+      onOk: async () => {
+        await this.props.delWhiteListAccount({ id, mcnId, policyPeriodIdentity, accountId })
+        this.getPolicyInfoByMcnId();
+      }
+    })
+
   }
   onMenuClick = ({ key }) => {
     if (key == 3) {
