@@ -122,7 +122,7 @@ class PolicyManage extends React.Component {
         <Menu.Item key="1">本期政策</Menu.Item>
         <Menu.Item key="2">下期政策</Menu.Item>
         <Menu.Item key="3">往期政策</Menu.Item>
-      </Menu>,
+      </Menu>
       <h1>往期政策</h1>
       <Form layout="inline" onSubmit={this.handleSubmit}>
         <Form.Item>
