@@ -161,7 +161,9 @@ class PolicyManage extends React.Component {
 
     const saveAccountRule = this.props[type == 'global' ? 'saveGlobalAccountRule' : 'saveSpecialAccountRule']
     const data = await saveAccountRule(query);
-    await this.notExist(data);
+    if (type == 'special') {
+      await this.notExist(data);
+    }
     this.getPolicyInfoByMcnId();
     this.editRuleModalClose()
   }
@@ -200,7 +202,7 @@ class PolicyManage extends React.Component {
     const { stopModal, showEditRuleModal, editRuleModalType, currentRuleId, token, isGuaranteedStatus } = this.state;
 
     const { policyStatus, identityName,
-      validStartTime, validEndTime, id, modifiedAt, stopReason,
+      validStartTime, validEndTime, id, modifiedAt, policyStopReason,
       globalAccountRules = [], specialAccountRules = [], whiteList = [],
       isDraft, selectedPlatformIds,
       nextPolicyStatus, modifiedByName
@@ -225,7 +227,7 @@ class PolicyManage extends React.Component {
       </Menu>
       <div key='policyWrapper' className='policyWrapper'>
         <Spin spinning={progress === 'loading'}>
-          {isEdit && <PageInfo policyId={id} status={policyStatus} stopReason={stopReason} editor={modifiedByName} editTime={moment(modifiedAt).format('YYYY-MM-DD HH:mm:ss')} />}
+          {isEdit && <PageInfo policyId={id} status={policyStatus} stopReason={policyStopReason} editor={modifiedByName} editTime={moment(modifiedAt).format('YYYY-MM-DD HH:mm:ss')} />}
           <Form>
             <FormItem label='主账号名称' {...formItemLayout}>
               {identityName}

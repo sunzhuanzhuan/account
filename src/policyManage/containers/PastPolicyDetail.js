@@ -53,7 +53,7 @@ class PolicyManage extends React.Component {
     const { policyStatus, identityName,
       validStartTime, validEndTime,
       globalAccountRules = [], specialAccountRules = [], whiteList = [],
-      id, stopReason, modifiedByName, modifiedAt
+      id, policyStopReason, modifiedByName, modifiedAt
     } = pastPolicyDetail;
     const isGuaranteedBool = transBool(pastPolicyDetail.isGuaranteed);
     const formItemLayout = {
@@ -63,7 +63,7 @@ class PolicyManage extends React.Component {
     return <>
       <h2>    <Link to={`/account/policyList?userId=${this.mcnId}`}>往期政策<Icon type="left" /></Link>往期政策详情</h2>
       <div key='policyWrapper' className='policyWrapper'>
-        <PageInfo policyId={id} status={policyStatus} stopReason={stopReason} editor={modifiedByName} editTime={moment(modifiedAt).format('YYYY-MM-DD HH:mm:ss')} />
+        <PageInfo policyId={id} status={policyStatus} stopReason={policyStopReason} editor={modifiedByName} editTime={moment(modifiedAt).format('YYYY-MM-DD HH:mm:ss')} />
         <Form>
           <FormItem label='主账号名称' {...formItemLayout}>
             {identityName}
