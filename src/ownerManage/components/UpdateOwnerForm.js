@@ -228,6 +228,9 @@ const UpdateOwnerForm = (props) => {
       <Form.Item label={<span>实际账期{InfoCycle}</span>}>
         <span>{props.actualCycle === 0 ? '0' : (props.actualCycle || '-')}</span>
       </Form.Item>
+      <Form.Item label="来源">
+        <span>{props.createdFromName || '-'}</span>
+      </Form.Item>
       <Form.Item label="真实姓名">
         {getFieldDecorator('realName', {
           validateFirst: true,
