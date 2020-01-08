@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Form, Select } from 'antd'
+import { Form, Select, Checkbox } from 'antd'
 
 const formItemLayout = {
   labelCol: { span: 2 },
-  wrapperCol: { span: 22 },
+  wrapperCol: { span: 20 },
 };
 
 const { Option } = Select;
@@ -12,39 +12,62 @@ export const PlatformEdit = (props) => {
 
   const { newBPlatforms } = props;
   const { getFieldDecorator } = props.form;
-  const { currentRule = {}, selectedPlatformIds } = props;
+  const { currentRule = {}, selectedPlatformIds = {} } = props;
   const { platformList = [] } = currentRule;
+
+  const _selectedPlatformIds = { ...selectedPlatformIds }
 
   const currentSelectedIds = platformList.map(item => item.platformId)
   currentSelectedIds.forEach(element => {
-    selectedPlatformIds[element] = false;
+    _selectedPlatformIds[element] = false;
   });
-  const [selectedIds, setSelectedIds] = useState(selectedPlatformIds)
-
+  const [disabledSelectedIds, setDisabledSelectedIds] = useState(_selectedPlatformIds)
   const onDeselect = (value) => {
-    setSelectedIds({ ...selectedIds, [value]: false })
+    setDisabledSelectedIds({ ...disabledSelectedIds, [value]: false })
   }
-  return <Form.Item label="平台" {...formItemLayout}>
-    {getFieldDecorator(`platformIds`, {
-      initialValue: currentSelectedIds,
-      rules: [
-        { required: true, message: '请选择平台' },
-      ],
-    })(
-      <Select mode="multiple"
-        onDeselect={onDeselect} placeholder="请选择平台"
-      >
-        {newBPlatforms.map(item =>
-          <Option
-            disabled={selectedIds[item.id]}
-            key={item.id}
-            value={item.id}
+  const ableSelectIds = newBPlatforms.map(item => item.id).filter(item => !disabledSelectedIds[item]);
 
-          >{item.platformName}</Option>)
-        }
-      </Select>
-    )}
-  </Form.Item>
+  const onChange = (e) => {
+    const checked = e.target.checked;
+    if (checked) {
+      props.form.setFieldsValue({
+        platformIds: ableSelectIds
+      })
+    } else {
+      props.form.setFieldsValue({
+        platformIds: []
+      })
+    }
+  }
+  return <>
+    <Checkbox
+      checked={ableSelectIds.length == currentSelectedIds.length}
+      style={{
+        float: 'right',
+        padding: '10px 0'
+      }} onChange={onChange}>全选</Checkbox>
+    <Form.Item label="平台" {...formItemLayout}>
+      {getFieldDecorator(`platformIds`, {
+        initialValue: currentSelectedIds,
+        rules: [
+          { required: true, message: '请选择平台' },
+        ],
+      })(
+        <Select mode="multiple"
+          onDeselect={onDeselect} placeholder="请选择平台"
+        >
+          {newBPlatforms.map(item =>
+            <Option
+              disabled={disabledSelectedIds[item.id]}
+              key={item.id}
+              value={item.id}
+
+            >{item.platformName}</Option>)
+          }
+        </Select>
+      )}
+    </Form.Item>
+  </>
 }
 export const PlatformView = (props) => {
   return <Form.Item label="平台" {...formItemLayout}>

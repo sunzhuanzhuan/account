@@ -7,11 +7,12 @@ import { RebateEdit } from './Rebate'
 import AddAccountModal from './AddAccountModal'
 const { _ } = window;
 const EditRuleForm = (props) => {
-  const { form, showEditRuleModal, editRuleModalClose, type, mcnId, id, currentRule = {}, policyPeriodIdentity } = props;
+  const { form, editRuleModalClose, type, mcnId, id, currentRule = {}, policyPeriodIdentity } = props;
   const [addAccountModalVisible, setAddAccountModalVisible] = useState(false);
   const [accountList, setAccountList] = useState(currentRule.accountList || [])
   // const [selectedIds, setSelectedIds] = useState([]);
   const allSelectedIds = accountList.map(item => item.accountId)
+  const { ruleId } = currentRule;
   const handleSubmit = e => {
     e.preventDefault();
     props.form.validateFields(async (err, values) => {
@@ -69,16 +70,23 @@ const EditRuleForm = (props) => {
   const cleanWhiteListAccount = () => {
     setAccountList([])
   }
-  // const updateSelectedIds = (ids) => {
-  //   const newIds = Array.from(new Set([...selectedIds, ...ids]));
-  //   setSelectedIds(newIds)
-  // }
+
   const addAccount = () => {
     setAddAccountModalVisible(true);
   }
+
   return <div>
     {
-      showEditRuleModal && <Modal title={'修改规则'} width={1000} onOk={handleSubmit} maskClosable={true} mask={false} visible={true} onCancel={editRuleModalClose}>
+      <Modal
+        key={ruleId}
+        title={'修改规则'}
+        width={1000}
+        onOk={handleSubmit}
+        maskClosable={true}
+        mask={false}
+        visible={true}
+        onCancel={editRuleModalClose}
+      >
         <Form onSubmit={handleSubmit}>
           {type == 'global' ?
             <PlatformEdit {...props}></PlatformEdit> :
