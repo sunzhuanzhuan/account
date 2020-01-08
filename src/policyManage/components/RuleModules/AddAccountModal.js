@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
-import { Form, Button, Modal, Input } from 'antd';
-// import { PlatformView, PlatformEdit } from './Platform'
-// import { AccountView, AccountEdit } from './Account'
-// import { DiscountView, DiscountEdit } from './Discount'
-// import { RebateView, RebateEdit } from './Rebate'
+import { Modal, Input } from 'antd';
+import { NotExistModalContent } from '../../components'
 const { _ } = window;
 const AddAccountModal = (props) => {
   const {
@@ -13,37 +10,34 @@ const AddAccountModal = (props) => {
     updateAccountList
   } = props;
 
-  const { visible, onOk } = props;
+  const { visible } = props;
   const [selectedIds, setSelectedIds] = useState('');
 
-  // let selectedIds = [];
   const onCancel = () => {
-    // ref.current.textAreaRef.value = ''
+
     setSelectedIds('')
     setAddAccountModalVisible(false);
   }
   const onModalOk = () => {
 
-    // debugger;
     const _selectedIds = _.uniq(_.trim(selectedIds).split('\n')).filter(item => item && allSelectedIds.indexOf(item) == -1);
     if (_selectedIds.length == 0) {
       Modal.warning({
         title: '警告',
-        //content: '以下账号已经被添加' + selectedIds
         content: '添加账号不能为空',
       });
       return;
     }
     const notExist = (data) => {
-      const { accountList, notExistAccountIds = [], notExistAccountIdsByMcnId = [] } = data.data;
+      const { accountList, notExistAccountIds = [], notExistAccountIdsByMcnId = [], alreadyHaveRuleAccountIds } = data.data;
+      const notExistModalContentProps = {
+        accountList,
+        notExistAccountIds,
+        notExistAccountIdsByMcnId,
+        alreadyHaveRuleAccountIds
+      }
       Modal.confirm({
-        title: '以下账号ID不存在',
-        content: <div>
-          {accountList.length > 0 ? `${accountList.length}个账号添加成功` : ''}
-          <p>以下账号ID不存在</p>
-          {notExistAccountIds.length > 0 && <p>不存在的accountId: {notExistAccountIds.join(", ")}</p>}
-          {notExistAccountIdsByMcnId.length > 0 && <p>不在该主账号旗下的accountId: {notExistAccountIdsByMcnId.join(', ')}</p>}
-        </div>,
+        content: <NotExistModalContent {...notExistModalContentProps} />,
         onOk() {
           onCancel();
           updateAccountList(accountList);
@@ -53,13 +47,6 @@ const AddAccountModal = (props) => {
 
     props.getAccountInfoByIds({ mcnId, accountIds: _selectedIds.join(",") }).then((data) => {
       notExist(data);
-      // const { accountList, notExistAccountIds = [], notExistAccountIdsByMcnId = [] } = data.data;
-      // if (notExistAccountIds.length > 0 || notExistAccountIdsByMcnId.length > 0) {
-      //   notExist(data);
-      // } else {
-      //   onCancel();
-      //   updateAccountList(accountList);
-      // }
     })
   }
   const onChange = (e) => {
