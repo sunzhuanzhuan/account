@@ -8,9 +8,6 @@ import {
 import request from '@/api'
 import { OssUpload } from 'wbyui'
 
-// import CommonTitle from "../components/CommonTitle";
-// import RulesWrapper from "../components/RulesWrapper";
-// import WhiteList from "../components/WhiteList";
 import PageInfo from "../components/PageInfo";
 import StopReasonModal from "../components/StopReasonModal";
 import moment from 'moment';
@@ -21,9 +18,8 @@ import { ModuleHeader } from '@/components/ModuleHeader';
 import WhiteList from '../components/WhiteList';
 import RuleModule from '../components/RuleModule'
 import EditRuleForm from '../components/RuleModules/EditRuleForm'
-// import AddAccountModal from '../components/RuleModules/AddAccountModal'
 import { transBool, POLICYSTATUS } from '../constants/dataConfig'
-
+import { NotExistModalContent } from '../components'
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
@@ -64,57 +60,18 @@ class PolicyManage extends React.Component {
       return data
     })
   }
-  // componentDidUpdate(prevProps) {
-  //   const { progress: prevProgress } = prevProps;
-  //   const { errorMsg = '操作失败', newPolicyId, progress, msg = '操作成功' } = this.props;
 
-  //   if (prevProgress !== progress && progress === 'fail') {
-  //     this.getErrorTips(errorMsg, 'error');
-  //   } else if (prevProgress !== progress && progress === 'saveSuccess') {
-  //     this.getErrorTips(msg, 'success');
-  //     if (newPolicyId) {
-  //       this.props.history.replace(`/account/policy?id=${newPolicyId}`)
-  //       window.location.reload();
-  //     }
-  //   }
-  // }
-
-  // getErrorTips = (msg, type = 'error') => {
-  //   try {
-  //     if (typeof message.destroy === 'function') {
-  //       message.destroy();
-  //     }
-  //     message[type](msg);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // getDisabledDate = (current) => {
-  //   const { timeRange = [] } = this.state;
-
-  //   if (timeRange[0])
-  //     // return !(!(current && current <= moment().subtract(1, 'days').endOf('day')) && current.diff(timeRange[0], 'days') > 60); //60天内不可选
-  //     return current && current <= moment().subtract(1, 'days').endOf('day');
-  // }
   notExist = async (data) => {
     const { accountList, notExistAccountIds = [], notExistAccountIdsByMcnId = [], alreadyHaveRuleAccountIds } = data.data;
-
+    const notExistModalContentProps = {
+      accountList,
+      notExistAccountIds,
+      notExistAccountIdsByMcnId,
+      alreadyHaveRuleAccountIds
+    }
     return new Promise((resolve, reject) => {
       Modal.confirm({
-        content: <div>
-          {
-            accountList.length > 0 ?
-              `${accountList.length}个账号添加成功`
-              : '请重新添加账号'
-          }
-          {accountList.length == 0 && alreadyHaveRuleAccountIds.length > 0 && <p>
-            以下账号已有规则{alreadyHaveRuleAccountIds.join(', ')}
-          </p>}
-          {notExistAccountIds.length > 0 || notExistAccountIdsByMcnId.length > 0 && <p>以下账号ID不存在</p>}
-          {notExistAccountIds.length > 0 && <p>不存在的accountId: {notExistAccountIds.join(", ")}</p>}
-          {notExistAccountIdsByMcnId.length > 0 && <p>不在该主账号旗下的accountId: {notExistAccountIdsByMcnId.join(', ')}</p>}
-        </div>,
+        content: <NotExistModalContent {...notExistModalContentProps} />,
         onOk() {
           if (accountList.length != 0) {
             resolve();
@@ -147,26 +104,13 @@ class PolicyManage extends React.Component {
       const item = values.contractFile && values.contractFile[0] || {}
       values.contractFileUrl = item.url || ''
       values.contractFileName = item.name || ''
-      // const _values = Object.keys(values).reduce((acc, cur) => {
-      //   if (values[cur]) {
-      //     acc[cur] = values[cur]
-      //     return acc;
-      //   }
-      //   return acc;
-      // }, {})
+      values.isGuaranteed = values.isGuaranteed ? 1 : 2;
+
       this.props.saveProcurementPolicyInfo(values).then(() => {
         Modal.success({ content: '政策保存成功' })
       })
     })
   }
-
-  // handleChangeDate = (timeRange) => {
-  //   this.setState({ timeRange });
-  // }
-
-  // handleChangeDateRange = () => {
-  //   this.setState({ timeRange: [] })
-  // }
 
   isShowStopModal = () => {
     this.setState({ stopModal: !this.state.stopModal })
@@ -185,13 +129,7 @@ class PolicyManage extends React.Component {
     message.success('操作成功')
     this.getPolicyInfoByMcnId();
   }
-  // normFile = e => {
-  //   console.log('Upload event:', e);
-  //   if (Array.isArray(e)) {
-  //     return e;
-  //   }
-  //   return e && e.fileList;
-  // };
+
   addRule = (type) => {
     this.setState({ showEditRuleModal: true, editRuleModalType: type, currentRuleId: null })
   }
@@ -259,15 +197,15 @@ class PolicyManage extends React.Component {
     const { mcnId } = this;
     const { form, policyInfo = {}, progress, newBPlatforms } = this.props;
     const { getAccountInfoByIds } = this.props;
-    const { stopModal, policyId, showEditRuleModal, editRuleModalType, currentRuleId, token, isGuaranteedStatus } = this.state;
-    const isEdit = policyId !== undefined;
+    const { stopModal, showEditRuleModal, editRuleModalType, currentRuleId, token, isGuaranteedStatus } = this.state;
+
     const { policyStatus, identityName,
       validStartTime, validEndTime, id, modifiedAt, stopReason,
       globalAccountRules = [], specialAccountRules = [], whiteList = [],
       isDraft, selectedPlatformIds,
       nextPolicyStatus, modifiedByName
     } = policyInfo;
-
+    const isEdit = id !== undefined;
     const currentRule = (editRuleModalType == 'global' ? globalAccountRules : specialAccountRules).filter(item => item.ruleId == currentRuleId)
     const { getFieldDecorator } = form;
     const formItemLayout = {
@@ -279,23 +217,17 @@ class PolicyManage extends React.Component {
 
     const nextPolicyStatusName = this.policyPeriodIdentity == 1 ? POLICYSTATUS[nextPolicyStatus] : POLICYSTATUS[policyStatus]
     return <>
-      {/*  <h2 key='policyHeader' className='policyHeader'>
-       	{isEdit ? '修改政策' : '新增政策'}
-       	<Button>当期政策</Button>
-       </h2>*/}
-
       <div key="alertMessage">{isDraft == 1 ? <Alert message="当前为草稿状态" type="warning" /> : null}</div>
       <Menu key='policyMenu' mode="horizontal" onClick={this.onMenuClick} selectedKeys={menuSelectedKeys}>
         <Menu.Item key="1">本期政策</Menu.Item>
-        <Menu.Item key="2">下期政策({nextPolicyStatusName})</Menu.Item>
+        <Menu.Item key="2">下期政策({nextPolicyStatusName || "未添加"})</Menu.Item>
         <Menu.Item key="3">往期政策</Menu.Item>
       </Menu>
       <div key='policyWrapper' className='policyWrapper'>
         <Spin spinning={progress === 'loading'}>
-          <PageInfo policyId={id} status={policyStatus} stopReason={stopReason} editor={modifiedByName} editTime={moment(modifiedAt).format('YYYY-MM-DD HH:mm:ss')} />
+          {isEdit && <PageInfo policyId={id} status={policyStatus} stopReason={stopReason} editor={modifiedByName} editTime={moment(modifiedAt).format('YYYY-MM-DD HH:mm:ss')} />}
           <Form>
             <FormItem label='主账号名称' {...formItemLayout}>
-              {/* {isEdit ? identityName : userName || '未知'} */}
               {identityName}
             </FormItem>
             <FormItem label="政策有效期"  {...formItemLayout}>
@@ -307,7 +239,6 @@ class PolicyManage extends React.Component {
                   className='policyTime'
                   onCalendarChange={this.handleChangeDate}
                   onChange={this.handleChangeDateRange}
-                // disabledDate={this.getDisabledDate} 
                 />
               )}
             </FormItem>
@@ -395,21 +326,6 @@ class PolicyManage extends React.Component {
                 )
               }
             </FormItem>}
-            {/* <Form.Item label="合同附件" {...formItemLayout} {...contractUploadProps}>
-							{getFieldDecorator('contractFileUrl', {
-								valuePropName: 'fileList',
-								getValueFromEvent: this.normFile,
-								// initialValue: policyInfo.contractFileUrl
-							})(
-								<Upload.Dragger name="files" action="/upload.do">
-									<p className="ant-upload-drag-icon">
-										<Icon type="inbox" />
-									</p>
-									<p className="ant-upload-text">Click or drag file to this area to upload</p>
-									<p className="ant-upload-hint">Support for a single or bulk upload.</p>
-								</Upload.Dragger>,
-							)}
-						</Form.Item> */}
             <Form.Item label='合同附件' {...formItemLayout}>
               {getFieldDecorator('contractFile', {
                 valuePropName: 'fileList',
@@ -421,9 +337,6 @@ class PolicyManage extends React.Component {
                     status: 'done',
                     url: policyInfo.contractFileUrl,
                   }] : null
-                // rules: [
-                //    { message: '请上传截图', required: true, type: "array" }
-                // ]
               })(
                 <OssUpload
                   authToken={token}
@@ -463,15 +376,11 @@ class PolicyManage extends React.Component {
           currentRule={currentRule[0]}
           getAccountInfoByIds={getAccountInfoByIds}
           saveAccountRule={this.saveAccountRule}
-          // saveSpecialAccountRule={this.props.saveSpecialAccountRule}
-          // saveGlobalAccountRule={this.props.saveGlobalAccountRule}
-          // delSpecialRuleAccountById={this.props.delSpecialRuleAccountById}
           type={editRuleModalType}
           showEditRuleModal={showEditRuleModal}
           editRuleModalClose={this.editRuleModalClose}
           newBPlatforms={newBPlatforms}
         ></EditRuleForm>}
-
       </div >
     </>
   }
@@ -479,8 +388,6 @@ class PolicyManage extends React.Component {
 
 const mapStateToProps = (state) => {
   const { pricePolicyReducer = {} } = state;
-  // const { policyInfo, newBPlatforms, newPolicyId, progress, errorMsg, msg, id } = pricePolicyReducer;
-
   return pricePolicyReducer;
 }
 

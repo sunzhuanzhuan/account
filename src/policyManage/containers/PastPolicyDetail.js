@@ -1,17 +1,18 @@
 import React from "react";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Form, Menu, Button, Icon } from 'antd';
-import request from '@/api'
+import { Form, Icon } from 'antd';
 
+import moment from 'moment';
 import actions from '../actions';
 import './PolicyManage.less';
 import qs from 'qs';
 import { ModuleHeader } from '@/components/ModuleHeader';
 import WhiteList from '../components/WhiteList';
 import RuleModule from '../components/RuleModule'
+import PageInfo from "../components/PageInfo";
 
-import { transBool, POLICYSTATUS, REBATE_SETTLEMENT_CYCLE } from '../constants/dataConfig'
+import { transBool, REBATE_SETTLEMENT_CYCLE } from '../constants/dataConfig'
 import { Link } from "react-router-dom";
 
 const FormItem = Form.Item;
@@ -32,23 +33,11 @@ class PolicyManage extends React.Component {
 
   componentDidMount() {
     this._getPolicyInfoById();
-    // this.props.getNewBPlatforms({ version: '1.1' });
-    // this.getToken().then(token => {
-    //   this.setState({ token: token })
-    // })
   }
   _getPolicyInfoById = () => {
-    // const { policyInfo = {} } = this.props;
     const { id } = this;
-    // const { mcnId, policyPeriodIdentity } = this;
     this.props.getPolicyInfoById({ id });
   }
-  //上传获取token接口请求
-  // getToken = () => {
-  //   return request.get('/toolbox-gateway/file/v1/getToken').then(({ data }) => {
-  //     return data
-  //   })
-  // }
 
   onMenuClick = ({ key }) => {
     if (key == 3) {
@@ -60,15 +49,13 @@ class PolicyManage extends React.Component {
 
   render() {
     const { mcnId } = this;
-    const { form, pastPolicyDetail = {}, progress, newBPlatforms } = this.props;
-
-
+    const { form, pastPolicyDetail = {} } = this.props;
     const { policyStatus, identityName,
       validStartTime, validEndTime,
       globalAccountRules = [], specialAccountRules = [], whiteList = [],
-      nextPolicyStatus
+      id, stopReason, modifiedByName, modifiedAt
     } = pastPolicyDetail;
-
+    const isGuaranteedBool = transBool(pastPolicyDetail.isGuaranteed);
     const formItemLayout = {
       labelCol: { span: 2 },
       wrapperCol: { span: 22 },
@@ -76,6 +63,7 @@ class PolicyManage extends React.Component {
     return <>
       <h2>    <Link to={`/account/policyList?userId=${this.mcnId}`}>往期政策<Icon type="left" /></Link>往期政策详情</h2>
       <div key='policyWrapper' className='policyWrapper'>
+        <PageInfo policyId={id} status={policyStatus} stopReason={stopReason} editor={modifiedByName} editTime={moment(modifiedAt).format('YYYY-MM-DD HH:mm:ss')} />
         <Form>
           <FormItem label='主账号名称' {...formItemLayout}>
             {identityName}
@@ -126,14 +114,14 @@ class PolicyManage extends React.Component {
 							</cite>
           </FormItem>
           <FormItem label='保底政策' {...formItemLayout}>
-            {transBool(pastPolicyDetail.isGuaranteed) ? '开' : '关'}
+            {isGuaranteedBool ? '开' : '关'}
           </FormItem>
-          <FormItem label='保底金额' {...formItemLayout}>
+          {isGuaranteedBool && <FormItem label='保底金额' {...formItemLayout}>
             {pastPolicyDetail.guaranteedMinAmount}元
-            </FormItem>
-          <FormItem label='保底备注' {...formItemLayout}>
+          </FormItem>}
+          {isGuaranteedBool && <FormItem label='保底备注' {...formItemLayout}>
             {pastPolicyDetail.guaranteedRemark}
-          </FormItem>
+          </FormItem>}
           <Form.Item label='合同附件' {...formItemLayout}>
             <a href={pastPolicyDetail.contractFileUrl}>{pastPolicyDetail.contractFileName}</a>
           </Form.Item>
@@ -148,8 +136,6 @@ class PolicyManage extends React.Component {
 
 const mapStateToProps = (state) => {
   const { pricePolicyReducer = {} } = state;
-  // const { policyInfo, newBPlatforms, newPolicyId, progress, errorMsg, msg, id } = pricePolicyReducer;
-
   return pricePolicyReducer;
 }
 
