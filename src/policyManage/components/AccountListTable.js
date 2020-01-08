@@ -40,6 +40,7 @@ class AccountListTable extends React.Component {
 			},
 			{
 				title: '账号名称',
+				ellipsis: true,
 				dataIndex: 'snsName',
 				key: 'snsName',
 				width: 160,

@@ -216,7 +216,6 @@ class PolicyManage extends React.Component {
     };
 
     const menuSelectedKeys = [String(this.policyPeriodIdentity)]
-
     const nextPolicyStatusName = this.policyPeriodIdentity == 1 ? POLICYSTATUS[nextPolicyStatus] : POLICYSTATUS[policyStatus]
     return <>
       <div key="alertMessage">{isDraft == 1 ? <Alert message="当前为草稿状态" type="warning" /> : null}</div>
@@ -379,7 +378,6 @@ class PolicyManage extends React.Component {
           getAccountInfoByIds={getAccountInfoByIds}
           saveAccountRule={this.saveAccountRule}
           type={editRuleModalType}
-          showEditRuleModal={showEditRuleModal}
           editRuleModalClose={this.editRuleModalClose}
           newBPlatforms={newBPlatforms}
         ></EditRuleForm>}
