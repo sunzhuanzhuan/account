@@ -1,85 +1,47 @@
-import React from "react";
-import { Table } from 'antd';
+import React, { useState } from "react";
+import { Button } from 'antd';
+import AccountListTable from './AccountListTable'
+import AddAccountModal from './RuleModules/AddAccountModal'
 
-class WhiteList extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			currentPage: 1
-		};
-		this.columns = [
-			{
-				title: 'account_id',
-				dataIndex: 'account_id',
-				key: 'account_id',
-				width: 100,
-				align: 'center',
-			},
-			{
-				title: '平台',
-				dataIndex: 'platform',
-				key: 'platform',
-				width: 100,
-				align: 'center',
-			},
-			{
-				title: '账号名称',
-				dataIndex: 'account_name',
-				key: 'account_name',
-				width: 100,
-				align: 'center',
-			},
-			{
-				title: '账号ID',
-				dataIndex: 'id',
-				key: 'id',
-				width: 100,
-				align: 'center',
-			},
-			{
-				title: '粉丝数',
-				dataIndex: 'count',
-				key: 'count',
-				width: 100,
-				align: 'center',
-			},
-			{
-				title: '操作',
-				key: 'operate',
-				width: 100,
-				align: 'center',
-				render: (_, record) => {
-					return <span className='operateText'>删除</span>
-				}
-			},
-		];
-	}
-	
-	render() {
-		const { currentPage } = this.state;
-		const pagination = {
-            onChange: (currentPage) => {
-                this.setState({currentPage})
-            },
-            total: 100,
-            pageSize: 20,
-            current: currentPage,
-        };
+const { _ } = window;
+const WhiteList = (props) => {
+  const { delWhiteListAccount, mcnId, whiteList = {}, disable } = props;
+  const whiteAccountList = whiteList.accountList || []
+  const [visible, setVisible] = useState(false);
 
-		return [
-			<Table
-				key='list'
-				columns={this.columns}
-				dataSource={[]}
-				rowKey={record => record.id}
-				pagination={pagination}
-				scroll={{ x: 1300 }}
-			/>
+  const addAccountBtnClick = () => {
+    setVisible(true)
+  }
+  const setAddAccountModalVisible = () => {
+    setVisible(false)
+  }
 
-		]
-	}
+  const updateAccountList = (newAccountList = []) => {
+    // setWhiteList([...whiteList, ...newAccountList])
+    const ids = newAccountList.map(item => item.accountId)
+    props.saveWhiteAccount(_.uniq(ids))
+  }
+  const isEdit = !disable;
+  const allSelectedIds = whiteAccountList.map(item => item.accountId)
+  return <div className='white-list'>
+    <div className='search-bar'>
+      共{whiteAccountList.length}个账号 {isEdit && whiteAccountList.length < 20 ? <Button type='primary' onClick={addAccountBtnClick} style={{ marginBottom: 10 }}>添加</Button> : null}
+    </div>
+    <AccountListTable
+      isEdit={isEdit}
+      dataSource={whiteAccountList}
+      delWhiteListAccount={delWhiteListAccount}
+    ></AccountListTable>
+    <AddAccountModal
+      mcnId={mcnId}
+      allSelectedIds={allSelectedIds}
+      visible={visible}
+      setAddAccountModalVisible={setAddAccountModalVisible}
+      updateAccountList={updateAccountList}
+      getAccountInfoByIds={props.getAccountInfoByIds}
+    ></AddAccountModal>
+  </div>
 }
 
-
-
 export default WhiteList;
+

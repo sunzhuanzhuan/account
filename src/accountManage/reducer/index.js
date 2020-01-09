@@ -14,7 +14,6 @@ import {
   fetchAccountBaseInfoByUpdate_request,
   getAccountOnShelfStatus_success,
   getAccountTrinitySkuInfo_success,
-  updateFetchInfo,
   addFetchInfo,
   getSkuList_success,
   getSkuTypeList_success,
@@ -164,6 +163,7 @@ export const trinityPriceInfo = handleActions({
     }
   }
 }, {})
+
 
 export const priceTypeList = handleActions({
   [combineActions(getSkuTypeList_success)]: (state, action) => {

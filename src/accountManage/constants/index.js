@@ -111,3 +111,9 @@ export const fansColumnsKeys = {
     "视频平均评论数"]
 
 }
+
+export const policyRuleType = {
+  '1': "全局账号规则",
+  '2': "特殊账号规则",
+  '3': "白名单",
+}
