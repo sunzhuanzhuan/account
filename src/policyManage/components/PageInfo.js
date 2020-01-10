@@ -1,9 +1,9 @@
 import React from "react";
-import { Popover } from 'antd';
+import { Popover, Icon } from 'antd';
 
 class PageInfo extends React.Component {
 	render() {
-		const { policyId, editor, editTime, stopReason='暂无', status } = this.props;
+		const { policyId, editor, editTime, stopReason = '暂无', status } = this.props;
 		const policyStatus = {
 			1: '待开始',
 			2: '进行中',
@@ -16,22 +16,22 @@ class PageInfo extends React.Component {
 		}
 		const normalStatus = text => <span className='status'>{text}</span>;
 		const toolTipStatus = text => (
-			<Popover 
+			<Popover
 				overlayClassName='stopPopover'
-				content={stopReason} 
-				title='停用原因' 
-				trigger="click" 
+				content={stopReason}
+				title='停用原因'
+				trigger="hover"
 			>
-				<span className='status withTooltip'>{text}</span>
+				<span className='status withTooltip'>{text} <Icon type="question-circle" /></span>
 			</Popover>
 		)
 		const getPolicyStatusComp = status => {
-			switch(parseInt(status)) {
+			switch (parseInt(status)) {
 				case 1:
 				case 2:
-				case 3: 
+				case 3:
 					return normalStatus(policyStatus[status]);
-				case 4: 
+				case 4:
 					return toolTipStatus(policyStatus[status]);
 				default:
 					return <span className='status'>未知</span>
@@ -39,7 +39,7 @@ class PageInfo extends React.Component {
 		}
 
 		const getDiscountStatusComp = status => {
-			switch(parseInt(status)) {
+			switch (parseInt(status)) {
 				case 1:
 					return normalStatus(discountStatus[status]);
 				case 2:
@@ -55,7 +55,7 @@ class PageInfo extends React.Component {
 				<div>
 					{/* <Badge offset={[-10, -4]} count={5}><span>状态：</span></Badge> */}
 					<span>状态：</span>
-					{ policyId ? getPolicyStatusComp(status) : getDiscountStatusComp(status) }
+					{policyId ? getPolicyStatusComp(status) : getDiscountStatusComp(status)}
 				</div>
 				<div>最后修订人：{editor}</div>
 				<div>最后修订时间：{editTime}</div>

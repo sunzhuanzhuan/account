@@ -11,5 +11,6 @@ export { default as LandscapeType } from './LandscapeLabel'
 export { default as PieChart } from './PieChart'
 export { default as RingPie } from './RingPie'
 export { default as GroupedColumn } from './GroupedColumn'
+export { default as WordCloud } from './WordCloud'
 
 
