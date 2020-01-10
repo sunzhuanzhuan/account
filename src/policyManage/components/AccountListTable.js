@@ -4,10 +4,6 @@ import numeral from 'numeral'
 class AccountListTable extends React.Component {
 	constructor(props) {
 		super(props);
-		// this.state = {
-		//     currentPage: 1
-		// };
-
 	}
 	getFollowerCount = (value) => {
 		if ((value < 10000 && value > 0) || value == 0) {
@@ -81,7 +77,5 @@ class AccountListTable extends React.Component {
 		/>
 	}
 }
-
-
 
 export default AccountListTable;

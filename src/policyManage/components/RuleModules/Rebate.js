@@ -1,27 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Card, Col, Row, Button, Tag, Modal, Checkbox, Radio, Input, Icon, InputNumber, Form, Select } from 'antd'
+import React, { useState } from 'react';
+import { Button, Radio, InputNumber, Form } from 'antd'
 import { LadderRatioEdit, LadderRatioView } from './LadderRatio'
 import {
-  ruleDiscount,
-  Rule_Discount_Ratio,
-  Rule_Discount_Numeric,
-
   ruleRebate,
   Rule_Rebate_Ratio,
   Rule_Rebate_Numeric,
-  Rule_Rebate_LadderRatio
 } from '../../constants/dataConfig'
 
 const { _ } = window;
-const platformList = [
-  { id: 1, name: '新浪微博' },
-  { id: 2, name: '微信' },
-  { id: 3, name: '秒拍' },
-  { id: 4, name: '美拍' },
-  { id: 5, name: '今日头条' },
-  { id: 6, name: '小红书' }
 
-];
 const formItemLayout = {
   labelCol: { span: 2 },
   wrapperCol: { span: 22 },
@@ -29,14 +16,10 @@ const formItemLayout = {
 
 export const RebateEdit = (props) => {
   const { form, currentRule = {} } = props;
-  // const { rebateRule = {} } = currentRule;
   const [rebateRule, setRebateRule] = useState(currentRule.rebateRule || {})
   const { rebateType, rebateStepRules = [] } = rebateRule;
   const { getFieldDecorator } = form;
   const [type, useType] = useState(rebateType || Rule_Rebate_Ratio)
-  const [ratio, useRatio] = useState();
-  const [numeric, useNumeric] = useState();
-
   const isEdit = !_.isEmpty(rebateRule);
   const [visible, setVisible] = useState(isEdit);
 
@@ -51,44 +34,16 @@ export const RebateEdit = (props) => {
   const onTypeChange = e => {
     useType(e.target.value)
   }
-  const onRatioChange = e => {
-    // console.log('onRatioChange', e.target.value);
-    // useRatio(e.target.value)
-  };
-  const onNumericChange = e => {
-    // console.log('onNumericChange', e.target.value);
-    // useNumeric(e.target.value)
-  }
-  // handleSubmit = e => {
-  //     e.preventDefault();
-  //     console.log("000011");
-  //     this.props.form.validateFields((err, values) => {
-  //       console.log(err);
-  //       if (!err) {
-  //         console.log("Received values of form: ", values);
-  //       }
-  //     });
-  //   };
 
-  const checkPrice = (rule, value, callback) => {
-    // console.log("-----", rule, value);
-    if (rule.field == 'rebateRule.rebateFixedRatio') {
-      value
-    }
-
-    callback('报错');
-  };
   const checkRebateStepRules = (rule, value, callback) => {
     const { rebateNumbers } = value;
     const isBetterZero = value.percentage.every(item => item <= 100);
-    // console.log("isBetterZero", isBetterZero);
     if (!isBetterZero) {
-      callback("返点比例必须大于0，小于等于100");
+      callback("返点比例必须大于等于0，小于等于100");
       return;
     }
 
     for (let i = rebateNumbers.length; i > 0; i--) {
-      // console.log(i, rebateNumbers, rebateNumbers[i - 1], rebateNumbers[i]);
       if (rebateNumbers[i - 1] > rebateNumbers[i]) {
         callback("后面的值必须大于前面的值");
       }
@@ -116,9 +71,7 @@ export const RebateEdit = (props) => {
                 })(
                   <InputNumber
                     precision={0}
-                    // formatter={value => `${value}%`}
-                    // parser={value => value.replace('%', '')}
-                    max={100} style={{ width: 120 }} onChange={onRatioChange}
+                    max={100} style={{ width: 120 }}
                   />
                 )}%
             </Form.Item> : type == Rule_Rebate_Numeric ?
@@ -130,9 +83,6 @@ export const RebateEdit = (props) => {
                   })(
                     <InputNumber
                       style={{ width: 120 }}
-                      // formatter={value => `${value}元`}
-                      // parser={value => value.replace('元', '')}
-                      onChange={onNumericChange}
                     />
                   )
                 }元

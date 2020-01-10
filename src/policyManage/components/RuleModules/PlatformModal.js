@@ -1,32 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Col, Row, Button, Tag, Modal, Checkbox, Radio, Input, Icon, InputNumber, Form, Select } from 'antd'
-
-import RuleCard from './RuleCard'
-import {
-    ruleDiscount,
-    Rule_Discount_Ratio,
-    Rule_Discount_Numeric,
-
-    ruleRebate,
-    Rule_Rebate_Ratio,
-    Rule_Rebate_Numeric,
-    Rule_Rebate_LadderRatio
-} from '../constants/dataConfig'
-
-
-const platformList = [
-    { id: 1, name: '新浪微博' },
-    { id: 2, name: '微信' },
-    { id: 3, name: '秒拍' },
-    { id: 4, name: '美拍' },
-    { id: 5, name: '今日头条' },
-    { id: 6, name: '小红书' }
-
-];
-const formItemLayout = {
-    labelCol: { span: 2 },
-    wrapperCol: { span: 21 },
-};
+import { Col, Row, Button, Modal, Checkbox } from 'antd'
 
 const PlatformModalFooter = (props) => {
     const { allChecked, onCheckAllChange, onOk, onCancel } = props;

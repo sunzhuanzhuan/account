@@ -41,7 +41,6 @@ export const PlatformEdit = (props) => {
   }
   return <>
     <Checkbox
-      // checked={ableSelectIds.length == currentSelectedIds.length}
       style={{
         float: 'right',
         padding: '10px 0'
