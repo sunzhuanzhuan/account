@@ -28,7 +28,6 @@ export const interfaceKey = [
   { name: 'delSpecialRuleAccountById', method: 'post' }, //删除特殊规则账号
   { name: 'saveProcurementPolicyInfo', method: 'post' },
   { name: 'saveWhiteList', method: 'post' },
-  { name: 'getNewBPlatforms', baseUrl: '/operator-gateway/common/v1/' },
   { name: 'startPolicy', method: 'post' },
   { name: 'stopPolicy', method: 'post' },
   { name: 'getPastPolicyListByMcnId' },

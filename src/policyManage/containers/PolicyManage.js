@@ -12,6 +12,7 @@ import PageInfo from "../components/PageInfo";
 import StopReasonModal from "../components/StopReasonModal";
 import moment from 'moment';
 import actions from '../actions';
+import * as commonActions from '@/actions';
 import './PolicyManage.less';
 import qs from 'qs';
 import { ModuleHeader } from '@/components/ModuleHeader';
@@ -20,6 +21,7 @@ import RuleModule from '../components/RuleModule'
 import EditRuleForm from '../components/RuleModules/EditRuleForm'
 import { transBool, POLICYSTATUS } from '../constants/dataConfig'
 import { NotExistModalContent } from '../components'
+import common from "@/reducers/common";
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
@@ -400,7 +402,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => (
 
   bindActionCreators({
-    ...actions
+    ...commonActions,
+    ...actions,
   }, dispatch)
 )
 
