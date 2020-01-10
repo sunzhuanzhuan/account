@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Input, Button, InputNumber } from "antd";
+import { Button, InputNumber } from "antd";
 
 export class LadderRatioEdit extends React.PureComponent {
   static getDerivedStateFromProps(nextProps) {
@@ -75,7 +75,6 @@ export class LadderRatioEdit extends React.PureComponent {
 
   render() {
     const { rebateNumbers, percentage } = this.state;
-    const isDisabled = rebateNumbers.length - 1
     return (
       <div>
         <p>公式（是否满足阶梯【例0-100】：按照订单回填执行结果当时的博主收入金额，为计算基础）</p>

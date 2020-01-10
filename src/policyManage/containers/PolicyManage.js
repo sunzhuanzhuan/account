@@ -44,7 +44,7 @@ class PolicyManage extends React.Component {
       const { isGuaranteed = {} } = data.data
       this.setState({ isGuaranteedStatus: transBool(isGuaranteed) })
     })
-    this.props.getNewBPlatforms({ version: '1.1' });
+    this.props.getNewBPlatforms();
     this.getToken().then(token => {
       this.setState({ token: token })
     })

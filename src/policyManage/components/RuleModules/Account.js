@@ -1,32 +1,14 @@
 import React from 'react';
-import { Table, Modal, Form, Select, Button, Icon, message } from 'antd'
+import { Modal, Form, Button, Icon } from 'antd'
 const { confirm } = Modal
 import AccountListTable from '../AccountListTable'
-// import {
-//     ruleDiscount,
-//     Rule_Discount_Ratio,
-//     Rule_Discount_Numeric,
-
-//     ruleRebate,
-//     Rule_Rebate_Ratio,
-//     Rule_Rebate_Numeric,
-//     Rule_Rebate_LadderRatio
-// } from '../../constants/dataConfig'
 const formItemLayout = {
   labelCol: { span: 2 },
   wrapperCol: { span: 21 },
 };
-// const { Option } = Select;
 
 export const AccountEdit = (props) => {
   const { onButtonClick, accountList = [], delWhiteListAccount, cleanWhiteListAccount } = props;
-  // const { getFieldDecorator } = props.form;
-  const { defaultCheckedList = [1, 2], setDefaultCheckedList } = props;
-
-  const onClose = (e) => {
-    const checkeList = defaultCheckedList.filter(item => item !== e);
-    setDefaultCheckedList(checkeList);
-  }
   return <>
     <Form.Item label="账号" {...formItemLayout}>
       {accountList.length < 20 && <Button onClick={onButtonClick}>添加账号</Button>}
@@ -42,12 +24,8 @@ export const AccountView = (props) => {
     confirm({
       title: '是否清空所有账号',
       onOk() {
-        //message.success('清空账号成功')
         cleanWhiteListAccount()
-      },
-      onCancel() {
-        console.log('Cancel');
-      },
+      }
     });
   }
 

@@ -1,15 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Card, Col, Row, Button, Tag, Modal, Checkbox, Radio, Input, Icon, InputNumber, Form, Select } from 'antd'
+import React, { useState } from 'react';
+import { Button, Radio, InputNumber, Form } from 'antd'
 
 import {
   ruleDiscount,
   Rule_Discount_Ratio,
-  Rule_Discount_Numeric,
-
-  ruleRebate,
-  Rule_Rebate_Ratio,
-  Rule_Rebate_Numeric,
-  Rule_Rebate_LadderRatio
 } from '../../constants/dataConfig'
 const { _ } = window;
 const formItemLayout = {
@@ -51,8 +45,6 @@ export const DiscountEdit = (props) => {
                 <InputNumber
                   max={100}
                   precision={0}
-                  // formatter={value => `${value}%`}
-                  // parser={value => value.replace('%', '')}
                   style={{ width: 100 }}
                 />)}% = 账号报价</span>
             </Form.Item> :
@@ -64,8 +56,6 @@ export const DiscountEdit = (props) => {
                   rules: [{ required: true, message: '请输入固定扣减值!' }],
                 })(
                   <InputNumber
-                    // formatter={value => `${value}元`}
-                    // parser={value => value.replace('元', '')} 
                     style={{ width: 100 }} />
                 )}
                 元 = 账号报价
