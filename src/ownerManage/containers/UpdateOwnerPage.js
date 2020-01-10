@@ -166,7 +166,7 @@ const UpdateOwnerPage = (props) => {
   }
 
   let linkUserId = props.ownerInfo.userId
-  let linkUserName = props.ownerInfo.username
+  let linkUserName = props.ownerInfo.identityName
   let linkHost = props.config.babysitterHost
 
   const menu = (
@@ -185,11 +185,11 @@ const UpdateOwnerPage = (props) => {
       </Menu.Item>
       {showButton.policy > 0 &&
       <Menu.Item key="2">
-        <Link target="_blank" to={`/account/policy?id=${showButton.policy}`}>修改政策</Link>
+        <Link target="_blank" to={`/account/policy?userId=${linkUserId}`}>修改政策</Link>
       </Menu.Item>}
       {showButton.policy < 0 &&
       <Menu.Item key="3">
-        <Link target="_blank" to={`/account/policy?userId=${linkUserId}&name=${linkUserName}`}>添加政策</Link>
+        <Link target="_blank" to={`/account/policy?userId=${linkUserId}`}>添加政策</Link>
       </Menu.Item>}
       {showButton.channelDiscount > 0 &&
       <Menu.Item key="4">
