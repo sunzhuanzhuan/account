@@ -147,14 +147,7 @@ const UpdateOwnerForm = (props) => {
         {getFieldDecorator('username', {
           validateFirst: true,
           initialValue: props.username,
-          rules: [
-            { required: true, message: '渠道登录名不能为空' },
-            {
-              pattern: /^[a-zA-Z][0-9a-zA-Z_]{3,21}$/,
-              message: '请输入4-22位字母、数字或下划线组合，首字符必须为字母'
-            }
-          ]
-        })(<Input placeholder='请输入渠道登录名' disabled={props.disabled} />)}
+        })(<Input placeholder='请输入渠道登录名' disabled />)}
       </Form.Item>
       <Form.Item label="主账号类型">
         {getFieldDecorator('userType', {
