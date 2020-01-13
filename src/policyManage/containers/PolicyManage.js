@@ -109,6 +109,7 @@ class PolicyManage extends React.Component {
       values.isGuaranteed = values.isGuaranteed ? 1 : 2;
 
       this.props.saveProcurementPolicyInfo(values).then(() => {
+        this.getPolicyInfoByMcnId();
         Modal.success({ content: '政策保存成功' })
       })
     })
