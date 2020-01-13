@@ -259,7 +259,7 @@ class ChannelDiscount extends React.Component {
 
 const mapStateToProps = (state) => {
 	const { pricePolicyReducer = {}, commonReducers = {} } = state;
-	const { discountDetail, progress, errorMsg, msg } = pricePolicyReducer;
+	const { discountDetail, progress, errorMsg, msg } = pricePolicyReducer.discountReducer;
 	const { availablePlatforms = [] } = commonReducers;
 
 	return { discountDetail, availablePlatforms, progress, errorMsg, msg };
