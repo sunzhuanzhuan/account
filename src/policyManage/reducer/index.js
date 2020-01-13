@@ -1,10 +1,7 @@
-import { GET_PROGRESS, GET_DISCOUNT_DETAIL, GET_POLICY_DETAIL } from "../constants/ActionTypes";
-
-
-
 
 import { combineReducers } from 'redux'
-import { handleAction, handleActions, combineActions } from 'redux-actions';
+import { handleAction, handleActions } from 'redux-actions';
+import { GET_PROGRESS, GET_DISCOUNT_DETAIL, GET_POLICY_DETAIL } from "../constants/ActionTypes";
 const selectedPlatformIds = (state = []) => {
 
   return state.reduce((acc, item) => {
