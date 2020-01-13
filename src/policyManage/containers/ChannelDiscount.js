@@ -147,12 +147,11 @@ class ChannelDiscount extends React.Component {
 		this.setState({ stopModal: !this.state.stopModal })
 	}
 
-	handleStopDiscount = stopReason => {
+	handleStopDiscount = ({ policyStopReason: stopReason }) => {
 		const { discountDetail = {} } = this.props;
 		const { userId, isEdit } = this.state;
 		const { id } = discountDetail;
-
-		this.props.updatePriceInfo({ ...stopReason, id, userId }, 'stopDiscount').then(() => {
+		this.props.updatePriceInfo({ stopReason, id, userId }, 'stopDiscount').then(() => {
 			if (isEdit)
 				this.props.getDiscountDetail({ userId });
 		});
