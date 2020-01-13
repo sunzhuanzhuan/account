@@ -79,7 +79,7 @@ const EditRuleForm = (props) => {
     {
       <Modal
         key={ruleId}
-        title={'修改规则'}
+        title={`${ruleId ? '修改' : '新增'}规则`}
         width={1000}
         onOk={handleSubmit}
         maskClosable={true}
