@@ -39,8 +39,15 @@ export const interfaceKey = [
   return item;
 })
 
-export default interfaceKey.reduce((acc, cur) => {
+const policyInterface = interfaceKey.reduce((acc, cur) => {
   acc[cur.name] = `${cur.baseUrl}${cur.name}`;
   return acc;
-}, {})
+}, {});
 
+export default {
+  getDiscount: '/operator-gateway/channel/discount/v1/get',
+  addDiscount: '/operator-gateway/channel/discount/v1/add',
+  editDiscount: '/operator-gateway/channel/discount/v1/modify',
+  stopDiscount: '/operator-gateway/channel/discount/v1/stop',
+  ...policyInterface,
+}
