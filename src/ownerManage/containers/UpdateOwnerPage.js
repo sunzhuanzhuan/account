@@ -183,13 +183,9 @@ const UpdateOwnerPage = (props) => {
           }
         }}>增加账号</a>
       </Menu.Item>
-      {showButton.policy > 0 &&
+      {showButton.policy  &&
       <Menu.Item key="2">
-        <Link target="_blank" to={`/account/policy?userId=${linkUserId}`}>修改政策</Link>
-      </Menu.Item>}
-      {showButton.policy < 0 &&
-      <Menu.Item key="3">
-        <Link target="_blank" to={`/account/policy?userId=${linkUserId}`}>添加政策</Link>
+        <Link target="_blank" to={`/account/policy?userId=${linkUserId}`}>采购政策</Link>
       </Menu.Item>}
       {showButton.channelDiscount > 0 &&
       <Menu.Item key="4">
