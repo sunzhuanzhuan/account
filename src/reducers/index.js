@@ -8,7 +8,7 @@ import authorizationsReducers from './authorizations'
 import accountManageReducer from '../accountManage/reducer';
 import exportTemplateReducer from '../components/exportTemplate/reducer'
 import accountDetailReducer from "../accountDetail/reducer";
-import pricePolicyReducer from '../policyManage/reducer/discountReducer';
+import pricePolicyReducer from '../policyManage/reducer';
 
 export default combineReducers({
   commonReducers,
