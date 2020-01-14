@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import store, { history } from './store';
 import 'babel-polyfill';
-import { LocaleProvider } from 'antd';
+import { ConfigProvider, LocaleProvider } from 'antd';
 import './index.less';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import moment from 'moment';
@@ -20,6 +20,7 @@ import PolicyManage from './policyManage/containers/PolicyManage';
 import PolicyList from './policyManage/containers/PolicyList';
 import PastPolicyDetail from './policyManage/containers/PastPolicyDetail';
 import ChannelDiscount from './policyManage/containers/ChannelDiscount';
+import Owner from './ownerManage';
 
 import { linkTo } from '@/util/linkTo';
 // 设置语言包
@@ -34,15 +35,18 @@ const redirectToOtherProjects = ({ location: { pathname = '/error', search = '' 
 // 项目内路由
 const routes = () => (
   <App history={history}>
-    <Switch>
-      <Route path="/account/manage" component={AccountManage} />
-      <Route path="/account/view" component={AccountDetail} />
-      <Route path="/account/policy" component={PolicyManage} />
-      <Route path="/account/policyList" component={PolicyList} />
-      <Route path="/account/pastPolicyDetail" component={PastPolicyDetail} />
-      <Route path="/account/discount" component={ChannelDiscount} />
-      <Route render={() => linkTo('/error')} />
-    </Switch>
+    <ConfigProvider getPopupContainer={() => document.getElementById('app-content-children-id')}>
+      <Switch>
+        <Route path="/account/manage" component={AccountManage} />
+        <Route path="/account/view" component={AccountDetail} />
+        <Route path="/account/policy" component={PolicyManage} />
+        <Route path="/account/discount" component={ChannelDiscount} />
+        <Route path="/account/policyList" component={PolicyList} />
+        <Route path="/account/pastPolicyDetail" component={PastPolicyDetail} />
+        <Route path="/account/owner" component={Owner} />
+        <Route render={() => linkTo('/error')} />
+      </Switch>
+    </ConfigProvider>
   </App>
 );
 
@@ -53,7 +57,7 @@ render(
         <Switch>
           {
             process.env.NODE_ENV === 'development' ?
-              <Route exact path="/" render={() => <Redirect to="/account/manage/package/1?account_id=1" />} /> : null
+              <Route exact path="/" render={() => <Redirect to="/account/owner/update" />} /> : null
           }
           <Route path="/account" render={routes} />
           <Route render={redirectToOtherProjects} />
