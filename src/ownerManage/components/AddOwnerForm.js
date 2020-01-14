@@ -123,7 +123,7 @@ const AddOwnerForm = (props) => {
         {getFieldDecorator('userType', {
           validateFirst: true,
           rules: [
-            { required: true }
+            { required: true, message: "主账号类型不能为空"}
           ]
         })(
           <Select placeholder="请选择">
