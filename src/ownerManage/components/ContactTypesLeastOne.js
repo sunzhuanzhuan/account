@@ -45,7 +45,7 @@ const ContactTypesLeastOne = (props) => {
             message: '请填写正确的QQ号码，以便我们及时与您取得联系'
           }
         ]
-      })(<Input placeholder="请输入你的QQ号码"  disabled={props.disabled}/>)}
+      })(<Input placeholder="请输入你的QQ号码" disabled={props.disabled} />)}
     </Form.Item>,
     <Form.Item label="微信号" key="weixinId">
       {getFieldDecorator('weixinId', {
@@ -54,8 +54,8 @@ const ContactTypesLeastOne = (props) => {
         rules: [
           { validator: contactLeastOne },
           {
-            pattern: /^[a-zA-Z][a-zA-Z0-9_-]{5,19}$/,
-            message: '请输入6~20个字母、数字、下划线和减号，必须以字母开头'
+            pattern: /^[a-zA-Z0-9][a-zA-Z0-9_-]{5,19}$/,
+            message: '请输入6~20个字母、数字、下划线和减号必须以字母或数字开头'
           }
         ]
       })(<Input placeholder="请输入你的微信号码" disabled={props.disabled} />)}

@@ -98,11 +98,11 @@ const AddOwnerForm = (props) => {
             <Option key={props.defaultMedium.id} value={props.defaultMedium.id}>{props.defaultMedium.name}</Option>
             {
               props.mediumsOptions
-                .filter(({mediumId}) => mediumId !== props.defaultMedium.id)
+                .filter(({ mediumId }) => mediumId !== props.defaultMedium.id)
                 .map((item) => {
-                return <Option key={item.mediumId} value={item.mediumId}>{item.mediumName}</Option>
+                  return <Option key={item.mediumId} value={item.mediumId}>{item.mediumName}</Option>
 
-              })
+                })
             }
           </Select>
         )}
@@ -123,7 +123,7 @@ const AddOwnerForm = (props) => {
         {getFieldDecorator('userType', {
           validateFirst: true,
           rules: [
-            { required: true, message: "主账号类型不能为空"}
+            { required: true, message: "主账号类型不能为空" }
           ]
         })(
           <Select placeholder="请选择">
@@ -141,8 +141,8 @@ const AddOwnerForm = (props) => {
           rules: [
             { required: true, message: '主账号名称不能为空' },
             {
-              pattern: /^[_0-9A-Za-z\u4e00-\u9fa5]{4,60}$/,
-              message: '请输入字母、数字、汉字、下划线,长度为4-60字符'
+              pattern: /^[_0-9A-Za-z\u4e00-\u9fa5]{2,60}$/,
+              message: '请输入字母、数字、汉字、下划线,长度为2-60字符'
             }
           ]
         })(<Input placeholder='请输入主账号名称' />)}
