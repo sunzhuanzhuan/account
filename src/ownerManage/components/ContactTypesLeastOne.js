@@ -55,7 +55,7 @@ const ContactTypesLeastOne = (props) => {
           { validator: contactLeastOne },
           {
             pattern: /^[a-zA-Z0-9][a-zA-Z0-9_-]{5,19}$/,
-            message: '请输入6~20个字母、数字、下划线和减号必须以字母或数字开头'
+            message: '请输入6~20个字母、数字、下划线和减号，必须以字母或数字开头'
           }
         ]
       })(<Input placeholder="请输入你的微信号码" disabled={props.disabled} />)}
