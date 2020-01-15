@@ -120,7 +120,7 @@ const UpdateOwnerForm = (props) => {
   }
 
   return (
-    <Form {...formItemLayout} onSubmit={props.disabled ? () => {} : handleSubmit} className="" colon={false}>
+    <Form {...formItemLayout} onSubmit={props.disabled ? () => { } : handleSubmit} className="" colon={false}>
       <Form.Item label="资源媒介">
         {getFieldDecorator('ownerAdminId', {
           validateFirst: true,
@@ -133,11 +133,11 @@ const UpdateOwnerForm = (props) => {
             <Option key={props.ownerAdminId} value={props.ownerAdminId}>{props.ownerAdminName}</Option>
             {
               props.mediumsOptions
-                .filter(({mediumId}) => mediumId !== props.ownerAdminId)
+                .filter(({ mediumId }) => mediumId !== props.ownerAdminId)
                 .map((item) => {
-                return <Option key={item.mediumId} value={item.mediumId}>{item.mediumName}</Option>
+                  return <Option key={item.mediumId} value={item.mediumId}>{item.mediumName}</Option>
 
-              })
+                })
             }
           </Select>
         )}
@@ -173,8 +173,8 @@ const UpdateOwnerForm = (props) => {
           rules: [
             { required: true, message: '主账号名称不能为空' },
             {
-              pattern: /^[_0-9A-Za-z\u4e00-\u9fa5]{4,60}$/,
-              message: '请输入字母、数字、汉字、下划线,长度为4-60字符'
+              pattern: /^[_0-9A-Za-z\u4e00-\u9fa5]{2,60}$/,
+              message: '请输入字母、数字、汉字、下划线,长度为2-60字符'
             }
           ]
         })(<Input placeholder='请输入主账号名称' disabled={props.disabled} />)}
@@ -259,16 +259,16 @@ const UpdateOwnerForm = (props) => {
       </Form.Item>
       <Form.Item label="手机号码">
         {props.auth["mcn.cellphone.edit"] ? getFieldDecorator('cellPhone', {
-            validateFirst: true,
-            initialValue: props.cellPhone,
-            rules: [
-              {
-                required: true,
-                pattern: /^[1]([3-9])[0-9]{9}$/,
-                message: '请输入正确的手机号码'
-              }
-            ]
-          })(
+          validateFirst: true,
+          initialValue: props.cellPhone,
+          rules: [
+            {
+              required: true,
+              pattern: /^[1]([3-9])[0-9]{9}$/,
+              message: '请输入正确的手机号码'
+            }
+          ]
+        })(
           <Input addonBefore="+86" placeholder="请输入手机号码" onChange={handleDiffPhone} disabled={props.disabled} />) :
           getFieldDecorator('cellPhone', {
             initialValue: props.cellPhone
@@ -277,17 +277,17 @@ const UpdateOwnerForm = (props) => {
         <a className="form-suffix-action-70" onClick={() => props.setModal('cellPhone')}>修改历史</a>
       </Form.Item>
       {diffPhone &&
-      <Form.Item label="修改原因">
-        {getFieldDecorator('updateCellPhoneReason', {
-          rules: [
-            {
-              required: true,
-              message: '请输入修改原因'
-            }
-          ]
-        })(
-          <Input placeholder="请输入修改原因" disabled={props.disabled} />)}
-      </Form.Item>
+        <Form.Item label="修改原因">
+          {getFieldDecorator('updateCellPhoneReason', {
+            rules: [
+              {
+                required: true,
+                message: '请输入修改原因'
+              }
+            ]
+          })(
+            <Input placeholder="请输入修改原因" disabled={props.disabled} />)}
+        </Form.Item>
       }
       <ContactTypesLeastOne form={props.form} qq={props.qq} weixinId={props.weixinId} email={props.email} disabled={props.disabled} />
       <Form.Item label="是否提前打款">
