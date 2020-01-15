@@ -185,7 +185,7 @@ const FatLable = ({ classificationList = [], labelListRecordList = [] }) => {
   </div>
 }
 function getPrice(number) {
-  return <div className='priceRed'>
+  return <div className='priceRed fs18'>
     {`${(number > 0 || number == 0) ? '¥' + numeral(number).format('0,0') : '-'}`}
   </div>
 }

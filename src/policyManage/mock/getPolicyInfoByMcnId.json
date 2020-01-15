@@ -1,0 +1,121 @@
+{
+  "code": "1000",
+  "msg": "success",
+  "data": {
+    "id": 1,
+    "isDraft": 2,
+    "validStartTime": "2019-12-01",
+    "validEndTime": "2020-03-31",
+    "policyStatus": 2,
+    "modifiedByName": "测试",
+    "modifiedAt": "2019-12-12 13:33:00",
+    "globalAccountRules": [
+      {
+        "platformList": [
+          {
+            "platformId": 1,
+            "platformName": "新浪微博"
+          }
+        ],
+        "ruleId": 8256502.531154856,
+        "discountRule": {
+          "discountType": 1,
+          "discountFixedRatio": 0.03,
+          "discountFixedAmount": 100
+        },
+        "rebateRule": {
+          "rebateType": 3,
+          "rebateFixedRatio": 0.04,
+          "rebateFixedAmount": 100,
+          "rebateStepRules": [
+            {
+              "amountLowLimit": 0,
+              "amountHighLimit": 100,
+              "rebateRatio": 0.01
+            },
+            {
+              "amountLowLimit": 100,
+              "amountHighLimit": 200,
+              "rebateRatio": 0.01
+            },
+            {
+              "amountLowLimit": 200,
+              "amountHighLimit": 300,
+              "rebateRatio": 0.01
+            }
+          ]
+        }
+      }
+    ],
+    "specialAccountRules": [
+      {
+        "accountList": [
+          {
+            "accountId": "@id",
+            "platformName": "微信",
+            "snsName": "测试名称",
+            "snsId": null,
+            "followerCount": "122332"
+          }
+        ],
+        "ruleId": -52050452.56002698,
+        "discountRule": {
+          "discountType": 2,
+          "discountFixedRatio": 0.01,
+          "discountFixedAmount": 100
+        },
+        "rebateRule": {
+          "rebateType": 3,
+          "rebateFixedRatio": 0.02,
+          "rebateFixedAmount": 122,
+          "rebateStepRules": [
+            {
+              "amountLowLimit": 0,
+              "amountHighLimit": 1000,
+              "rebateRatio": 0.04
+            },
+            {
+              "amountLowLimit": 0,
+              "amountHighLimit": 1000,
+              "rebateRatio": 0.04
+            },
+            {
+              "amountLowLimit": 0,
+              "amountHighLimit": 1000,
+              "rebateRatio": 0.04
+            },
+            {
+              "amountLowLimit": 0,
+              "amountHighLimit": 1000,
+              "rebateRatio": 0.04
+            },
+            {
+              "amountLowLimit": 0,
+              "amountHighLimit": 1000,
+              "rebateRatio": 0.04
+            }
+          ]
+        }
+      }
+    ],
+    "whiteList|10": [
+      {
+        "accountId": "@id",
+        "platformName": "新浪微博",
+        "snsName": "测试账号名称",
+        "snsId": "测试账号Id",
+        "followerCount": 2323
+      }
+    ],
+    "rebateSettlementCycle": 2,
+    "stepRebateSettlementType": 1,
+    "isGuaranteed": 1,
+    "guaranteedMinAmount": 123,
+    "guaranteedRemark": "保底政策备注",
+    "contractFileUrl": "http://app.qlogo.cn/mbloghead/22e8d68ae897b1df9f82/50",
+    "contractFileName": "测试合同.pdf",
+    "policyStopReason": "政策停用原因",
+    "remark": "采购政策备注",
+    "nextPolicyStatus": -1
+  }
+}

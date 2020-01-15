@@ -55,14 +55,14 @@ function DataIndicator(props) {
                 <div className='text'>
                   <CharTitle title='商业价值指数' color='#999' content='基于互动指数、内容传播指数、活跃度指数、健康指数、商业适应度指数、成长指数这6个指标加权计算综合指标。' />
                 </div>
-                <div className='score'>{numeral(comprehensiveCommericalIndex).format('0')}</div>
+                <div className='score'>{comprehensiveCommericalIndex && numeral(comprehensiveCommericalIndex).format('0') || '-'}</div>
               </div>
               <Divider type="vertical" style={{ height: 40, margin: '0px 20px' }} />
               <div className='left-index'>
                 <div className='text' style={{ marginTop: 7 }}>
                   <CharTitle title={`${legend[1] || '-'}分类排名`} color='#999' />
                 </div>
-                <div>NO.<span className='score'>{hogwartsComprehensiveCommericalIndexRankOnClassification || '-'}</span></div>
+                <div><span className='score'>{hogwartsComprehensiveCommericalIndexRankOnClassification ? `NO.${hogwartsComprehensiveCommericalIndexRankOnClassification}` : '-'}</span></div>
               </div>
             </div>
 
@@ -169,18 +169,18 @@ const VideoInfo = ({ feature = {}, base = {} }) => {
             title='粉丝互动率'
             number={feature.mediaInteractionProportion ? numeral(feature.mediaInteractionProportion * 100).format('0.0') : '-'}
             unit={'%'}
-            percent={feature.mediaInteractionProportion30ItemRateOnClassificationPriceTag}
+            percent={feature.mediaInteractionProportion30ItemRateOnClassificationPriceTag || '-'}
             typeContent='同分类同价格粉丝数互动率均值' />
         </div>
       </div>
       <div className='back-padding flex1'>
         <div className='bold-font-size-16'>视频数据</div>
         <div className='fan-release-item'>
-          <ThreeNumber title='总发布数' number={feature.mediaCount} unit='个' />
+          <ThreeNumber title='总发布数' number={feature.mediaCount || '-'} unit='个' />
           <Divider type="vertical" className='height20-colorE3' />
-          <ThreeNumber title='爆款视频数' number={feature.hotMediaCount} unit='个' tips='近90天发布的爆款视频数' />
+          <ThreeNumber title='爆款视频数' number={feature.hotMediaCount || '-'} unit='个' tips='近90天发布的爆款视频数' />
           <Divider type="vertical" className='height20-colorE3' />
-          <ThreeNumber title='近28天发布频率' number={numeral(feature.mediaWeeklyFloatCount28d).format('0.0')} unit='个/周' />
+          <ThreeNumber title='近28天发布频率' number={feature.mediaWeeklyFloatCount28d ? numeral(feature.mediaWeeklyFloatCount28d).format('0.0') : '-'} unit='个/周' />
         </div>
       </div>
     </div>

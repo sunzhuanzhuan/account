@@ -15,6 +15,7 @@ import ImproveStatistics from "@/accountManage/components/common/ImproveStatisti
 import LoadingBlock from "@/accountManage/base/LoadingBlock";
 import numeral from '@/util/numeralExpand'
 import AccountState from "@/accountManage/components/AccountState";
+import { policyRuleType } from "@/accountManage/constants";
 
 const { TabPane } = Tabs;
 const { Link } = Anchor;
@@ -102,13 +103,13 @@ class ViewPageForPackage extends Component {
       window.location.replace(_url)
       return null
     }
-    const { policyInfoId } = priceInfo;
+    const { policyId, ruleType, ruleId } = priceInfo;
     return (!fullLoading && !isError) ? <div className='update-package-page-container'>
       <h2>
         账号维护
-        {policyInfoId ?
+        {policyId ?
           <small className='policyInfo-id-display'>
-            价格政策ID: {policyInfoId}</small>
+            价格政策ID: {policyId}-{policyRuleType[ruleType]}-{ruleId}</small>
           : null}
       </h2>
       <Tabs
