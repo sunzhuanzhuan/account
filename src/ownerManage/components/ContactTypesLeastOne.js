@@ -16,7 +16,7 @@ const ContactTypesLeastOne = (props) => {
 
     if (Object.values(values).filter(Boolean).length > 0) {
       let result = otherkeys.reduce((obj, key) => {
-        if (!/格式不正确/.test(form.getFieldError(key))) {
+        if (!/(格式不正确|请填写正确的QQ号码|6~20个字母)/.test(form.getFieldError(key))) {
           obj[key] = { value: values[key] }
         }
         return obj

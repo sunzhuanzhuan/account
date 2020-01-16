@@ -171,10 +171,12 @@ const UpdateOwnerForm = (props) => {
           validateFirst: true,
           initialValue: props.identityName,
           rules: [
-            { required: true, message: '主账号名称不能为空' },
             {
-              pattern: /^[_0-9A-Za-z\u4e00-\u9fa5]{2,60}$/,
-              message: '请输入字母、数字、汉字、下划线,长度为2-60字符'
+              required: true,
+              max: 60,
+              min: 2,
+              whitespace: true,
+              message: '本项为必填项，可输入2-60个字符！'
             }
           ]
         })(<Input placeholder='请输入主账号名称' disabled={props.disabled} />)}
