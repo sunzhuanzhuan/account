@@ -9,6 +9,8 @@ import accountManageReducer from '../accountManage/reducer';
 import exportTemplateReducer from '../components/exportTemplate/reducer'
 import accountDetailReducer from "../accountDetail/reducer";
 import pricePolicyReducer from '../policyManage/reducer';
+import ownerManageReducer from '../ownerManage/reducer';
+
 
 export default combineReducers({
   commonReducers,
@@ -20,5 +22,6 @@ export default combineReducers({
   accountManageReducer,
   exportTemplateReducer,
   accountDetailReducer,
-  pricePolicyReducer
+  pricePolicyReducer,
+  ownerManageReducer
 });

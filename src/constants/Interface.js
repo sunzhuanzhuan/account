@@ -9,7 +9,8 @@ export default {
     getAllClassifyInfos: '/operator-gateway/common/v1/getAllClassifyInfos',
     getFileRealPath: '/operator-gateway/common/v1/getRealDownLoadPath',
     platformList: '/operator-gateway/common/v1/platformList',
-    checkSensitiveWord: '/operator-gateway/common/v1/checkSensitiveWord'
+    checkSensitiveWord: '/operator-gateway/common/v1/checkSensitiveWord',
+    getNewBPlatforms: '/operator-gateway/common/v1/getNewBPlatforms'
   },
   sourceRulesUrl: {
     add: '/sourceRule/add',
