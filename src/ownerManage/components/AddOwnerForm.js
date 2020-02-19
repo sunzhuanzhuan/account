@@ -6,6 +6,7 @@ import { Button, Form, Input, Select, Radio, Modal, Icon, message } from 'antd';
 import QuestionTip from "@/base/QuestionTip";
 import ContactTypesLeastOne from "@/ownerManage/components/ContactTypesLeastOne";
 import ContactExtend from "@/ownerManage/components/ContactExtend";
+import { EMOJI_REGEX } from "@/constants/config";
 
 const Option = Select.Option
 const RadioGroup = Radio.Group;
@@ -141,10 +142,19 @@ const AddOwnerForm = (props) => {
           rules: [
             {
               required: true,
+              whitespace: true,
               max: 60,
               min: 2,
-              whitespace: true,
-              message: '本项为必填项，可输入2-60个字符！'
+              message: '本项为必填项，可输入2-60个字符，不可输入表情符！'
+            },
+            {
+              validator: (rule, value, callback) => {
+                if (EMOJI_REGEX.test(value)) {
+                  callback('本项为必填项，可输入2-60个字符，不可输入表情符！')
+                  return
+                }
+                callback()
+              }
             }
           ]
         })(<Input placeholder='请输入主账号名称' />)}
