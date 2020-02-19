@@ -143,7 +143,8 @@ const AddOwnerForm = (props) => {
             {
               required: true,
               whitespace: true,
-
+              max: 60,
+              min: 2,
               message: '本项为必填项，可输入2-60个字符，不可输入表情符！'
             },
             {
