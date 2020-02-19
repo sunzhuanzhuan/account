@@ -177,10 +177,11 @@ const UpdateOwnerForm = (props) => {
               max: 60,
               min: 2,
               whitespace: true,
-              message: '本项为必填项，可输入2-60个字符！'
+              message: '本项为必填项，可输入2-60个字符，不可输入表情符！'
             },
             {
               validator: (rule, value, callback) => {
+                EMOJI_REGEX.lastIndex = 0
                 if (EMOJI_REGEX.test(value)) {
                   callback('本项为必填项，可输入2-60个字符，不可输入表情符！')
                   return
