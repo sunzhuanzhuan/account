@@ -127,7 +127,7 @@ const UpdateOwnerForm = (props) => {
           validateFirst: true,
           initialValue: props.ownerAdminId > 0 ? props.ownerAdminId : undefined,
           rules: [
-            { required: true }
+            { required: true,  message: "请选择资源媒介"}
           ]
         })(
           <Select placeholder="请选择" onChange={handleDiffMcn} disabled={props.disabled}>
