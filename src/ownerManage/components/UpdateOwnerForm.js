@@ -125,13 +125,13 @@ const UpdateOwnerForm = (props) => {
       <Form.Item label="资源媒介">
         {getFieldDecorator('ownerAdminId', {
           validateFirst: true,
-          initialValue: props.ownerAdminId,
+          initialValue: props.ownerAdminId > 0 ? props.ownerAdminId : undefined,
           rules: [
-            { required: true }
+            { required: true,  message: "请选择资源媒介"}
           ]
         })(
           <Select placeholder="请选择" onChange={handleDiffMcn} disabled={props.disabled}>
-            <Option key={props.ownerAdminId} value={props.ownerAdminId}>{props.ownerAdminName}</Option>
+            {props.ownerAdminId > 0 && <Option key={props.ownerAdminId} value={props.ownerAdminId}>{props.ownerAdminName}</Option>}
             {
               props.mediumsOptions
                 .filter(({ mediumId }) => mediumId !== props.ownerAdminId)
