@@ -6,6 +6,7 @@ import { Button, Form, Input, Select, Radio, Modal, Icon, message } from 'antd';
 import QuestionTip from "@/base/QuestionTip";
 import ContactTypesLeastOne from "@/ownerManage/components/ContactTypesLeastOne";
 import ContactExtend from "@/ownerManage/components/ContactExtend";
+import { EMOJI_REGEX } from "@/constants/config";
 
 const Option = Select.Option
 const RadioGroup = Radio.Group;
@@ -124,13 +125,13 @@ const UpdateOwnerForm = (props) => {
       <Form.Item label="资源媒介">
         {getFieldDecorator('ownerAdminId', {
           validateFirst: true,
-          initialValue: props.ownerAdminId,
+          initialValue: props.ownerAdminId > 0 ? props.ownerAdminId : undefined,
           rules: [
-            { required: true }
+            { required: true,  message: "请选择资源媒介"}
           ]
         })(
           <Select placeholder="请选择" onChange={handleDiffMcn} disabled={props.disabled}>
-            <Option key={props.ownerAdminId} value={props.ownerAdminId}>{props.ownerAdminName}</Option>
+            {props.ownerAdminId > 0 && <Option key={props.ownerAdminId} value={props.ownerAdminId}>{props.ownerAdminName}</Option>}
             {
               props.mediumsOptions
                 .filter(({ mediumId }) => mediumId !== props.ownerAdminId)
@@ -176,7 +177,17 @@ const UpdateOwnerForm = (props) => {
               max: 60,
               min: 2,
               whitespace: true,
-              message: '本项为必填项，可输入2-60个字符！'
+              message: '本项为必填项，可输入2-60个字符，不可输入表情符！'
+            },
+            {
+              validator: (rule, value, callback) => {
+                EMOJI_REGEX.lastIndex = 0
+                if (EMOJI_REGEX.test(value)) {
+                  callback('本项为必填项，可输入2-60个字符，不可输入表情符！')
+                  return
+                }
+                callback()
+              }
             }
           ]
         })(<Input placeholder='请输入主账号名称' disabled={props.disabled} />)}
@@ -213,6 +224,7 @@ const UpdateOwnerForm = (props) => {
             { required: true, message: '请选择发票税率！' }
           ]
         })(<RadioGroup disabled={props.disabled || props.paymentInfoIsComplete === 1}>
+          <Radio value={0.01}>1%</Radio>
           <Radio value={0.03}>3%</Radio>
           <Radio value={0.06}>6%</Radio>
         </RadioGroup>)}
