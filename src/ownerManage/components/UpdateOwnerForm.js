@@ -224,6 +224,7 @@ const UpdateOwnerForm = (props) => {
             { required: true, message: '请选择发票税率！' }
           ]
         })(<RadioGroup disabled={props.disabled || props.paymentInfoIsComplete === 1}>
+          <Radio value={0.01}>1%</Radio>
           <Radio value={0.03}>3%</Radio>
           <Radio value={0.06}>6%</Radio>
         </RadioGroup>)}
