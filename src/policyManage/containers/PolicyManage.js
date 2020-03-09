@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
   Button, Form, DatePicker, Spin, Input, message,
-  Radio, Switch, InputNumber, Menu, Alert, Modal
+  Radio, Switch, InputNumber, Menu, Alert, Modal, Select
 } from 'antd';
 import request from '@/api'
 import { OssUpload } from 'wbyui'
@@ -214,7 +214,8 @@ class PolicyManage extends React.Component {
       validStartTime, validEndTime, id, modifiedAt, policyStopReason,
       globalAccountRules = [], specialAccountRules = [], whiteList = [],
       isDraft, selectedPlatformIds,
-      nextPolicyStatus, modifiedByName
+      nextPolicyStatus, modifiedByName,
+      policyLevel
     } = policyInfo;
     const isEdit = id !== undefined;
     const currentRule = (editRuleModalType == 'global' ? globalAccountRules : specialAccountRules).filter(item => item.ruleId == currentRuleId)
@@ -250,6 +251,27 @@ class PolicyManage extends React.Component {
                   onCalendarChange={this.handleChangeDate}
                   onChange={this.handleChangeDateRange}
                 />
+              )}
+            </FormItem>
+            <FormItem label="政策级别"  {...formItemLayout}>
+              {getFieldDecorator('policyLevel', {
+                rules: [{ required: true, message: '该项为必填项，请选择!' }],
+                initialValue: policyLevel
+              })(
+                <Select style={{width: 220}} placeholder="请选择">
+                  <Select.Option value={1}>
+                    S：独家（1家）
+                  </Select.Option>
+                  <Select.Option value={2}>
+                    A：小圈（≤3家）
+                  </Select.Option>
+                  <Select.Option value={3}>
+                    B：大圈（≤6家）
+                  </Select.Option>
+                  <Select.Option value={4}>
+                    C：平价（≥6家）
+                  </Select.Option>
+                </Select>
               )}
             </FormItem>
 

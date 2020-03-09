@@ -18,6 +18,7 @@ import AccountManage from './accountManage';
 import AccountDetail from './accountDetail';
 import PolicyManage from './policyManage/containers/PolicyManage';
 import PolicyList from './policyManage/containers/PolicyList';
+import PolicyAll from './policyManage/containers/PolicyAll';
 import PastPolicyDetail from './policyManage/containers/PastPolicyDetail';
 import ChannelDiscount from './policyManage/containers/ChannelDiscount';
 import Owner from './ownerManage';
@@ -42,6 +43,7 @@ const routes = () => (
         <Route path="/account/policy" component={PolicyManage} />
         <Route path="/account/discount" component={ChannelDiscount} />
         <Route path="/account/policyList" component={PolicyList} />
+        <Route path="/account/policyAll" component={PolicyAll} />
         <Route path="/account/pastPolicyDetail" component={PastPolicyDetail} />
         <Route path="/account/owner" component={Owner} />
         <Route render={() => linkTo('/error')} />

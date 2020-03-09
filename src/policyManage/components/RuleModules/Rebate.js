@@ -95,6 +95,15 @@ export const RebateEdit = (props) => {
               </Form.Item>
           }
         </div>
+        <Form.Item label='结算周期：' {...formItemLayout}>
+          {
+            getFieldDecorator('rebateRule.rebateSettlementCycle', {
+              initialValue: rebateRule.rebateSettlementCycle, rules: [{ required: true, message: '结算周期必填' }]
+            })(
+              <Radio.Group options={[{ label: '月', value: 1 }, { label: '季', value: 2 }, { label: '半年', value: 3 }, { label: '年', value: 4 }]} />
+            )
+          }
+        </Form.Item>
         <Button onClick={() => { setVisible(false); setRebateRule({}) }} style={{ position: 'absolute', right: 0, top: 0 }} type="link" >删除</Button>
       </div>
     }
