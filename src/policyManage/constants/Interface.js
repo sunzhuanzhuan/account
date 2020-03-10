@@ -49,4 +49,7 @@ export default {
   editDiscount: '/operator-gateway/channel/discount/v1/modify',
   stopDiscount: '/operator-gateway/channel/discount/v1/stop',
   ...policyInterface,
+  policyAll: {
+    a: '/aaaa'
+  }
 }

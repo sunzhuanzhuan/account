@@ -25,13 +25,13 @@ const PolicyCard = (props) => {
             <li>政策ID：<a>{2222}</a></li>
             <li>政策级别：<Popover content={
               <div>
-                <IconFont type="icon-wangyi" /> 独家（1家）<br />
-                <IconFont type="icon-wangyi" /> 小圈（≤3家）<br />
-                <IconFont type="icon-wangyi" /> 大圈（≤6家）<br />
-                <IconFont type="icon-wangyi" /> 平价（≥6家）<br />
+                <IconFont type="icon-level_S" /> 独家（1家）<br />
+                <IconFont type="icon-level_A" /> 小圈（≤3家）<br />
+                <IconFont type="icon-level_B" /> 大圈（≤6家）<br />
+                <IconFont type="icon-level_C" /> 平价（≥6家）<br />
               </div>
             }>
-              <IconFont type="icon-wangyi" />
+              <IconFont type="icon-level_S" />
             </Popover></li>
             <li>主账号：<a>{"wangfei001"}</a></li>
             <li>主账号ID：<span className="text-black">{"898138"}</span></li>
