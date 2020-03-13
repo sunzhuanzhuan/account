@@ -103,14 +103,10 @@ export default class PolicyAllFilterForm extends Component {
             {getFieldDecorator('brand_id', {})(
               <Select
                 allowClear
-                mode="multiple"
+                showSearch
                 style={{ width: '100%' }}
                 placeholder="请选择"
-                maxTagCount={0}
                 optionFilterProp='children'
-                maxTagPlaceholder={(omittedValues) => {
-                  return `已选${omittedValues.length}项`
-                }}
               >
                 <Option key={1}>{"S：独家（1家）A：小圈（≤3家）B：大圈（≤6家）C：平价（≥6家）"}</Option>
                 <Option key={2}>{2}</Option>

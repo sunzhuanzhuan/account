@@ -11,14 +11,14 @@ const POLICY_STATUS_ACTIVE = 2;
 const POLICY_STATUS_EXPIRED = 3;
 const POLICY_STATUS_STOP = 4;
 
-const policyStatusMap = {
+export const policyStatusMap = {
   [POLICY_STATUS_INACTIVE]: {
     status: 'default',
     text: '待开始'
   },
   [POLICY_STATUS_ACTIVE]: {
     status: 'processing',
-    text: '进行中'
+    text: '已启用'
   },
   [POLICY_STATUS_EXPIRED]: {
     status: 'processing',
@@ -36,7 +36,7 @@ const PolicyStatus = ({ status, reason }) => {
   return (
     <>
       <Badge {...props} />
-      {reason && status === 6 && <QuestionTip title="原因"/>}
+      {reason && status === 1 && <QuestionTip title="原因" content="停用原因"/>}
     </>
   )
 };
