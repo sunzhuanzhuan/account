@@ -36,7 +36,7 @@ const PolicyStatus = ({ status, reason }) => {
   return (
     <>
       <Badge {...props} />
-      {reason && status === 1 && <QuestionTip title="原因" content="停用原因"/>}
+      {reason && status === POLICY_STATUS_STOP && <QuestionTip title="原因" content={reason}/>}
     </>
   )
 };

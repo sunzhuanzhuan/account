@@ -6,10 +6,22 @@ import Interface from '../constants/Interface';
 import { createAction } from "redux-actions";
 
 
-// 获取任务管理列表
+// 根据主账号名称搜索下拉框
 export const {
-  geta,
-  geta_success
-} = createHttpAction('geta', Interface.policyAll.a, {
+  queryMcnByIdentityName,
+} = createHttpAction('queryMcnByIdentityName', Interface.policyAll.queryMcnByIdentityName, {
   method: 'post'
 });
+
+// 采购政策列表
+export const {
+  policyAllList,
+  policyAllList_success,
+} = createHttpAction('policyAllList', Interface.policyAll.queryList, {
+  method: 'post'
+});
+
+export default {
+  queryMcnByIdentityName,
+  policyAllList
+}

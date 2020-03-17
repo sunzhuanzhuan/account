@@ -1,6 +1,7 @@
 
 import { combineReducers } from 'redux'
 import { handleAction, handleActions } from 'redux-actions';
+import { reducersResponseList } from '@/util/handleData'
 import { GET_PROGRESS, GET_DISCOUNT_DETAIL, GET_POLICY_DETAIL } from "../constants/ActionTypes";
 const selectedPlatformIds = (state = []) => {
 
@@ -79,6 +80,10 @@ const pastPolicyDetail = handleAction('getPolicyInfoById_success', (state, actio
   }
 }, {})
 
+
+const policyAllList = handleAction('policyAllList_success', reducersResponseList(),
+  reducersResponseList.initList())
+
 //渠道折扣， 品牌管理reducer
 function discountReducer(state = {}, action) {
   const { progress, errorMsg, msg, discountDetail, policyDetail, newPolicyId } = action;
@@ -99,5 +104,6 @@ export default combineReducers({
   newBPlatforms,
   pastPolicyList,
   pastPolicyDetail,
+  policyAllList,
   discountReducer
 })

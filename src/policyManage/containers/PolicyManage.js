@@ -311,7 +311,13 @@ class PolicyManage extends React.Component {
               getAccountInfoByIds={this.props.getAccountInfoByIds}
               delWhiteListAccount={this.delWhiteListAccount}
             ></WhiteList>
+
             <p style={{height: 28}}/>
+            <FormItem label="备注"  {...formItemLayout}>
+              {getFieldDecorator('remark', { initialValue: policyInfo.remark })(
+                <TextArea className='remarksText' max={1000} />
+              )}
+            </FormItem>
 
             <FormItem className='policyFooter'>
               {

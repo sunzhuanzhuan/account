@@ -1,6 +1,8 @@
 import Interface, { interfaceKey } from '../constants/Interface'
 import { createHttpAction } from 'redux-action-extend'
 // import { createAction } from 'redux-actions';
+import policyAll from './policyAll'
+
 
 const actions = interfaceKey.reduce((acc, cur) => {
   const httpAction = createHttpAction(
@@ -16,5 +18,6 @@ export const {
 
 export default {
   ...actions,
+  ...policyAll,
   addWhiteListAccount
 }

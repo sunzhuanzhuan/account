@@ -50,6 +50,7 @@ export default {
   stopDiscount: '/operator-gateway/channel/discount/v1/stop',
   ...policyInterface,
   policyAll: {
-    a: '/aaaa'
+    queryMcnByIdentityName: '/operator-gateway/mcn/v1/queryMcnByIdentityName',
+    queryList: '/operator-gateway/policy/v1.1/queryList'
   }
 }

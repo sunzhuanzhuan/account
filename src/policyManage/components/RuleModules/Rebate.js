@@ -175,11 +175,6 @@ export const RebateEdit = (props) => {
               />
             )}
           </Form.Item>
-          <Form.Item label="备注"  {...formItemLayout}>
-            {getFieldDecorator('rebateRule.remark', { initialValue: rebateRule.remark })(
-              <TextArea className='remarksText' max={1000} />
-            )}
-          </Form.Item>
         </div>}
         <Button onClick={() => { setVisible(false); setRebateRule({}) }} style={{ position: 'absolute', right: 0, top: 0 }} type="link" >删除</Button>
       </div>
@@ -217,34 +212,35 @@ export const RebateView = (props) => {
             />
         }
       </Form.Item>
-      <Form.Item label='返点结算周期' {...formItemLayout}>
-        {
-          REBATE_SETTLEMENT_CYCLE[data.rebateSettlementCycle]
-        }
+      {
+        props.type === "global" && <div>
+          <Form.Item label='返点结算周期' {...formItemLayout}>
+            {
+              REBATE_SETTLEMENT_CYCLE[data.rebateSettlementCycle]
+            }
 
-      </Form.Item>
-      <Form.Item label='阶梯返点结算' {...formItemLayout}>
-        {data.stepRebateSettlementType == 1 ? '阶梯收入计算' : '全量收入计算'}
-        <cite className='eg-explain'>例：0-100返点3%，100及以上返点5%，博主总收入150<br />
-          阶梯收入计算=（100*3%）+（50*5%）<br />
-          全量收入计算=150*5%
-        </cite>
-      </Form.Item>
-      <Form.Item label='保底政策' {...formItemLayout}>
-        {isGuaranteedBool ? '开' : '关'}
-      </Form.Item>
-      {isGuaranteedBool && <Form.Item label='保底金额' {...formItemLayout}>
-        {data.guaranteedMinAmount}元
-      </Form.Item>}
-      {isGuaranteedBool && <Form.Item label='保底备注' {...formItemLayout}>
-        {data.guaranteedRemark}
-      </Form.Item>}
-      <Form.Item label='合同附件' {...formItemLayout}>
-        <a href={data.contractFileUrl}>{data.contractFileName}</a>
-      </Form.Item>
-      <Form.Item label="备注"  {...formItemLayout}>
-        {data.remark}
-      </Form.Item>
+          </Form.Item>
+          <Form.Item label='阶梯返点结算' {...formItemLayout}>
+            {data.stepRebateSettlementType == 1 ? '阶梯收入计算' : '全量收入计算'}
+            <cite className='eg-explain'>例：0-100返点3%，100及以上返点5%，博主总收入150<br />
+              阶梯收入计算=（100*3%）+（50*5%）<br />
+              全量收入计算=150*5%
+            </cite>
+          </Form.Item>
+          <Form.Item label='保底政策' {...formItemLayout}>
+            {isGuaranteedBool ? '开' : '关'}
+          </Form.Item>
+          {isGuaranteedBool && <Form.Item label='保底金额' {...formItemLayout}>
+            {data.guaranteedMinAmount}元
+          </Form.Item>}
+          {isGuaranteedBool && <Form.Item label='保底备注' {...formItemLayout}>
+            {data.guaranteedRemark}
+          </Form.Item>}
+          <Form.Item label='合同附件' {...formItemLayout}>
+            <a href={data.contractFileUrl}>{data.contractFileName}</a>
+          </Form.Item>
+        </div>
+      }
     </div>
   </Form.Item>
 }

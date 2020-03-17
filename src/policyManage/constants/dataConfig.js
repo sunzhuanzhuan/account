@@ -47,6 +47,25 @@ export const POLICYSTATUS = {
     3: "已过期",
     4: "已停用",
 }
+
+export const POLICY_LEVEL = {
+    "1": {
+      icon: "icon-level_S",
+      text: "独家（1家）"
+    },
+    "2": {
+      icon: "icon-level_A",
+      text: "小圈（≤3家）"
+    },
+    "3": {
+      icon: "icon-level_B",
+      text: "大圈（≤6家）"
+    },
+    "4": {
+      icon: "icon-level_C",
+      text: "平价（≥6家）"
+    },
+}
 /**
  * 返点结算周期
  */

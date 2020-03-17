@@ -35,3 +35,12 @@ export function batchText2Array(batchText, notNumber) {
   }
   return batchText;
 }
+/**
+ * 时间展示态
+ */
+export const dateFormat = (date, format = "YYYY-MM-DD HH:mm:ss") => {
+  if(!date || date === '1970-01-01 08:00:00'){
+    return  ''
+  }
+  return moment(date).format(format)
+}

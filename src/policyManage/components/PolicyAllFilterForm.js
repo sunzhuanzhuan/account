@@ -3,6 +3,7 @@ import { Form, Input, Row, Col, Select, Button, DatePicker } from 'antd'
 import EmSpan from '@/base/EmSpan'
 import SearchSelect from '@/base/SearchSelect'
 import { batchText2Array, moment2dateStr } from '../utils'
+import { POLICY_LEVEL, REBATE_SETTLEMENT_CYCLE } from "@/policyManage/constants/dataConfig";
 
 const { RangePicker } = DatePicker
 const InputGroup = Input.Group
@@ -23,7 +24,7 @@ function handleValue(values) {
 @Form.create()
 export default class PolicyAllFilterForm extends Component {
   state = {
-    timeType: 'create_at'
+    timeType: 'createAt'
   }
   handleSubmit = (e) => {
     e.preventDefault()
@@ -38,27 +39,40 @@ export default class PolicyAllFilterForm extends Component {
   handleReset = () => {
     this.props.form.resetFields()
   }
-  validatorBatchId = (rule, value, callback) => {
-    if (value && value.trim().split(/\s+/g).length > 200) {
-      return callback('不能超过200个')
-    }
-    callback()
+
+  queryMcnByIdentityName = (params) =>
+    this.props.actions.queryMcnByIdentityName({
+      "page": {
+        "currentPage": 1,
+        "pageSize": 20
+      },
+      "form": {
+        "identityName": params.name,
+        "isDeleted": 2
+      }
+    }).then(({ data }) => ({ data: data.list }))
+
+  componentDidMount() {
+    this.props.actions.policyAllList()
   }
+
 
   render() {
     const { source, loading, actions } = this.props
     const { getFieldDecorator } = this.props.form
+
+
     return <Form onSubmit={this.handleSubmit} className="flex-form-layout" layout="inline" autoComplete="off">
       <Row>
         <Col span={6}>
           <Form.Item label="主账号名称">
-            {getFieldDecorator('user_name', {
+            {getFieldDecorator('identityName', {
               initialValue: undefined
             })(
-              <SearchSelect placeholder="请输入并从下拉框选择" action={actions.geta} wordKey='name'
-                mapResultItemToOption={({ name } = {}) => ({
-                  value: name,
-                  label: name
+              <SearchSelect placeholder="请输入并从下拉框选择" action={this.queryMcnByIdentityName} wordKey='name'
+                mapResultItemToOption={({ identityName } = {}) => ({
+                  value: identityName,
+                  label: identityName
                 })}
               />
             )}
@@ -66,14 +80,14 @@ export default class PolicyAllFilterForm extends Component {
         </Col>
         <Col span={6}>
           <Form.Item label="主账号ID">
-            {getFieldDecorator('user_id', {})(
+            {getFieldDecorator('mcnId', {})(
               <Input placeholder="请输入主账号ID" style={{ width: '100%' }} />
             )}
           </Form.Item>
         </Col>
         <Col span={6}>
           <Form.Item label="包含规则类型">
-            {getFieldDecorator('ruleType', {})(
+            {getFieldDecorator('includeRuleTypes', {})(
               <Select
                 allowClear
                 mode="multiple"
@@ -85,22 +99,25 @@ export default class PolicyAllFilterForm extends Component {
                   return `已选${omittedValues.length}项`
                 }}
               >
-                <Option key={1}>{"返点固定比例、返点固定扣减、返点阶梯比例、折扣固定比例、折扣固定返点"}</Option>
-                <Option key={2}>{2}</Option>
+                <Option key={1}>折扣固定扣减</Option>
+                <Option key={2}>折扣固定比例</Option>
+                <Option key={3}>返点固定扣减</Option>
+                <Option key={4}>返点固定比例</Option>
+                <Option key={5}>返点阶梯比例</Option>
               </Select>
             )}
           </Form.Item>
         </Col>
         <Col span={6}>
           <Form.Item label={<EmSpan length={4}>政策ID</EmSpan>}>
-            {getFieldDecorator('PId', {})(
+            {getFieldDecorator('id', {})(
               <Input placeholder="请输入政策ID" style={{ width: '100%' }} />
             )}
           </Form.Item>
         </Col>
         <Col span={6}>
           <Form.Item label={<EmSpan length={5}>政策级别</EmSpan>}>
-            {getFieldDecorator('brand_id', {})(
+            {getFieldDecorator('policyLevel', {})(
               <Select
                 allowClear
                 showSearch
@@ -108,16 +125,18 @@ export default class PolicyAllFilterForm extends Component {
                 placeholder="请选择"
                 optionFilterProp='children'
               >
-                <Option key={1}>{"S：独家（1家）A：小圈（≤3家）B：大圈（≤6家）C：平价（≥6家）"}</Option>
-                <Option key={2}>{2}</Option>
+                {
+                  Object.entries(POLICY_LEVEL).map(([key, item]) =>
+                    <Option key={key}>{item.text}</Option>)
+                }
               </Select>
             )}
           </Form.Item>
         </Col>
         <Col span={6}>
           <Form.Item label="账号名称">
-            {getFieldDecorator('project_name', {})(
-              <SearchSelect placeholder="请输入并从下拉框选择" action={actions.geta} wordKey='name'
+            {getFieldDecorator('snsName', {})(
+              <SearchSelect placeholder="请输入并从下拉框选择" action={actions.queryMcnByIdentityName} wordKey='name'
                 mapResultItemToOption={({ name } = {}) => ({
                   value: name,
                   label: name
@@ -126,10 +145,9 @@ export default class PolicyAllFilterForm extends Component {
             )}
           </Form.Item>
         </Col>
-
         <Col span={6}>
           <Form.Item label='返点结算周期'>
-            {getFieldDecorator('sale_manager_id', {})(
+            {getFieldDecorator('rebateSettlementCycle', {})(
               <Select
                 allowClear
                 showSearch
@@ -137,45 +155,42 @@ export default class PolicyAllFilterForm extends Component {
                 placeholder="请选择"
                 optionFilterProp='children'
               >
-                <Option key={1}>{1}</Option>
-                <Option key={2}>{2}</Option>
+                {
+                  Object.entries(REBATE_SETTLEMENT_CYCLE).map(([key, text]) => <Option key={key}>{text}</Option>)
+                }
               </Select>
             )}
           </Form.Item>
         </Col>
         <Col span={6}>
           <Form.Item label="资源媒介">
-            {getFieldDecorator('executor_admin_id', {})(
-              <Select
-                allowClear
-                showSearch
-                style={{ width: '100%' }}
-                placeholder="请选择"
-                optionFilterProp='children'
-              >
-                <Option key={1}>{1}</Option>
-                <Option key={2}>{2}</Option>
-              </Select>
+            {getFieldDecorator('ownerAdminId', {})(
+              <SearchSelect placeholder="请输入并从下拉框选择" action={actions.queryMcnByIdentityName} wordKey='name'
+                mapResultItemToOption={({ name } = {}) => ({
+                  value: name,
+                  label: name
+                })}
+              />
             )}
           </Form.Item>
         </Col>
         <Col span={9}>
           <Form.Item label="政策有效期">
-            {getFieldDecorator("this.state.timeType", {})(
-              <RangePicker style={{ width: '100%' }}/>
+            {getFieldDecorator("validTime", {})(
+              <RangePicker style={{ width: '100%' }} />
             )}
           </Form.Item>
         </Col>
         <Col span={9}>
-          <Form.Item >
+          <Form.Item>
             <InputGroup compact>
               <Select
                 style={{ width: '130px' }}
                 value={this.state.timeType}
                 onChange={(key) => this.setState({ timeType: key })}
               >
-                <Option value="create_at">创建时间</Option>
-                <Option value="update_at">最后修改时间</Option>
+                <Option value="createAt">创建时间</Option>
+                <Option value="modifiedAt">最后修改时间</Option>
               </Select>
               {getFieldDecorator(this.state.timeType, {})(
                 <RangePicker showTime style={{ width: 'calc(100% - 130px)' }} />
