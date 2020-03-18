@@ -13,6 +13,13 @@ export const {
   method: 'post'
 });
 
+// 根据账号名称查询下拉框
+export const {
+  queryAccountBySnsName,
+} = createHttpAction('queryAccountBySnsName', Interface.policyAll.queryBySnsName, {
+  method: 'post'
+});
+
 // 采购政策列表
 export const {
   policyAllList,
@@ -21,7 +28,20 @@ export const {
   method: 'post'
 });
 
+// 查询资源媒介列表
+export const {
+  queryMediums,
+} = createHttpAction('queryMediums', Interface.policyAll.queryMediums);
+
+
+export const syncUpdatePolicyStatus = createAction('syncUpdatePolicyStatus', (data) => {
+  return { data };
+})
+
 export default {
   queryMcnByIdentityName,
+  queryAccountBySnsName,
+  queryMediums,
+  syncUpdatePolicyStatus,
   policyAllList
 }

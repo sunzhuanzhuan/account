@@ -3,13 +3,16 @@ import * as commonActions from '@/actions';
 import { bindActionCreators } from "redux";
 import actions from "../actions";
 import { connect } from "react-redux";
-import { Alert, Button, Checkbox, Form, Pagination, Tabs, Spin } from "antd";
+import { Alert, Button, Checkbox, Form, Pagination, Tabs, Spin, message } from "antd";
 
 import PolicyAllFilterForm from "../components/PolicyAllFilterForm";
 import PolicyCard from "../components/PolicyCard";
 import './PolicyAll.less'
 import { policyStatusMap } from "@/policyManage/base/PolicyStatus";
 import PolicyAccountModal from "@/policyManage/components/PolicyAccountModal";
+import _merge from 'lodash/merge'
+import StopReasonModal from "@/policyManage/components/StopReasonModal";
+
 
 const { TabPane } = Tabs;
 
@@ -27,8 +30,7 @@ const PolicyAll = (props) => {
     page: {
       currentPage: 1,
       pageSize: 20
-    },
-    form: {}
+    }
   })
 
   const paginationProps = {
@@ -36,7 +38,7 @@ const PolicyAll = (props) => {
     pageSize,
     current: pageNum,
     onChange: (currentPage) => {
-      this.getList({
+      getList({
         page: { currentPage }
       })
     }
@@ -46,9 +48,12 @@ const PolicyAll = (props) => {
     getList()
   }, [])
 
-  const getList = (filter) => {
+  const getList = ({ page, form } = {}) => {
     const { actions } = props
-    search.current = Object.assign({}, search.current, filter)
+    search.current = {
+      page: Object.assign({}, search.current.page, page),
+      form: Object.assign({}, search.current.form, form)
+    }
     setLoading(true)
     actions.policyAllList(search.current).then(() => {
       setLoading(false)
@@ -56,10 +61,19 @@ const PolicyAll = (props) => {
     }).catch(() => setLoading(false))
   }
 
-  const onChange = selectedRowKeys => {
+  const onCheckChange = selectedRowKeys => {
     setSelectedRowKeys(selectedRowKeys)
     setIndeterminate(!!selectedRowKeys.length && selectedRowKeys.length < keys.length)
     setCheckAll(selectedRowKeys.length === keys.length)
+  };
+
+
+  const onTabChange = active => {
+    getList({
+      form: {
+        policyStatus: active === "0" ? undefined : active
+      }
+    })
   };
 
 
@@ -69,13 +83,11 @@ const PolicyAll = (props) => {
     setCheckAll(e.target.checked)
   };
 
-
   return (
     <Spin spinning={loading} tip="加载中...">
-      <PolicyAllFilterForm actions={props.actions} />
-      <Tabs defaultActiveKey="1">
-        <TabPane tab={<span>全部 <b>100</b></span>} key="0">
-        </TabPane>
+      <PolicyAllFilterForm actions={props.actions} getList={getList} />
+      <Tabs onChange={onTabChange} animated={false}>
+        <TabPane tab={<span>全部 <b>100</b></span>} key="0"/>
         {
           Object.entries(policyStatusMap).map(([key, { text }]) => <TabPane tab={text} key={key} />)
         }
@@ -105,10 +117,10 @@ const PolicyAll = (props) => {
         全选
       </Checkbox>
       <Button style={{ margin: 10 }} type="primary" ghost>批量下载政策</Button>
-      <Checkbox.Group value={selectedRowKeys} style={{ display: 'block' }} onChange={onChange}>
+      <Checkbox.Group value={selectedRowKeys} style={{ display: 'block' }} onChange={onCheckChange}>
         {
           keys.map(key => {
-            return <PolicyCard key={key} data={source[key]} />
+            return <PolicyCard actions={props.actions} key={key} data={source[key]} />
           })
         }
       </Checkbox.Group>

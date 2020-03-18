@@ -51,6 +51,8 @@ export default {
   ...policyInterface,
   policyAll: {
     queryMcnByIdentityName: '/operator-gateway/mcn/v1/queryMcnByIdentityName',
+    queryBySnsName: '/operator-gateway/account/v1/queryBySnsName',
+    queryMediums: '/operator-gateway/mcn/v1/mediums',
     queryList: '/operator-gateway/policy/v1.1/queryList'
   }
 }

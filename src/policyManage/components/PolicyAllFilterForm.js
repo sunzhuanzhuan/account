@@ -10,15 +10,26 @@ const InputGroup = Input.Group
 const Option = Select.Option
 
 function handleValue(values) {
-  values['order_id'] = batchText2Array(values['order_id'])
-  values['execution_evidence_code'] = batchText2Array(values['execution_evidence_code'], true)
-  values['summary_id'] = batchText2Array(values['summary_id'])
-  values['requirement_id'] = batchText2Array(values['requirement_id'])
-  values.company_id = values.company_id && values.company_id.key
-  values.external_check_at = moment2dateStr(values.external_check_at)
-  values.internal_check_at = moment2dateStr(values.internal_check_at)
-  values.submitter_at = moment2dateStr(values.submitter_at)
-  return values
+  let body = Object.assign({}, values)
+
+  const createAt = moment2dateStr(body.createAt) || []
+  const modifiedAt = moment2dateStr(body.modifiedAt) || []
+  const validTime = moment2dateStr(body.validTime) || []
+
+  body.createStartAt = createAt[0]
+  body.createEndAt = createAt[1]
+  body.modifiedStartAt = modifiedAt[0]
+  body.modifiedEndAt = modifiedAt[1]
+  body.validStartTime = validTime[0]
+  body.validEndTime = validTime[1]
+
+  delete body.createAt
+  delete body.modifiedAt
+  delete body.validTime
+
+
+  // values.company_id = values.company_id && values.company_id.key
+  return body
 }
 
 @Form.create()
@@ -32,7 +43,12 @@ export default class PolicyAllFilterForm extends Component {
       if (!err) {
         // 处理params
         values = handleValue(values)
-        this.props.getList({ ...values, page: 1 })
+        this.props.getList({
+          form: values,
+          page: {
+            currentPage: 1
+          }
+        })
       }
     })
   }
@@ -48,6 +64,18 @@ export default class PolicyAllFilterForm extends Component {
       },
       "form": {
         "identityName": params.name,
+        "isDeleted": 2
+      }
+    }).then(({ data }) => ({ data: data.list }))
+
+  queryAccountBySnsName = (params) =>
+    this.props.actions.queryAccountBySnsName({
+      "page": {
+        "currentPage": 1,
+        "pageSize": 20
+      },
+      "form": {
+        "snsName": params.name,
         "isDeleted": 2
       }
     }).then(({ data }) => ({ data: data.list }))
@@ -69,7 +97,11 @@ export default class PolicyAllFilterForm extends Component {
             {getFieldDecorator('identityName', {
               initialValue: undefined
             })(
-              <SearchSelect placeholder="请输入并从下拉框选择" action={this.queryMcnByIdentityName} wordKey='name'
+              <SearchSelect
+                placeholder="请输入并从下拉框选择"
+                action={this.queryMcnByIdentityName}
+                wordKey='name'
+                filterOption={false}
                 mapResultItemToOption={({ identityName } = {}) => ({
                   value: identityName,
                   label: identityName
@@ -135,11 +167,15 @@ export default class PolicyAllFilterForm extends Component {
         </Col>
         <Col span={6}>
           <Form.Item label="账号名称">
-            {getFieldDecorator('snsName', {})(
-              <SearchSelect placeholder="请输入并从下拉框选择" action={actions.queryMcnByIdentityName} wordKey='name'
-                mapResultItemToOption={({ name } = {}) => ({
-                  value: name,
-                  label: name
+            {getFieldDecorator('accountId', {})(
+              <SearchSelect
+                placeholder="请输入并从下拉框选择"
+                action={this.queryAccountBySnsName}
+                wordKey='name'
+                filterOption={false}
+                mapResultItemToOption={({ accountId, snsName } = {}) => ({
+                  value: accountId,
+                  label: snsName
                 })}
               />
             )}
@@ -156,7 +192,8 @@ export default class PolicyAllFilterForm extends Component {
                 optionFilterProp='children'
               >
                 {
-                  Object.entries(REBATE_SETTLEMENT_CYCLE).map(([key, text]) => <Option key={key}>{text}</Option>)
+                  Object.entries(REBATE_SETTLEMENT_CYCLE).map(([key, text]) =>
+                    <Option key={key}>{text}</Option>)
                 }
               </Select>
             )}
@@ -165,10 +202,14 @@ export default class PolicyAllFilterForm extends Component {
         <Col span={6}>
           <Form.Item label="资源媒介">
             {getFieldDecorator('ownerAdminId', {})(
-              <SearchSelect placeholder="请输入并从下拉框选择" action={actions.queryMcnByIdentityName} wordKey='name'
-                mapResultItemToOption={({ name } = {}) => ({
-                  value: name,
-                  label: name
+              <SearchSelect
+                placeholder="请输入并从下拉框选择"
+                action={actions.queryMediums}
+                wordKey='mcnId'
+                filterOption={false}
+                mapResultItemToOption={({ mediumName, mediumId } = {}) => ({
+                  value: mediumId,
+                  label: mediumName
                 })}
               />
             )}

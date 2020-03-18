@@ -1,8 +1,9 @@
-
 import { combineReducers } from 'redux'
 import { handleAction, handleActions } from 'redux-actions';
 import { reducersResponseList } from '@/util/handleData'
 import { GET_PROGRESS, GET_DISCOUNT_DETAIL, GET_POLICY_DETAIL } from "../constants/ActionTypes";
+import update from "immutability-helper";
+
 const selectedPlatformIds = (state = []) => {
 
   return state.reduce((acc, item) => {
@@ -81,8 +82,22 @@ const pastPolicyDetail = handleAction('getPolicyInfoById_success', (state, actio
 }, {})
 
 
-const policyAllList = handleAction('policyAllList_success', reducersResponseList(),
-  reducersResponseList.initList())
+const policyAllList = handleActions({
+  "policyAllList_success": reducersResponseList(),
+  "syncUpdatePolicyStatus": (state, action) => {
+    let { key } = action.payload.data
+    return update(state, {
+      source: {
+        [key]: {
+          $set: {
+            ...state.source[key],
+            ...action.payload.data,
+          }
+        }
+      }
+    })
+  }
+}, reducersResponseList.initList())
 
 //渠道折扣， 品牌管理reducer
 function discountReducer(state = {}, action) {

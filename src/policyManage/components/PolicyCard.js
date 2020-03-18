@@ -1,15 +1,21 @@
 /**
  * Created by lzb on 2020-03-09.
  */
-import React, {} from 'react';
-import { Checkbox, Icon, Popconfirm, Popover } from "antd";
+import React, { useState } from 'react';
+import { Checkbox, Icon, message, Popconfirm, Popover, Spin } from "antd";
 
 import './PolicyCard.less'
-import PolicyStatus from "../base/PolicyStatus";
+import PolicyStatus, {
+  POLICY_STATUS_ACTIVE,
+  POLICY_STATUS_INACTIVE,
+  POLICY_STATUS_STOP
+} from "../base/PolicyStatus";
 import Yuan from "@/base/Yuan";
 import IconFont from "@/base/IconFont";
 import { POLICY_LEVEL, REBATE_SETTLEMENT_CYCLE } from "@/policyManage/constants/dataConfig";
 import { dateFormat } from "@/policyManage/utils";
+import StopReasonModal from "@/policyManage/components/StopReasonModal";
+import { id } from "@/accountManage/reducer/account";
 
 
 const CardRule = props => {
@@ -33,7 +39,7 @@ const CardRule = props => {
     rebateText = "阶梯比例"
     more = true
   }
-  if(props.isGlobal){
+  if (props.isGlobal) {
     rebateText += `（${REBATE_SETTLEMENT_CYCLE[props.rebateRule.rebateSettlementCycle]}结）`
   }
 
@@ -53,6 +59,38 @@ const CardRule = props => {
 
 const PolicyCard = (props) => {
   const { data } = props
+
+  const [stopModal, setStopModal] = useState(false)
+
+  // 停用
+  const stopPolicy = () => {
+    setStopModal(!stopModal)
+  }
+
+  // 停用原因提交
+  const stopReasonSubmit = ({ policyStopReason }) => {
+    const { stopPolicy, syncUpdatePolicyStatus } = props.actions
+    return stopPolicy({ id: props.data.id, policyStopReason }).then(() => {
+      message.success('操作成功')
+      setStopModal()
+      syncUpdatePolicyStatus({
+        key: props.data.id,
+        policyStatus: POLICY_STATUS_STOP,
+        policyStopReason
+      })
+    })
+  }
+
+  // 启用
+  const startPolicy = () => {
+    const { startPolicy, syncUpdatePolicyStatus } = props.actions
+    const hide = message.loading('处理中...')
+    startPolicy({ id: props.data.id }).then(() => {
+      message.success('操作成功')
+      hide()
+      syncUpdatePolicyStatus({ key: props.data.id, policyStatus: POLICY_STATUS_ACTIVE })
+    })
+  }
 
   return (
     <div className='policy-card-container'>
@@ -79,10 +117,21 @@ const PolicyCard = (props) => {
             </li>
           </ul>
           <div className='header-right'>
-            <a onClick={() => {}}>
-              <Icon type="poweroff" />
-              <span>启用</span>
-            </a>
+            {
+              (data.policyStatus === POLICY_STATUS_INACTIVE ||
+                data.policyStatus === POLICY_STATUS_ACTIVE) &&
+              <a onClick={setStopModal}>
+                <Icon type="poweroff" />
+                <span>停用</span>
+              </a>
+            }
+            {
+              (data.policyStatus === POLICY_STATUS_STOP) &&
+              <a onClick={startPolicy}>
+                <Icon type="poweroff" />
+                <span>启用</span>
+              </a>
+            }
             <a onClick={() => {}}>
               <Icon type="download" />
               <span>下载</span>
@@ -117,7 +166,7 @@ const PolicyCard = (props) => {
             <ul className='fields-item-rules'>
               {
                 data.globalAccountRules.slice(0, 2).map((item, n) =>
-                  <CardRule key={item.ruleId} {...item} index={n} isGlobal/>
+                  <CardRule key={item.ruleId} {...item} index={n} isGlobal />
                 )
               }
             </ul>
@@ -150,6 +199,7 @@ const PolicyCard = (props) => {
           {data.modifiedByName && <span className='fields-item-'>修改于：{data.modifiedAt}</span>}
         </footer>
       </section>
+      {stopModal ? <StopReasonModal onCancel={stopPolicy} onOk={stopReasonSubmit} /> : null}
     </div>
   );
 };
