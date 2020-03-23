@@ -49,6 +49,7 @@ export default class PolicyAllFilterForm extends Component {
             currentPage: 1
           }
         })
+        this.props.getStatistics(values)
       }
     })
   }

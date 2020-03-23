@@ -14,19 +14,23 @@ export const POLICY_STATUS_STOP = 4;
 export const policyStatusMap = {
   [POLICY_STATUS_INACTIVE]: {
     status: 'default',
-    text: '待开始'
+    text: '待开始',
+    field: 'waitBeginCount'
   },
   [POLICY_STATUS_ACTIVE]: {
     status: 'processing',
-    text: '已启用'
+    text: '已启用',
+    field: 'persistingCount'
   },
   [POLICY_STATUS_EXPIRED]: {
     status: 'default',
-    text: '已过期'
+    text: '已过期',
+    field: 'expireCount'
   },
   [POLICY_STATUS_STOP]: {
     status: 'error',
-    text: '已停用'
+    text: '已停用',
+    field: 'stopCount'
   }
 }
 

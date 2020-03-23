@@ -91,13 +91,23 @@ const policyAllList = handleActions({
         [key]: {
           $set: {
             ...state.source[key],
-            ...action.payload.data,
+            ...action.payload.data
           }
         }
       }
     })
   }
 }, reducersResponseList.initList())
+
+const policyAllStatistics = handleActions({
+  "procurementPolicyStatistics_success": (state, action) => {
+    let { data } = action.payload
+    return {
+      ...state,
+      ...data
+    }
+  }
+}, {})
 
 //渠道折扣， 品牌管理reducer
 function discountReducer(state = {}, action) {
@@ -120,5 +130,6 @@ export default combineReducers({
   pastPolicyList,
   pastPolicyDetail,
   policyAllList,
+  policyAllStatistics,
   discountReducer
 })

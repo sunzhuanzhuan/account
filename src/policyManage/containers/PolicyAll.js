@@ -46,6 +46,7 @@ const PolicyAll = (props) => {
 
   useEffect(() => {
     getList()
+    getStatistics()
   }, [])
 
   const getList = ({ page, form } = {}) => {
@@ -59,6 +60,13 @@ const PolicyAll = (props) => {
       setLoading(false)
       setSelectedRowKeys([])
     }).catch(() => setLoading(false))
+  }
+
+  const getStatistics = (form) => {
+    const { actions } = props
+    actions.procurementPolicyStatistics(form).then(() => {
+      setLoading(false)
+    })
   }
 
   const onCheckChange = selectedRowKeys => {
@@ -85,11 +93,11 @@ const PolicyAll = (props) => {
 
   return (
     <Spin spinning={loading} tip="加载中...">
-      <PolicyAllFilterForm actions={props.actions} getList={getList} />
+      <PolicyAllFilterForm actions={props.actions} getList={getList} getStatistics={getStatistics}/>
       <Tabs onChange={onTabChange} animated={false}>
-        <TabPane tab={<span>全部 <b>100</b></span>} key="0"/>
+        <TabPane tab={<span>全部 <span>{props.statistics.allCount}</span></span>} key="0" />
         {
-          Object.entries(policyStatusMap).map(([key, { text }]) => <TabPane tab={text} key={key} />)
+          Object.entries(policyStatusMap).map(([key, { text, field }]) => <TabPane tab={<span>{text} <span>{props.statistics[field]}</span></span>} key={key} />)
         }
       </Tabs>
       <Alert message={<div className='policy-list-statistics-container'>
@@ -135,7 +143,8 @@ const PolicyAll = (props) => {
 
 const mapStateToProps = (state) => ({
   common: state.commonReducers,
-  policyAll: state.pricePolicyReducer.policyAllList
+  policyAll: state.pricePolicyReducer.policyAllList,
+  statistics: state.pricePolicyReducer.policyAllStatistics
 })
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({

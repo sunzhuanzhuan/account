@@ -28,6 +28,14 @@ export const {
   method: 'post'
 });
 
+// 采购政策列表
+export const {
+  procurementPolicyStatistics,
+  procurementPolicyStatistics_success,
+} = createHttpAction('procurementPolicyStatistics', Interface.policyAll.procurementPolicyStatistics, {
+  method: 'post'
+});
+
 // 查询资源媒介列表
 export const {
   queryMediums,
@@ -43,5 +51,6 @@ export default {
   queryAccountBySnsName,
   queryMediums,
   syncUpdatePolicyStatus,
+  procurementPolicyStatistics,
   policyAllList
 }
