@@ -11,6 +11,12 @@ module.exports = function (app) {
   // app.use(proxy('/api/operator-gateway/policy/v1.1/getPastPolicyListByMcnId',
   //   { target: 'http://yapi.ops.tst-weiboyi.com/mock/129/', changeOrigin: true }
   // ));
+  app.use(proxy('/api/operator-gateway/sku/v1/getSkuEquitiesList',
+    { target: 'http://yapi.ops.tst-weiboyi.com/mock/129/', changeOrigin: true }
+  ));
+  app.use(proxy('/api/operator-gateway/equities',
+    { target: 'http://yapi.ops.tst-weiboyi.com/mock/129/', changeOrigin: true }
+  ));
   app.use(proxy('/api',
     { target: 'http://nb.tst-weiboyi.com', changeOrigin: true }
   ));
