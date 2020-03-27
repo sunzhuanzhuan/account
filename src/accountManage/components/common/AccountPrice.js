@@ -474,7 +474,7 @@ export class FamousPrice extends Component {
         {otherSkuVOList && otherSkuVOList.length > 0 ?<>
           <div>其他类报价</div>
           <FormItem>
-            {getFieldDecorator('price_now_other', {
+            {getFieldDecorator('price_next_other', {
               initialValue: otherSkuVOList
             })(<PriceTable
               isEdit={_data.right}
@@ -594,7 +594,6 @@ class PriceTable extends Component {
   onEquitiesChange = (equities, index, equitiesKey) => {
     let newValue = this.state.value.map(item => ({ ...item }))
     newValue[index][equitiesKey] = equities
-    console.log(newValue, '_____');
     if (!('value' in this.props)) {
       this.setState({ value: newValue });
     }
@@ -608,7 +607,6 @@ class PriceTable extends Component {
       data,
       priceKeys, equitiesKey,
     } = this.props;
-    console.log(data, ")__");
     const { value } = this.state;
 
     const colWidth = equitiesKey ? 4 : 6

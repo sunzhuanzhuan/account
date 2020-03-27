@@ -31,18 +31,26 @@ export default class PriceEdit extends Component {
       obj.nextCostPriceRaw = nextPrice.nextCostPriceRaw || 0;
       obj.nextChannelPrice = nextPrice.nextChannelPrice || 0;
       obj.nextPublicationPrice = nextPrice.nextPublicationPrice || 0;
+      obj.equitiesList = (obj.equitiesResVOList || []).map(item => item.id);
+      obj.nextEquitiesList = (obj.equitiesResVOList || []).map(item => item.id);
+      delete obj.equitiesResVOList
+      delete obj.nextEquitiesResVOList
       return obj;
     });
   };
 
   handleSubmitValues = (values) => {
     const { data: { account, priceInfo } } = this.props;
-    const { skuList } = priceInfo;
+    const { skuList, otherSkuVOList } = priceInfo;
+
     const {
       id, base: { isFamous, platformId }
     } = account;
-    let { price_now, price_next } = values;
-    values['skuList'] = this.handlePrice(skuList, price_now, price_next);
+    let { price_now, price_next, price_now_other, price_next_other } = values;
+
+    let baseSkuList = this.handlePrice(skuList, price_now, price_next);
+    let otherSkuList = this.handlePrice(otherSkuVOList, price_now_other, price_next_other);
+    values['skuList'] = [].concat(baseSkuList, otherSkuList)
     values['isPreventShielding'] = checkVal(values['isPreventShielding']);
     values['isSupportTopicAndLink'] = checkVal(values['isSupportTopicAndLink']);
     values['is_flowunit_off_shelf'] = checkVal(values['is_flowunit_off_shelf']);
@@ -53,6 +61,8 @@ export default class PriceEdit extends Component {
     values['platformId'] = platformId;
     delete values['price_now'];
     delete values['price_next'];
+    delete values['price_now_other'];
+    delete values['price_next_other'];
     // values.base['platformId'] = platformId;
     return values
   };

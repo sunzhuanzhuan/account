@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import { Icon, Checkbox, Popconfirm, Form, Spin } from 'antd'
 import CheckTag from "@/accountManage/base/CheckTag";
-import list from "less/lib/less/functions/list";
 
 @Form.create()
 class MiniForm extends Component {
@@ -13,29 +12,19 @@ class MiniForm extends Component {
   }
 
   add = () => {
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        this.props.onChange({
-          text: values.text,
-          index: -1
-        }, 'custom')
-        this.close()
-      }
-    })
-
-  }
-  close = () => {
-    this.setState({ visible: false })
-    this.props.form.resetFields()
+    const { list, selected } = this.state
+    let equities = list.filter(item => selected.includes(item.id))
+    this.props.onChange(equities)
   }
 
   onVisibleChange = (visible) => {
+    if (!visible) return
     this.props.action({
       platformId: this.props.platformId,
       skuTypeId: this.props.skuTypeId
     }).then(({ data }) => {
-      let selected = [].concat(this.props.defaultValue, data.filter(item => item.isRequired === 1 )).map(item => item.equitiesId || item.id)
-      console.log(selected, '____');
+      let selected = [].concat(this.props.defaultValue, data.filter(item => item.isRequired === 1))
+        .map(item => item.id)
       this.setState({
         list: data,
         selected
@@ -43,12 +32,12 @@ class MiniForm extends Component {
     })
   }
 
-  onChecked = () => {
-
+  onChecked = (selected) => {
+    this.setState({ selected });
   }
 
   render() {
-    const { list,  selected} = this.state
+    const { list, selected } = this.state
     const { placeholder, label, rules } = this.props
     const { getFieldDecorator } = this.props.form
     return <Popconfirm
@@ -58,7 +47,7 @@ class MiniForm extends Component {
         list.length > 0 && <div style={{
           marginLeft: '-21px',
           minWidth: "120px",
-          minHeight: '100px',
+          minHeight: '100px'
         }}>
           <Checkbox.Group value={selected} onChange={this.onChecked}>
             {
@@ -66,11 +55,10 @@ class MiniForm extends Component {
                 return <>
                   <Checkbox
                     style={{ lineHeight: "28px" }}
-                    value={item.equitiesId}
+                    value={item.id}
                     disabled={item.isRequired === 1}
                   >
                     {item.equitiesName}
-
                   </Checkbox>
                   <br />
                 </>
@@ -81,10 +69,9 @@ class MiniForm extends Component {
       }
       trigger="click"
       icon={null}
-      onCancel={this.close}
       onConfirm={this.add}
     >
-      <a className='no-select-text'>+ {label}</a>
+      <a className='no-select-text' style={{whiteSpace: "nowrap"}}>+ {label}</a>
     </Popconfirm>
   }
 }
@@ -130,7 +117,7 @@ export default class CheckboxTag extends Component {
     const { value = [] } = this.state
     return <div>
       {
-        value.map(({ id, equitiesName, isRequired }, index) => <CheckTag checked key={id}>
+        value.map(({ id, equitiesName, isRequired }, index) => <CheckTag style={{ marginRight: 6}} checked key={id}>
           {equitiesName}
           {isRequired === 2 && <Icon
             style={{
@@ -142,7 +129,7 @@ export default class CheckboxTag extends Component {
             }}
             type="close-circle"
             theme="filled"
-            onClick={() => this.onDel(equitiesName, index)}
+            onClick={() => this.onDel(index)}
           />}
         </CheckTag>)
       }
