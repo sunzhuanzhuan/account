@@ -9,7 +9,7 @@ function SkuPriceList({ list = [] }) {
       {list.map(item => <div key={item.skuTypeId} className='sku-price-item'>
         <div className='sku-type-name'>
           {item.skuTypeName}
-          {item.isSpecial == 1 ? null : <img src={require('./img/isSpecial.png')} width='16px' className='is-special' />}
+          {item.isSpecial == 1 ? <img src={require('./img/isSpecial.png')} width='16px' className='is-special' /> : null}
         </div>
         <div className='equities-id-list'>
           {item.openQuotePrice}<span className='unit'>元</span>
@@ -19,7 +19,7 @@ function SkuPriceList({ list = [] }) {
     </div>
   )
 }
-function EquitiesList({ list = ['1'] }) {
+function EquitiesList({ list }) {
   return list.length > 0 ? <div className='equities-list'><img src={require('./img/equity.png')} height='18px' width='40px' /> </div> : null
 }
 export default SkuPriceList
