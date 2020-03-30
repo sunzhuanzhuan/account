@@ -1,9 +1,12 @@
 /* 价格标准化新增
  * 包括价格及价格的权益等标识
 */
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './SkuPriceList.less'
-function SkuPriceList({ list = [] }) {
+import HocPopover from '../base/HocPopover'
+import { Tag } from 'antd'
+import api from '@/api'
+function SkuPriceList({ list = [], equitiesIdListAsync }) {
   return (
     <div className='sku-price-list'>
       {list.map(item => <div key={item.skuTypeId} className='sku-price-item'>
@@ -19,7 +22,16 @@ function SkuPriceList({ list = [] }) {
     </div>
   )
 }
-function EquitiesList({ list }) {
-  return list.length > 0 ? <div className='equities-list'><img src={require('./img/equity.png')} height='18px' width='40px' /> </div> : null
+function EquitiesList({ list = ['1'] }) {
+  const [eqList, setEqList] = useState([])
+  async function hoverEquity() {
+    const { data } = await api.get('/operator-gateway/equities/v1/getEquitiesListByEquitiesIds', { params: { equitiesIdList: list } })
+    setEqList(data)
+  }
+  return list.length > 0 ? <div className='equities-list'>
+    <HocPopover content={<div>{eqList.map(one => <Tag key={one.equitiesId} color="blue">{one.equitiesName}</Tag>)}</div>}>
+      <img src={require('./img/equity.png')} height='18px' width='40px' onMouseOver={hoverEquity} />
+    </HocPopover>
+  </div> : null
 }
 export default SkuPriceList
