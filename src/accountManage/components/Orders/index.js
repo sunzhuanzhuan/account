@@ -30,7 +30,11 @@ const columns = [
         <br />
         订单：<a target="_blank" href={requirementPath(record.order_id)}>{record.order_id}</a>
         <br />
-        {record.is_price_modified == '1' ? <span style={{ background: 'red', color: '#fff', padding: '2px 4px' }}>  已改价</span> : null}
+        {record.is_price_modified == '1' ? <span style={{
+          background: 'red',
+          color: '#fff',
+          padding: '2px 4px'
+        }}>  已改价</span> : null}
       </div>
     }
   },
@@ -60,10 +64,16 @@ const columns = [
   },
   {
     title: '执行价格名称',
-    dataIndex: 'accept_reservation_chosen_price',
+    dataIndex: 'price_base_name',
     render: (name, record) => {
       return <div>
-        {name || '-'}
+        {name}
+        +
+        {
+          (record.equities || []).map(item => {
+            return <span key={item.equityName}>{item.isFree ? "免" : ""}{item.equityName}</span>
+          })
+        }
       </div>
     }
   }, {

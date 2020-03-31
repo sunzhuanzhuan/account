@@ -85,30 +85,27 @@ const checkWordListTagRepeat = (rule, value, callback) => {
 };
 
 // 处理三方提交提示
-export const trinityIsPreventShieldingTip = (value, callback) => {
-  let { accountValue, skuValue, trinityName = "微任务/WEIQ", platformId } = value, diff;
-  accountValue = parseInt(accountValue)
-  skuValue = parseInt(skuValue)
-  if (platformId !== 1 || !accountValue || !skuValue || accountValue === skuValue) {
-    let hide = message.loading('保存中...');
-    Promise.resolve(callback(hide)).finally(hide)
-    return
-  }
-  if (accountValue === 1 && skuValue === 2) {
-    diff = true;
-  } else if (accountValue === 2 && skuValue === 1) {
-    diff = false;
-  } else {
-    return console.warn('其他错误:', accountValue, skuValue);
-  }
-  let text = diff ? `当前账号可以在${trinityName}下单，报价包含防屏蔽未勾选，请修改报价项价格，以免影响应约造成损失。` :
-    `当前账号不可以在${trinityName}下单，报价包含防屏蔽已勾选，请修改报价项价格，以免影响应约造成损失。`
-  Modal.confirm({
-    title: text,
-    okText: '不修改,保存',
-    cancelText: '去修改',
-    onOk: callback
-  });
+export const trinityIsPreventShieldingTip = (action, value, success, error = (e) => {
+  message.error(e.errorMsg)
+  return Promise.reject(e)
+}) => {
+  return action({ ...value, equitiesValidate: 1 })
+    .then(success)
+    .catch((e) => {
+      if (e.code === "110503") {
+        Modal.confirm({
+          title: e.errorMsg,
+          okText: '不修改,保存',
+          cancelText: '去修改',
+          onOk: () => {
+            return action({ ...value, equitiesValidate: 2 }).then(success).catch(error)
+          }
+        });
+        return Promise.resolve()
+      } else {
+        return  error(e)
+      }
+    })
 }
 
 /* region  base - 账号基本信息  */
@@ -2291,7 +2288,7 @@ export const CustomSkills = (props) => {
     <FormItem {...layout.full} label='其他技能'>
       {getFieldDecorator('_client.skills.custom', {
         initialValue: customSkills,
-        validateFirst: true,
+        validateFirst: true
       })(
         <WordList
           placeholder='请输入1~10字'
@@ -2376,8 +2373,8 @@ export const TrinityConfigAndPrice = (props) => {
           </RadioGroup>
         )}
       </FormItem> : null}
-    {(getFieldValue('isManual') ?  getFieldValue('trinityIsPreventShieldingManual') === 1 : getFieldValue('trinityIsPreventShieldingAutomated') === 1)
-     ?
+    {(getFieldValue('isManual') ? getFieldValue('trinityIsPreventShieldingManual') === 1 : getFieldValue('trinityIsPreventShieldingAutomated') === 1)
+      ?
       <FormItem {...formItemLayout} label='下单方'>
         {getFieldDecorator('trinityPlaceOrderType', {
           initialValue: trinityPlaceOrderType,
@@ -2409,22 +2406,24 @@ export const TrinityConfigAndPrice = (props) => {
                       return <tr key={sku.trinitySkuKey}>
                         <th>{sku.wbyTypeName}</th>
                         <td style={{ padding: '0 4px', textAlign: 'left' }}>
-                          {readOnly ? <div style={{textAlign: 'center'}}>{sku.publicCostPrice}</div> : <FormItem>
-                            {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].publicCostPrice`, {
-                              initialValue: sku.publicCostPrice,
-                              rules: [{
-                                required: (sku.publicCostPrice === 0 || sku.publicCostPrice),
-                                message: '请输入大于等于0的数'
-                              }]
-                            })(
-                              <InputNumber
-                                placeholder="报价保留两位小数"
-                                min={0}
-                                precision={2}
-                                max={999999999}
-                                style={{ width: '100%' }}
-                              />)}
-                          </FormItem>}
+                          {readOnly ?
+                            <div style={{ textAlign: 'center' }}>{sku.publicCostPrice}</div> :
+                            <FormItem>
+                              {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].publicCostPrice`, {
+                                initialValue: sku.publicCostPrice,
+                                rules: [{
+                                  required: (sku.publicCostPrice === 0 || sku.publicCostPrice),
+                                  message: '请输入大于等于0的数'
+                                }]
+                              })(
+                                <InputNumber
+                                  placeholder="报价保留两位小数"
+                                  min={0}
+                                  precision={2}
+                                  max={999999999}
+                                  style={{ width: '100%' }}
+                                />)}
+                            </FormItem>}
                         </td>
                         <td>
                           {sku.publicCostPriceMaintainedTime || '--'}

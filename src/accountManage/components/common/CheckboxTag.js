@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Icon, Checkbox, Popconfirm, Form, Spin } from 'antd'
+import { Icon, Checkbox, Popconfirm, Form, Spin, Tooltip } from 'antd'
 import CheckTag from "@/accountManage/base/CheckTag";
 
 @Form.create()
@@ -71,7 +71,7 @@ class MiniForm extends Component {
       icon={null}
       onConfirm={this.add}
     >
-      <a className='no-select-text' style={{whiteSpace: "nowrap"}}>+ {label}</a>
+      <a className='no-select-text' style={{ whiteSpace: "nowrap" }}>+ {label}</a>
     </Popconfirm>
   }
 }
@@ -117,21 +117,26 @@ export default class CheckboxTag extends Component {
     const { value = [] } = this.state
     return <div>
       {
-        value.map(({ id, equitiesName, isRequired }, index) => <CheckTag style={{ marginRight: 6}} checked key={id}>
-          {equitiesName}
-          {isRequired === 2 && <Icon
-            style={{
-              fontSize: "14px",
-              color: "#256ea3",
-              marginLeft: '6px',
-              marginRight: -5,
-              display: "inline-block"
-            }}
-            type="close-circle"
-            theme="filled"
-            onClick={() => this.onDel(index)}
-          />}
-        </CheckTag>)
+        value.map(({ id, equitiesName, isRequired, remark }, index) => {
+          return <CheckTag style={{ marginRight: 6 }} checked key={id}>
+            <Tooltip title={remark && "博主可自行下" + remark +"订单"}>
+              {equitiesName}
+            </Tooltip>
+            {isEdit && isRequired === 2 && <Icon
+              style={{
+                fontSize: "14px",
+                color: "#256ea3",
+                marginLeft: '6px',
+                marginRight: -5,
+                display: "inline-block"
+              }}
+              type="close-circle"
+              theme="filled"
+              onClick={() => this.onDel(index)}
+            />}
+          </CheckTag>
+
+        })
       }
       {isEdit &&
       <MiniForm

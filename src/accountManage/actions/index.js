@@ -84,6 +84,7 @@ export const {
   addOrUpdateAccountTrinitySkuInfo
 } = createHttpAction('addOrUpdateAccountTrinitySkuInfo', Interface.addOrUpdateAccountTrinitySkuInfo, {
   method: 'post',
+  ignoreToast: false
 });
 
 // 获取报价项信息
@@ -207,7 +208,8 @@ export const {
 export const {
   saveSku
 } = createHttpAction('saveSku', Interface.update.saveSku, {
-  method: 'post'
+  method: 'post',
+  ignoreToast: true
 });
 // 修改受众画像
 export const {

@@ -404,7 +404,7 @@ export class FamousPrice extends Component {
             equitiesKey="equitiesResVOList"
           />)}
         </FormItem>
-        {otherSkuVOList && otherSkuVOList.length > 0 ?<>
+        {otherSkuVOList && otherSkuVOList.length > 0 ? <>
           <div>其他类报价</div>
           <FormItem>
             {getFieldDecorator('price_now_other', {
@@ -471,7 +471,7 @@ export class FamousPrice extends Component {
             equitiesKey="nextEquitiesResVOList"
           />)}
         </FormItem>
-        {otherSkuVOList && otherSkuVOList.length > 0 ?<>
+        {otherSkuVOList && otherSkuVOList.length > 0 ? <>
           <div>其他类报价</div>
           <FormItem>
             {getFieldDecorator('price_next_other', {
@@ -605,7 +605,7 @@ class PriceTable extends Component {
     const {
       isEdit,
       data,
-      priceKeys, equitiesKey,
+      priceKeys, equitiesKey
     } = this.props;
     const { value } = this.state;
 
@@ -613,13 +613,13 @@ class PriceTable extends Component {
 
     return <div className='price-table'>
       <div className='price-table-head'>
-          <Row gutter={8}>
-            <Col span={colWidth}><p className='price-table-title'>价格名称</p></Col>
-            {equitiesKey && <Col span={8}><p className='price-table-title'>权益项</p></Col>}
-            <Col span={colWidth}><p className='price-table-title'>报价(元)</p></Col>
-            <Col span={colWidth}><p className='price-table-title'>渠道价(元)</p></Col>
-            <Col span={colWidth}><p className='price-table-title'>刊例价(元)</p></Col>
-          </Row>
+        <Row gutter={8}>
+          <Col span={colWidth}><p className='price-table-title'>价格名称</p></Col>
+          {equitiesKey && <Col span={8}><p className='price-table-title'>权益项</p></Col>}
+          <Col span={colWidth}><p className='price-table-title'>报价(元)</p></Col>
+          <Col span={colWidth}><p className='price-table-title'>渠道价(元)</p></Col>
+          <Col span={colWidth}><p className='price-table-title'>刊例价(元)</p></Col>
+        </Row>
       </div>
       <div className='price-table-body'>
         {
@@ -637,8 +637,8 @@ class PriceTable extends Component {
                   platformId={data.account.base.platformId}
                   skuTypeId={skuTypeId}
                   onChange={equities => {
-                  this.onEquitiesChange(equities, index, equitiesKey)
-                }}
+                    this.onEquitiesChange(equities, index, equitiesKey)
+                  }}
                   action={this.props.actions.getSkuEquitiesList}
                 />
               </Col>}
@@ -755,13 +755,29 @@ export class FamousPriceView extends Component {
       nextPriceValidTo,
       reviewStatus,
       reviewFailReason,
-      skuList
+      skuList,
+      otherSkuVOList,
+      partnerType,
+      invoiceType,
+      taxRate
     } = priceInfo;
     let nowVal = {}, nextVal = {};
     skuList && skuList.forEach(({ skuTypeId, costPriceRaw, nextCostPriceRaw }) => {
       nowVal[skuTypeId] = costPriceRaw;
       nextVal[skuTypeId] = nextCostPriceRaw;
     });
+    otherSkuVOList && otherSkuVOList.forEach(({ skuTypeId, costPriceRaw, nextCostPriceRaw }) => {
+      nowVal[skuTypeId] = costPriceRaw;
+      nextVal[skuTypeId] = nextCostPriceRaw;
+    });
+
+    const invoiceInfo = <div>
+      {partnerType ? <span>{partnerType == 1 ? '报价含税（' : '报价不含税'}
+        {partnerType == 1 ? invoiceType == 1 ? '回票类型：增值税专用发票' : '回票类型：增值税普通发票）' : null}
+        {partnerType == 1 && invoiceType == 1 ? '，发票税率：' + taxRate * 100 + '%)' : null}
+      </span> : null}
+    </div>
+
     return <div>
       <FieldView width={80} title="本期有效期" value={
         <div>
@@ -771,8 +787,27 @@ export class FamousPriceView extends Component {
         </div>
       } />
       <FieldView width={80} title="账号报价" value={
-        <PriceTable style={{ lineHeight: '40px' }} isEdit={false} priceKeys={['costPriceRaw', 'channelPrice', 'publicationPrice']}
-          value={skuList} />
+        <>
+          {invoiceInfo}
+          <div style={{ lineHeight: '40px' }}>基础类报价</div>
+          <PriceTable
+            priceKeys={['costPriceRaw', 'channelPrice', 'publicationPrice']}
+            value={skuList}
+            data={this.props.data}
+            actions={this.props.actions}
+            equitiesKey="equitiesResVOList"
+          />
+          {otherSkuVOList && otherSkuVOList.length > 0 ? <>
+            <div style={{ lineHeight: '40px' }}>其他类报价</div>
+            <PriceTable
+              priceKeys={['costPriceRaw', 'channelPrice', 'publicationPrice']}
+              value={otherSkuVOList}
+              data={this.props.data}
+              actions={this.props.actions}
+              equitiesKey="equitiesResVOList"
+            />
+          </> : null}
+        </>
       } />
       {nextPriceValidFrom ? <div>
         <FieldView width={80} title="下期有效期" value={
@@ -783,7 +818,27 @@ export class FamousPriceView extends Component {
           </div>
         } />
         <FieldView width={80} title="下期报价" value={
-          <PriceTable style={{ lineHeight: '40px' }} isEdit={false} priceKeys={['nextCostPriceRaw', 'nextChannelPrice', 'nextPublicationPrice']} value={skuList} />
+          <>
+            {invoiceInfo}
+            <div style={{ lineHeight: '40px' }}>基础类报价</div>
+            <PriceTable
+              priceKeys={['nextCostPriceRaw', 'nextChannelPrice', 'nextPublicationPrice']}
+              value={skuList}
+              data={this.props.data}
+              actions={this.props.actions}
+              equitiesKey="nextEquitiesResVOList"
+            />
+            {otherSkuVOList && otherSkuVOList.length > 0 ? <>
+              <div style={{ lineHeight: '40px' }}>其他类报价</div>
+              <PriceTable
+                priceKeys={['nextCostPriceRaw', 'nextChannelPrice', 'nextPublicationPrice']}
+                value={otherSkuVOList}
+                data={this.props.data}
+                actions={this.props.actions}
+                equitiesKey="nextEquitiesResVOList"
+              />
+            </> : null}
+          </>
         } />
         <FieldView width={80} title="审核状态" value={
           approvalStatus(reviewStatus, reviewFailReason)
