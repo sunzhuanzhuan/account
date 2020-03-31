@@ -12,6 +12,7 @@ import FieldMap from "../constants/FieldMap";
 import numeral from "numeral";
 import { WBYPlatformIcon } from "wbyui"
 import RecentPrice from "./RecentPrice";
+import SkuPriceList from './SkuPriceList'
 class HeadInfo extends Component {
   constructor(props) {
     super(props);
@@ -127,9 +128,10 @@ class HeadInfo extends Component {
             </div>
             <div className='release-info'>
               {skuList.length > 0 ?
-                platformId == 9 ? <WeChatTable data={skuList} isFamous={isFamous} /> : <SkuListBox skuList={skuList} />
+                <SkuListBox skuList={skuList} />
                 : <Empty style={{ margin: '0px auto' }} />}
-              <div style={{ textAlign: 'center' }}>
+              <div className='operate-box'>
+                <a onClick={() => setShowModal(true, { content: <SkuPriceList list={skuList} />, title: <div>账号报价<span style={{ fontSize: 12, color: '#999', marginLeft: 20, fontWeight: '400' }}>{`价格有效期：${'2020-02-22'}`}</span></div> })} className='look-price'><Icon type="search" /> 查看更多价格</a>
                 {isExistCar ? <Button className='add-select-car-button' type='primary' onClick={() => selectCarEdit(true)}>加入选号车</Button> :
                   <Button className='remove-select-car-button' onClick={() => selectCarEdit(false)}>移出选号车</Button>}
               </div>
