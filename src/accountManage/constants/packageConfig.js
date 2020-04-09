@@ -341,7 +341,7 @@ export const diffByTypes = {
         uniqueId: true,
         url: true,
         referencePrice: true,
-        priceInclude: true,
+        priceInclude: false,
         trueFansRate: true
       },
       modules: [

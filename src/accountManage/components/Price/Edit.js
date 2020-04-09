@@ -81,18 +81,12 @@ export default class PriceEdit extends Component {
     Modal.confirm({
       title: '提交价格信息?',
       content: (isFamous === 1) ? '提交成功后，下个价格有效期和报价将无法修改' : '',
-      onOk(hide) {
-        hide()
-        trinityIsPreventShieldingTip({
-          accountValue: trinityPriceInfo.trinityIsPreventShielding,
-          skuValue: values.isPreventShielding,
-          platformId: account.base.platformId
-        }, () => {
-          return saveSku(values).then(() => {
-            message.success('更新报价信息成功', 1.3, () => {
-              reload(/*() => onModuleStatusChange('view')*/)
-            });
+      onOk() {
+        return trinityIsPreventShieldingTip(saveSku, values, () => {
+          message.success('更新报价信息成功', 1.3, () => {
+            reload(/*() => onModuleStatusChange('view')*/)
           });
+          return Promise.resolve()
         });
       },
       onCancel() { }
