@@ -34,7 +34,7 @@ const checkPrice = (onOff, otherCheck) => (rule, value = {}, callback) => {
   callback('报价项最少填写一项');
 };
 // 检查最少一项报价 new
-const checkPriceList = (rule, value, callback) => {
+export const checkPriceList = (rule, value, callback) => {
   if (!rule.on || value.some(item => item.costPriceRaw)) {
     return callback();
   }
@@ -191,18 +191,21 @@ export class NamelessPrice extends Component {
       data: { accountInfo, priceInfo }
     } = this.props;
     const {
-      skuList,
       partnerType,
-      taxInPrice,
       invoiceType,
       taxRate
     } = priceInfo;
-    let val = {};
-    skuList && skuList.forEach(({ skuTypeId, costPriceRaw }) => {
-      val[skuTypeId] = costPriceRaw;
-    });
+
+    const invoiceInfo = <div>
+      {partnerType ? <span>{partnerType == 1 ? '报价含税（' : '报价不含税'}
+        {partnerType == 1 ? invoiceType == 1 ? '回票类型：增值税专用发票' : '回票类型：增值税普通发票）' : null}
+        {partnerType == 1 && invoiceType == 1 ? '，发票税率：' + taxRate * 100 + '%)' : null}
+      </span> : null}
+    </div>
+
     return <div className='price_scroll_container'>
       <FormItem {...layout.full} label='账号报价'>
+        {invoiceInfo}
         {priceList.length > 0 ? getFieldDecorator('price_now', {
           initialValue: priceList,
           rules: [
@@ -222,7 +225,6 @@ export class NamelessPrice extends Component {
             pid={this.props.pid}
           />
         ) : null}
-        <AccountPriceHelp />
       </FormItem>
       {isUpdate ? <NamelessStatus {...{
         getFieldDecorator,
@@ -437,9 +439,13 @@ export class FamousPrice extends Component {
               message: '请选择结束时间'
             }, { validator: this.checkDateAndPrice }]
           })(
-          <DatePicker onOpenChange={this.setDefaultValue(moment(disabledDate).endOf('M'))} getPopupContainer={() => document.querySelector('#account-manage-container')} disabledDate={current => {
+          <DatePicker
+            onOpenChange={this.setDefaultValue(moment(disabledDate).endOf('M'))}
+            getPopupContainer={() => document.querySelector('#account-manage-container')}
+            disabledDate={current => {
             return current && (current < disabledDate || current.format('MM-DD') !== moment(current).endOf('M').format('MM-DD'))
-          }} />) :
+          }}
+          />) :
           <span>
             {getFieldDecorator('nextPriceValidTo', {
               initialValue: moment(nextEnd).endOf('day')
@@ -529,7 +535,7 @@ export class FamousPrice extends Component {
 
 
 // 报价table组
-class PriceTable extends Component {
+export class PriceTable extends Component {
   constructor(props) {
     super(props);
     this.state = {

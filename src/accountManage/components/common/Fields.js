@@ -85,11 +85,11 @@ const checkWordListTagRepeat = (rule, value, callback) => {
 };
 
 // 处理三方提交提示
-export const trinityIsPreventShieldingTip = (action, value, success, error = (e) => {
+export const trinityIsPreventShieldingTip = (isValidate, action, value, success, error = (e) => {
   message.error(e.errorMsg)
   return Promise.reject(e)
 }) => {
-  return action({ ...value, equitiesValidate: 1 })
+  return action({ ...value, equitiesValidate: isValidate })
     .then(success)
     .catch((e) => {
       if (e.code === "110503") {
