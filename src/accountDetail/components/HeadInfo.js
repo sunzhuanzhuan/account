@@ -12,7 +12,7 @@ import FieldMap from "../constants/FieldMap";
 import numeral from "numeral";
 import { WBYPlatformIcon } from "wbyui"
 import RecentPrice from "./RecentPrice";
-import SkuPriceList from './SkuPriceList'
+import SkuPriceList, { EquitiesList } from './SkuPriceList'
 class HeadInfo extends Component {
   constructor(props) {
     super(props);
@@ -131,7 +131,7 @@ class HeadInfo extends Component {
                 <SkuListBox skuList={skuList} />
                 : <Empty style={{ margin: '0px auto' }} />}
               <div className='operate-box'>
-                <a onClick={() => setShowModal(true, { content: <SkuPriceList list={skuList} />, title: <div>账号报价<span style={{ fontSize: 12, color: '#999', marginLeft: 20, fontWeight: '400' }}>{`价格有效期：${'2020-02-22'}`}</span></div> })} className='look-price'><Icon type="search" /> 查看更多价格</a>
+                {skuList.length > 4 ? <a onClick={() => setShowModal(true, { content: <SkuPriceList getPrice={getPrice} list={skuList} />, title: <div>账号报价<span style={{ fontSize: 12, color: '#999', marginLeft: 20, fontWeight: '400' }}>{`价格有效期：${'2020-02-22'}`}</span></div> })} className='look-price'><Icon type="search" /> 查看更多价格</a> : null}
                 {isExistCar ? <Button className='add-select-car-button' type='primary' onClick={() => selectCarEdit(true)}>加入选号车</Button> :
                   <Button className='remove-select-car-button' onClick={() => selectCarEdit(false)}>移出选号车</Button>}
               </div>
@@ -163,16 +163,18 @@ const OneType = ({ title, content, last, color, lastContent }) => {
 const SkuListBox = ({ skuList }) => {
   return <div className='release-info-box'>
     {skuList.slice(0, 4).map((one, index) => {
-      const isDefense = index == 0 && one.isPreventShielding == 1
       return <div className='release-info-three' key={one.skuId}>
-        <div className='title'>{one.skuTypeName}{isDefense ?
-          <Popover content='该参考报价为含防屏蔽的报价'>
-            <span className='defense'>防</span>
-          </Popover>
-          : null}</div>
-        <div className='two-line-flex'>
-          <div className='content'>{getPrice(one.openQuotePrice)}</div>
-          <PopoverFormat text={<div className='last'>{one.unitPrice}元/千粉丝</div>} content='平均每千粉丝单价' />
+        <div className='title'>
+          {one.skuTypeName}
+          {one.isSpecial == 1 ? <img src={require('./img/isSpecial.png')} width='16px' className='is-special' /> : null}
+        </div>
+        <div className='two-line-flex price-red'>
+          <span style={{ paddingRight: 4 }}>
+            {getPrice(one.openQuotePrice)}
+            <span className='price-unit'>元</span>
+            /{one.unitPrice}
+          </span>
+          <EquitiesList list={one.equitiesIdList} />
         </div>
       </div>
     })}
@@ -187,9 +189,7 @@ const FatLable = ({ classificationList = [], labelListRecordList = [] }) => {
   </div>
 }
 function getPrice(number) {
-  return <div className='priceRed fs18'>
-    {`${(number > 0 || number == 0) ? '¥' + numeral(number).format('0,0') : '-'}`}
-  </div>
+  return (number > 0 || number == 0) ? number : '-'
 }
 const WeChatTable = ({ data = [], isFamous }) => {
   const data2 = data.slice(4, 8) || []
