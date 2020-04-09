@@ -378,7 +378,7 @@ export const Introduction = (props) => {
           message: '账号简介不能超过1000字'
         }, { validator: checkForSensitiveWord, name: '账号简介' }]
       })(
-        <TextArea placeholder={placeholder || '请输入账号简介'} autosize={{ minRows: 4, maxRows: 6 }} />
+        <TextArea placeholder={placeholder || '请输入账号简介'} autoSize={{ minRows: 4, maxRows: 6 }} />
       )}
     </FormItem>
     {getFieldDecorator('base.introductionFrom', { initialValue: introductionFrom })(
@@ -2431,12 +2431,14 @@ export const TrinityConfigAndPrice = (props) => {
                         <td>
                           {sku.publicCostPriceFrom === 2 ? '系统' : (sku.modifiedName || '--')}
                         </td>
-                        {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].trinitySkuTypeId`, {
-                          initialValue: sku.trinitySkuTypeId
-                        })(<input type='hidden' />)}
-                        {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].trinitySkuKey`, {
-                          initialValue: sku.trinitySkuKey
-                        })(<input type='hidden' />)}
+                        <td style={{display: "none"}}>
+                          {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].trinitySkuTypeId`, {
+                            initialValue: sku.trinitySkuTypeId
+                          })(<input type='hidden' />)}
+                          {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].trinitySkuKey`, {
+                            initialValue: sku.trinitySkuKey
+                          })(<input type='hidden' />)}
+                        </td>
                       </tr>;
                     })
                   }

@@ -32,7 +32,7 @@ export default class PriceEdit extends Component {
       obj.nextChannelPrice = nextPrice.nextChannelPrice || 0;
       obj.nextPublicationPrice = nextPrice.nextPublicationPrice || 0;
       obj.equitiesList = (obj.equitiesResVOList || []).map(item => item.id);
-      obj.nextEquitiesList = (obj.equitiesResVOList || []).map(item => item.id);
+      obj.nextEquitiesList = (nextPrice.nextEquitiesResVOList || []).map(item => item.id);
       delete obj.equitiesResVOList
       delete obj.nextEquitiesResVOList
       return obj;
@@ -50,6 +50,7 @@ export default class PriceEdit extends Component {
 
     let baseSkuList = this.handlePrice(skuList, price_now, price_next);
     let otherSkuList = this.handlePrice(otherSkuVOList, price_now_other, price_next_other);
+
     values['skuList'] = [].concat(baseSkuList, otherSkuList)
     values['isPreventShielding'] = checkVal(values['isPreventShielding']);
     values['isSupportTopicAndLink'] = checkVal(values['isSupportTopicAndLink']);

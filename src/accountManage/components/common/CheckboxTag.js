@@ -52,7 +52,7 @@ class MiniForm extends Component {
           <Checkbox.Group value={selected} onChange={this.onChecked}>
             {
               list.map(item => {
-                return <>
+                return <React.Fragment key={item.id}>
                   <Checkbox
                     style={{ lineHeight: "28px" }}
                     value={item.id}
@@ -61,7 +61,7 @@ class MiniForm extends Component {
                     {item.equitiesName}
                   </Checkbox>
                   <br />
-                </>
+                </React.Fragment>
               })
             }
           </Checkbox.Group>

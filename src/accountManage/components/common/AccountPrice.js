@@ -264,6 +264,7 @@ export class FamousPrice extends Component {
     } else {
       setFields({
         'price_next': value ? {
+          value: price,
           'errors': [{
             'message': '报价项最少填写一项',
             'field': 'price_next'
@@ -393,19 +394,21 @@ export class FamousPrice extends Component {
       </FormItem>
       <FormItem {...layout.full} label='账号报价'>
         {invoiceInfo}
-        <div>基础类报价</div>
-        <FormItem>
-          {getFieldDecorator('price_now', {
-            initialValue: skuList,
-            rules: [{ validator: checkPriceList, on: _data.right }]
-          })(<PriceTable
-            isEdit={_data.right}
-            priceKeys={['costPriceRaw', 'channelPrice', 'publicationPrice']}
-            data={this.props.data}
-            actions={this.props.actions}
-            equitiesKey="equitiesResVOList"
-          />)}
-        </FormItem>
+        {skuList && skuList.length > 0 ? <>
+          <div>基础类报价</div>
+          <FormItem>
+            {getFieldDecorator('price_now', {
+              initialValue: skuList,
+              rules: [{ validator: checkPriceList, on: _data.right }]
+            })(<PriceTable
+              isEdit={_data.right}
+              priceKeys={['costPriceRaw', 'channelPrice', 'publicationPrice']}
+              data={this.props.data}
+              actions={this.props.actions}
+              equitiesKey="equitiesResVOList"
+            />)}
+          </FormItem>
+        </> : null}
         {otherSkuVOList && otherSkuVOList.length > 0 ? <>
           <div>其他类报价</div>
           <FormItem>
@@ -443,8 +446,8 @@ export class FamousPrice extends Component {
             onOpenChange={this.setDefaultValue(moment(disabledDate).endOf('M'))}
             getPopupContainer={() => document.querySelector('#account-manage-container')}
             disabledDate={current => {
-            return current && (current < disabledDate || current.format('MM-DD') !== moment(current).endOf('M').format('MM-DD'))
-          }}
+              return current && (current < disabledDate || current.format('MM-DD') !== moment(current).endOf('M').format('MM-DD'))
+            }}
           />) :
           <span>
             {getFieldDecorator('nextPriceValidTo', {
@@ -455,28 +458,30 @@ export class FamousPrice extends Component {
       </FormItem>
       <FormItem {...layout.full} label='账号报价'>
         {invoiceInfo}
-        <div>基础类报价</div>
-        <FormItem>
-          {getFieldDecorator('price_next', {
-            initialValue: skuList,
-            validateFirst: true,
-            rules: [{
-              required: require,
-              validator: checkPrice(require, this.checkPriceAndDate)
-            }]
+        {skuList && skuList.length > 0 ? <>
+          <div>基础类报价</div>
+          <FormItem>
+            {getFieldDecorator('price_next', {
+              initialValue: skuList,
+              validateFirst: true,
+              rules: [{
+                required: require,
+                validator: checkPrice(require, this.checkPriceAndDate)
+              }]
 
-          })(<PriceTable
-            // desc={handlePriceTitle(taxInPrice == 1, partnerType)}
-            partnerType={partnerType}
-            invoiceType={invoiceType}
-            taxRate={taxRate}
-            data={this.props.data}
-            isEdit={canEditPrice}
-            priceKeys={['nextCostPriceRaw', 'nextChannelPrice', 'nextPublicationPrice']}
-            actions={this.props.actions}
-            equitiesKey="nextEquitiesResVOList"
-          />)}
-        </FormItem>
+            })(<PriceTable
+              // desc={handlePriceTitle(taxInPrice == 1, partnerType)}
+              partnerType={partnerType}
+              invoiceType={invoiceType}
+              taxRate={taxRate}
+              data={this.props.data}
+              isEdit={canEditPrice}
+              priceKeys={['nextCostPriceRaw', 'nextChannelPrice', 'nextPublicationPrice']}
+              actions={this.props.actions}
+              equitiesKey="nextEquitiesResVOList"
+            />)}
+          </FormItem>
+        </> : null}
         {otherSkuVOList && otherSkuVOList.length > 0 ? <>
           <div>其他类报价</div>
           <FormItem>
