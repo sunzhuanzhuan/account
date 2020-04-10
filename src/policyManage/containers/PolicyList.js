@@ -1,170 +1,158 @@
-import React from "react";
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import {
-  Table, Form, Input, Button, Menu
+ import React, { useEffect, useRef, useState } from 'react';
+import * as commonActions from '@/actions';
+import { bindActionCreators } from "redux";
+import actions from "../actions";
+import { connect } from "react-redux";
+import { Alert, Button, Checkbox, Form, Pagination, Tabs, Spin, message } from "antd";
 
-} from 'antd';
+import PolicyAllFilterForm from "../components/PolicyAllFilterForm";
+import PolicyCard from "../components/PolicyCard";
+import { policyStatusMap } from "@/policyManage/base/PolicyStatus";
+import PolicyAccountModal from "@/policyManage/components/PolicyAccountModal";
+import _merge from 'lodash/merge'
+import StopReasonModal from "@/policyManage/components/StopReasonModal";
 
-import actions from '../actions';
-import './PolicyManage.less';
-import qs from 'qs';
-import { REBATE_SETTLEMENT_CYCLE, POLICYSTATUS } from '../constants/dataConfig'
-let mcnId = ''
-const viewDetail = (props, id) => {
-  props.history.push(`/account/PastPolicyDetail${props.location.search}&id=${id}`)
-}
-const policyStatus = { 1: '待开始', 2: '进行中', 3: '已过期', 4: '已停用', }
 
-const getColumns = (props) => {
-  return [
-    {
-      title: '政策Id',
-      dataIndex: 'id',
-      // width: '20%',
-    },
-    {
-      title: '状态',
-      dataIndex: 'policyStatus',
-      render: (text) => policyStatus[text]
-    },
-    {
-      title: '政策有效期',
-      // dataIndex: 'policyStatus',
-      render: item => `${item.validEndTime}~${item.validEndTime}`,
-      // width: '20%',
-    },
-    {
-      title: '执行订单',
-      dataIndex: 'executionOrderCount',
-      // width: '20%',
-    },
-    {
-      title: '执行金额',
-      dataIndex: 'executionAmount',
-      // width: '20%',
-    },
-    {
-      title: '修订人',
-      dataIndex: 'modifiedByName',
-      // width: '20%',
-    },
-    {
-      title: '修订时间',
-      dataIndex: 'modifiedAt',
-      // width: '20%',
-    },
-    {
-      title: '操作',
-      key: 'action',
-      render: item => <Button type="primary" onClick={() => viewDetail(props, item.id)}>查看详情</Button>
-    },
-  ];
-}
+const { TabPane } = Tabs;
 
-class PolicyManage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: false
+
+const PolicyList = (props) => {
+
+  const { keys, source, total, pageNum, pageSize } = props.policyAll
+
+  const [loading, setLoading] = useState(false)
+  const [selectedRowKeys, setSelectedRowKeys] = useState([])
+  const [indeterminate, setIndeterminate] = useState(false)
+  const [checkAll, setCheckAll] = useState(false)
+
+  const search = useRef({
+    page: {
+      currentPage: 1,
+      pageSize: 20
     }
-    const search = this.props.location.search.substring(1);
-    mcnId = this.mcnId = qs.parse(search)['userId'];
-    this.policyPeriodIdentity = qs.parse(search)['policyPeriodIdentity'] || 3
+  })
+
+  const paginationProps = {
+    total,
+    pageSize,
+    current: pageNum,
+    onChange: (currentPage) => {
+      getList({
+        page: { currentPage }
+      })
+    }
   }
 
-  componentDidMount() {
-    this._getPastPolicyListByMcnId();
+  useEffect(() => {
+    getList()
+    getStatistics()
+  }, [])
+
+  const getList = ({ page, form } = {}) => {
+    const { actions } = props
+    search.current = {
+      page: Object.assign({}, search.current.page, page),
+      form: Object.assign({}, search.current.form, form)
+    }
+    setLoading(true)
+    actions.policyAllList(search.current).then(() => {
+      setLoading(false)
+      setSelectedRowKeys([])
+    }).catch(() => setLoading(false))
   }
-  _getPastPolicyListByMcnId = async (values = {}) => {
-    const { mcnId } = this;
-    this.setState({ loading: true })
-    await this.props.getPastPolicyListByMcnId({ mcnId, pageNum: 1, pageSize: 10, ...values })
-    this.setState({ loading: false })
+
+  const getStatistics = (form) => {
+    const { actions } = props
+    actions.procurementPolicyStatistics(form).then(() => {
+      setLoading(false)
+    })
   }
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        this._getPastPolicyListByMcnId({ ...values, pageNum: 1 })
+
+  const onCheckChange = selectedRowKeys => {
+    setSelectedRowKeys(selectedRowKeys)
+    setIndeterminate(!!selectedRowKeys.length && selectedRowKeys.length < keys.length)
+    setCheckAll(selectedRowKeys.length === keys.length)
+  };
+
+
+  const onTabChange = active => {
+    getList({
+      form: {
+        policyStatus: active === "0" ? undefined : active
       }
-    });
-  }
-  handleTableChange = (pagination) => {
-    this._getPastPolicyListByMcnId(pagination);
-  }
-  onMenuClick = ({ key }) => {
-    if (key == 3) {
-      this.props.history.push(`/account/policyList?userId=${this.mcnId}`)
-      return false;
-    }
-    this.props.history.replace(`/account/policy?userId=${this.mcnId}&policyPeriodIdentity=${key}`);
-    window.location.reload();
-  }
-  render() {
+    })
+  };
 
-    function hasErrors(fieldsError) {
-      return Object.keys(fieldsError).some(field => fieldsError[field]);
-    }
-    const { pastPolicyList = {}, form } = this.props;
-    const { pageNum, pageSize, size, pages, total, list } = pastPolicyList;
-    const pagination = {
-      current: pageNum,
-      pageSize,
-      total
-    }
-    const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = form;
-    const columns = getColumns(this.props);
-    const menuSelectedKeys = [String(this.policyPeriodIdentity)];
 
-    return <div>
-      <Menu key='policyMenu' mode="horizontal" onClick={this.onMenuClick} selectedKeys={menuSelectedKeys}>
-        <Menu.Item key="1">本期政策</Menu.Item>
-        <Menu.Item key="2">下期政策</Menu.Item>
-        <Menu.Item key="3">往期政策</Menu.Item>
-      </Menu>
-      <h1>往期政策</h1>
-      <Form layout="inline" onSubmit={this.handleSubmit}>
-        <Form.Item>
-          {getFieldDecorator('id', {
-            rules: [{ required: false, message: '请输入政策ID' }],
-          })(
-            <Input placeholder="请输入政策ID" />,
-          )}
-        </Form.Item>
+  const onCheckAllChange = e => {
+    setSelectedRowKeys(e.target.checked ? keys : [])
+    setIndeterminate(false)
+    setCheckAll(e.target.checked)
+  };
 
-        <Form.Item>
-          <Button type="primary" htmlType="submit" disabled={hasErrors(getFieldsError())}>
-            搜索
-          </Button>
-        </Form.Item>
-      </Form>
-
-      <Table
-        columns={columns}
-        rowKey={record => record.id}
-        dataSource={list}
-        pagination={pagination}
-        loading={this.state.loading}
-        onChange={this.handleTableChange}
+  return (
+    <Spin spinning={loading} tip="加载中...">
+      <PolicyAllFilterForm actions={props.actions} getList={getList} getStatistics={getStatistics}/>
+      <Tabs onChange={onTabChange} animated={false}>
+        <TabPane tab={<span>全部 <span>{props.statistics.allCount}</span></span>} key="0" />
+        {
+          Object.entries(policyStatusMap).map(([key, { text, field }]) => <TabPane tab={<span>{text} <span>{props.statistics[field]}</span></span>} key={key} />)
+        }
+      </Tabs>
+      <Alert message={<div className='policy-list-statistics-container'>
+        <span className='fields-item-'>
+          政策数：400
+        </span>
+        <span className='fields-item-'>
+          预约执行金额（元）：7000.00万
+        </span>
+        <span className='fields-item-'>
+          预约执行订单数量：80024
+        </span>
+        <span className='fields-item-'>
+          派单执行金额（元）：30.00万
+        </span>
+        <span className='fields-item-'>
+          预约执行订单数量：20025
+        </span>
+      </div>} />
+      <Checkbox
+        indeterminate={indeterminate}
+        onChange={onCheckAllChange}
+        checked={checkAll}
+      >
+        全选
+      </Checkbox>
+      <Button style={{ margin: 10 }} type="primary" ghost>批量下载政策</Button>
+      <Checkbox.Group value={selectedRowKeys} style={{ display: 'block' }} onChange={onCheckChange}>
+        {
+          keys.map(key => {
+            return <PolicyCard actions={props.actions} key={key} data={source[key]} />
+          })
+        }
+      </Checkbox.Group>
+      <Pagination
+        style={{ float: 'right' }}
+        {...paginationProps}
       />
-    </div>
-  }
-}
+      <PolicyAccountModal />
+    </Spin>
+  );
+};
 
-const mapStateToProps = (state) => {
-  const { pricePolicyReducer } = state;
-  const { pastPolicyList } = pricePolicyReducer
-  return { pastPolicyList };
-}
-
-const mapDispatchToProps = (dispatch) => (
-  bindActionCreators({
+const mapStateToProps = (state) => ({
+  common: state.commonReducers,
+  policyAll: state.pricePolicyReducer.policyAllList,
+  statistics: state.pricePolicyReducer.policyAllStatistics
+})
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators({
+    ...commonActions,
     ...actions
   }, dispatch)
-)
+})
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Form.create()(PolicyManage))
+)(Form.create()(PolicyList))

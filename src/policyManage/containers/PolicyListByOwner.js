@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+ import React, { useEffect, useRef, useState } from 'react';
 import * as commonActions from '@/actions';
 import { bindActionCreators } from "redux";
 import actions from "../actions";
@@ -7,11 +7,11 @@ import { Alert, Button, Checkbox, Form, Pagination, Tabs, Spin, message } from "
 
 import PolicyAllFilterForm from "../components/PolicyAllFilterForm";
 import PolicyCard from "../components/PolicyCard";
-import './PolicyAll.less'
 import { policyStatusMap } from "@/policyManage/base/PolicyStatus";
 import PolicyAccountModal from "@/policyManage/components/PolicyAccountModal";
 import _merge from 'lodash/merge'
 import StopReasonModal from "@/policyManage/components/StopReasonModal";
+ import OwnerInfos from "@/policyManage/components/OwnerInfos";
 
 
 const { TabPane } = Tabs;
@@ -92,52 +92,18 @@ const PolicyAll = (props) => {
   };
 
   return (
-    <Spin spinning={loading} tip="加载中...">
-      <PolicyAllFilterForm actions={props.actions} getList={getList} getStatistics={getStatistics}/>
+    <div className="policy-manage-owner-list-container">
+      <OwnerInfos/>
+      <Button type="primary">添加政策</Button>
       <Tabs onChange={onTabChange} animated={false}>
         <TabPane tab={<span>全部 <span>{props.statistics.allCount}</span></span>} key="0" />
         {
           Object.entries(policyStatusMap).map(([key, { text, field }]) => <TabPane tab={<span>{text} <span>{props.statistics[field]}</span></span>} key={key} />)
         }
       </Tabs>
-      <Alert message={<div className='policy-list-statistics-container'>
-        <span className='fields-item-'>
-          政策数：400
-        </span>
-        <span className='fields-item-'>
-          预约执行金额（元）：7000.00万
-        </span>
-        <span className='fields-item-'>
-          预约执行订单数量：80024
-        </span>
-        <span className='fields-item-'>
-          派单执行金额（元）：30.00万
-        </span>
-        <span className='fields-item-'>
-          预约执行订单数量：20025
-        </span>
-      </div>} />
-      <Checkbox
-        indeterminate={indeterminate}
-        onChange={onCheckAllChange}
-        checked={checkAll}
-      >
-        全选
-      </Checkbox>
-      <Button style={{ margin: 10 }} type="primary" ghost>批量下载政策</Button>
-      <Checkbox.Group value={selectedRowKeys} style={{ display: 'block' }} onChange={onCheckChange}>
-        {
-          keys.map(key => {
-            return <PolicyCard actions={props.actions} key={key} data={source[key]} />
-          })
-        }
-      </Checkbox.Group>
-      <Pagination
-        style={{ float: 'right' }}
-        {...paginationProps}
-      />
+
       <PolicyAccountModal />
-    </Spin>
+    </div>
   );
 };
 
