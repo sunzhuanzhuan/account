@@ -52,6 +52,7 @@ const columns = [
   {
     title: '订单状态',
     dataIndex: 'reservation_status_name',
+    width: 180,
     render: (text, record) => {
       return <div>
         预约状态：{text}
@@ -65,15 +66,22 @@ const columns = [
   {
     title: '执行价格名称',
     dataIndex: 'price_base_name',
+    width: 220,
     render: (name, record) => {
       return <div>
         {name}
-        +
+        {(record.equities.length > 0 || record.otherName) ? <span style={{margin: '0 2px'}}>+</span> : null}
         {
           (record.equities || []).map(item => {
-            return <span key={item.equityName}>{item.isFree ? "免" : ""}{item.equityName}</span>
+            return <span className="equity-tag-item" key={item.equityName}>
+              {item.isFree === 1 ?
+                <img style={{ width: 20 }} src={require('../../images/free.png')} /> : ""}{item.equityName}
+            </span>
           })
         }
+        {record.otherName && <span className="equity-tag-item">
+              {record.otherName}
+        </span>}
       </div>
     }
   }, {

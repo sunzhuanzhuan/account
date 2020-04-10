@@ -32,7 +32,7 @@ export default class PriceEdit extends Component {
       obj.nextChannelPrice = nextPrice.nextChannelPrice || 0;
       obj.nextPublicationPrice = nextPrice.nextPublicationPrice || 0;
       obj.equitiesList = (obj.equitiesResVOList || []).map(item => item.id);
-      obj.nextEquitiesList = (obj.equitiesResVOList || []).map(item => item.id);
+      obj.nextEquitiesList = (nextPrice.nextEquitiesResVOList || []).map(item => item.id);
       delete obj.equitiesResVOList
       delete obj.nextEquitiesResVOList
       return obj;
@@ -50,6 +50,7 @@ export default class PriceEdit extends Component {
 
     let baseSkuList = this.handlePrice(skuList, price_now, price_next);
     let otherSkuList = this.handlePrice(otherSkuVOList, price_now_other, price_next_other);
+
     values['skuList'] = [].concat(baseSkuList, otherSkuList)
     values['isPreventShielding'] = checkVal(values['isPreventShielding']);
     values['isSupportTopicAndLink'] = checkVal(values['isSupportTopicAndLink']);
@@ -76,13 +77,13 @@ export default class PriceEdit extends Component {
     });
   };
   showConfirm = (values) => {
-    const { actions: { saveSku }, data: { account, trinityPriceInfo = {} }, reload, onModuleStatusChange } = this.props;
+    const { actions: { saveSku }, data: { account }, reload, onModuleStatusChange } = this.props;
     const { isFamous } = account.base;
     Modal.confirm({
       title: '提交价格信息?',
       content: (isFamous === 1) ? '提交成功后，下个价格有效期和报价将无法修改' : '',
       onOk() {
-        return trinityIsPreventShieldingTip(saveSku, values, () => {
+        return trinityIsPreventShieldingTip(isFamous, saveSku, values, () => {
           message.success('更新报价信息成功', 1.3, () => {
             reload(/*() => onModuleStatusChange('view')*/)
           });
@@ -111,9 +112,7 @@ export default class PriceEdit extends Component {
       publicationRate,
       modifiedAt // 信息修改时间
     } = data.priceInfo || {};
-    const priceKeys = skuList ? skuList.map(({ skuTypeId, skuTypeName }) => ({
-      key: skuTypeId, name: skuTypeName
-    })) : [];
+
     const right = <div className='wrap-panel-right-content'>
       <span className='gray-text'>最近更新于: {dateDisplay(modifiedAt, 20) || '--'}</span>
       <Button htmlType='submit' type='primary' loading={this.state.submitLoading}>保存</Button>
@@ -124,7 +123,7 @@ export default class PriceEdit extends Component {
       <section className='content-wrap'>
         {publicationRate && <Alert message={`渠道价默认为刊例价的${numeral(publicationRate).format('0%')}`}/>}
         {isFamous === 1 ?
-          <FamousPrice {...fieldProps} priceKeys={priceKeys}>
+          <FamousPrice {...fieldProps}>
             {configurePlatform.visibility.fields.referencePrice &&
             <ReferencePrice  {...fieldProps} />}
             {configurePlatform.visibility.fields.priceInclude &&

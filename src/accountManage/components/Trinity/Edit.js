@@ -55,7 +55,7 @@ export default class Trinity extends Component {
       if (!err) {
         let values = this.handleSubmitValues(fieldsValue)
         this.setState({ submitLoading: true });
-        trinityIsPreventShieldingTip(actions.addOrUpdateAccountTrinitySkuInfo, values, () => {
+        trinityIsPreventShieldingTip(1, actions.addOrUpdateAccountTrinitySkuInfo, values, () => {
           return message.success('保存成功!', 1.3, () => {
             reload();
             this.setState({ submitLoading: false });

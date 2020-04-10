@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Icon, Checkbox, Popconfirm, Form, Spin, Tooltip } from 'antd'
+import { Icon, Checkbox, Popconfirm, Form, Spin, Tooltip, Empty } from 'antd'
 import CheckTag from "@/accountManage/base/CheckTag";
 
 @Form.create()
@@ -44,7 +44,7 @@ class MiniForm extends Component {
       placement="bottom"
       onVisibleChange={this.onVisibleChange}
       title={
-        list.length > 0 && <div style={{
+        list.length > 0 ? <div style={{
           marginLeft: '-21px',
           minWidth: "120px",
           minHeight: '100px'
@@ -52,7 +52,7 @@ class MiniForm extends Component {
           <Checkbox.Group value={selected} onChange={this.onChecked}>
             {
               list.map(item => {
-                return <>
+                return <React.Fragment key={item.id}>
                   <Checkbox
                     style={{ lineHeight: "28px" }}
                     value={item.id}
@@ -61,10 +61,15 @@ class MiniForm extends Component {
                     {item.equitiesName}
                   </Checkbox>
                   <br />
-                </>
+                </React.Fragment>
               })
             }
           </Checkbox.Group>
+        </div> : <div  style={{
+          marginLeft: '-21px',
+          textAlign: "center"
+        }}>
+          暂无可选权益项
         </div>
       }
       trigger="click"
