@@ -30,7 +30,7 @@ function SkuPriceList({ list = [], equitiesIdListAsync, getPrice }) {
 export function EquitiesList({ list }) {
   const [eqList, setEqList] = useState([])
   async function hoverEquity() {
-    const { data } = await api.get('/operator-gateway/equities/v1/getEquitiesListByEquitiesIds', { params: { equitiesIdList: list } })
+    const { data } = await api.get('/operator-gateway/equities/v1/getEquitiesListByEquitiesIds', { params: { equitiesIdList: list.join(',') } })
     setEqList(data)
   }
   return list.length > 0 ? <div className='equities-list'>
