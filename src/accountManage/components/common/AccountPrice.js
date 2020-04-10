@@ -488,7 +488,7 @@ export class FamousPrice extends Component {
             {getFieldDecorator('price_next_other', {
               initialValue: otherSkuVOList
             })(<PriceTable
-              isEdit={_data.right}
+              isEdit={canEditPrice}
               priceKeys={['nextCostPriceRaw', 'nextChannelPrice', 'nextPublicationPrice']}
               data={this.props.data}
               actions={this.props.actions}
@@ -532,6 +532,11 @@ export class FamousPrice extends Component {
       {getFieldDecorator('priceValidFrom', { initialValue: nowStar })(
         <input type="hidden" />)}
       {getFieldDecorator('priceValidTo', { initialValue: nowEnd })(
+        <input type="hidden" />)}
+      {children}
+      {getFieldDecorator('canEditPrice', { initialValue: _data.right })(
+        <input type="hidden" />)}
+      {getFieldDecorator('canEditNextPrice', { initialValue: canEditPrice })(
         <input type="hidden" />)}
       {children}
     </div>;

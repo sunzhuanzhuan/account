@@ -9,7 +9,7 @@ import {
   IsAcceptHardAd,
   PriceInclude,
   ReferencePrice,
-  trinityIsPreventShieldingTip
+  trinityIsPreventShieldingTip, trinityIsPreventShieldingTipBySku
 } from "../common/Fields";
 import { checkVal, dateDisplay } from "@/accountManage/util";
 import numeral from '@/util/numeralExpand'
@@ -64,7 +64,7 @@ export default class PriceEdit extends Component {
     delete values['price_next'];
     delete values['price_now_other'];
     delete values['price_next_other'];
-    // values.base['platformId'] = platformId;
+    values['trinityName'] =values['skuList'][0].remark;
     return values
   };
   submit = (e) => {
@@ -77,13 +77,15 @@ export default class PriceEdit extends Component {
     });
   };
   showConfirm = (values) => {
-    const { actions: { saveSku }, data: { account }, reload, onModuleStatusChange } = this.props;
+    const { actions: { saveSku }, data: { account, trinityPriceInfo }, reload, onModuleStatusChange } = this.props;
     const { isFamous } = account.base;
     Modal.confirm({
       title: '提交价格信息?',
       content: (isFamous === 1) ? '提交成功后，下个价格有效期和报价将无法修改' : '',
       onOk() {
-        return trinityIsPreventShieldingTip(isFamous, saveSku, values, () => {
+        return trinityIsPreventShieldingTipBySku(isFamous, saveSku,
+          {...values, accountFlag: trinityPriceInfo.trinityIsPreventShielding },
+          () => {
           message.success('更新报价信息成功', 1.3, () => {
             reload(/*() => onModuleStatusChange('view')*/)
           });

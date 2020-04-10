@@ -103,9 +103,141 @@ export const trinityIsPreventShieldingTip = (isValidate, action, value, success,
         });
         return Promise.resolve()
       } else {
-        return  error(e)
+        return error(e)
       }
     })
+}
+
+// 报价 - 处理三方提交提示(账号防屏蔽，服务项防屏蔽)
+export const trinityIsPreventShieldingTipBySku = (isFamous, action, value, success, error = (e) => {
+  message.error(e.errorMsg)
+  return Promise.reject(e)
+}) => {
+
+  let { accountFlag, canEditPrice, canEditNextPrice, trinityName } = value,
+    skuFlag = 0,
+    skuNextFlag = 0,
+    tip = ``;
+
+  // 非预约
+  if (isFamous !== 1) {
+    return action(value).then(success).catch(error)
+  }
+
+  // 价格不能编辑
+  if (!canEditPrice && !canEditNextPrice) {
+    return action(value).then(success).catch(error)
+  }
+
+  let specialList = value.skuList.filter(item => item.specialEquitiesId > 0);
+
+  // 没有配置防屏蔽的sku
+  if (specialList.length === 0) {
+    return action(value).then(success).catch(error)
+  }
+
+  specialList.forEach(item => {
+    if (item.equitiesList.includes(item.specialEquitiesId)) {
+      skuFlag++
+    }
+    if (item.nextEquitiesList.includes(item.specialEquitiesId)) {
+      skuNextFlag++
+    }
+  })
+
+  // 1 防屏蔽;  2 不防屏蔽; 3 防屏蔽勾选不一致
+  switch (skuFlag) {
+    case 0:
+      skuFlag = 2
+      break;
+    case specialList.length:
+      skuFlag = 1
+      break;
+    default:
+      skuFlag = 3
+  }
+
+  switch (skuNextFlag) {
+    case 0:
+      skuNextFlag = 2
+      break;
+    case specialList.length:
+      skuNextFlag = 1
+      break;
+    default:
+      skuNextFlag = 3
+  }
+
+
+  if (canEditPrice && canEditNextPrice) {
+    // 两期都能编辑
+    if (accountFlag === 1) {
+      // 账号可防屏蔽
+      if (skuFlag === 1 && skuNextFlag === 1) {
+        // 两期都防屏蔽
+        tip = ``
+      } else {
+        // 任意一期不防屏蔽或者防屏蔽勾选不一致
+        tip = `当前账号可以在${trinityName}下单，服务项防屏蔽未勾选，请修改服务项，以免影响应约造成损失。`
+      }
+
+    } else {
+      // 账号不防屏蔽
+      if (skuFlag === 2 && skuNextFlag === 2) {
+        // 两期都不防屏蔽
+        tip = ``
+      } else {
+        // 任意一期防屏蔽或者防屏蔽勾选不一致
+        tip = `当前账号不可以在${trinityName}下单，服务项防屏蔽已勾选，请修改服务项，以免影响应约造成损失。`
+      }
+    }
+
+  } else if (canEditPrice) {
+    // 只本期能编辑
+    if (accountFlag === 1) {
+      if (skuFlag === 1) {
+        tip = ``
+      } else {
+        tip = `当前账号可以在${trinityName}下单，服务项防屏蔽未勾选，请修改服务项，以免影响应约造成损失。`
+      }
+    } else {
+      if (skuFlag === 2) {
+        tip = ``
+      } else {
+        tip = `当前账号不可以在${trinityName}下单，服务项防屏蔽已勾选，请修改服务项，以免影响应约造成损失。`
+      }
+    }
+
+  } else {
+    // 只下期能编辑
+    if (accountFlag === 1) {
+      if (skuNextFlag === 1) {
+        tip = ``
+      } else {
+        tip = `当前账号可以在${trinityName}下单，服务项防屏蔽未勾选，请修改服务项，以免影响应约造成损失。`
+      }
+    } else {
+      if (skuNextFlag === 2) {
+        tip = ``
+      } else {
+        tip = `当前账号不可以在${trinityName}下单，服务项防屏蔽已勾选，请修改服务项，以免影响应约造成损失。`
+      }
+    }
+  }
+
+  if (tip) {
+    Modal.confirm({
+      title: tip,
+      okText: '不修改,保存',
+      cancelText: '去修改',
+      onOk: () => {
+        return action({ ...value }).then(success).catch(error)
+      }
+    });
+    return Promise.resolve()
+  } else {
+    return action(value).then(success).catch(error)
+  }
 }
 
 /* region  base - 账号基本信息  */
@@ -2431,7 +2563,7 @@ export const TrinityConfigAndPrice = (props) => {
                         <td>
                           {sku.publicCostPriceFrom === 2 ? '系统' : (sku.modifiedName || '--')}
                         </td>
-                        <td style={{display: "none"}}>
+                        <td style={{ display: "none" }}>
                           {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].trinitySkuTypeId`, {
                             initialValue: sku.trinitySkuTypeId
                           })(<input type='hidden' />)}
