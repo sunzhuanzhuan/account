@@ -3,55 +3,24 @@
  */
 import React, { useEffect, useState } from 'react';
 import { Table, Icon, Modal, Popconfirm, Popover, Tabs } from "antd";
+import Global from "@/policyManage/components/accountModalList/Global";
 
 const { TabPane } = Tabs
 const data = {}
 
-const columns = [
-  {
-    title: '规则ID',
-    dataIndex: 'id',
-    sorter: true
-  },
-  {
-    title: 'account_id',
-    dataIndex: 'account_id',
-    width: 100
-  },
-  {
-    title: '全部平台',
-    dataIndex: 'platform',
-    filters: [{ text: '抖音', value: 'male' }, { text: '快手', value: 'female' }],
-    align: 'right'
-  },
-  {
-    title: '账号名称',
-    dataIndex: 'email',
-    align: 'center'
-
-  },
-  {
-    title: '账号ID',
-    dataIndex: 'email12'
-  },
-  {
-    title: '粉丝数',
-    dataIndex: 'followerCount'
-  }
-];
 
 const PolicyAccountModal = (props) => {
-  const [data, setData] = useState([])
-  const [pagination, setPagination] = useState({})
-  const [loading, setLoading] = useState(false)
+  const [ data, setData ] = useState([])
+  const [ pagination, setPagination ] = useState({})
+  const [ loading, setLoading ] = useState(false)
 
-  useEffect(() => {
-    fetch()
-  }, [])
+  const { active, record = {} } = props.modal
 
-  const handleTableChange = (pagination, filters, sorter) => {
-    //
-    console.log(pagination, filters, sorter);
+  const handleTabChange = (key) => {
+    props.setModal({
+      active: key,
+      record
+    })
   };
 
   const fetch = (params = {}) => {
@@ -60,36 +29,40 @@ const PolicyAccountModal = (props) => {
 
 
   return (
-    <Modal visible={props.visible} title="政策包含账号" footer={null} width={900} bodyStyle={{padding: "8px 13px"}}>
-      <Tabs defaultActiveKey="1">
-        <TabPane tab={<span>全局账号 <b>100</b></span>} key="1"/>
-        <TabPane tab={<span>特殊账号 <b>8</b></span>} key="2"/>
-        <TabPane tab={<span>白名单 <b>16</b></span>} key="3"/>
+    <Modal
+      visible={!!active}
+      title="政策包含账号"
+      footer={null}
+      width={900}
+      bodyStyle={{ padding: "8px 13px" }}
+      onCancel={() => props.setModal({})}
+    >
+      <Tabs activeKey={active} onChange={handleTabChange}>
+        <TabPane tab={<span>全局账号 <b>{record.globalAccountCount}</b></span>} key="global">
+          <Global action={props.actions.getGlobalAccountList} />
+        </TabPane>
+        <TabPane tab={<span>特殊账号 <b>{record.specialAccountCount}</b></span>} key="specific">
+          <ul className="policy-account-modal-rules-container">
+            <li>
+              规则1（120个号）：折扣固定扣减90元；返点固定比例20%（季结）
+              <a>查看</a>
+            </li>
+            <li>
+              规则1（120个号）：折扣固定扣减90元；返点固定比例20%（季结）
+            </li>
+            <li>
+              规则1（120个号）：折扣固定扣减90元；返点固定比例20%（季结）
+              <a>查看</a>
+            </li>
+            <li>
+              规则1（120个号）：折扣固定扣减90元；返点固定比例20%（季结）
+              <a>查看</a>
+            </li>
+          </ul>
+        </TabPane>
+        <TabPane tab={<span>白名单 <b>{record.whiteListCount}</b></span>} key="whiteList">
+        </TabPane>
       </Tabs>
-      <ul className="policy-account-modal-rules-container">
-        <li>
-          规则1（120个号）：折扣固定扣减90元；返点固定比例20%（季结）
-          <a>查看</a>
-        </li>
-        <li>
-          规则1（120个号）：折扣固定扣减90元；返点固定比例20%（季结）
-        </li>
-        <li>
-          规则1（120个号）：折扣固定扣减90元；返点固定比例20%（季结）
-          <a>查看</a>
-        </li>
-        <li>
-          规则1（120个号）：折扣固定扣减90元；返点固定比例20%（季结）
-          <a>查看</a>
-        </li>
-      </ul>
-      <Table
-        columns={columns}
-        dataSource={data}
-        pagination={pagination}
-        loading={loading}
-        onChange={handleTableChange}
-      />
     </Modal>
   );
 };

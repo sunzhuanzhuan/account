@@ -84,3 +84,24 @@ export const {
 } = createHttpAction('startPolicy', Interface.policy.start, {
   method: 'post'
 });
+
+// 政策包含账号 全局列表
+export const {
+  getGlobalAccountList,
+} = createHttpAction('getGlobalAccountList', Interface.policy.getGlobalAccountList, {
+  method: 'post'
+});
+
+// 政策包含账号 特殊列表
+export const {
+  getSpecialAccountList,
+} = createHttpAction('getSpecialAccountList', Interface.policy.getSpecialAccountList, {
+  method: 'post'
+});
+
+// 政策包含账号 特殊列表
+export const {
+  getWhiteListAccountList,
+} = createHttpAction('getWhiteListAccountList', Interface.policy.getWhiteListAccountList, {
+  method: 'post'
+});

@@ -46,6 +46,11 @@ const PolicyList = (props) => {
 
   const [ stopModal, setStopModal ] = useState()
 
+  const [ accountModal, setAccountModal ] = useState({
+    active: "global",
+    record: {}
+  })
+
 
   const search = useRef({
     page: {
@@ -188,7 +193,7 @@ const PolicyList = (props) => {
     {
       title: '平台',
       dataIndex: 'platformNames',
-      render: (names, record) => {
+      render: (names) => {
         return <>
           {names}
         </>
@@ -212,7 +217,10 @@ const PolicyList = (props) => {
           <span>{rebateRuleValue}</span>
           <br />
           <span>账号数</span>：
-          <a>{record.globalAccountCount}</a>
+          <a onClick={() => setAccountModal({
+            active: "global",
+            record
+          })}>{record.globalAccountCount}</a>
         </>
       }
     },
@@ -225,7 +233,10 @@ const PolicyList = (props) => {
           <span>{count || 0}个</span>
           <br />
           <span>账号数</span>：
-          <a>{record.specialAccountCount}</a>
+          <a onClick={() => setAccountModal({
+            active: "specific",
+            record
+          })}>{record.specialAccountCount}</a>
         </>
       }
     },
@@ -235,7 +246,10 @@ const PolicyList = (props) => {
       render: (count, record) => {
         return <>
           <span>账号数</span>：
-          <a>{count}</a>
+          <a onClick={() => setAccountModal({
+            active: "whiteList",
+            record
+          })}>{count}</a>
         </>
       }
     },
@@ -278,7 +292,7 @@ const PolicyList = (props) => {
       title: '执行金额',
       dataIndex: 'globalAccountRule',
       key: 'orderAmount',
-      render: ({ executionStatisticsInfo }, record) => {
+      render: ({ executionStatisticsInfo }) => {
         return <>
           <span>预约</span>：
           <Yuan className='text-black' value={executionStatisticsInfo.executionReservationOrderAmount} format='0,0' />
@@ -338,6 +352,7 @@ const PolicyList = (props) => {
             </>
           }
           <a>下载</a>
+          <a>删除</a>
         </div>
       }
     }
@@ -387,7 +402,7 @@ const PolicyList = (props) => {
         rowSelection={rowSelectionProps}
         scroll={{ x: 2400 }}
       />
-      <PolicyAccountModal />
+      <PolicyAccountModal modal={accountModal} setModal={setAccountModal} actions={props.actions} />
       {stopModal ? <StopReasonModal onCancel={stopPolicy} onOk={stopReasonSubmit} /> : null}
     </div>
   );

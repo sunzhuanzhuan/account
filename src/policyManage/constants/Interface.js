@@ -58,5 +58,8 @@ export default {
     contractList: '/operator-gateway/contract/v1/list',
     start: '/operator-gateway/policy/v2/startPolicy',
     stop: '/operator-gateway/policy/v2/stopPolicy',
+    getGlobalAccountList: '/operator-gateway/policy/v2/getPolicyGlobalAccountList',
+    getSpecialAccountList: '/operator-gateway/policy/v2/getPolicySpecialAccountList',
+    getWhiteListAccountList: '/operator-gateway/policy/v2/getPolicyWhiteListAccountList',
   }
 }
