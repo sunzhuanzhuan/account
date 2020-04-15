@@ -99,6 +99,7 @@ const policyAllList = handleActions({
   }
 }, reducersResponseList.initList())
 
+
 const policyAllStatistics = handleActions({
   "procurementPolicyStatistics_success": (state, action) => {
     let { data } = action.payload
@@ -108,6 +109,26 @@ const policyAllStatistics = handleActions({
     }
   }
 }, {})
+
+
+const policyListByOwner = handleActions({
+  "policyListByOwner_success": reducersResponseList(),
+}, reducersResponseList.initList())
+
+const policyOwnerStatistics = handleActions({
+  "procurementPolicyStatisticsByOwner_success": (state, action) => {
+    let { data } = action.payload
+    return {
+      ...state,
+      ...data
+    }
+  }
+}, {})
+
+const contractListByOwner = handleActions({
+  "contractListByOwner_success": reducersResponseList(),
+}, reducersResponseList.initList())
+
 
 //渠道折扣， 品牌管理reducer
 function discountReducer(state = {}, action) {
@@ -131,5 +152,8 @@ export default combineReducers({
   pastPolicyDetail,
   policyAllList,
   policyAllStatistics,
+  policyListByOwner,
+  policyOwnerStatistics,
+  contractListByOwner,
   discountReducer
 })

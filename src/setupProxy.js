@@ -11,7 +11,10 @@ module.exports = function (app) {
   app.use(proxy('/api/operator-gateway/mcn/',
     { target: 'http://yapi.ops.tst-weiboyi.com/mock/129/', changeOrigin: true }
   ));
-  app.use(proxy('/api/operator-gateway/policy/v1.1/',
+  app.use(proxy('/api/operator-gateway/contract/',
+    { target: 'http://yapi.ops.tst-weiboyi.com/mock/129/', changeOrigin: true }
+  ));
+  app.use(proxy('/api/operator-gateway/policy/v2/',
     { target: 'http://yapi.ops.tst-weiboyi.com/mock/129/', changeOrigin: true }
   ));
   app.use(proxy('/api/operator-gateway/account/v1/',

@@ -1,7 +1,7 @@
 import Interface, { interfaceKey } from '../constants/Interface'
 import { createHttpAction } from 'redux-action-extend'
 // import { createAction } from 'redux-actions';
-import policyAll from './policyAll'
+import * as policyAll from './policyAll'
 
 
 const actions = interfaceKey.reduce((acc, cur) => {

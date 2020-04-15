@@ -14275,10 +14275,22 @@ wbuf@^1.1.0, wbuf@^1.7.2:
   dependencies:
     minimalistic-assert "^1.0.0"
 
-wbyui@^1.1.0, wbyui@^1.4.1:
+wbyui@^1.1.0:
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/wbyui/-/wbyui-1.4.2.tgz#c2cbab66bc5b82e42e6617cb602e7b9efb43e463"
   integrity sha512-AoUEa8t9SQEHe8Triwwpl4c1Ssc46aWEaEnGF8PUM7aBWdtH+zZRLBuUc4xNhm/p3jMyodDtGZ4V/MHe9w8QMw==
+  dependencies:
+    axios "^0.18.0"
+    babel-runtime "^6.26.0"
+    blueimp-md5 "^2.10.0"
+    js-cookie "^2.2.0"
+    redux-actions "^2.4.0"
+    wbyui "^1.1.0"
+
+wbyui@^1.4.4:
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/wbyui/-/wbyui-1.4.4.tgz#db25dc2d719f3b6381560604cc347fb9d68aa6ac"
+  integrity sha512-b3pAGh2Ik2pQXBXKBC3P0CqkgLQichM7ViVYImwaZ0lbxvH2nB2RRgfl598WI0P695nbimTw11VHbzGMWvWG3A==
   dependencies:
     axios "^0.18.0"
     babel-runtime "^6.26.0"
