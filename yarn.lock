@@ -1556,10 +1556,10 @@ ansi-styles@^3.0.0, ansi-styles@^3.2.0, ansi-styles@^3.2.1:
   dependencies:
     color-convert "^1.9.0"
 
-antd@^3.20.0:
-  version "3.26.4"
-  resolved "https://registry.yarnpkg.com/antd/-/antd-3.26.4.tgz#7caef11896eb9b1ec2b1d8c41c92f7c60ef8e52b"
-  integrity sha512-3kv0jpOPw/HzIGUAQO9wpoF0KZiGJa/jz5KC2ICkjaU1p9mlpq/ZkbW7cFY5P/iWrMvaa1rFYjcU6To4ietNKw==
+antd@3.26.13:
+  version "3.26.13"
+  resolved "https://registry.yarnpkg.com/antd/-/antd-3.26.13.tgz#fd6b618a33d5dec0f649263f30eae691425f7e47"
+  integrity sha512-7DjaXAUig51kzVw9T9Mi4slmq0eFl6qGk7t3kjA5t3Sv/Yn2llwNWT0lJDbseooesRRWeFLNByfZV37cUCRJYQ==
   dependencies:
     "@ant-design/create-react-context" "^0.2.4"
     "@ant-design/icons" "~2.1.1"
@@ -14275,10 +14275,22 @@ wbuf@^1.1.0, wbuf@^1.7.2:
   dependencies:
     minimalistic-assert "^1.0.0"
 
-wbyui@^1.1.0, wbyui@^1.4.1:
+wbyui@^1.1.0:
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/wbyui/-/wbyui-1.4.2.tgz#c2cbab66bc5b82e42e6617cb602e7b9efb43e463"
   integrity sha512-AoUEa8t9SQEHe8Triwwpl4c1Ssc46aWEaEnGF8PUM7aBWdtH+zZRLBuUc4xNhm/p3jMyodDtGZ4V/MHe9w8QMw==
+  dependencies:
+    axios "^0.18.0"
+    babel-runtime "^6.26.0"
+    blueimp-md5 "^2.10.0"
+    js-cookie "^2.2.0"
+    redux-actions "^2.4.0"
+    wbyui "^1.1.0"
+
+wbyui@^1.4.4:
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/wbyui/-/wbyui-1.4.4.tgz#db25dc2d719f3b6381560604cc347fb9d68aa6ac"
+  integrity sha512-b3pAGh2Ik2pQXBXKBC3P0CqkgLQichM7ViVYImwaZ0lbxvH2nB2RRgfl598WI0P695nbimTw11VHbzGMWvWG3A==
   dependencies:
     axios "^0.18.0"
     babel-runtime "^6.26.0"

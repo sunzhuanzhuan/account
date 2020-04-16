@@ -36,6 +36,7 @@ class StopReasonModal extends React.Component {
         width={700}
         onCancel={() => { onCancel() }}
         onOk={this.handleOk}
+        maskClosable={false}
       >
         <Form>
           <FormItem>

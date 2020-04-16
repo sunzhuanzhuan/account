@@ -71,7 +71,6 @@ const AddOwnerForm = (props) => {
             cancelText: '继续添加',
             okText: '返回主账号列表',
             onOk: () => {
-              // TODO: 跳转地址
               window.location.href = props.config.babysitterHost + "/default/user/index"
             },
             onCancel: () => {

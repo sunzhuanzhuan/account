@@ -28,8 +28,8 @@ export const interfaceKey = [
   { name: 'delSpecialRuleAccountById', method: 'post' }, //删除特殊规则账号
   { name: 'saveProcurementPolicyInfo', method: 'post' },
   { name: 'saveWhiteList', method: 'post' },
-  { name: 'startPolicy', method: 'post' },
-  { name: 'stopPolicy', method: 'post' },
+  // { name: 'startPolicy', method: 'post' },
+  // { name: 'stopPolicy', method: 'post' },
   { name: 'getPastPolicyListByMcnId' },
   { name: 'getPolicyInfoById' }
 
@@ -49,4 +49,17 @@ export default {
   editDiscount: '/operator-gateway/channel/discount/v1/modify',
   stopDiscount: '/operator-gateway/channel/discount/v1/stop',
   ...policyInterface,
+  policy: {
+    queryMcnByIdentityName: '/operator-gateway/mcn/v1/queryMcnByIdentityName',
+    queryBySnsName: '/operator-gateway/account/v1/queryBySnsName',
+    queryMediums: '/operator-gateway/mcn/v1/mediums',
+    queryList: '/operator-gateway/policy/v2/queryList',
+    procurementPolicyStatistics: '/operator-gateway/policy/v2/procurementPolicyStatistics',
+    contractList: '/operator-gateway/contract/v1/list',
+    start: '/operator-gateway/policy/v2/startPolicy',
+    stop: '/operator-gateway/policy/v2/stopPolicy',
+    getGlobalAccountList: '/operator-gateway/policy/v2/getPolicyGlobalAccountList',
+    getSpecialAccountList: '/operator-gateway/policy/v2/getPolicySpecialAccountList',
+    getWhiteListAccountList: '/operator-gateway/policy/v2/getPolicyWhiteListAccountList',
+  }
 }

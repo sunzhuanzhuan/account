@@ -99,32 +99,6 @@ class PolicyManage extends React.Component {
             whiteList={whiteList}
           ></WhiteList>
 
-          <ModuleHeader title="返点规则"></ModuleHeader>
-          <FormItem label='返点结算周期' {...formItemLayout}>
-            {
-              REBATE_SETTLEMENT_CYCLE[pastPolicyDetail.rebateSettlementCycle]
-            }
-
-          </FormItem>
-          <FormItem label='阶梯返点结算' {...formItemLayout}>
-            {pastPolicyDetail.stepRebateSettlementType == 1 ? '阶梯收入计算' : '全量收入计算'}
-            <cite className='eg-explain'>例：0-100返点3%，100及以上返点5%，博主总收入150<br />
-              阶梯收入计算=（100*3%）+（50*5%）<br />
-              全量收入计算=150*5%
-							</cite>
-          </FormItem>
-          <FormItem label='保底政策' {...formItemLayout}>
-            {isGuaranteedBool ? '开' : '关'}
-          </FormItem>
-          {isGuaranteedBool && <FormItem label='保底金额' {...formItemLayout}>
-            {pastPolicyDetail.guaranteedMinAmount}元
-          </FormItem>}
-          {isGuaranteedBool && <FormItem label='保底备注' {...formItemLayout}>
-            {pastPolicyDetail.guaranteedRemark}
-          </FormItem>}
-          <Form.Item label='合同附件' {...formItemLayout}>
-            <a href={pastPolicyDetail.contractFileUrl}>{pastPolicyDetail.contractFileName}</a>
-          </Form.Item>
           <FormItem label="备注"  {...formItemLayout}>
             {pastPolicyDetail.remark}
           </FormItem>
