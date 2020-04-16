@@ -13,7 +13,7 @@ import {
   Spin,
   message,
   Table,
-  Divider, PageHeader, Popover, Icon
+  Divider, PageHeader, Popover, Icon, List
 } from "antd";
 
 import PolicyAllFilterForm from "../components/PolicyAllFilterForm";
@@ -41,12 +41,12 @@ const PolicyList = (props) => {
 
   const { keys, source, total, pageNum, pageSize } = props.policyList
 
-  const [ loading, setLoading ] = useState(false)
-  const [ selectedRowKeys, setSelectedRowKeys ] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [selectedRowKeys, setSelectedRowKeys] = useState([])
 
-  const [ stopModal, setStopModal ] = useState()
+  const [stopModal, setStopModal] = useState(false)
 
-  const [ accountModal, setAccountModal ] = useState({
+  const [accountModal, setAccountModal] = useState({
     active: "global",
     record: {}
   })
@@ -79,6 +79,8 @@ const PolicyList = (props) => {
   useEffect(() => {
     getList()
     getStatistics()
+    props.actions.queryMediums()
+    props.actions.getGlobalRulePlatforms()
   }, [])
 
   const getList = ({ page, form } = {}) => {
@@ -143,7 +145,12 @@ const PolicyList = (props) => {
       })
     })
   }
-
+  //下载
+  const downMcnPolicyData = (list) => {
+    actions.downMcnPolicyData(
+      { policyIdList: list }
+    )
+  }
   const columns = [
     {
       title: '政策名称/ID',
@@ -170,7 +177,7 @@ const PolicyList = (props) => {
     {
       title: <span>级别<QuestionTip content={
         Object.values(POLICY_LEVEL).map(item => <div key={item.icon}>
-          <IconFont type={item.icon} /> {item.text}<br />
+          <IconFont type={item.icon} /> ：{item.text}<br />
         </div>)
       } /></span>,
       width: 64,
@@ -351,8 +358,8 @@ const PolicyList = (props) => {
               <Divider type="vertical" />
             </>
           }
-          <a>下载</a>
-          <a>删除</a>
+          <a onClick={() => downMcnPolicyData([id])}>下载</a>
+          {/* <a>删除</a> */}
         </div>
       }
     }
@@ -368,11 +375,12 @@ const PolicyList = (props) => {
         title="采购政策列表"
         subTitle="This is a subtitle"
       />
-      <PolicyAllFilterForm actions={props.actions} getList={getList} getStatistics={getStatistics} />
+      <PolicyAllFilterForm actions={props.actions} getList={getList} getStatistics={getStatistics} globalRulePlatforms={props.globalRulePlatforms}
+        queryMediumsList={props.queryMediumsList} />
       <Tabs onChange={onTabChange} animated={false}>
         <TabPane tab={<span>全部 <span>{props.statistics.allCount}</span></span>} key="0" />
         {
-          Object.entries(policyStatusMap).map(([ key, { text, field } ]) => <TabPane tab={
+          Object.entries(policyStatusMap).map(([key, { text, field }]) => <TabPane tab={
             <span>{text} <span>{props.statistics[field]}</span></span>} key={key} />)
         }
       </Tabs>
@@ -393,7 +401,10 @@ const PolicyList = (props) => {
           预约执行订单数量：20025
         </span>
       </div>} />
-      <Button style={{ margin: 10 }} type="primary" ghost>批量下载政策</Button>
+      <Button style={{ margin: 10 }}
+        type="primary"
+        disabled={selectedRowKeys.length == 0} ghost
+        onClick={() => downMcnPolicyData(selectedRowKeys)}>批量下载政策</Button>
       <Table
         loading={loading}
         dataSource={dataSource}
@@ -401,17 +412,20 @@ const PolicyList = (props) => {
         columns={columns}
         rowSelection={rowSelectionProps}
         scroll={{ x: 2400 }}
+        rowKey="id"
       />
       <PolicyAccountModal modal={accountModal} setModal={setAccountModal} actions={props.actions} />
       {stopModal ? <StopReasonModal onCancel={stopPolicy} onOk={stopReasonSubmit} /> : null}
-    </div>
+    </div >
   );
 };
 
 const mapStateToProps = (state) => ({
   common: state.commonReducers,
   policyList: state.pricePolicyReducer.policyAllList,
-  statistics: state.pricePolicyReducer.policyAllStatistics
+  statistics: state.pricePolicyReducer.policyAllStatistics,
+  globalRulePlatforms: state.pricePolicyReducer.globalRulePlatforms,
+  queryMediumsList: state.pricePolicyReducer.queryMediumsList,
 })
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({

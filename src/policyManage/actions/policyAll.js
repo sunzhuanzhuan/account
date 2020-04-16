@@ -12,6 +12,9 @@ export const {
 } = createHttpAction('queryMcnByIdentityName', Interface.policy.queryMcnByIdentityName, {
   method: 'post'
 });
+export const {
+  getGlobalRulePlatforms,
+} = createHttpAction('getGlobalRulePlatforms', Interface.policy.getGlobalRulePlatforms);
 
 // 根据账号名称查询下拉框
 export const {
@@ -42,6 +45,9 @@ export const {
   queryMediums,
 } = createHttpAction('queryMediums', Interface.policy.queryMediums);
 
+export const {
+  downMcnPolicyData,
+} = createHttpAction('downMcnPolicyData', Interface.policy.downMcnPolicyData);
 
 export const syncUpdatePolicyStatus = createAction('syncUpdatePolicyStatus', (data) => {
   return { data };

@@ -87,7 +87,7 @@ export default class PolicyAllFilterForm extends Component {
 
 
   render() {
-    const { source, loading, actions } = this.props
+    const { source, loading, actions, globalRulePlatforms, queryMediumsList } = this.props
     const { getFieldDecorator } = this.props.form
 
 
@@ -200,30 +200,51 @@ export default class PolicyAllFilterForm extends Component {
             )}
           </Form.Item>
         </Col>
-        <Col span={6}>
+        <Col span={12}>
           <Form.Item label="资源媒介">
-            {getFieldDecorator('ownerAdminId', {})(
-              <SearchSelect
-                placeholder="请输入并从下拉框选择"
-                action={actions.queryMediums}
-                wordKey='mcnId'
-                filterOption={false}
-                mapResultItemToOption={({ mediumName, mediumId } = {}) => ({
-                  value: mediumId,
-                  label: mediumName
-                })}
-              />
+            {getFieldDecorator('ownerAdminIdList', {})(
+              <Select
+                allowClear
+                showSearch
+                mode="multiple"
+                style={{ width: '100%' }}
+                placeholder="请选择"
+                optionFilterProp='children'
+              >
+                {
+                  queryMediumsList.map(item => <Option key={item.mediumId}>{item.mediumName}</Option>)
+                }
+              </Select>
             )}
           </Form.Item>
         </Col>
-        <Col span={9}>
+        <Col span={12}>
+          <Form.Item label='平台'>
+            {getFieldDecorator('platformIdList', {})(
+              <Select
+                allowClear
+                showSearch
+                mode="multiple"
+                style={{ width: '100%' }}
+                placeholder="请选择"
+                optionFilterProp='children'
+              >
+                {
+                  globalRulePlatforms.map(item => <Option key={item.id}>{item.platformName}</Option>)
+
+                }
+              </Select>
+            )}
+          </Form.Item>
+        </Col>
+        <Col span={12}>
           <Form.Item label="政策有效期">
             {getFieldDecorator("validTime", {})(
               <RangePicker style={{ width: '100%' }} />
             )}
           </Form.Item>
         </Col>
-        <Col span={9}>
+        <Col span={12}>
           <Form.Item>
             <InputGroup compact>
               <Select
@@ -240,8 +261,10 @@ export default class PolicyAllFilterForm extends Component {
             </InputGroup>
           </Form.Item>
         </Col>
-        <Col span={6}>
-          <div style={{ lineHeight: '40px', textAlign: 'right' }}>
+
+
+        <Col span={4}>
+          <div style={{ lineHeight: '40px', textAlign: 'left' }}>
             <Button type='primary' htmlType='submit' loading={loading}>查询</Button>
             <Button style={{ margin: '0 16px 0 10px' }} onClick={this.handleReset}>重置</Button>
           </div>

@@ -81,7 +81,16 @@ const pastPolicyDetail = handleAction('getPolicyInfoById_success', (state, actio
   }
 }, {})
 
-
+const globalRulePlatforms = handleAction('getGlobalRulePlatforms_success', (state, action) => {
+  return [
+    ...action.payload.data
+  ]
+}, [])
+const queryMediumsList = handleAction('queryMediums_success', (state, action) => {
+  return [
+    ...action.payload.data
+  ]
+}, [])
 const policyAllList = handleActions({
   "policyAllList_success": reducersResponseList(),
   "syncUpdatePolicyStatus": (state, action) => {
@@ -155,5 +164,7 @@ export default combineReducers({
   policyListByOwner,
   policyOwnerStatistics,
   contractListByOwner,
-  discountReducer
+  discountReducer,
+  globalRulePlatforms,
+  queryMediumsList
 })
