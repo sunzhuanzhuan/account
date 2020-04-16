@@ -10,9 +10,9 @@ const data = {}
 
 
 const PolicyAccountModal = (props) => {
-  const [ data, setData ] = useState([])
-  const [ pagination, setPagination ] = useState({})
-  const [ loading, setLoading ] = useState(false)
+  const [data, setData] = useState([])
+  const [pagination, setPagination] = useState({})
+  const [loading, setLoading] = useState(false)
 
   const { active, record = {} } = props.modal
 
@@ -39,7 +39,7 @@ const PolicyAccountModal = (props) => {
     >
       <Tabs activeKey={active} onChange={handleTabChange}>
         <TabPane tab={<span>全局账号 <b>{record.globalAccountCount}</b></span>} key="global">
-          <Global action={props.actions.getGlobalAccountList} />
+          <Global action={props.actions.getGlobalAccountList} record={record} />
         </TabPane>
         <TabPane tab={<span>特殊账号 <b>{record.specialAccountCount}</b></span>} key="specific">
           <ul className="policy-account-modal-rules-container">

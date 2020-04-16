@@ -63,9 +63,16 @@ const PolicyList = (props) => {
     total,
     pageSize,
     current: pageNum,
-    onChange: (currentPage) => {
+    showSizeChanger: true,
+    showQuickJumper: true,
+    onChange: (currentPage, pageSize) => {
       getList({
-        page: { currentPage }
+        page: { currentPage: currentPage, pageSize }
+      })
+    },
+    onShowSizeChange: (current, size) => {
+      getList({
+        page: { currentPage: 1, pageSize: size }
       })
     }
   }
