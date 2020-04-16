@@ -33,6 +33,7 @@ const Global = (props) => {
     {
       title: '全部平台',
       dataIndex: 'platformId',
+      filterIcon: <Icon type="caret-down" />,
       filters: globalRulePlatforms.map(one => ({ text: one.platformName, value: one.id })),
       align: 'right',
       width: '100px',
@@ -58,6 +59,7 @@ const Global = (props) => {
     {
       title: '上下架状态',
       dataIndex: 'onShelfStatus',
+      filterIcon: <Icon type="caret-down" />,
       filters: [
         { text: 'A端上架', value: 1 },
         { text: 'A端下架', value: 2 },
@@ -97,6 +99,8 @@ const Global = (props) => {
   const ruleIdCol = {
     title: '规则ID',
     dataIndex: 'ruleId',
+    align: 'right',
+    filterIcon: <Icon type="caret-down" />,
     filters: ruleList.map(one => ({ text: `规则${one.ruleId}`, value: one.ruleId })),
     width: '100px',
   }
