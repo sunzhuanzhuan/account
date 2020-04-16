@@ -2,18 +2,14 @@
  * Created by lzb on 2020-04-15.
  */
 import React, { useEffect, useState } from 'react';
-import { Table, Icon, Badge } from "antd";
+import { Table, Icon, Badge, List } from "antd";
 import { oneOf } from 'prop-types';
-import { dateFormat, ruleDisplay, settlementDisplay } from "../../utils";
 
 const Global = (props) => {
-  const [data, setData] = useState({})
-  const [pagination, setPagination] = useState({})
   const [loading, setLoading] = useState(false)
-
   const handleTableChange = (pagination, filters, sorter) => {
-    console.log("handleTableChange -> pagination, filters, sorter", pagination, filters, sorter)
-    getList({
+    setLoading(true)
+    props.actionSearch({
       page: {
         currentPage: pagination.current,
         pageSize: pagination.pageSize
@@ -21,20 +17,9 @@ const Global = (props) => {
       form: {
         policyId: props.record.id,
         platformId: filters.platformId,
-        OnShelfStatus: filters
+        onShelfStatus: filters.onShelfStatus,
+        ruleId: filters.ruleId
       }
-    })
-  };
-
-  useEffect(() => {
-    getList()
-  }, [])
-
-
-  const getList = async (params = {}) => {
-    setLoading(true)
-    await props.action(params).then(({ data }) => {
-      setData(data)
     })
     setLoading(false)
   };
@@ -92,44 +77,34 @@ const Global = (props) => {
       }
     },
   ];
+  const { list = {}, isRuleId, ruleList = [] } = props
 
-  const { accountList = {}, rule = { discountRule: {}, rebateRule: {} } } = data
+  const ruleIdCol = {
+    title: '规则ID',
+    dataIndex: 'ruleId',
+    filters: ruleList.map(one => ({ text: `规则${one.ruleId}`, value: one.ruleId })),
+    width: '100px',
+  }
   const {
-    discountRuleLabel,
-    discountRuleValue,
-    rebateRuleLabel,
-    rebateRuleValue
-  } = ruleDisplay(rule)
-  const { cycle } = settlementDisplay(rule.rebateRule)
+    total, pageSize, pageNum
+  } = list
   return (
     <div>
-      <ul className="policy-account-modal-rules-container">
-        {/* 使用 ruleDisplay 方法获取值 */}
-        <li>
-          全局规则：
-          <span>{discountRuleLabel}</span>：
-          <span>{discountRuleValue}</span>
-         ；
-          <span>{rebateRuleLabel}</span>：
-          <span>{rebateRuleValue}</span>
-        </li>
-        <li>
-          返点规则：{cycle}
-        </li>
-      </ul>
       <Table
-        columns={columns}
-        dataSource={accountList.list}
+        loading={loading}
+        columns={isRuleId ? [ruleIdCol, ...columns] : columns}
+        dataSource={list.list}
         pagination={{
-          ...pagination,
+          total,
+          pageSize,
+          current: pageNum,
           showQuickJumper: true,
           showSizeChanger: true,
           onChange: () => { },
           onShowSizeChange: () => { }
         }}
-        loading={loading}
         onChange={handleTableChange}
-        scroll={{ y: 200 }}
+        scroll={{ y: 360 }}
       />
     </div>
   );
