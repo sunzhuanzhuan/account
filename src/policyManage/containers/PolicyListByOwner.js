@@ -96,7 +96,7 @@ const PolicyListByOwner = (props) => {
             <span>{text} <span>{props.statistics[field]}</span></span>} key={key} />)
         }
       </Tabs>
-      <PolicyAccountModal />
+      {/*<PolicyAccountModal />*/}
     </div>
   );
 };

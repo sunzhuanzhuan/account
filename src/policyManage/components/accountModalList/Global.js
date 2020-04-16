@@ -80,6 +80,7 @@ const Global = (props) => {
   return (
     <div>
       <ul className="policy-account-modal-rules-container">
+        {/* 使用 ruleDisplay 方法获取值 */}
         <li>
           全局规则：折扣-固定扣减90元；返点-固定比例20%
         </li>
