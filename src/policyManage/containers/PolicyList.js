@@ -421,7 +421,7 @@ const PolicyList = (props) => {
         scroll={{ x: 2400 }}
         rowKey="id"
       />
-      <PolicyAccountModal modal={accountModal} setModal={setAccountModal} actions={props.actions} />
+      <PolicyAccountModal modal={accountModal} setModal={setAccountModal} actions={props.actions} globalRulePlatforms={props.globalRulePlatforms} />
       {stopModal ? <StopReasonModal onCancel={stopPolicy} onOk={stopReasonSubmit} /> : null}
     </div >
   );

@@ -68,6 +68,10 @@ const PolicyAccountModal = (props) => {
     rebateRuleValue
   } = ruleDisplay(rule)
   const { cycle } = settlementDisplay(rule.rebateRule)
+  const commonProps = {
+    record,
+    globalRulePlatforms: props.globalRulePlatforms
+  }
   return (
     <Modal
       visible={!!active}
@@ -91,7 +95,7 @@ const PolicyAccountModal = (props) => {
               返点规则：{cycle}
             </li>
           </ul>
-          <Global list={accountList} actionSearch={getGlobalAccountList} record={record} />
+          <Global list={accountList} actionSearch={getGlobalAccountList} {...commonProps} />
         </TabPane>
         <TabPane tab={<span>特殊账号 <b>{record.specialAccountCount}</b></span>} key="specific">
           <ul className="policy-account-modal-rules-container">
@@ -109,10 +113,10 @@ const PolicyAccountModal = (props) => {
               </li>
             })}
           </ul>
-          <Global key="specific" isRuleId={true} list={accountList} actionSearch={getSpecialAccountList} record={record} ruleList={ruleList} />
+          <Global key="specific" isRuleId={true} list={accountList} actionSearch={getSpecialAccountList} {...commonProps} ruleList={ruleList} />
         </TabPane>
         <TabPane tab={<span>白名单 <b>{record.whiteListCount}</b></span>} key="whiteList">
-          <Global list={data} actionSearch={getWhiteListAccountList} record={record} key="whiteList" />
+          <Global list={data} actionSearch={getWhiteListAccountList}{...commonProps} key="whiteList" />
         </TabPane>
       </Tabs>
     </Modal>

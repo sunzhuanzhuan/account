@@ -7,6 +7,7 @@ import { oneOf } from 'prop-types';
 
 const Global = (props) => {
   const [loading, setLoading] = useState(false)
+  const { globalRulePlatforms = [] } = props
   const handleTableChange = (pagination, filters, sorter) => {
     setLoading(true)
     props.actionSearch({
@@ -23,8 +24,6 @@ const Global = (props) => {
     })
     setLoading(false)
   };
-
-
   const columns = [
     {
       title: 'account_id',
@@ -34,9 +33,10 @@ const Global = (props) => {
     {
       title: '全部平台',
       dataIndex: 'platformId',
-      filters: [{ text: '抖音', value: 'male' }, { text: '快手', value: 'female' }],
+      filters: globalRulePlatforms.map(one => ({ text: one.platformName, value: one.id })),
       align: 'right',
       width: '100px',
+      render: (text, record) => record.platformName
     },
     {
       title: '账号名称',
@@ -47,18 +47,26 @@ const Global = (props) => {
     },
     {
       title: '账号ID',
-      dataIndex: 'snsId'
+      dataIndex: 'snsId',
+      width: '100px'
     },
     {
       title: '粉丝数',
-      dataIndex: 'followerCount'
+      dataIndex: 'followerCount',
+      width: '120px'
     },
     {
       title: '上下架状态',
       dataIndex: 'onShelfStatus',
-      filters: [{ text: 'A端上架', value: 1 }, { text: 'A端下架', value: 2 }],
+      filters: [
+        { text: 'A端上架', value: 1 },
+        { text: 'A端下架', value: 2 },
+        { text: 'B端上架', value: 3 },
+        { text: 'B端下架', value: 4 },
+      ],
       filterMultiple: false,
-      width: '200px',
+      align: 'right',
+      width: '160px',
       render: (text, record) => {
         const { aOnShelfStatus, bOnShelfStatus } = text
         return <div>
@@ -71,9 +79,16 @@ const Global = (props) => {
       title: '主页链接',
       dataIndex: 'url',
       align: 'center',
-      width: '80px',
+      width: '160px',
       render: (url) => {
-        return <a href={url} target="_blank">查看</a>
+        return <div style={{
+          textAlign: "left",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          maxWidth: 140,
+          marginLeft: 10
+        }}><a href={url} target="_blank" >{url}</a></div>
       }
     },
   ];
