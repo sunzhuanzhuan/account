@@ -154,6 +154,9 @@ export default class CheckboxTag extends Component {
         skuTypeId={this.props.skuTypeId}
         defaultValue={value}
       />}
+      {
+        value.length === 0 && !isEdit ? <div style={{textAlign: 'center'}}>无</div> : null
+      }
     </div>
   }
 }
