@@ -38,7 +38,7 @@ const { TabPane } = Tabs;
 
 
 const PolicyList = (props) => {
-  const { keys, source, total, pageNum, pageSize } = props.policyList
+  const { keys, source, } = props.policyList
   const [loading, setLoading] = useState(false)
   const search = useRef({
     page: {
@@ -80,14 +80,15 @@ const PolicyList = (props) => {
     })
   };
 
-  const { globalRulePlatforms, actions } = props
+  const { globalRulePlatforms, actions, policyList } = props
   const dataSource = keys.map(key => source[key])
   const tableProps = {
     actions,
     getList,
     dataSource,
     globalRulePlatforms,
-    isPolicy: true
+    isPolicy: true,
+    policyList
   }
 
   return (

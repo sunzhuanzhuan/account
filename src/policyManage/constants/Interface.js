@@ -63,5 +63,6 @@ export default {
     getSpecialAccountList: '/operator-gateway/policy/v2/getPolicySpecialAccountList',
     getWhiteListAccountList: '/operator-gateway/policy/v2/getPolicyWhiteListAccountList',
     downMcnPolicyData: '/operator-gateway/policy/v2/downMcnPolicyData',
+    delPolicy: '/operator-gateway/policy/v2/delPolicy',
   }
 }

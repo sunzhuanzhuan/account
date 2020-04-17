@@ -68,13 +68,13 @@ const PolicyListByOwner = (props) => {
     })
   };
   const dataSource = keys.map(key => source[key])
-  const { globalRulePlatforms, actions } = props
+  const { globalRulePlatforms, actions, policyList } = props
   const tableProps = {
     getList,
     actions,
     noColumnArr: ['identityName', 'ownerAdminName'],
     dataSource,
-    globalRulePlatforms,
+    globalRulePlatforms, policyList
   }
 
   return (

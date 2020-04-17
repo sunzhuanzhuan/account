@@ -17,6 +17,7 @@ import { POLICY_LEVEL } from "@/policyManage/constants/dataConfig";
 import IconFont from "@/base/IconFont";
 import QuestionTip from "@/base/QuestionTip";
 import Yuan from "@/base/Yuan";
+import { delPolicy } from '../actions/policyAll';
 
 const PolicyTable = (props) => {
   const [accountModal, setAccountModal] = useState({
@@ -27,13 +28,7 @@ const PolicyTable = (props) => {
 
   const [stopModal, setStopModal] = useState(false)
   const { policyList = {}, getList, dataSource = [], noColumnArr = [], isPolicy } = props
-  const { keys, source, total, pageNum, pageSize } = policyList
-  const search = useRef({
-    page: {
-      currentPage: 1,
-      pageSize: 20
-    }
-  })
+  const { total, pageNum, pageSize } = policyList
 
   const paginationProps = {
     total,
@@ -68,10 +63,11 @@ const PolicyTable = (props) => {
   // 停用
   const stopPolicy = (id) => {
     setStopModal(id)
+
   }
 
   // 停用原因提交
-  const stopReasonSubmit = ({ policyStopReason }) => {
+  const stopReasonSubmit = async ({ policyStopReason }) => {
     return props.actions.stopPolicy({ id: stopModal, policyStopReason }).then(({ data }) => {
       message.success('操作成功')
       setStopModal()
@@ -103,6 +99,11 @@ const PolicyTable = (props) => {
     props.actions.downMcnPolicyData(
       { policyIdList: list }
     )
+  }
+  const delPolicyAsync = async (id) => {
+    props.actions.delPolicy({ id: id })
+    message.success('删除成功')
+    getList()
   }
   const columns = [
     {
@@ -314,7 +315,7 @@ const PolicyTable = (props) => {
           }
           {isPolicy ?
             <a onClick={() => downMcnPolicyData([id])}>下载</a>
-            : <a>删除</a>}
+            : <a onClick={() => delPolicyAsync(id)}>删除</a>}
         </div>
       }
     }

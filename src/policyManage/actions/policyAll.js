@@ -90,7 +90,12 @@ export const {
 } = createHttpAction('startPolicy', Interface.policy.start, {
   method: 'post'
 });
-
+// 删除政策
+export const {
+  delPolicy,
+} = createHttpAction('delPolicy', Interface.policy.delPolicy, {
+  method: 'post'
+});
 // 政策包含账号 全局列表
 export const {
   getGlobalAccountList,
