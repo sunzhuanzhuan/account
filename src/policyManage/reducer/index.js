@@ -122,6 +122,19 @@ const policyAllStatistics = handleActions({
 
 const policyListByOwner = handleActions({
   "policyListByOwner_success": reducersResponseList(),
+  "syncUpdatePolicyStatus": (state, action) => {
+    let { key } = action.payload.data
+    return update(state, {
+      source: {
+        [key]: {
+          $set: {
+            ...state.source[key],
+            ...action.payload.data
+          }
+        }
+      }
+    })
+  }
 }, reducersResponseList.initList())
 
 const policyOwnerStatistics = handleActions({
