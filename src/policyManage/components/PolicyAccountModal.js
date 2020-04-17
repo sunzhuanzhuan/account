@@ -16,9 +16,13 @@ const PolicyAccountModal = (props) => {
   const [loading, setLoading] = useState(true)
   const { active, record = {} } = props.modal
   useEffect(() => {
+    props.actions.getPlatformListByPolicy({ policyId: record.id })
+  }, [record.id])
+  useEffect(() => {
     handleTabChange(active)
     searchAsync(active)
   }, [active])
+
   const defaultParams = {
     page: {
       currentPage: 1,
@@ -75,7 +79,7 @@ const PolicyAccountModal = (props) => {
   const { cycle } = settlementDisplay(rule.rebateRule)
   const commonProps = {
     record,
-    globalRulePlatforms: props.globalRulePlatforms
+    platformListByPolicy: props.platformListByPolicy
   }
   return (
     <Modal

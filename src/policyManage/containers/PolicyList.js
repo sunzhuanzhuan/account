@@ -49,6 +49,7 @@ const PolicyList = (props) => {
 
   useEffect(() => {
     getList()
+    props.actions.getGlobalRulePlatforms()
     getStatistics()
   }, [])
 
@@ -80,7 +81,7 @@ const PolicyList = (props) => {
     })
   };
 
-  const { globalRulePlatforms, actions, policyList } = props
+  const { globalRulePlatforms, actions, policyList, platformListByPolicy } = props
   const dataSource = keys.map(key => source[key])
   const tableProps = {
     actions,
@@ -88,7 +89,8 @@ const PolicyList = (props) => {
     dataSource,
     globalRulePlatforms,
     isPolicy: true,
-    policyList
+    policyList,
+    platformListByPolicy,
   }
 
   return (
@@ -97,7 +99,7 @@ const PolicyList = (props) => {
         <PageHeader
           onBack={false}
           title="采购政策列表"
-          subTitle="This is a subtitle"
+          subTitle=" "
         />
         <PolicyAllFilterForm actions={props.actions} getList={getList} getStatistics={getStatistics} globalRulePlatforms={props.globalRulePlatforms}
           queryMediumsList={props.queryMediumsList} />
@@ -138,6 +140,7 @@ const mapStateToProps = (state) => ({
   statistics: state.pricePolicyReducer.policyAllStatistics,
   globalRulePlatforms: state.pricePolicyReducer.globalRulePlatforms,
   queryMediumsList: state.pricePolicyReducer.queryMediumsList,
+  platformListByPolicy: state.pricePolicyReducer.platformListByPolicy
 })
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({

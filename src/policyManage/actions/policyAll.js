@@ -132,3 +132,7 @@ export const {
 export const {
   getLatestUpload,
 } = createHttpAction('getLatestUpload', Interface.policy.getLatestUpload);
+//获取当前政策下的平台列表
+export const {
+  getPlatformListByPolicy,
+} = createHttpAction('getPlatformListByPolicy', Interface.policy.getPlatformListByPolicy);

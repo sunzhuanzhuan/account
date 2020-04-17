@@ -67,5 +67,6 @@ export default {
     getWhiteListAccountList: '/operator-gateway/policy/v2/getPolicyWhiteListAccountList',
     downMcnPolicyData: '/operator-gateway/policy/v2/downMcnPolicyData',
     delPolicy: '/operator-gateway/policy/v2/delPolicy',
+    getPlatformListByPolicy: '/operator-gateway/policy/v2/getPlatformListByPolicy'
   }
 }

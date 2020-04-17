@@ -68,13 +68,13 @@ const PolicyListByOwner = (props) => {
     })
   };
   const dataSource = keys.map(key => source[key])
-  const { globalRulePlatforms, actions, policyList } = props
+  const { globalRulePlatforms, actions, policyList, platformListByPolicy } = props
   const tableProps = {
     getList,
     actions,
     noColumnArr: ['identityName', 'ownerAdminName'],
     dataSource,
-    globalRulePlatforms, policyList
+    globalRulePlatforms, policyList, platformListByPolicy
   }
 
   return (
@@ -82,7 +82,7 @@ const PolicyListByOwner = (props) => {
       <PageHeader
         onBack={false}
         title="主账号政策列表"
-        subTitle="This is a subtitle"
+        subTitle=" "
       >
         <OwnerInfos actions={props.actions} list={props.contractList} />
       </PageHeader>
@@ -107,6 +107,7 @@ const mapStateToProps = (state) => ({
   contractList: state.pricePolicyReducer.contractListByOwner,
   globalRulePlatforms: state.pricePolicyReducer.globalRulePlatforms,
   queryMediumsList: state.pricePolicyReducer.queryMediumsList,
+  platformListByPolicy: state.pricePolicyReducer.platformListByPolicy,
 })
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({

@@ -27,7 +27,7 @@ const PolicyTable = (props) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
 
   const [stopModal, setStopModal] = useState(false)
-  const { policyList = {}, getList, dataSource = [], noColumnArr = [], isPolicy } = props
+  const { policyList = {}, getList, dataSource = [], noColumnArr = [], isPolicy, platformListByPolicy } = props
   const { total, pageNum, pageSize } = policyList
 
   const paginationProps = {
@@ -58,7 +58,6 @@ const PolicyTable = (props) => {
 
   useEffect(() => {
     props.actions.queryMediums()
-    props.actions.getGlobalRulePlatforms()
   }, [])
 
 
@@ -336,7 +335,7 @@ const PolicyTable = (props) => {
         scroll={{ x: 2400 }}
         rowKey="id"
       />
-      <PolicyAccountModal modal={accountModal} setModal={setAccountModal} actions={props.actions} globalRulePlatforms={props.globalRulePlatforms} />
+      {accountModal.active ? <PolicyAccountModal modal={accountModal} setModal={setAccountModal} actions={props.actions} platformListByPolicy={platformListByPolicy} /> : null}
       {stopModal ? <StopReasonModal onCancel={stopPolicy} onOk={stopReasonSubmit} /> : null}
     </div >
   );
