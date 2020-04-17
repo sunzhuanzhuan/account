@@ -48,9 +48,11 @@ const PolicyTable = (props) => {
     }
   }
   const rowSelectionProps = isPolicy ? {
-    selectedRowKeys,
-    onChange: (selectedRowKeys) => {
-      setSelectedRowKeys(selectedRowKeys)
+    rowSelection: {
+      selectedRowKeys,
+      onChange: (selectedRowKeys) => {
+        setSelectedRowKeys(selectedRowKeys)
+      }
     }
   } : {}
 
@@ -330,7 +332,7 @@ const PolicyTable = (props) => {
         dataSource={dataSource}
         pagination={paginationProps}
         columns={columns}
-        rowSelection={rowSelectionProps}
+        {...rowSelectionProps}
         scroll={{ x: 2400 }}
         rowKey="id"
       />
