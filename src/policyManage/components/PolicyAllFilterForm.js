@@ -200,16 +200,19 @@ export default class PolicyAllFilterForm extends Component {
             )}
           </Form.Item>
         </Col>
-        <Col span={12}>
+        <Col span={6}>
           <Form.Item label="资源媒介">
             {getFieldDecorator('ownerAdminIdList', {})(
               <Select
                 allowClear
-                showSearch
                 mode="multiple"
                 style={{ width: '100%' }}
-                placeholder="请选择"
+                placeholder="请选择资源媒介"
+                maxTagCount={0}
                 optionFilterProp='children'
+                maxTagPlaceholder={(omittedValues) => {
+                  return `已选${omittedValues.length}项`
+                }}
               >
                 {
                   queryMediumsList.map(item => <Option key={item.mediumId}>{item.mediumName}</Option>)
@@ -219,7 +222,7 @@ export default class PolicyAllFilterForm extends Component {
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item label='平台'>
+          <Form.Item label={<EmSpan length={5}>平台</EmSpan>}>
             {getFieldDecorator('platformIdList', {})(
               <Select
                 allowClear
@@ -234,13 +237,6 @@ export default class PolicyAllFilterForm extends Component {
 
                 }
               </Select>
-            )}
-          </Form.Item>
-        </Col>
-        <Col span={12}>
-          <Form.Item label="政策有效期">
-            {getFieldDecorator("validTime", {})(
-              <RangePicker style={{ width: '100%' }} />
             )}
           </Form.Item>
         </Col>
@@ -261,7 +257,13 @@ export default class PolicyAllFilterForm extends Component {
             </InputGroup>
           </Form.Item>
         </Col>
-
+        <Col span={12}>
+          <Form.Item label="政策有效期">
+            {getFieldDecorator("validTime", {})(
+              <RangePicker style={{ width: '100%' }} />
+            )}
+          </Form.Item>
+        </Col>
 
         <Col span={4}>
           <div style={{ lineHeight: '40px', textAlign: 'left' }}>

@@ -16,10 +16,9 @@ const PolicyAccountModal = (props) => {
   const [loading, setLoading] = useState(true)
   const { active, record = {} } = props.modal
   useEffect(() => {
-    setLoading(true)
     handleTabChange(active)
-    setLoading(false)
-  }, [])
+    searchAsync(active)
+  }, [active])
   const defaultParams = {
     page: {
       currentPage: 1,
@@ -35,32 +34,38 @@ const PolicyAccountModal = (props) => {
       active: key,
       record
     })
+
+  };
+  const searchAsync = (key) => {
+    setLoading(true)
     if (key === 'global') {
-      getGlobalAccountList(defaultParams)
+      getGlobalAccountListAsync(defaultParams)
     }
     if (key === 'specific') {
-      getSpecialAccountList(defaultParams)
+      getSpecialAccountListAsync(defaultParams)
     }
     if (key === 'whiteList') {
-      getWhiteListAccountList(defaultParams)
+      getWhiteListAccountListAsync(defaultParams)
     }
-  };
+    setLoading(false)
+  }
+
   //获取全局数据
-  const getGlobalAccountList = async (params) => {
+  const getGlobalAccountListAsync = async (params) => {
     const { data } = await props.actions.getGlobalAccountList(params)
-    setData(data)
+    setData(data || {})
   }
   //获取特殊数据
-  const getSpecialAccountList = async (params) => {
-    const { data } = await props.actions.getSpecialAccountList(params)
+  const getSpecialAccountListAsync = async (params) => {
+    const { data = {} } = await props.actions.getSpecialAccountList(params)
     setData(data)
   }
   //获取白名单数据
-  const getWhiteListAccountList = async (params) => {
-    const { data } = await props.actions.getWhiteListAccountList(params)
+  const getWhiteListAccountListAsync = async (params) => {
+    const { data = {} } = await props.actions.getWhiteListAccountList(params)
     setData(data)
   }
-  const { rule = { discountRule: {}, rebateRule: {} }, accountList = {}, ruleList = [] } = data
+  const { rule = {}, accountList = {}, ruleList = [] } = data
   const {
     discountRuleLabel,
     discountRuleValue,
@@ -82,7 +87,6 @@ const PolicyAccountModal = (props) => {
       bodyStyle={{ padding: "8px 13px" }}
       onCancel={() => props.setModal({})}
     >
-
       <Tabs activeKey={active} onChange={handleTabChange}>
         <TabPane tab={<span>全局账号 <b>{record.globalAccountCount}</b></span>} key="global">
           <ul className="policy-account-modal-rules-container">
@@ -95,7 +99,7 @@ const PolicyAccountModal = (props) => {
               返点规则：{cycle}
             </li>
           </ul>
-          <Global list={accountList} actionSearch={getGlobalAccountList} {...commonProps} />
+          <Global list={accountList} actionSearch={getGlobalAccountListAsync}  {...commonProps} />
         </TabPane>
         <TabPane tab={<span>特殊账号 <b>{record.specialAccountCount}</b></span>} key="specific">
           <ul className="policy-account-modal-rules-container">
@@ -113,10 +117,10 @@ const PolicyAccountModal = (props) => {
               </li>
             })}
           </ul>
-          <Global key="specific" isRuleId={true} list={accountList} actionSearch={getSpecialAccountList} {...commonProps} ruleList={ruleList} />
+          <Global key="specific" isRuleId={true} list={accountList} actionSearch={getSpecialAccountListAsync}  {...commonProps} ruleList={ruleList} />
         </TabPane>
         <TabPane tab={<span>白名单 <b>{record.whiteListCount}</b></span>} key="whiteList">
-          <Global list={data} actionSearch={getWhiteListAccountList}{...commonProps} key="whiteList" />
+          <Global list={data} actionSearch={getWhiteListAccountListAsync}{...commonProps} key="whiteList" />
         </TabPane>
       </Tabs>
     </Modal>

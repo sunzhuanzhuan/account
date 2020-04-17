@@ -54,7 +54,7 @@ export const dateFormat = (date, format = "YYYY-MM-DD HH:mm:ss") => {
  * @returns {{rebateRuleLabel: string, rebateRuleValue: string, discountRuleLabel: string, discountRuleValue: string}}
  */
 export const ruleDisplay = (data) => {
-  const { discountRule, rebateRule } = data
+  const { discountRule = {}, rebateRule = {} } = data
   let discountRuleLabel = "", discountRuleValue = ""
   let rebateRuleLabel = "", rebateRuleValue = ""
 
@@ -99,7 +99,7 @@ export const ruleDisplay = (data) => {
  * @param data
  * @returns {{guarantee: string, type: string, cycle: string}}
  */
-export const settlementDisplay = (data) => {
+export const settlementDisplay = (data = {}) => {
   let cycle = "", type = "", guarantee = ""
 
   cycle = `${REBATE_SETTLEMENT_CYCLE[data.rebateSettlementCycle] || '-'}结`
