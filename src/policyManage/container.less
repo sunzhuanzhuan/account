@@ -5,9 +5,8 @@
     margin: -20px -20px 0;
   }
 
-  &-owner-list-container {
+  &-owner-list-container {}
 
-  }
   &-owner-infos-container {
     padding: 14px;
     background: #f7f7f7;
@@ -15,12 +14,20 @@
 
   .align-top {
     position: relative;
+
     .more-btn {
       position: absolute;
       top: 0;
       left: 200px;
 
     }
+
+    .download-btn {
+      position: absolute;
+      top: 53px;
+      left: 30px
+    }
+
     .ant-descriptions-item-content {
       vertical-align: top;
     }
@@ -43,7 +50,7 @@
   display: flex;
   flex-wrap: wrap;
 
-  & > li {
+  &>li {
     width: 48%;
     font-size: 12px;
     padding: 3px 0;
@@ -51,7 +58,7 @@
 }
 
 .policy-list-statistics-container {
-  & > [class^=fields-item-] {
+  &>[class^=fields-item-] {
     margin-right: 30px;
   }
 }

@@ -116,3 +116,19 @@ export const {
 } = createHttpAction('getWhiteListAccountList', Interface.policy.getWhiteListAccountList, {
   method: 'post'
 });
+//删除合同
+export const {
+  contractDelete,
+} = createHttpAction('contractDelete', Interface.policy.contractDelete, {
+  method: 'post'
+});
+//上传合同
+export const {
+  contractAdd,
+} = createHttpAction('contractAdd', Interface.policy.contractAdd, {
+  method: 'post'
+});
+//获取最新合同ID
+export const {
+  getLatestUpload,
+} = createHttpAction('getLatestUpload', Interface.policy.getLatestUpload);
