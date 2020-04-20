@@ -17,7 +17,7 @@ class AccountEnterIndex extends Component {
     return (
       <div className='policy-manage'>
         <Route exact path="/account/policy/list" component={PolicyList} />
-        <Route path='/account/policy/list/:id' component={PolicyListByOwner} />
+        <Route path='/account/policy/list/:ownerId' component={PolicyListByOwner} />
         <Route path='/account/policy/details/:id' component={__PolicyList} />
         <Route path='/account/policy/update/:id' component={__PolicyList} />
         <Route path='/account/policy/create/:ownerId' component={PolicyCreate} />

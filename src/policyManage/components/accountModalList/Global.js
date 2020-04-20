@@ -83,11 +83,8 @@ const Global = (props) => {
       align: 'center',
       width: '160px',
       render: (url) => {
-        return <div style={{
+        return <div className='nowrap-ellipsis' style={{
           textAlign: "left",
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
           maxWidth: 140,
           marginLeft: 10
         }}><a href={url} target="_blank" >{url}</a></div>

@@ -4,6 +4,7 @@ import {
   message,
   Table,
   Divider,
+  Popover,
 } from "antd";
 import PolicyStatus, {
   POLICY_STATUS_ACTIVE,
@@ -17,8 +18,7 @@ import { POLICY_LEVEL } from "@/policyManage/constants/dataConfig";
 import IconFont from "@/base/IconFont";
 import QuestionTip from "@/base/QuestionTip";
 import Yuan from "@/base/Yuan";
-import { delPolicy } from '../actions/policyAll';
-
+import './PolicyTable.less'
 const PolicyTable = (props) => {
   const [accountModal, setAccountModal] = useState({
     active: "",
@@ -111,12 +111,12 @@ const PolicyTable = (props) => {
     {
       title: '政策名称/ID',
       dataIndex: 'policyName',
+      width: '240px',
       render: (name, record) => {
-        return <>
-          <a>{name}</a>
-          <br />
+        return <div onClick={() => window.open(`/account/policy/details/${record.id}`, '_blank')} className='cursor-pointer'>
+          <Popover trigger='hover' placement='topLeft' content={name}><a className='nowrap-ellipsis mw-15'>{name}</a></Popover>
           <span>ID: {record.id}</span>
-        </>
+        </div>
       }
     },
     {
@@ -147,11 +147,11 @@ const PolicyTable = (props) => {
       title: '主账号',
       dataIndex: 'identityName',
       render: (name, record) => {
-        return <>
-          <a>{name}</a>
+        return <div onClick={() => window.open(`/account/policy/update/${record.mcnId}`, '_blank')} className='cursor-pointer'>
+          <a className='nowrap-ellipsis'>{name}</a>
           <br />
           <span>ID: {record.mcnId}</span>
-        </>
+        </div>
       }
     },
     {
@@ -323,7 +323,7 @@ const PolicyTable = (props) => {
     }
   ].filter((one) => !noColumnArr.includes(one.dataIndex))
   return (
-    <div >
+    <div className='policy-table-box'>
       {isPolicy ? <Button style={{ margin: 10 }}
         type="primary"
         disabled={selectedRowKeys.length == 0} ghost

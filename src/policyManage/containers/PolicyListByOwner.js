@@ -25,7 +25,8 @@ const PolicyListByOwner = (props) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
   const [indeterminate, setIndeterminate] = useState(false)
   const [checkAll, setCheckAll] = useState(false)
-
+  const pathName = window.location.pathname
+  const mcnId = pathName.substring(pathName.lastIndexOf('/') + 1)
   const search = useRef({
     page: {
       currentPage: 1,
@@ -40,8 +41,6 @@ const PolicyListByOwner = (props) => {
 
   const getList = ({ page, form } = {}) => {
     const { actions } = props
-    const pathName = window.location.pathname
-    const mcnId = pathName.substring(pathName.lastIndexOf('/') + 1)
     search.current = {
       page: Object.assign({}, search.current.page, page),
       form: Object.assign({ mcnId: mcnId }, search.current.form, form)
@@ -87,7 +86,7 @@ const PolicyListByOwner = (props) => {
       >
         <OwnerInfos actions={props.actions} list={props.contractList} />
       </PageHeader>
-      <Button type="primary">添加政策</Button>
+      <Button type="primary" onClick={() => window.open(`/account/policy/create/${mcnId}`, '_self')}>添加政策</Button>
       <Tabs onChange={onTabChange} animated={false}>
         <TabPane tab={<span>全部 <span>{props.statistics.allCount}</span></span>} key="0" />
         {
