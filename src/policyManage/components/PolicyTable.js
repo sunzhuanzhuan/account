@@ -107,21 +107,32 @@ const PolicyTable = (props) => {
     message.success('删除成功')
     getList()
   }
+  function openPolicy(id) {
+    window.open(`/account/policy/details/${id}`, '_blank')
+  }
+  function openAccountDetail(mcnId) {
+    window.open(`/account/owner/update/${mcnId}`, '_blank')
+  }
   const columns = [
     {
       title: '政策名称/ID',
       dataIndex: 'policyName',
       width: '240px',
       render: (name, record) => {
-        return <div onClick={() => window.open(`/account/policy/details/${record.id}`, '_blank')} className='cursor-pointer'>
-          <Popover trigger='hover' placement='topLeft' content={name}><a className='nowrap-ellipsis mw-15'>{name}</a></Popover>
-          <span>ID: {record.id}</span>
+        return <div className='cursor-pointer'>
+          <Popover trigger='hover' placement='topLeft' content={name}>
+            <a onClick={() => openPolicy(record.id)} className='nowrap-ellipsis mw-15'>
+              {name}
+            </a>
+          </Popover>
+          <span onClick={() => openPolicy(record.id)}>ID: {record.id}</span>
         </div>
       }
     },
     {
       title: '状态/有效期',
       dataIndex: 'policyStatus',
+      width: '180px',
       render: (status, record) => {
         return <>
           <PolicyStatus status={status} reason={record.policyStopReason} />
@@ -147,10 +158,9 @@ const PolicyTable = (props) => {
       title: '主账号',
       dataIndex: 'identityName',
       render: (name, record) => {
-        return <div onClick={() => window.open(`/account/policy/update/${record.mcnId}`, '_blank')} className='cursor-pointer'>
-          <a className='nowrap-ellipsis'>{name}</a>
-          <br />
-          <span>ID: {record.mcnId}</span>
+        return <div >
+          <a className='nowrap-ellipsis' onClick={() => openAccountDetail(record.mcnId)}>{name}</a>
+          <div className='cursor-pointer' onClick={() => openAccountDetail(record.mcnId)}>ID: {record.mcnId}</div>
         </div>
       }
     },
