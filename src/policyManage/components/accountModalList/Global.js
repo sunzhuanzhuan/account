@@ -116,6 +116,7 @@ const Global = (props) => {
         pagination={{
           total,
           pageSize,
+          pageSizeOptions: ['10', ' 20', ' 50', ' 100'],
           current: pageNum,
           showQuickJumper: true,
           showSizeChanger: true,
