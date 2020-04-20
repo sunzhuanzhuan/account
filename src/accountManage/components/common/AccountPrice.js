@@ -121,7 +121,7 @@ function handleDatePeriod({ now_star, now_end, next_star, next_end, pass = false
     } else {
       // 本期时间已过期 & 审核没有通过
       nextStar = moment(nowDate).startOf('d');
-      nextEnd = moment(nextEnd).isBefore(nowDate) ? moment(nextStar).add(1, 'd').endOf('m') : nextEnd;
+      nextEnd = moment(nextEnd).isBefore(nowDate) ? moment(nextStar).add(1, 'd').endOf('M') : nextEnd;
       // nextEnd = moment(nextStar).add(30, 'd').endOf('d')
       disabledDate = moment(nextStar).add(1, 'd');
       require = true;
