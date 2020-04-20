@@ -29,7 +29,7 @@ const PolicyListByOwner = (props) => {
   const search = useRef({
     page: {
       currentPage: 1,
-      pageSize: 20
+      pageSize: 5
     }
   })
   useEffect(() => {
@@ -74,7 +74,8 @@ const PolicyListByOwner = (props) => {
     actions,
     noColumnArr: ['identityName', 'ownerAdminName'],
     dataSource,
-    globalRulePlatforms, policyList, platformListByPolicy
+    globalRulePlatforms, policyList, platformListByPolicy,
+    pageSizeOptions: ['5', '10', '20', '50', '100']
   }
 
   return (

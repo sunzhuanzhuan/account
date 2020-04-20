@@ -27,7 +27,7 @@ const PolicyTable = (props) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
 
   const [stopModal, setStopModal] = useState(false)
-  const { policyList = {}, getList, dataSource = [], noColumnArr = [], isPolicy, platformListByPolicy } = props
+  const { policyList = {}, getList, dataSource = [], noColumnArr = [], isPolicy, platformListByPolicy, pageSizeOptions } = props
   const { total, pageNum, pageSize } = policyList
 
   const paginationProps = {
@@ -36,6 +36,7 @@ const PolicyTable = (props) => {
     current: pageNum,
     showSizeChanger: true,
     showQuickJumper: true,
+    pageSizeOptions: pageSizeOptions,
     onChange: (currentPage, pageSize) => {
       getList({
         page: { currentPage: currentPage, pageSize }

@@ -91,6 +91,7 @@ const PolicyList = (props) => {
     isPolicy: true,
     policyList,
     platformListByPolicy,
+    pageSizeOptions: ['10', ' 20', ' 50', ' 100']
   }
 
   return (
