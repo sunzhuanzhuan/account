@@ -7,6 +7,7 @@ import './container.less'
 const PolicyList = lazyLoadComponent(() => import('./containers/PolicyList'))
 const __PolicyList = lazyLoadComponent(() => import('./containers/__PolicyList'))
 const PolicyListByOwner = lazyLoadComponent(() => import('./containers/PolicyListByOwner'))
+const PolicyCreate = lazyLoadComponent(() => import('./containers/PolicyCreate'))
 
 
 class AccountEnterIndex extends Component {
@@ -19,7 +20,7 @@ class AccountEnterIndex extends Component {
         <Route path='/account/policy/list/:id' component={PolicyListByOwner} />
         <Route path='/account/policy/details/:id' component={__PolicyList} />
         <Route path='/account/policy/update/:id' component={__PolicyList} />
-        <Route path='/account/policy/create' component={__PolicyList} />
+        <Route path='/account/policy/create/:ownerId' component={PolicyCreate} />
       </div>
     );
   }

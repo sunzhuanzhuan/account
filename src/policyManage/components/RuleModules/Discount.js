@@ -3,7 +3,7 @@ import { Button, Radio, InputNumber, Form } from 'antd'
 
 import {
   ruleDiscount,
-  Rule_Discount_Ratio,
+  RULE_DISCOUNT_RATIO,
 } from '../../constants/dataConfig'
 const { _ } = window;
 const formItemLayout = {
@@ -14,7 +14,7 @@ const formItemLayout = {
 export const DiscountEdit = (props) => {
   const { currentRule = {} } = props;
   const [discountRule, setDiscountRule] = useState(currentRule.discountRule || {})
-  const { discountType = Rule_Discount_Ratio, discountFixedRatio, discountFixedAmount } = discountRule;
+  const { discountType = RULE_DISCOUNT_RATIO, discountFixedRatio, discountFixedAmount } = discountRule;
 
   const isEdit = !_.isEmpty(discountRule);
   const { getFieldDecorator } = props.form;
@@ -36,7 +36,7 @@ export const DiscountEdit = (props) => {
           )}
         </Form.Item>
         {
-          type == Rule_Discount_Ratio ?
+          type == RULE_DISCOUNT_RATIO ?
             <Form.Item label='公式：' {...formItemLayout}>
               <span>刊例价 X {getFieldDecorator(`discountRule.discountFixedRatio`, {
                 initialValue: discountFixedRatio,
@@ -76,11 +76,11 @@ export const DiscountView = (props) => {
     {
       <div className='item-wrap' style={{ background: '#f7fbff' }}>
         <Form.Item label="类型：" {...formItemLayout}>
-          {discountType == Rule_Discount_Ratio ? '固定比例' : '固定扣减'}
+          {discountType == RULE_DISCOUNT_RATIO ? '固定比例' : '固定扣减'}
         </Form.Item>
 
         <Form.Item label='公式：' {...formItemLayout}>
-          {discountType == Rule_Discount_Ratio ?
+          {discountType == RULE_DISCOUNT_RATIO ?
             <span>刊例价 X {discountFixedRatio}% = 账号报价</span> :
             <span>刊例价 - {discountFixedAmount}元 = 账号报价</span>
           }

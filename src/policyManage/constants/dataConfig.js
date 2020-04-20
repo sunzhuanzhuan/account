@@ -1,11 +1,11 @@
 
 //折扣配置
-export const Rule_Discount_Ratio = 1;
-export const Rule_Discount_Numeric = 2;
+export const RULE_DISCOUNT_RATIO = 1;
+export const RULE_DISCOUNT_NUMERIC = 2;
 
 export const ruleDiscount = [
-    { label: '固定比例', value: Rule_Discount_Ratio },
-    { label: '固定扣减', value: Rule_Discount_Numeric },
+    { label: '固定比例', value: RULE_DISCOUNT_RATIO },
+    { label: '固定扣减', value: RULE_DISCOUNT_NUMERIC },
 ]
 
 //返点配置
