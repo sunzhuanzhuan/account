@@ -90,7 +90,12 @@ export const {
 } = createHttpAction('startPolicy', Interface.policy.start, {
   method: 'post'
 });
-
+// 删除政策
+export const {
+  delPolicy,
+} = createHttpAction('delPolicy', Interface.policy.delPolicy, {
+  method: 'post'
+});
 // 政策包含账号 全局列表
 export const {
   getGlobalAccountList,
@@ -111,3 +116,23 @@ export const {
 } = createHttpAction('getWhiteListAccountList', Interface.policy.getWhiteListAccountList, {
   method: 'post'
 });
+//删除合同
+export const {
+  contractDelete,
+} = createHttpAction('contractDelete', Interface.policy.contractDelete, {
+  method: 'post'
+});
+//上传合同
+export const {
+  contractAdd,
+} = createHttpAction('contractAdd', Interface.policy.contractAdd, {
+  method: 'post'
+});
+//获取最新合同ID
+export const {
+  getLatestUpload,
+} = createHttpAction('getLatestUpload', Interface.policy.getLatestUpload);
+//获取当前政策下的平台列表
+export const {
+  getPlatformListByPolicy,
+} = createHttpAction('getPlatformListByPolicy', Interface.policy.getPlatformListByPolicy);

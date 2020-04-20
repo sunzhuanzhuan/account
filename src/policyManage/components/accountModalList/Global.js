@@ -7,7 +7,7 @@ import { oneOf } from 'prop-types';
 
 const Global = (props) => {
   const [loading, setLoading] = useState(false)
-  const { globalRulePlatforms = [] } = props
+  const { platformListByPolicy = [] } = props
   const handleTableChange = (pagination, filters, sorter) => {
     setLoading(true)
     props.actionSearch({
@@ -34,7 +34,7 @@ const Global = (props) => {
       title: '全部平台',
       dataIndex: 'platformId',
       filterIcon: <Icon type="caret-down" />,
-      filters: globalRulePlatforms.map(one => ({ text: one.platformName, value: one.id })),
+      filters: platformListByPolicy.map(one => ({ text: one.platformName, value: one.id })),
       align: 'right',
       width: '100px',
       render: (text, record) => record.platformName

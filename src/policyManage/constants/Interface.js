@@ -56,6 +56,9 @@ export default {
     queryList: '/operator-gateway/policy/v2/queryList',
     procurementPolicyStatistics: '/operator-gateway/policy/v2/procurementPolicyStatistics',
     contractList: '/operator-gateway/contract/v1/list',
+    contractDelete: '/operator-gateway/contract/v1/delete',
+    contractAdd: '/operator-gateway/contract/v1/add',
+    getLatestUpload: '/operator-gateway/contract/v1/getLatestUpload',
     getGlobalRulePlatforms: '/operator-gateway/policy/v2/getGlobalRulePlatforms',
     start: '/operator-gateway/policy/v2/startPolicy',
     stop: '/operator-gateway/policy/v2/stopPolicy',
@@ -63,5 +66,7 @@ export default {
     getSpecialAccountList: '/operator-gateway/policy/v2/getPolicySpecialAccountList',
     getWhiteListAccountList: '/operator-gateway/policy/v2/getPolicyWhiteListAccountList',
     downMcnPolicyData: '/operator-gateway/policy/v2/downMcnPolicyData',
+    delPolicy: '/operator-gateway/policy/v2/delPolicy',
+    getPlatformListByPolicy: '/operator-gateway/policy/v2/getPlatformListByPolicy'
   }
 }
