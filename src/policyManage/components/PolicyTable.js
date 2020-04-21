@@ -4,6 +4,7 @@ import {
   message,
   Table,
   Divider,
+  Popover,
 } from "antd";
 import PolicyStatus, {
   POLICY_STATUS_ACTIVE,
@@ -17,8 +18,7 @@ import { POLICY_LEVEL } from "@/policyManage/constants/dataConfig";
 import IconFont from "@/base/IconFont";
 import QuestionTip from "@/base/QuestionTip";
 import Yuan from "@/base/Yuan";
-import { delPolicy } from '../actions/policyAll';
-
+import './PolicyTable.less'
 const PolicyTable = (props) => {
   const [accountModal, setAccountModal] = useState({
     active: "",
@@ -27,7 +27,7 @@ const PolicyTable = (props) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
 
   const [stopModal, setStopModal] = useState(false)
-  const { policyList = {}, getList, dataSource = [], noColumnArr = [], isPolicy, platformListByPolicy } = props
+  const { policyList = {}, getList, dataSource = [], noColumnArr = [], isPolicy, platformListByPolicy, pageSizeOptions } = props
   const { total, pageNum, pageSize } = policyList
 
   const paginationProps = {
@@ -36,6 +36,7 @@ const PolicyTable = (props) => {
     current: pageNum,
     showSizeChanger: true,
     showQuickJumper: true,
+    pageSizeOptions: pageSizeOptions,
     onChange: (currentPage, pageSize) => {
       getList({
         page: { currentPage: currentPage, pageSize }
@@ -106,21 +107,32 @@ const PolicyTable = (props) => {
     message.success('删除成功')
     getList()
   }
+  function openPolicy(id) {
+    window.open(`/account/policy/details/${id}`, '_blank')
+  }
+  function openAccountDetail(mcnId) {
+    window.open(`/account/owner/update/${mcnId}`, '_blank')
+  }
   const columns = [
     {
       title: '政策名称/ID',
       dataIndex: 'policyName',
+      width: '240px',
       render: (name, record) => {
-        return <>
-          <a>{name}</a>
-          <br />
-          <span>ID: {record.id}</span>
-        </>
+        return <div className='cursor-pointer'>
+          <Popover trigger='hover' placement='topLeft' content={name}>
+            <a onClick={() => openPolicy(record.id)} className='nowrap-ellipsis mw-15'>
+              {name}
+            </a>
+          </Popover>
+          <span onClick={() => openPolicy(record.id)}>ID: {record.id}</span>
+        </div>
       }
     },
     {
       title: '状态/有效期',
       dataIndex: 'policyStatus',
+      width: '180px',
       render: (status, record) => {
         return <>
           <PolicyStatus status={status} reason={record.policyStopReason} />
@@ -146,11 +158,10 @@ const PolicyTable = (props) => {
       title: '主账号',
       dataIndex: 'identityName',
       render: (name, record) => {
-        return <>
-          <a>{name}</a>
-          <br />
-          <span>ID: {record.mcnId}</span>
-        </>
+        return <div >
+          <a className='nowrap-ellipsis' onClick={() => openAccountDetail(record.mcnId)}>{name}</a>
+          <div className='cursor-pointer' onClick={() => openAccountDetail(record.mcnId)}>ID: {record.mcnId}</div>
+        </div>
       }
     },
     {
@@ -322,7 +333,7 @@ const PolicyTable = (props) => {
     }
   ].filter((one) => !noColumnArr.includes(one.dataIndex))
   return (
-    <div >
+    <div className='policy-table-box'>
       {isPolicy ? <Button style={{ margin: 10 }}
         type="primary"
         disabled={selectedRowKeys.length == 0} ghost

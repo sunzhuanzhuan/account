@@ -83,11 +83,8 @@ const Global = (props) => {
       align: 'center',
       width: '160px',
       render: (url) => {
-        return <div style={{
+        return <div className='nowrap-ellipsis' style={{
           textAlign: "left",
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
           maxWidth: 140,
           marginLeft: 10
         }}><a href={url} target="_blank" >{url}</a></div>
@@ -116,6 +113,7 @@ const Global = (props) => {
         pagination={{
           total,
           pageSize,
+          pageSizeOptions: ['10', ' 20', ' 50', ' 100'],
           current: pageNum,
           showQuickJumper: true,
           showSizeChanger: true,
