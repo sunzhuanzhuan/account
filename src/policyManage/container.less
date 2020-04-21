@@ -1,6 +1,7 @@
 @import "../indexNbTheme";
 
 .policy-manage {
+  height: 100%;
   .ant-page-header {
     margin: -20px -20px 0;
   }
@@ -34,6 +35,14 @@
   }
 
   &-create-container {
+    height: 100%;
+
+    &-scroll {
+      position: relative;
+      height: calc(100% - 85px);
+      overflow: auto;
+      padding-bottom: 10px;
+    }
     &-footer {
       width: 100%;
       display: flex;
@@ -51,6 +60,14 @@
       z-index: 1;
     }
   }
+}
+
+.rule-number-under-line {
+  display: inline-block;
+  width: 120px;
+  padding: 0 10px;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
 }
 
 .text-red {

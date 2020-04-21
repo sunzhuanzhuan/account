@@ -81,11 +81,12 @@ export class LadderRatioEdit extends React.PureComponent {
         <ul>
           {rebateNumbers.slice(1).map((item, index) => (
             <li key={index}>
-              大于<span className="rule-number">{rebateNumbers[index]}</span>
+              大于<span className="rule-number rule-number-under-line">{rebateNumbers[index]}</span>
               且小于等于
                             <span className="rule-input">
                 <InputNumber
                   disabled={rebateNumbers.length - 2 == index}
+                  style={{margin: "0 4px"}}
                   onChange={e => this.handleRatioChange(e, index + 1)}
                   value={item}
                 />

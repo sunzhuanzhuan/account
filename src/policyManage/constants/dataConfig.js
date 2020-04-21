@@ -10,17 +10,17 @@ export const ruleDiscount = [
 
 //返点配置
 /**
- * Rule_Rebate_Ratio 固定比例
+ * RULE_REBATE_RATIO 固定比例
  */
-export const Rule_Rebate_Ratio = 1;
+export const RULE_REBATE_RATIO = 1;
 /**固定扣减 */
-export const Rule_Rebate_Numeric = 2;
+export const RULE_REBATE_NUMERIC = 2;
 /**阶梯比例 */
-export const Rule_Rebate_LadderRatio = 3;
+export const RULE_REBATE_LADDER = 3;
 export const ruleRebate = [
-    { label: '固定比例', value: Rule_Rebate_Ratio },
-    { label: '固定扣减', value: Rule_Rebate_Numeric },
-    { label: '阶梯比例', value: Rule_Rebate_LadderRatio },
+    { label: '固定比例', value: RULE_REBATE_RATIO },
+    { label: '固定扣减', value: RULE_REBATE_NUMERIC },
+    { label: '阶梯比例', value: RULE_REBATE_LADDER },
 ]
 export const platformListOptions = [
     { id: 1, name: '新浪微博' },
