@@ -11,13 +11,8 @@ const actions = interfaceKey.reduce((acc, cur) => {
     { method: cur.method || 'get' })
   return { ...acc, ...httpAction };
 }, {})
-export const {
-  addWhiteListAccount,
-  addWhiteListAccount_success,
-} = createHttpAction('addWhiteListAccount', Interface.getAccountInfoByIds)
 
 export default {
   ...actions,
   ...policyAll,
-  addWhiteListAccount
 }

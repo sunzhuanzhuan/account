@@ -43,7 +43,7 @@ export const RebateEdit = (props) => {
     }
     callback();
   }
-  return <Form.Item label="返点" labelCol={{ span: 1 }}>
+  return <Form.Item label="返点" labelCol={{ span: 1 }}  wrapperCol={{span: 23}}>
     {
       hasRebate ?
         <div style={{ background: '#f7fbff', position: "relative" }}>

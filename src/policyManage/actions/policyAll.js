@@ -8,17 +8,17 @@ import { createAction } from "redux-actions";
 
 // 根据主账号名称搜索下拉框
 export const {
-  queryMcnByIdentityName,
+  queryMcnByIdentityName
 } = createHttpAction('queryMcnByIdentityName', Interface.policy.queryMcnByIdentityName, {
   method: 'post'
 });
 export const {
-  getGlobalRulePlatforms,
+  getGlobalRulePlatforms
 } = createHttpAction('getGlobalRulePlatforms', Interface.policy.getGlobalRulePlatforms);
 
 // 根据账号名称查询下拉框
 export const {
-  queryAccountBySnsName,
+  queryAccountBySnsName
 } = createHttpAction('queryAccountBySnsName', Interface.policy.queryBySnsName, {
   method: 'post'
 });
@@ -26,7 +26,7 @@ export const {
 // 采购政策列表
 export const {
   policyAllList,
-  policyAllList_success,
+  policyAllList_success
 } = createHttpAction('policyAllList', Interface.policy.queryList, {
   method: 'post'
 });
@@ -34,7 +34,7 @@ export const {
 // 采购政策列表统计
 export const {
   procurementPolicyStatistics,
-  procurementPolicyStatistics_success,
+  procurementPolicyStatistics_success
 } = createHttpAction('procurementPolicyStatistics', Interface.policy.procurementPolicyStatistics, {
   method: 'post'
 });
@@ -42,11 +42,11 @@ export const {
 
 // 查询资源媒介列表
 export const {
-  queryMediums,
+  queryMediums
 } = createHttpAction('queryMediums', Interface.policy.queryMediums);
 
 export const {
-  downMcnPolicyData,
+  downMcnPolicyData
 } = createHttpAction('downMcnPolicyData', Interface.policy.downMcnPolicyData);
 
 export const syncUpdatePolicyStatus = createAction('syncUpdatePolicyStatus', (data) => {
@@ -65,7 +65,7 @@ export const {
 // 主账号采购政策列表统计
 export const {
   procurementPolicyStatisticsByOwner,
-  procurementPolicyStatisticsByOwner_success,
+  procurementPolicyStatisticsByOwner_success
 } = createHttpAction('procurementPolicyStatisticsByOwner', Interface.policy.procurementPolicyStatistics, {
   method: 'post'
 });
@@ -79,60 +79,65 @@ export const {
 
 // 停用政策
 export const {
-  stopPolicy,
+  stopPolicy
 } = createHttpAction('stopPolicy', Interface.policy.stop, {
   method: 'post'
 });
 
 // 启用政策
 export const {
-  startPolicy,
+  startPolicy
 } = createHttpAction('startPolicy', Interface.policy.start, {
   method: 'post'
 });
 // 删除政策
 export const {
-  delPolicy,
+  delPolicy
 } = createHttpAction('delPolicy', Interface.policy.delPolicy, {
   method: 'post'
 });
 // 政策包含账号 全局列表
 export const {
-  getGlobalAccountList,
+  getGlobalAccountList
 } = createHttpAction('getGlobalAccountList', Interface.policy.getGlobalAccountList, {
   method: 'post'
 });
 
 // 政策包含账号 特殊列表
 export const {
-  getSpecialAccountList,
+  getSpecialAccountList
 } = createHttpAction('getSpecialAccountList', Interface.policy.getSpecialAccountList, {
   method: 'post'
 });
 
 // 政策包含账号 特殊列表
 export const {
-  getWhiteListAccountList,
+  getWhiteListAccountList
 } = createHttpAction('getWhiteListAccountList', Interface.policy.getWhiteListAccountList, {
   method: 'post'
 });
 //删除合同
 export const {
-  contractDelete,
+  contractDelete
 } = createHttpAction('contractDelete', Interface.policy.contractDelete, {
   method: 'post'
 });
 //上传合同
 export const {
-  contractAdd,
+  contractAdd
 } = createHttpAction('contractAdd', Interface.policy.contractAdd, {
   method: 'post'
 });
 //获取最新合同ID
 export const {
-  getLatestUpload,
+  getLatestUpload
 } = createHttpAction('getLatestUpload', Interface.policy.getLatestUpload);
 //获取当前政策下的平台列表
 export const {
-  getPlatformListByPolicy,
+  getPlatformListByPolicy
 } = createHttpAction('getPlatformListByPolicy', Interface.policy.getPlatformListByPolicy);
+
+// 根据accountId数组获取账号信息列表
+export const {
+  getAccountInfoByIds
+} = createHttpAction('getAccountInfoByIds', Interface.policy.getAccountInfoByIds)

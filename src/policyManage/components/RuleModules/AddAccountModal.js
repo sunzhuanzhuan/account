@@ -4,10 +4,10 @@ import { NotExistModalContent } from '../../components'
 const { _ } = window;
 const AddAccountModal = (props) => {
   const {
-    mcnId,
     setAddAccountModalVisible,
-    allSelectedIds,
-    updateAccountList
+    excludeIds,
+    updateAccountList,
+    params = {}
   } = props;
 
   const { visible } = props;
@@ -20,8 +20,8 @@ const AddAccountModal = (props) => {
   }
   const onModalOk = () => {
 
-    const _selectedIds = _.uniq(_.trim(selectedIds).split('\n')).filter(item => item && allSelectedIds.indexOf(item) == -1);
-    if (_selectedIds.length == 0) {
+    const _selectedIds = _.uniq(_.trim(selectedIds).split('\n')).filter(item => item && excludeIds.indexOf(item) === -1);
+    if (_selectedIds.length === 0) {
       Modal.warning({
         title: '警告',
         content: '添加账号不能为空',
@@ -29,11 +29,18 @@ const AddAccountModal = (props) => {
       return;
     }
     const notExist = (data) => {
-      const { accountList, notExistAccountIds = [], notExistAccountIdsByMcnId = [], alreadyHaveRuleAccountIds } = data.data;
+      const {
+        accountList,
+        notExistAccountIds = [],
+        notExistAccountIdsByMcnId = [],
+        notExistAccountIdsByPlatformId = [],
+        alreadyHaveRuleAccountIds
+      } = data.data;
       const notExistModalContentProps = {
         accountList,
         notExistAccountIds,
         notExistAccountIdsByMcnId,
+        notExistAccountIdsByPlatformId,
         alreadyHaveRuleAccountIds
       }
       Modal.confirm({
@@ -45,7 +52,7 @@ const AddAccountModal = (props) => {
       });
     }
 
-    props.getAccountInfoByIds({ mcnId, accountIds: _selectedIds.join(",") }).then((data) => {
+    props.getAccountInfoByIds({ ...params, accountIds: _selectedIds.join(",") }).then((data) => {
       notExist(data);
     })
   }
@@ -59,7 +66,7 @@ const AddAccountModal = (props) => {
     onOk={onModalOk}
     onCancel={onCancel}
   >
-    <Input.TextArea value={selectedIds} onChange={onChange} rows={10} placeholder='请输入账号account_id,多个通过【换行隔开】'></Input.TextArea>
+    <Input.TextArea value={selectedIds} onChange={onChange} rows={10} placeholder='请输入账号account_id,多个通过【换行隔开】'/>
   </Modal>
 }
 

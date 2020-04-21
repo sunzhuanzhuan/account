@@ -25,7 +25,7 @@ import IconFont from "@/base/IconFont";
 import Global from "@/policyManage/components/ruleFieldFormItem/Global";
 import { Settlement } from "@/policyManage/components/ruleFieldFormItem/Settlement";
 import EditRuleForm from "@/policyManage/components/RuleModules/EditRuleForm";
-import SpecialRuleForm from "@/policyManage/components/RuleModules/SpecialRuleForm";
+import SpecialRuleEdit from "@/policyManage/components/RuleModules/SpecialRuleEdit";
 
 
 const FormItem = Form.Item;
@@ -133,28 +133,58 @@ const PolicyCreate = (props) => {
           <FormItem label='设置全局规则' required>
             <Global form={props.form} />
           </FormItem>
-          {
-            (getFieldValue("specialAccountRules") || []).length < 20 &&
-              <FormItem label=' ' colon={false}>
-                <Button type="primary">
-                  添加特殊账号
-                </Button>
-              </FormItem>
-          }
-          {(getFieldValue("specialAccountRules") || []).length > 0 && <FormItem label='特殊账号' colon={false}>
-
-          </FormItem>}
-          <FormItem label=' ' colon={false}>
-            <Button type="primary">
-              添加白名单账号
-            </Button>
+          <FormItem label='特殊账号'>
+            {getFieldDecorator(`specialAccountRules`, {
+              initialValue: [
+                {
+                  "ruleId": 1,
+                  "discountRule": {
+                    "discountType": 1,
+                    "discountFixedRatio": 0.15,
+                    "discountFixedAmount": 999
+                  },
+                  "rebateRule": {
+                    "rebateType": 3,
+                    "rebateFixedAmount": 999,
+                    "rebateFixedRatio": 0.15,
+                    "rebateStepRules": [
+                      {
+                        "amountLowLimit": 0,
+                        "rebateRatio": 0.15,
+                        "amountHighLimit": 1000
+                      },
+                      {
+                        "amountLowLimit": 1000,
+                        "rebateRatio": 0.15,
+                        "amountHighLimit": 10000
+                      },
+                      {
+                        "amountLowLimit": 10000,
+                        "rebateRatio": 0.15,
+                        "amountHighLimit": 999999999
+                      }
+                    ]
+                  },
+                  "accountList": []
+                },
+              ]
+            })(
+              <SpecialRuleEdit  actions={props.actions}/>
+            )}
+          </FormItem>
+          <FormItem label='白名单账号'>
+            {getFieldDecorator(`specialAccountRules`, {
+              initialValue: [
+              ]
+            })(
+              <SpecialRuleEdit actions={props.actions}/>
+            )}
           </FormItem>
           <FormItem label='返点规则' required>
             <Settlement form={props.form} />
           </FormItem>
         </ConfigProvider>
       </Form>
-      <SpecialRuleForm/>
       <div className="policy-manage-create-container-footer">
         <Button type="primary" onClick={handleSubmit}>添加政策</Button>
       </div>

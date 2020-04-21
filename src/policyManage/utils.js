@@ -82,7 +82,7 @@ export const ruleDisplay = (data) => {
         大于{item.amountLowLimit} 且小于等于{item.amountHighLimit}， 比例{item.rebateRatio * 100}%<br />
       </div>)
     }>
-      <a>查看</a>
+      <a style={{marginLeft: 6}}>查看</a>
     </Popover>
   }
 

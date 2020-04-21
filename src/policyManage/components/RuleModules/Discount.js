@@ -18,7 +18,7 @@ export const DiscountEdit = (props) => {
   const { getFieldDecorator, getFieldValue } = props.form;
   const [ hasDiscount, setHasDiscount ] = useState(!!discountType);
 
-  return <Form.Item label="折扣" labelCol={{ span: 1 }}>
+  return <Form.Item label="折扣" labelCol={{ span: 1 }} wrapperCol={{span: 23}} >
     {
       hasDiscount ?
         <div style={{ background: '#f7fbff', position: "relative" }}>
@@ -33,7 +33,7 @@ export const DiscountEdit = (props) => {
           {
             getFieldValue(fieldKeyPrefix + "discountRule.discountType") === RULE_DISCOUNT_RATIO &&
             <Form.Item label='公式' {...formItemLayout}>
-              <span>刊例价 X {getFieldDecorator(`discountRule.discountFixedRatio`, {
+              <span>刊例价 X {getFieldDecorator(fieldKeyPrefix + `discountRule.discountFixedRatio`, {
                 initialValue: discountFixedRatio,
                 rules: [ { required: true, message: '请输入固定比例值' } ]
               })(
@@ -49,7 +49,7 @@ export const DiscountEdit = (props) => {
           {
             getFieldValue(fieldKeyPrefix + "discountRule.discountType") === RULE_DISCOUNT_NUMERIC &&
             <Form.Item label='公式' {...formItemLayout}>
-                  <span>刊例价 - {getFieldDecorator('discountRule.discountFixedAmount', {
+                  <span>刊例价 - {getFieldDecorator(fieldKeyPrefix + 'discountRule.discountFixedAmount', {
                     initialValue: discountFixedAmount,
                     rules: [ { required: true, message: '请输入固定扣减值!' } ]
                   })(

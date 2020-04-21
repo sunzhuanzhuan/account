@@ -19,7 +19,7 @@
 const baseUrl = '/operator-gateway/policy/v1.1/'
 export const interfaceKey = [
   { name: 'getPolicyInfoByMcnId' },
-  { name: 'getAccountInfoByIds' },
+  // { name: 'getAccountInfoByIds' },
   { name: 'saveGlobalAccountRule', method: 'post' },
   { name: 'saveSpecialAccountRule', method: 'post' },
   { name: 'delGlobalRuleById', method: 'post' },          //删除全局账号规则
@@ -67,6 +67,7 @@ export default {
     getWhiteListAccountList: '/operator-gateway/policy/v2/getPolicyWhiteListAccountList',
     downMcnPolicyData: '/operator-gateway/policy/v2/downMcnPolicyData',
     delPolicy: '/operator-gateway/policy/v2/delPolicy',
-    getPlatformListByPolicy: '/operator-gateway/policy/v2/getPlatformListByPolicy'
+    getPlatformListByPolicy: '/operator-gateway/policy/v2/getPlatformListByPolicy',
+    getAccountInfoByIds: '/operator-gateway/policy/v2/getAccountInfoByIds'
   }
 }
