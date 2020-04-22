@@ -68,6 +68,7 @@ export default {
     downMcnPolicyData: '/operator-gateway/policy/v2/downMcnPolicyData',
     delPolicy: '/operator-gateway/policy/v2/delPolicy',
     getPlatformListByPolicy: '/operator-gateway/policy/v2/getPlatformListByPolicy',
-    getAccountInfoByIds: '/operator-gateway/policy/v2/getAccountInfoByIds'
+    getAccountInfoByIds: '/operator-gateway/policy/v2/getAccountInfoByIds',
+    addPolicy: '/api/operator-gateway/policy/v2/addPolicy'
   }
 }

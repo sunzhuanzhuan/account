@@ -9,7 +9,11 @@ import AccountListTable from "@/policyManage/components/AccountListTable";
 import CheckTag from "@/accountManage/base/CheckTag";
 import { ruleDisplay } from "@/policyManage/utils";
 import AccountListEdit from "@/policyManage/components/RuleModules/AccountListEdit";
-import { RULE_REBATE_LADDER } from "@/policyManage/constants/dataConfig";
+import {
+  RULE_REBATE_LADDER, SPECIAL_ACCOUNTS_LIMIT,
+  SPECIAL_RULES_LIMIT,
+  WHITE_LIST_ACCOUNTS_LIMIT
+} from "@/policyManage/constants/dataConfig";
 
 const uuid = require('uuid/v1');
 
@@ -20,7 +24,7 @@ const formItemLayout = {
 };
 
 const EditRuleForm = (props) => {
-  const { form, editRuleModalClose, mcnId, current, actions, onUpdate } = props;
+  const { form, getExcludeIds, editRuleModalClose, params, current, actions, onUpdate } = props;
 
   const { getFieldDecorator } = form;
 
@@ -51,7 +55,7 @@ const EditRuleForm = (props) => {
         onUpdate({
           ...values,
           ruleId: current.ruleId,
-          uuid: current.ruleId ? null : uuid()
+          uuid: current.ruleId ? null : (current.uuid || uuid())
         })
         editRuleModalClose()
       }
@@ -76,17 +80,18 @@ const EditRuleForm = (props) => {
         <RebateEdit form={form} rule={current.rebateRule} />
         <Form.Item label="账号">
           {getFieldDecorator('accountList', {
-            initialValue: current.accountList || []
+            initialValue: current.accountList || [],
+            rules: [
+              { type: "array", max: SPECIAL_ACCOUNTS_LIMIT, message: '最多可添加' + SPECIAL_ACCOUNTS_LIMIT + '个账号' }
+            ]
           })(
             <AccountListEdit
               getAccountInfoByIds={actions.getAccountInfoByIds}
-              params={{
-                mcnId,
-                platformIds: [ 1, 2, 3 ],
-                type: 1
-              }}
+              getExcludeIds={getExcludeIds}
+              params={params}
+              limit={SPECIAL_ACCOUNTS_LIMIT}
             >
-              <Button>添加账号</Button>
+              <Button icon="plus" type="link">添加账号</Button>
             </AccountListEdit>
           )}
         </Form.Item>
@@ -122,13 +127,20 @@ const RuleCard = props => {
       }
       extra={
         <>
-          <Button onClick={onEdit}>编辑</Button>
-          <Button onClick={onDel}>删除</Button>
+          <Button onClick={onEdit} type="primary" style={{marginRight: 8}}>编辑</Button>
+          <Popconfirm
+            title="是否删除本规则?"
+            onConfirm={onDel}
+          >
+            <Button>删除</Button>
+          </Popconfirm>
         </>
       }
       style={{ margin: "0 20px 20px 0" }}
     >
-      <AccountListTable dataSource={data.accountList} />
+      {data.accountList.length > 0 ? <AccountListTable dataSource={data.accountList} /> : <div>
+        暂未添加账号
+      </div>}
     </Card>
   )
 }
@@ -180,13 +192,14 @@ export default class SpecialRuleEdit extends Component {
   }
 
   render() {
-    const { value } = this.props
+    const { value, params } = this.props
 
     const allIds = []
 
     return <div>
       {
-        value.length < 20 && <Button
+        value.length < SPECIAL_RULES_LIMIT && <Button
+          icon="plus"
           type="primary"
           style={{ marginBottom: 10 }}
           onClick={() => this.setState({ current: { type: 'add' } })}
@@ -205,6 +218,8 @@ export default class SpecialRuleEdit extends Component {
         actions={this.props.actions}
         editRuleModalClose={() => this.setState({ current: {} })}
         onUpdate={this.onUpdate}
+        getExcludeIds={this.props.getExcludeIds}
+        params={params}
       />
     </div>
   }

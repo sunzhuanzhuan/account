@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { Modal, Input } from 'antd';
 import { NotExistModalContent } from '../../components'
+
 const { _ } = window;
 const AddAccountModal = (props) => {
   const {
     setAddAccountModalVisible,
-    excludeIds,
+    excludeItems,
+    getExcludeIds,
     updateAccountList,
     params = {}
   } = props;
 
   const { visible } = props;
-  const [selectedIds, setSelectedIds] = useState('');
+  const [ selectedIds, setSelectedIds ] = useState('');
 
   const onCancel = () => {
 
@@ -19,12 +21,17 @@ const AddAccountModal = (props) => {
     setAddAccountModalVisible(false);
   }
   const onModalOk = () => {
-
+    let excludeIds;
+    if (getExcludeIds) {
+      excludeIds = getExcludeIds(excludeItems)
+    }else {
+      excludeIds = excludeItems.map(item => item.accountId)
+    }
     const _selectedIds = _.uniq(_.trim(selectedIds).split('\n')).filter(item => item && excludeIds.indexOf(item) === -1);
     if (_selectedIds.length === 0) {
       Modal.warning({
         title: '警告',
-        content: '添加账号不能为空',
+        content: '添加账号不能为空(已添加到本政策的账号会自动忽略)'
       });
       return;
     }
@@ -66,7 +73,7 @@ const AddAccountModal = (props) => {
     onOk={onModalOk}
     onCancel={onCancel}
   >
-    <Input.TextArea value={selectedIds} onChange={onChange} rows={10} placeholder='请输入账号account_id,多个通过【换行隔开】'/>
+    <Input.TextArea value={selectedIds} onChange={onChange} rows={10} placeholder='请输入账号account_id,多个通过【换行隔开】(已添加到本政策的账号会自动忽略)' />
   </Modal>
 }
 

@@ -71,6 +71,15 @@
   text-align: center;
   border-bottom: 1px solid #ccc;
 }
+.has-error {
+  .account-list-number-actions {
+    background-color: #fff1f0;
+    border: 1px solid #ffa39e;
+    .ant-alert-message {
+      color: #f5222d
+    }
+  }
+}
 
 .text-red {
   color: red !important;
@@ -106,4 +115,13 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.select-all-check-container {
+  display: flex;
+  align-items: center;
+  .check-wrapper {
+    padding: 0 20px;
+    width: 200px;
+  }
 }

@@ -24,7 +24,7 @@ export const DiscountEdit = (props) => {
         <div style={{ background: '#f7fbff', position: "relative" }}>
           <Form.Item label="类型"  {...formItemLayout}>
             {getFieldDecorator(fieldKeyPrefix + 'discountRule.discountType', {
-              initialValue: discountType || RULE_DISCOUNT_NUMERIC,
+              initialValue: discountType || RULE_DISCOUNT_RATIO,
               rules: [ { required: true, message: '请选择折扣类型!' } ]
             })(
               <Radio.Group options={ruleDiscount} />
@@ -65,7 +65,7 @@ export const DiscountEdit = (props) => {
             top: 0
           }} type="link">删除</Button>
         </div> :
-        <Button type='link' onClick={() => setHasDiscount(true)}>+添加折扣</Button>
+        <Button type='link' icon="plus" onClick={() => setHasDiscount(true)}>添加折扣</Button>
     }
   </Form.Item>
 }

@@ -80,6 +80,7 @@ class AccountListTable extends React.Component {
       rowKey={record => record.accountId}
       pagination={false}
       scroll={{ y: 220 }}
+      style={{marginBottom: 8}}
     />
   }
 }

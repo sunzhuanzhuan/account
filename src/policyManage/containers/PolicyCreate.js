@@ -4,33 +4,30 @@ import { bindActionCreators } from "redux";
 import actions from "../actions";
 import { connect } from "react-redux";
 import {
-  Alert,
   Button,
   Checkbox,
   Form,
-  Pagination,
-  Tabs,
-  Spin,
-  message,
   PageHeader,
   Input,
-  DatePicker, Select, Radio, Col, Modal, ConfigProvider
+  DatePicker, Select, Radio, Col, Modal, ConfigProvider, message, Icon
 } from "antd";
 
-import { policyStatusMap } from "@/policyManage/base/PolicyStatus";
-import OwnerInfos from "@/policyManage/components/OwnerInfos";
-import moment from "moment";
-import { POLICY_LEVEL } from "@/policyManage/constants/dataConfig";
+import {
+  POLICY_LEVEL,
+  RULE_REBATE_LADDER,
+  WHITE_LIST_ACCOUNTS_LIMIT
+} from "@/policyManage/constants/dataConfig";
 import IconFont from "@/base/IconFont";
-import Global from "@/policyManage/components/ruleFieldFormItem/Global";
-import { Settlement } from "@/policyManage/components/ruleFieldFormItem/Settlement";
-import EditRuleForm from "@/policyManage/components/RuleModules/EditRuleForm";
+import { Settlement } from "@/policyManage/components/RuleModules/Settlement";
 import SpecialRuleEdit from "@/policyManage/components/RuleModules/SpecialRuleEdit";
+import AccountListEdit from "@/policyManage/components/RuleModules/AccountListEdit";
+import SelectAllCheck from "@/policyManage/components/SelectAllCheck";
+import { DiscountEdit } from "@/policyManage/components/RuleModules/Discount";
+import { RebateEdit } from "@/policyManage/components/RuleModules/Rebate";
 
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
-const Option = Select.Option;
 const { RangePicker } = DatePicker;
 
 
@@ -42,19 +39,133 @@ const formItemLayout = {
 
 const PolicyCreate = (props) => {
 
+  const [ submitLoading, setSubmitLoading ] = useState()
+
+  const mcnId = props.match.params.ownerId;
+
 
   useEffect(() => {
-
+    // 获取平台列表
   }, [])
+
+  const handleValues = (values) => {
+    let newValue = { ...values }
+    const { globalAccountRule, specialAccountRules } = values
+
+    // 处理全局折扣 阶梯设置
+    if (globalAccountRule.rebateRule && globalAccountRule.rebateRule.rebateType === RULE_REBATE_LADDER) {
+      const { rebateNumbers = [], percentage = [] } = globalAccountRule.rebateRule.rebateStepRules;
+      const _rebateStepRules = [];
+      for (let index = 0; index < rebateNumbers.length - 1; index++) {
+        _rebateStepRules.push({
+          amountLowLimit: rebateNumbers[index],
+          amountHighLimit: rebateNumbers[index + 1],
+          rebateRatio: percentage[index]
+        })
+      }
+      if (_rebateStepRules.length > 0) {
+        newValue.globalAccountRule.rebateRule.rebateStepRules = _rebateStepRules;
+      }
+    }
+
+    // 处理 accountList
+    newValue.specialAccountRules = specialAccountRules.map(rule => {
+      let newRule = { ...rule }
+      newRule.accountList = newRule.accountList.map(item => item.platformId)
+      delete newRule.uuid
+      return newRule
+    })
+
+    // 处理时间
+    newValue.validStartTime = values.policyTime[0].format('YYYY-MM-DD 00:00:00');
+    newValue.validEndTime = values.policyTime[1].format('YYYY-MM-DD 23:59:59');
+
+    newValue.whiteList.accountList = newValue.whiteList.accountList.map(item => item.platformId)
+
+    newValue.mcnId = mcnId
+
+    return newValue
+  }
 
   const handleSubmit = () => {
     props.form.validateFields((err, values) => {
-      console.log(values, ' _________');
       if (err) return;
+
+      if (!values.globalAccountRule.discountRule && !values.globalAccountRule.rebateRule) {
+        message.warn('折扣与返点至少填一项')
+        return
+      }
+
+      if (hasRebate(values) && !values.rebateSettlementCycle) {
+        message.warn('当前全局或特殊规则中设置了返点, 请添加返点规则')
+        return
+      }
+
+      const body = handleValues(values)
+
+      setSubmitLoading(true)
+      props.actions.addPolicy(body).then(() => {
+        message.success('更新账号成功');
+      }).finally(() => {
+        setSubmitLoading(false)
+      });
+
     })
   }
 
-  const { getFieldDecorator, getFieldValue } = props.form;
+  const getExcludeIds = (list) => {
+    const {
+      specialAccountRules,
+      whiteList
+    } = props.form.getFieldsValue([ 'specialAccountRules', 'whiteList.accountList' ])
+    let result = specialAccountRules.reduce((result, item) => {
+      return result.concat(item.accountList)
+    }, [])
+
+    result = result.concat(whiteList.accountList, list)
+
+    return result.map(item => item.accountId)
+  }
+
+  const hasRebate = (values) => {
+    const {
+      specialAccountRules,
+      globalAccountRule
+    } = values
+
+    let index = [ ...specialAccountRules, globalAccountRule ].findIndex((rule) => {
+      return rule.rebateRule && rule.rebateRule.rebateType
+    })
+
+
+    return index > -1
+  }
+
+
+  const { getFieldDecorator, getFieldValue, setFieldsValue } = props.form;
+
+
+  const onDeselectPlatform = (key, isAll) => {
+    // message.warn("删除账号")
+    const {
+      specialAccountRules,
+      whiteList
+    } = props.form.getFieldsValue([ 'specialAccountRules', 'whiteList.accountList' ])
+
+    let r1 = specialAccountRules.map(rule => {
+      let newRule = { ...rule }
+      newRule.accountList = isAll ? [] : newRule.accountList.filter(item => item.platformId !== key)
+      return newRule
+    })
+
+    let r2 = isAll ? [] : whiteList.accountList.filter(item => item.platformId !== key)
+
+    setFieldsValue({
+      'specialAccountRules': r1,
+      'whiteList.accountList': r2
+    })
+  }
+
 
   return (
     <div className="policy-manage-create-container">
@@ -74,9 +185,9 @@ const PolicyCreate = (props) => {
             2222
           </FormItem>
           <FormItem label='政策名称'>
-            {getFieldDecorator('policyStopReason', {
+            {getFieldDecorator('policyName', {
               rules: [
-                { required: true, message: ' ' }
+                { required: true, message: '政策名称必填' }
               ]
             })(
               <Input placeholder='请输入' style={{ width: 330 }} />
@@ -108,92 +219,79 @@ const PolicyCreate = (props) => {
             )}
           </FormItem>
           <FormItem label='平台'>
-            <Col span={20}>
-              {getFieldDecorator(`globalAccountRule.platformIds`, {
-                initialValue: [],
-                rules: [
-                  { required: true, message: '请选择平台' }
-                ]
-              })(
-                <Select mode="multiple" placeholder="请选择平台">
-                  {[].map(item =>
-                    <Option
-                      disabled={false}
-                      key={item.id}
-                      value={item.id}
-                    >{item.platformName}</Option>)
-                  }
-                </Select>
-              )}
-            </Col>
-            <Col offset={1} span={3}>
-              <Checkbox>全选</Checkbox>
-            </Col>
+            {getFieldDecorator(`globalAccountRule.platformIds`, {
+              initialValue: [],
+              rules: [
+                { required: true, message: '请选择平台' }
+              ]
+            })(
+              <SelectAllCheck
+                action={props.actions.getGlobalRulePlatforms}
+                options={props.allPlatforms}
+                onDeselect={onDeselectPlatform}
+              />
+            )}
           </FormItem>
           <FormItem label='设置全局规则' required>
-            <Global form={props.form} />
+            <Icon style={{ color: "#faad14" }} type="exclamation-circle" theme="filled" /> 折扣与返点至少填一项
+            <DiscountEdit form={props.form} rule={{}} fieldKeyPrefix="globalAccountRule." />
+            <RebateEdit form={props.form} rule={{}} fieldKeyPrefix="globalAccountRule." />
           </FormItem>
           <FormItem label='特殊账号'>
             {getFieldDecorator(`specialAccountRules`, {
-              initialValue: [
-                {
-                  "ruleId": 1,
-                  "discountRule": {
-                    "discountType": 1,
-                    "discountFixedRatio": 0.15,
-                    "discountFixedAmount": 999
-                  },
-                  "rebateRule": {
-                    "rebateType": 3,
-                    "rebateFixedAmount": 999,
-                    "rebateFixedRatio": 0.15,
-                    "rebateStepRules": [
-                      {
-                        "amountLowLimit": 0,
-                        "rebateRatio": 0.15,
-                        "amountHighLimit": 1000
-                      },
-                      {
-                        "amountLowLimit": 1000,
-                        "rebateRatio": 0.15,
-                        "amountHighLimit": 10000
-                      },
-                      {
-                        "amountLowLimit": 10000,
-                        "rebateRatio": 0.15,
-                        "amountHighLimit": 999999999
-                      }
-                    ]
-                  },
-                  "accountList": []
-                },
-              ]
+              initialValue: []
             })(
-              <SpecialRuleEdit  actions={props.actions}/>
+              <SpecialRuleEdit
+                actions={props.actions}
+                getExcludeIds={getExcludeIds}
+                platforms={getFieldValue('globalAccountRule.platformIds')}
+                params={{
+                  mcnId,
+                  platformIds: getFieldValue('globalAccountRule.platformIds'),
+                  type: 1
+                }}
+              />
             )}
           </FormItem>
           <FormItem label='白名单账号'>
-            {getFieldDecorator(`specialAccountRules`, {
-              initialValue: [
+            {getFieldDecorator(`whiteList.accountList`, {
+              initialValue: [],
+              rules: [
+                {
+                  type: "array",
+                  max: WHITE_LIST_ACCOUNTS_LIMIT,
+                  message: '最多可添加' + WHITE_LIST_ACCOUNTS_LIMIT + '个账号'
+                }
               ]
             })(
-              <SpecialRuleEdit actions={props.actions}/>
+              <AccountListEdit
+                getAccountInfoByIds={props.actions.getAccountInfoByIds}
+                getExcludeIds={getExcludeIds}
+                params={{
+                  mcnId,
+                  platformIds: getFieldValue('globalAccountRule.platformIds'),
+                  type: 2
+                }}
+                style={{ marginRight: 20 }}
+                limit={WHITE_LIST_ACCOUNTS_LIMIT}
+              >
+                <Button icon="plus" type="primary">添加白名单账号</Button>
+              </AccountListEdit>
             )}
           </FormItem>
-          <FormItem label='返点规则' required>
-            <Settlement form={props.form} />
-          </FormItem>
+          <Settlement form={props.form} />
         </ConfigProvider>
       </Form>
       <div className="policy-manage-create-container-footer">
-        <Button type="primary" onClick={handleSubmit}>添加政策</Button>
+        <Button loading={submitLoading} type="primary" onClick={handleSubmit}>添加政策</Button>
       </div>
     </div>
   );
 };
 
 const mapStateToProps = (state) => ({
-  common: state.commonReducers
+  common: state.commonReducers,
+  allPlatforms: state.pricePolicyReducer.globalRulePlatforms
 })
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({

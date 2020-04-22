@@ -15,7 +15,7 @@ const formItemLayout = {
 
 export const RebateEdit = (props) => {
   const { rule, fieldKeyPrefix = "" } = props;
-  const { rebateType, rebateStepRules = [] } = rule || {};
+  const { rebateType, rebateFixedRatio, rebateFixedAmount,  rebateStepRules = [] } = rule || {};
 
   const { getFieldDecorator, getFieldValue } = props.form;
   const [hasRebate, setHasRebate] = useState(!!rebateType);
@@ -61,7 +61,7 @@ export const RebateEdit = (props) => {
             <Form.Item label='公式：' {...formItemLayout}>
               执行完成订单时博主收入，返点比例为：{
               getFieldDecorator(fieldKeyPrefix + "rebateRule.rebateFixedRatio", {
-                initialValue: null,
+                initialValue: rebateFixedRatio,
                 rules: [ { required: true, message: '返点比例必填' } ]
               })(
                 <InputNumber
@@ -76,7 +76,7 @@ export const RebateEdit = (props) => {
             <Form.Item label='公式：' {...formItemLayout}>
               执行完成订单时博主收入，返点金额为：{
               getFieldDecorator(fieldKeyPrefix + "rebateRule.rebateFixedAmount", {
-                initialValue: null,
+                initialValue: rebateFixedAmount,
                 rules: [ { required: true, message: '返点金额必填' } ]
               })(
                 <InputNumber
@@ -103,7 +103,7 @@ export const RebateEdit = (props) => {
             top: 0
           }} type="link">删除</Button>
         </div> :
-        <Button type='link' onClick={() => setHasRebate(true)}>+添加折扣</Button>
+        <Button icon="plus" type='link' onClick={() => setHasRebate(true)}>添加返点</Button>
     }
   </Form.Item>
 }

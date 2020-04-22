@@ -1,7 +1,8 @@
 import React, { Component, useState } from 'react';
-import { Alert, Button, Card, Form, Icon, Modal, Popconfirm } from "antd";
+import { Alert, message, Card, Form, Icon, Modal, Popconfirm } from "antd";
 import AccountListTable from "@/policyManage/components/AccountListTable";
 import AddAccountModal from "@/policyManage/components/RuleModules/AddAccountModal";
+import { SPECIAL_ACCOUNTS_LIMIT } from "@/policyManage/constants/dataConfig";
 
 export default class AccountListEdit extends Component {
   state = {
@@ -28,7 +29,7 @@ export default class AccountListEdit extends Component {
   }
 
   addAccount = (list) => {
-    const newValue = [ ...this.props.value, ...list ]
+    const newValue = [ ...list, ...this.props.value ]
 
     this.onChange(window._.uniqBy(newValue, 'accountId'))
   }
@@ -40,20 +41,26 @@ export default class AccountListEdit extends Component {
   }
 
   render() {
-    const { value, excludeIds = [], params } = this.props
+    const { value, getExcludeIds, params, limit = SPECIAL_ACCOUNTS_LIMIT}  = this.props
     const { visible } = this.state
 
 
-    return <div>
-      {value.length < 200 && <span onClick={() => this.setModal(true)}>
+    return <div style={this.props.style}>
+      {value.length < limit && <span onClick={() => {
+        if(params.platformIds.length === 0){
+          return message.warn("请先选择平台")
+        }
+        this.setModal(true)
+      }}>
         {this.props.children}
       </span>}
       {value.length > 0 && <>
-        <Alert style={{ margin: "6px 0 10px" }} message={<div>
-          已选择{value.length}个账号
+        <Alert className="account-list-number-actions" style={{ margin: "6px 0 10px" }} message={<div>
+          共{value.length}个账号
           <Popconfirm
             title="是否清空所有账号?"
             onConfirm={this.cleanAccount}
+            arrowPointAtCenter
           >
             <a href="#" style={{ float: "right" }}><Icon type="rest" />清空</a>
           </Popconfirm>
@@ -61,7 +68,8 @@ export default class AccountListEdit extends Component {
         <AccountListTable isEdit delAccount={this.delAccount} dataSource={value} />
       </>}
       <AddAccountModal
-        excludeIds={[ ...excludeIds, ...value ]}
+        excludeItems={value}
+        getExcludeIds={getExcludeIds}
         params={params}
         getAccountInfoByIds={this.props.getAccountInfoByIds}
         visible={visible}

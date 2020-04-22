@@ -12,6 +12,7 @@ export const {
 } = createHttpAction('queryMcnByIdentityName', Interface.policy.queryMcnByIdentityName, {
   method: 'post'
 });
+// 获取账号规则平台列表
 export const {
   getGlobalRulePlatforms
 } = createHttpAction('getGlobalRulePlatforms', Interface.policy.getGlobalRulePlatforms);
@@ -141,3 +142,11 @@ export const {
 export const {
   getAccountInfoByIds
 } = createHttpAction('getAccountInfoByIds', Interface.policy.getAccountInfoByIds)
+
+
+//添加政策
+export const {
+  addPolicy
+} = createHttpAction('addPolicy', Interface.policy.addPolicy, {
+  method: 'post'
+});

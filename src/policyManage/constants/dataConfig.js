@@ -72,3 +72,8 @@ export const POLICY_LEVEL = {
 export const REBATE_SETTLEMENT_CYCLE = {
     1: '月', 2: '季', 3: '半年', 4: '年'
 }
+
+// 数量限制
+export const SPECIAL_ACCOUNTS_LIMIT = 200
+export const SPECIAL_RULES_LIMIT = 20
+export const WHITE_LIST_ACCOUNTS_LIMIT = 20
