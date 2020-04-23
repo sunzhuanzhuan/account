@@ -31,7 +31,7 @@ export const interfaceKey = [
   // { name: 'startPolicy', method: 'post' },
   // { name: 'stopPolicy', method: 'post' },
   { name: 'getPastPolicyListByMcnId' },
-  { name: 'getPolicyInfoById' }
+  // { name: 'getPolicyInfoById' }
 
 ].map(item => {
   item.baseUrl = item.baseUrl || baseUrl;
@@ -69,6 +69,8 @@ export default {
     delPolicy: '/operator-gateway/policy/v2/delPolicy',
     getPlatformListByPolicy: '/operator-gateway/policy/v2/getPlatformListByPolicy',
     getAccountInfoByIds: '/operator-gateway/policy/v2/getAccountInfoByIds',
-    addPolicy: '/api/operator-gateway/policy/v2/addPolicy'
+    addPolicy: '/operator-gateway/policy/v2/addPolicy',
+    updatePolicy: '/operator-gateway/policy/v2/updatePolicy',
+    getPolicyInfoById: '/operator-gateway/policy/v2/getPolicyInfoById',
   }
 }

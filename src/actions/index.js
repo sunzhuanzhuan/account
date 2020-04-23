@@ -77,5 +77,10 @@ export const {
   getNewBPlatforms
 } = createHttpAction('getNewBPlatforms', Interface.common.getNewBPlatforms)
 
+// 根据主账号Id获取主账号基本信息
+export const {
+  getOwnerBaseInfo
+} = createHttpAction('getOwnerBaseInfo', Interface.account.getOwnerBaseInfo)
+
 
 export const getCompanyList = getCompanyList2

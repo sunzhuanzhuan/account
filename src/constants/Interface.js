@@ -10,7 +10,10 @@ export default {
     getFileRealPath: '/operator-gateway/common/v1/getRealDownLoadPath',
     platformList: '/operator-gateway/common/v1/platformList',
     checkSensitiveWord: '/operator-gateway/common/v1/checkSensitiveWord',
-    getNewBPlatforms: '/operator-gateway/common/v1/getNewBPlatforms'
+    getNewBPlatforms: '/operator-gateway/common/v1/getNewBPlatforms',
+  },
+  account: {
+    getOwnerBaseInfo: "/operator-gateway/account/v1/getUserNameWithAdmin",
   },
   sourceRulesUrl: {
     add: '/sourceRule/add',

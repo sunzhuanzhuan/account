@@ -6,7 +6,7 @@ import { Button, Radio, InputNumber, Form, Switch, Input } from 'antd'
 
 import {
   ruleDiscount,
-  RULE_DISCOUNT_RATIO, RULE_DISCOUNT_NUMERIC, REBATE_SETTLEMENT_CYCLE
+  RULE_DISCOUNT_RATIO, RULE_DISCOUNT_NUMERIC, REBATE_SETTLEMENT_CYCLE, STEP_REBATE_SETTLEMENT_TYPES
 } from '../../constants/dataConfig'
 
 const formItemLayout = {
@@ -15,10 +15,10 @@ const formItemLayout = {
 };
 
 export const Settlement = (props) => {
-  const { rule = {} } = props;
+  const { data = {} } = props;
 
   const { getFieldDecorator, getFieldValue } = props.form;
-  const [ hasSettlement, setHasSettlement ] = useState();
+  const [ hasSettlement, setHasSettlement ] = useState(!!data.rebateSettlementCycle);
 
   return <Form.Item label='返点规则'>
     {
@@ -27,13 +27,14 @@ export const Settlement = (props) => {
           <Form.Item label='返点结算周期：' {...formItemLayout}>
             {
               getFieldDecorator('rebateSettlementCycle', {
-                initialValue: rule.rebateSettlementCycle,
+                initialValue: data.rebateSettlementCycle,
                 rules: [ { required: true, message: '结算周期必填' } ]
               })(
-                <Radio.Group options={Object.entries(REBATE_SETTLEMENT_CYCLE).map(([ value, label ]) => ({
-                  label,
-                  value: parseInt(value)
-                }))}
+                <Radio.Group options={
+                  Object.entries(REBATE_SETTLEMENT_CYCLE).map(([ value, label ]) => ({
+                    label,
+                    value: parseInt(value)
+                  }))}
                 />
               )
             }
@@ -41,13 +42,17 @@ export const Settlement = (props) => {
           <Form.Item label='阶梯返点结算' {...formItemLayout}>
             {
               getFieldDecorator('stepRebateSettlementType', {
-                initialValue: rule.stepRebateSettlementType,
+                initialValue: data.stepRebateSettlementType,
                 rules: [ { required: true, message: '阶梯返点结算必填' } ]
-              })(<Radio.Group options={[
-                { label: '阶梯收入计算', value: 1 },
-                { label: '全量收入计算', value: 2 }
-                ]}
-              />)
+              })(
+                <Radio.Group options={
+                  Object.entries(STEP_REBATE_SETTLEMENT_TYPES).map(([ value, label ]) => ({
+                    label,
+                    value: parseInt(value)
+                  }))
+                }
+                />
+              )
             }
             <cite className='eg-explain'>例：0-100返点3%，100及以上返点5%，博主总收入150<br />
               阶梯收入计算=（100*3%）+（50*5%）<br />
@@ -57,7 +62,7 @@ export const Settlement = (props) => {
           <Form.Item label='保底政策' {...formItemLayout}>
             {
               getFieldDecorator('isGuaranteed', {
-                initialValue: rule.isGuaranteed === 1,
+                initialValue: data.isGuaranteed === 1,
                 valuePropName: 'checked'
               })(
                 <Switch checkedChildren="开" unCheckedChildren="关" />
@@ -66,14 +71,14 @@ export const Settlement = (props) => {
           </Form.Item>
           {getFieldValue('isGuaranteed') && <Form.Item label='保底金额' {...formItemLayout}>
             {
-              getFieldDecorator('guaranteedMinAmount', { initialValue: rule.guaranteedMinAmount })(
+              getFieldDecorator('guaranteedMinAmount', { initialValue: data.guaranteedMinAmount })(
                 <InputNumber style={{ width: 400 }} max={9999999999} suffix="元" />
               )
             }
           </Form.Item>}
           {getFieldValue('isGuaranteed') && <Form.Item label='保底备注' {...formItemLayout}>
             {
-              getFieldDecorator('guaranteedRemark', { initialValue: rule.guaranteedRemark })(
+              getFieldDecorator('remark', { initialValue: data.remark })(
                 <Input.TextArea rows={4} style={{ width: 400 }} suffix="元" />
               )
             }

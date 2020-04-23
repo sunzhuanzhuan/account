@@ -41,13 +41,23 @@ export const transBool = (value) => {
 }
 
 export const POLICYSTATUS = {
-    "-1": "未添加",
-    1: "待开始",
-    2: "进行中",
-    3: "已过期",
-    4: "已停用",
+  "-1": "未添加",
+  1: "待开始",
+  2: "进行中",
+  3: "已过期",
+  4: "已停用",
 }
 
+// 1: '待开始', 2: '进行中', 3: '已过期', 4: '已停用',
+export const POLICY_STATUS_INACTIVE = 1;
+export const POLICY_STATUS_ACTIVE = 2;
+export const POLICY_STATUS_EXPIRED = 3;
+export const POLICY_STATUS_STOP = 4;
+
+
+/**
+ * 政策级别
+ */
 export const POLICY_LEVEL = {
     "1": {
       icon: "icon-level_S",
@@ -70,10 +80,18 @@ export const POLICY_LEVEL = {
  * 返点结算周期
  */
 export const REBATE_SETTLEMENT_CYCLE = {
-    1: '月', 2: '季', 3: '半年', 4: '年'
+    "1": '月', "2": '季', "3": '半年', "4": '年'
+}
+/**
+ * 阶梯返点结算类型
+ */
+export const STEP_REBATE_SETTLEMENT_TYPES = {
+    "1": '阶梯收入计算', "2": '全量收入计算',
 }
 
-// 数量限制
+
+
+// 规则/账号 数量限制
 export const SPECIAL_ACCOUNTS_LIMIT = 200
 export const SPECIAL_RULES_LIMIT = 20
 export const WHITE_LIST_ACCOUNTS_LIMIT = 20

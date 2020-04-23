@@ -150,3 +150,15 @@ export const {
 } = createHttpAction('addPolicy', Interface.policy.addPolicy, {
   method: 'post'
 });
+
+//修改政策
+export const {
+  updatePolicy
+} = createHttpAction('updatePolicy', Interface.policy.updatePolicy, {
+  method: 'post'
+});
+
+// 根据id政策信息
+export const {
+  getPolicyInfoById
+} = createHttpAction('getPolicyInfoById', Interface.policy.getPolicyInfoById)

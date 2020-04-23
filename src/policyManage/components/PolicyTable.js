@@ -4,29 +4,31 @@ import {
   message,
   Table,
   Divider,
-  Popover,
+  Popover
 } from "antd";
-import PolicyStatus, {
+import PolicyStatus from "../base/PolicyStatus";
+import {
   POLICY_STATUS_ACTIVE,
-  POLICY_STATUS_INACTIVE, POLICY_STATUS_STOP,
-} from "../base/PolicyStatus";
+  POLICY_STATUS_INACTIVE,
+  POLICY_STATUS_STOP,
+  POLICY_LEVEL
+} from "../constants/dataConfig";
 import PolicyAccountModal from "../components/PolicyAccountModal";
-import _merge from 'lodash/merge'
 import StopReasonModal from "../components/StopReasonModal";
 import { dateFormat, ruleDisplay, settlementDisplay } from "../utils";
-import { POLICY_LEVEL } from "@/policyManage/constants/dataConfig";
 import IconFont from "@/base/IconFont";
 import QuestionTip from "@/base/QuestionTip";
 import Yuan from "@/base/Yuan";
 import './PolicyTable.less'
+
 const PolicyTable = (props) => {
-  const [accountModal, setAccountModal] = useState({
+  const [ accountModal, setAccountModal ] = useState({
     active: "",
     record: {}
   })
-  const [selectedRowKeys, setSelectedRowKeys] = useState([])
+  const [ selectedRowKeys, setSelectedRowKeys ] = useState([])
 
-  const [stopModal, setStopModal] = useState(false)
+  const [ stopModal, setStopModal ] = useState(false)
   const { policyList = {}, getList, dataSource = [], noColumnArr = [], isPolicy, platformListByPolicy, pageSizeOptions } = props
   const { total, pageNum, pageSize } = policyList
 
@@ -158,7 +160,7 @@ const PolicyTable = (props) => {
       title: '主账号',
       dataIndex: 'identityName',
       render: (name, record) => {
-        return <div >
+        return <div>
           <a className='nowrap-ellipsis' onClick={() => openAccountDetail(record.mcnId)}>{name}</a>
           <div className='cursor-pointer' onClick={() => openAccountDetail(record.mcnId)}>ID: {record.mcnId}</div>
         </div>
@@ -326,7 +328,7 @@ const PolicyTable = (props) => {
             </>
           }
           {isPolicy ?
-            <a onClick={() => downMcnPolicyData([id])}>下载</a>
+            <a onClick={() => downMcnPolicyData([ id ])}>下载</a>
             : <a onClick={() => delPolicyAsync(id)}>删除</a>}
         </div>
       }
@@ -346,9 +348,10 @@ const PolicyTable = (props) => {
         scroll={{ x: 2400 }}
         rowKey="id"
       />
-      {accountModal.active ? <PolicyAccountModal modal={accountModal} setModal={setAccountModal} actions={props.actions} platformListByPolicy={platformListByPolicy} /> : null}
+      {accountModal.active ?
+        <PolicyAccountModal modal={accountModal} setModal={setAccountModal} actions={props.actions} platformListByPolicy={platformListByPolicy} /> : null}
       {stopModal ? <StopReasonModal onCancel={stopPolicy} onOk={stopReasonSubmit} /> : null}
-    </div >
+    </div>
   );
 };
 

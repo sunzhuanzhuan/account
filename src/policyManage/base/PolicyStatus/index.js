@@ -4,12 +4,12 @@
 import React, {  } from 'react';
 import { Badge } from "antd";
 import QuestionTip from "@/base/QuestionTip";
+import {
+  POLICY_STATUS_ACTIVE,
+  POLICY_STATUS_EXPIRED,
+  POLICY_STATUS_INACTIVE, POLICY_STATUS_STOP
+} from "@/policyManage/constants/dataConfig";
 
-// 1: '待开始', 2: '进行中', 3: '已过期', 4: '已停用',
-export const POLICY_STATUS_INACTIVE = 1;
-export const POLICY_STATUS_ACTIVE = 2;
-export const POLICY_STATUS_EXPIRED = 3;
-export const POLICY_STATUS_STOP = 4;
 
 export const policyStatusMap = {
   [POLICY_STATUS_INACTIVE]: {

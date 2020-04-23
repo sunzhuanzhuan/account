@@ -23,7 +23,7 @@ const AddAccountModal = (props) => {
   const onModalOk = () => {
     let excludeIds;
     if (getExcludeIds) {
-      excludeIds = getExcludeIds(excludeItems)
+      excludeIds = getExcludeIds(excludeItems).ids
     }else {
       excludeIds = excludeItems.map(item => item.accountId)
     }

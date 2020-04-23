@@ -34,7 +34,7 @@
     }
   }
 
-  &-create-container {
+  &-edit-container {
     height: 100%;
 
     &-scroll {
@@ -60,6 +60,11 @@
       }
 
       z-index: 1;
+    }
+    &-status {
+      & > [class^=fields-item-] {
+        margin-right: 30px;
+      }
     }
   }
 }

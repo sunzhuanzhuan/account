@@ -5,33 +5,16 @@ import actions from "../actions";
 import { connect } from "react-redux";
 import {
   Alert,
-  Button,
-  Checkbox,
   Form,
-  Pagination,
   Tabs,
   Spin,
-  message,
-  Table,
-  Divider, PageHeader, Popover, Icon, List
+  PageHeader
 } from "antd";
 import PolicyTable from '../components/PolicyTable'
 import PolicyAllFilterForm from "../components/PolicyAllFilterForm";
-import PolicyCard from "../components/PolicyCard";
-import PolicyStatus, {
-  POLICY_STATUS_ACTIVE,
-  POLICY_STATUS_INACTIVE, POLICY_STATUS_STOP,
+import {
   policyStatusMap
 } from "../base/PolicyStatus";
-import PolicyAccountModal from "../components/PolicyAccountModal";
-import _merge from 'lodash/merge'
-import StopReasonModal from "../components/StopReasonModal";
-import { dateFormat, ruleDisplay, settlementDisplay } from "../utils";
-import OwnerInfos from "@/policyManage/components/OwnerInfos";
-import { POLICY_LEVEL } from "@/policyManage/constants/dataConfig";
-import IconFont from "@/base/IconFont";
-import QuestionTip from "@/base/QuestionTip";
-import Yuan from "@/base/Yuan";
 
 
 const { TabPane } = Tabs;

@@ -8,6 +8,7 @@ const PolicyList = lazyLoadComponent(() => import('./containers/PolicyList'))
 const __PolicyList = lazyLoadComponent(() => import('./containers/__PolicyList'))
 const PolicyListByOwner = lazyLoadComponent(() => import('./containers/PolicyListByOwner'))
 const PolicyCreate = lazyLoadComponent(() => import('./containers/PolicyCreate'))
+const PolicyUpdate = lazyLoadComponent(() => import('./containers/PolicyUpdate'))
 
 
 class AccountEnterIndex extends Component {
@@ -19,7 +20,7 @@ class AccountEnterIndex extends Component {
         <Route exact path="/account/policy/list" component={PolicyList} />
         <Route path='/account/policy/list/:ownerId' component={PolicyListByOwner} />
         <Route path='/account/policy/details/:id' component={__PolicyList} />
-        <Route path='/account/policy/update/:id' component={__PolicyList} />
+        <Route path='/account/policy/update/:id' component={PolicyUpdate} />
         <Route path='/account/policy/create/:ownerId' component={PolicyCreate} />
       </div>
     );

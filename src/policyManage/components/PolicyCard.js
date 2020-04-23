@@ -5,14 +5,16 @@ import React, { useState } from 'react';
 import { Checkbox, Icon, message, Popconfirm, Popover, Spin } from "antd";
 
 import './PolicyCard.less'
-import PolicyStatus, {
+import PolicyStatus from "../base/PolicyStatus";
+import Yuan from "@/base/Yuan";
+import IconFont from "@/base/IconFont";
+import {
+  POLICY_LEVEL,
+  REBATE_SETTLEMENT_CYCLE,
   POLICY_STATUS_ACTIVE,
   POLICY_STATUS_INACTIVE,
   POLICY_STATUS_STOP
-} from "../base/PolicyStatus";
-import Yuan from "@/base/Yuan";
-import IconFont from "@/base/IconFont";
-import { POLICY_LEVEL, REBATE_SETTLEMENT_CYCLE } from "@/policyManage/constants/dataConfig";
+} from "@/policyManage/constants/dataConfig";
 import { dateFormat } from "@/policyManage/utils";
 import StopReasonModal from "@/policyManage/components/StopReasonModal";
 import { id } from "@/accountManage/reducer/account";
@@ -60,7 +62,7 @@ const CardRule = props => {
 const PolicyCard = (props) => {
   const { data } = props
 
-  const [stopModal, setStopModal] = useState(false)
+  const [ stopModal, setStopModal ] = useState(false)
 
   // 停用
   const stopPolicy = () => {
