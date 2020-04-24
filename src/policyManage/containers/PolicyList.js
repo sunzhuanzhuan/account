@@ -64,7 +64,7 @@ const PolicyList = (props) => {
     })
   };
 
-  const { globalRulePlatforms, actions, policyList, platformListByPolicy } = props
+  const { globalRulePlatforms, actions, policyList, platformListByPolicy,history } = props
   const dataSource = keys.map(key => source[key])
   const tableProps = {
     actions,
@@ -74,7 +74,8 @@ const PolicyList = (props) => {
     isPolicy: true,
     policyList,
     platformListByPolicy,
-    pageSizeOptions: ['10', ' 20', ' 50', ' 100']
+    pageSizeOptions: ['10', ' 20', ' 50', ' 100'],
+    history
   }
 
   return (

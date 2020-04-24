@@ -20,6 +20,7 @@ import IconFont from "@/base/IconFont";
 import QuestionTip from "@/base/QuestionTip";
 import Yuan from "@/base/Yuan";
 import './PolicyTable.less'
+import { Link } from "react-router-dom";
 
 const PolicyTable = (props) => {
   const [ accountModal, setAccountModal ] = useState({
@@ -109,12 +110,7 @@ const PolicyTable = (props) => {
     message.success('删除成功')
     getList()
   }
-  function openPolicy(id) {
-    window.open(`/account/policy/details/${id}`, '_blank')
-  }
-  function openAccountDetail(mcnId) {
-    window.open(`/account/owner/update/${mcnId}`, '_blank')
-  }
+
   const columns = [
     {
       title: '政策名称/ID',
@@ -123,11 +119,11 @@ const PolicyTable = (props) => {
       render: (name, record) => {
         return <div className='cursor-pointer'>
           <Popover trigger='hover' placement='topLeft' content={name}>
-            <a onClick={() => openPolicy(record.id)} className='nowrap-ellipsis mw-15'>
+            <Link to={`/account/policy/details/${record.id}`} className='nowrap-ellipsis mw-15'>
               {name}
-            </a>
+            </Link>
           </Popover>
-          <span onClick={() => openPolicy(record.id)}>ID: {record.id}</span>
+          <span>ID: {record.id}</span>
         </div>
       }
     },
@@ -161,8 +157,8 @@ const PolicyTable = (props) => {
       dataIndex: 'identityName',
       render: (name, record) => {
         return <div>
-          <a className='nowrap-ellipsis' onClick={() => openAccountDetail(record.mcnId)}>{name}</a>
-          <div className='cursor-pointer' onClick={() => openAccountDetail(record.mcnId)}>ID: {record.mcnId}</div>
+          <Link className='nowrap-ellipsis' to={`/account/owner/update/${record.mcnId}`}>{name}</Link>
+          <div className='cursor-pointer'>ID: {record.mcnId}</div>
         </div>
       }
     },
