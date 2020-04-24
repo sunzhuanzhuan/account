@@ -43,8 +43,12 @@ const PolicyCreate = (props) => {
   const submit = () => {
     formRef.current && formRef.current.handleSubmit((body) => {
       setSubmitLoading(true)
-      props.actions.addPolicy(body).then(() => {
-        message.success('创建政策成功');
+      props.actions.addPolicy(body).then(({ data }) => {
+        if (data.isAllAccountSuccess === 2) {
+          message.success('创建政策成功: 当前政策包含的账号有被转移或删除的账号，则该政策不包含此类账号！');
+        } else {
+          message.success('创建政策成功');
+        }
       }).finally(() => {
         setSubmitLoading(false)
       });
@@ -59,13 +63,13 @@ const PolicyCreate = (props) => {
 
   return (
     <LoadingWrapped loading={pageLoading}>
-      <div className="policy-manage-edit-container">
+      <div className="policy-manage-details-container">
         <PageHeader
           onBack={props.history.goBack}
           title="添加政策"
         />
         <PolicyEditForm wrappedComponentRef={formRef} {...formProps} />
-        <div className="policy-manage-edit-container-footer">
+        <div className="policy-manage-details-container-footer">
           <Button loading={submitLoading} type="primary" onClick={submit}>添加政策</Button>
         </div>
       </div>

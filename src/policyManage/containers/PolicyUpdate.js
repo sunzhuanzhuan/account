@@ -16,7 +16,7 @@ import PolicyEditForm from "../components/PolicyEditForm";
 import LoadingWrapped from "@/base/LoadingWrapped";
 import PolicyStatus from "@/policyManage/base/PolicyStatus";
 import {
-  POLICY_STATUS_ACTIVE,
+  POLICY_STATUS_ACTIVE, POLICY_STATUS_EXPIRED,
   POLICY_STATUS_INACTIVE,
   POLICY_STATUS_STOP
 } from "@/policyManage/constants/dataConfig";
@@ -37,7 +37,6 @@ const PolicyUpdate = (props) => {
 
   useEffect(() => {
     reload()
-
   }, [])
 
 
@@ -56,8 +55,13 @@ const PolicyUpdate = (props) => {
   const submit = () => {
     formRef.current && formRef.current.handleSubmit((body) => {
       setSubmitLoading(true)
-      props.actions.updatePolicy(body).then(() => {
-        message.success('更新政策成功');
+      props.actions.updatePolicy(body).then(({ data }) => {
+        if(data.isAllAccountSuccess === 2){
+          message.success('更新政策成功: 当前政策包含的账号有被转移或删除的账号，则该政策不包含此类账号！');
+        }else {
+          message.success('更新政策成功');
+        }
+        reload()
       }).finally(() => {
         setSubmitLoading(false)
       });
@@ -106,12 +110,12 @@ const PolicyUpdate = (props) => {
 
   return (
     <LoadingWrapped loading={pageLoading}>
-      <div className="policy-manage-edit-container">
+      <div className="policy-manage-details-container">
         <PageHeader
           onBack={props.history.goBack}
           title="编辑政策"
           subTitle={
-            <div className='policy-manage-edit-container-status'>
+            <div className='policy-manage-details-container-status'>
               <span className='fields-item-'>政策ID：{initData.id}</span>
               <span className='fields-item-'>修改人：{initData.modifiedByName}</span>
               <span className='fields-item-'>修改于：{initData.modifiedAt}</span>
@@ -120,16 +124,22 @@ const PolicyUpdate = (props) => {
           }
         />
         <PolicyEditForm wrappedComponentRef={formRef} {...formProps} />
-        <div className="policy-manage-edit-container-footer">
-          <Button loading={submitLoading} type="primary" onClick={submit}>更新政策</Button>
+        <div className="policy-manage-details-container-footer">
           {
             (initData.policyStatus === POLICY_STATUS_INACTIVE ||
               initData.policyStatus === POLICY_STATUS_ACTIVE) &&
-            <Button onClick={() => stopPolicy(id)}>停用</Button>
+              <>
+                <Button loading={submitLoading} type="primary" onClick={submit}>更新政策</Button>
+                <Button type="danger" ghost onClick={() => stopPolicy(id)}>停用政策</Button>
+              </>
+          }
+          {
+            (initData.policyStatus === POLICY_STATUS_EXPIRED) &&
+            <Button onClick={props.history.goBack}>关闭</Button>
           }
           {
             (initData.policyStatus === POLICY_STATUS_STOP) &&
-            <Button onClick={() => startPolicy(id)}>启用</Button>
+            <Button type="primary" onClick={() => startPolicy(id)}>启用政策</Button>
           }
         </div>
         {stopModal ? <StopReasonModal onCancel={stopPolicy} onOk={stopReasonSubmit} /> : null}

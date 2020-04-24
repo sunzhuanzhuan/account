@@ -102,7 +102,7 @@ const EditRuleForm = (props) => {
 };
 
 const RuleCard = props => {
-  const { data, index, onEdit, onDel } = props
+  const { data, index, onEdit, onDel,  isEdit } = props
 
   const {
     discountRuleLabel,
@@ -126,7 +126,7 @@ const RuleCard = props => {
         </span>
       }
       extra={
-        <>
+        isEdit && <>
           <Button onClick={onEdit} type="primary" style={{marginRight: 8}}>编辑</Button>
           <Popconfirm
             title="是否删除本规则?"
@@ -148,7 +148,7 @@ const RuleCard = props => {
 
 const EditRuleFormWrapped = Form.create()(EditRuleForm)
 
-export default class SpecialRuleEdit extends Component {
+export class SpecialRuleEdit extends Component {
 
   state = {
     current: {}
@@ -194,8 +194,6 @@ export default class SpecialRuleEdit extends Component {
   render() {
     const { value, params } = this.props
 
-    const allIds = []
-
     return <div>
       {
         value.length < SPECIAL_RULES_LIMIT && <Button
@@ -209,7 +207,7 @@ export default class SpecialRuleEdit extends Component {
       }
       {
         value.map((rule, index) =>
-          <RuleCard key={rule.ruleId || rule.uuid} data={rule} index={index} onDel={this.onDelete} onEdit={() => {
+          <RuleCard key={rule.ruleId || rule.uuid}  isEdit data={rule} index={index} onDel={this.onDelete} onEdit={() => {
             this.setState({ current: { type: 'update', ...rule } })
           }} />)
       }
@@ -225,4 +223,23 @@ export default class SpecialRuleEdit extends Component {
   }
 }
 
+
+export const SpecialRuleView = (props) => {
+  const { rules = [] } = props
+
+  return (
+    <>
+      {
+        rules.length > 0 ? rules.map((rule, index) =>
+          <RuleCard key={rule.ruleId || rule.uuid} data={rule} index={index}/>) :
+          <span>无</span>
+      }
+    </>
+  )
+};
+
+export default {
+  SpecialRuleEdit,
+  SpecialRuleView
+};
 

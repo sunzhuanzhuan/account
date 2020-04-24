@@ -14,7 +14,7 @@ import IconFont from "@/base/IconFont";
 import SelectAllCheck from "./SelectAllCheck";
 import { DiscountEdit } from "./RuleModules/Discount";
 import { RebateEdit } from "./RuleModules/Rebate";
-import SpecialRuleEdit from "./RuleModules/SpecialRuleEdit";
+import { SpecialRuleEdit } from "./RuleModules/SpecialRules";
 import AccountListEdit from "./RuleModules/AccountListEdit";
 import { Settlement } from "./RuleModules/Settlement";
 
@@ -120,7 +120,6 @@ const PolicyEditForm = forwardRef((props, ref) => {
     newValue.validEndTime = values.policyTime[1].format('YYYY-MM-DD 23:59:59');
     delete newValue.policyTime
 
-    // TODO: 百分比比例处理..
     newValue.whiteList.accountList = newValue.whiteList.accountList.map(item => item.platformId)
 
     newValue.mcnId = mcnId
@@ -202,7 +201,7 @@ const PolicyEditForm = forwardRef((props, ref) => {
 
 
   return (
-    <Form {...formItemLayout} className="policy-manage-edit-container-scroll" id="scroll-box">
+    <Form {...formItemLayout} className="policy-manage-details-container-scroll" id="scroll-box">
       <ConfigProvider getPopupContainer={() => document.getElementById('scroll-box')}>
         <FormItem label='主账号名称'>
           {data.identityName || '-'}

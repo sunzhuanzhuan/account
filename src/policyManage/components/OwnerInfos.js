@@ -62,7 +62,6 @@ const OwnerInfos = (props) => {
     }
     if (file.status === "done") {
       file.status = "uploading"
-      // TODO: 提交合同接口
       contractAddAsync()
       file.percent = 100
       file.status = "done"

@@ -55,8 +55,28 @@ export const dateFormat = (date, format = "YYYY-MM-DD HH:mm:ss") => {
  */
 export const ruleDisplay = (data) => {
   const { discountRule = {}, rebateRule = {} } = data
+
+  const {
+    discountRuleLabel,
+    discountRuleValue,
+  } = discountRuleDisplay(discountRule)
+
+  const {
+    rebateRuleLabel,
+    rebateRuleValue
+  } = rebateRuleDisplay(rebateRule)
+
+
+  return {
+    discountRuleLabel,
+    discountRuleValue,
+    rebateRuleLabel,
+    rebateRuleValue
+  }
+}
+
+export const discountRuleDisplay = (discountRule = {}) => {
   let discountRuleLabel = "", discountRuleValue = ""
-  let rebateRuleLabel = "", rebateRuleValue = ""
 
   if (discountRule.discountType === 1) {
     discountRuleLabel = "折扣-固定比例"
@@ -66,6 +86,15 @@ export const ruleDisplay = (data) => {
     discountRuleLabel = "折扣-固定扣减"
     discountRuleValue = discountRule.discountFixedAmount + "元"
   }
+
+  return {
+    discountRuleLabel,
+    discountRuleValue,
+  }
+}
+
+export const rebateRuleDisplay = (rebateRule = {}) => {
+  let rebateRuleLabel = "", rebateRuleValue = ""
 
   if (rebateRule.rebateType === 1) {
     rebateRuleLabel = "返点-固定比例"
@@ -87,12 +116,11 @@ export const ruleDisplay = (data) => {
   }
 
   return {
-    discountRuleLabel,
-    discountRuleValue,
     rebateRuleLabel,
     rebateRuleValue
   }
 }
+
 
 /**
  * 结算规则展示

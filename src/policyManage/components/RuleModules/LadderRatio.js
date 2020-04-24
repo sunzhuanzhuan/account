@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Button, InputNumber } from "antd";
+import numeral from "numeral";
 
 export class LadderRatioEdit extends React.PureComponent {
   static getDerivedStateFromProps(nextProps) {
@@ -53,9 +54,8 @@ export class LadderRatioEdit extends React.PureComponent {
     }
     this.triggerChange({ rebateNumbers });
   };
-  handlePercentageChange = (e, index) => {
+  handlePercentageChange = (number, index) => {
     const { percentage } = this.state;
-    const number = parseInt(e || 0, 10);
     percentage[index] = number;
     if (!("value" in this.props)) {
       this.setState({ percentage });
@@ -96,7 +96,12 @@ export class LadderRatioEdit extends React.PureComponent {
                 <InputNumber
                   onChange={e => this.handlePercentageChange(e, index)}
                   value={percentage[index]}
-                /> %
+                  max={1}
+                  min={0.01}
+                  step={0.01}
+                  formatter={value => `${numeral(value).format("0%")}`}
+                  parser={str => `${numeral(str).format("0.00")}`}
+                />
               </span>
               {rebateNumbers.length <= 10 && <Button type="link" onClick={() => this.addRule(index + 1)}>添加</Button>}
               {index !== 0 && (

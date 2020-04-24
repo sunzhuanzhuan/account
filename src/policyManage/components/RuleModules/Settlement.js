@@ -2,7 +2,7 @@
  * Created by lzb on 2020-04-20.
  */
 import React, { useState } from 'react';
-import { Button, Radio, InputNumber, Form, Switch, Input } from 'antd'
+import { Button, Radio, InputNumber, Form, Switch, Input, Descriptions } from 'antd'
 
 import {
   ruleDiscount,
@@ -95,21 +95,26 @@ export const Settlement = (props) => {
 
 export const SettlementView = (props) => {
   const { data = {} } = props;
-  const { discountType, discountFixedRatio, discountFixedAmount } = data;
-  return <Form.Item label={'折扣：'} className='platform-wrap' {...formItemLayout}>
-    {
-      <div className='item-wrap' style={{ background: '#f7fbff' }}>
-        <Form.Item label="类型：" {...formItemLayout}>
-          {discountType == RULE_DISCOUNT_RATIO ? '固定比例' : '固定扣减'}
-        </Form.Item>
-        <Form.Item label='公式：' {...formItemLayout}>
-          {discountType == RULE_DISCOUNT_RATIO ?
-            <span>刊例价 X {discountFixedRatio}% = 账号报价</span> :
-            <span>刊例价 - {discountFixedAmount}元 = 账号报价</span>
-          }
-        </Form.Item>
-      </div>
-    }
-  </Form.Item>
+  const { remark, guaranteedMinAmount, isGuaranteed, stepRebateSettlementType, rebateSettlementCycle } = data;
+  return (
+    <Descriptions column={2}>
+      <Descriptions.Item label="返点结算周期">
+        {REBATE_SETTLEMENT_CYCLE[rebateSettlementCycle]}
+      </Descriptions.Item>
+      <Descriptions.Item label="阶梯返点结算">
+        {STEP_REBATE_SETTLEMENT_TYPES[stepRebateSettlementType]}
+      </Descriptions.Item>
+      {
+        isGuaranteed === 1 && <>
+          <Descriptions.Item label="保底金额">
+            {guaranteedMinAmount}
+          </Descriptions.Item>
+          <Descriptions.Item label="保底备注">
+            {remark}
+          </Descriptions.Item>
+        </>
+      }
+    </Descriptions>
+  )
 }
 
