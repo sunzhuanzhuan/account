@@ -4,19 +4,18 @@
 import React, { useEffect, useState } from 'react';
 import { Descriptions, Icon, Modal, Table, Divider } from "antd";
 import { OssUpload } from "wbyui";
+
 const { confirm } = Modal;
 
 const OwnerInfos = (props) => {
 
   // 图片上传Token
-  const [uploadToken, setUploadToken] = useState("")
-  const [uploadFile, setUploadFile] = useState([])
-  const [modal, setModal] = useState(false)
+  const [ uploadToken, setUploadToken ] = useState("")
+  const [ uploadFile, setUploadFile ] = useState([])
+  const [ modal, setModal ] = useState(false)
   const { actions } = props
-  const pathName = window.location.pathname
-  const mcnId = pathName.substring(pathName.lastIndexOf('/') + 1)//获取路径中的mcnId
-  const [searchParams, setSearchParams] = useState({})
-  const [lateUploadId, setLateUploadId] = useState(0)
+  const [ searchParams, setSearchParams ] = useState({})
+  const [ lateUploadId, setLateUploadId ] = useState(0)
   useEffect(() => {
 
     // 获取上传图片token
@@ -32,12 +31,12 @@ const OwnerInfos = (props) => {
     const { data = {} } = await actions.getLatestUpload({ mcnId: mcnId })
     const { contractInfo } = data
     if (contractInfo) {
-      const initFile = [{
+      const initFile = [ {
         status: "done",
         name: contractInfo.contractFileName,
         uid: contractInfo.id,
         url: contractInfo.contractFileUrl
-      }]
+      } ]
       setUploadFile(initFile)
       setLateUploadId(contractInfo.id)
     }
@@ -50,7 +49,7 @@ const OwnerInfos = (props) => {
         contractDeleteAsync(lateUploadId)
         setUploadFile([])
         getLatestUploadAsync()
-      },
+      }
     });
   }
   const uploadChange = ({ file }) => {
@@ -66,14 +65,14 @@ const OwnerInfos = (props) => {
       file.percent = 100
       file.status = "done"
       file.url = file.response.url
-      setUploadFile([file])
+      setUploadFile([ file ])
       console.log("uploadChange -> file", file)
     }
-    setUploadFile([file])
+    setUploadFile([ file ])
   }
   //添加合同
   const contractAddAsync = async (file = {}) => {
-    const { url, name, } = file
+    const { url, name } = file
     const { data } = await actions.contractAdd({
       contractFileUrl: url,
       contractFileName: name,
@@ -88,11 +87,11 @@ const OwnerInfos = (props) => {
     },
     {
       title: '添加人',
-      dataIndex: 'createdByName',
+      dataIndex: 'createdByName'
     },
     {
       title: '添加时间',
-      dataIndex: 'createdAt',
+      dataIndex: 'createdAt'
     },
     {
       title: '操作',
@@ -137,18 +136,19 @@ const OwnerInfos = (props) => {
     await actions.contractDelete({ id: id })
   }
 
+  const { mcnId, identityName } = props.data
 
   return (
     <div className="policy-manage-owner-infos-container">
       <Descriptions column={1}>
-        <Descriptions.Item label="主账号名称">cceshitest</Descriptions.Item>
-        <Descriptions.Item label="主账号ID">1810000000</Descriptions.Item>
+        <Descriptions.Item label="主账号名称">{mcnId}</Descriptions.Item>
+        <Descriptions.Item label="主账号ID">{identityName}</Descriptions.Item>
         <Descriptions.Item label="合同附件" className="align-top">
           <OssUpload
             authToken={uploadToken}
             fileList={uploadFile}
             rule={{
-              bizzCode: 'FWP_QUALIFICATIONS_UPLOAD',
+              bizzCode: 'MCN_PROCUREMENT_POLICY_CONTRACT',
               max: 50,
               suffix: '.pdf,.docx,.doc,.dot,.dotx'
             }}

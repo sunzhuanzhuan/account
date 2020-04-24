@@ -5,13 +5,11 @@ import actions from "../actions";
 import { connect } from "react-redux";
 import { Alert, Button, Checkbox, Form, Pagination, Tabs, Spin, message, PageHeader } from "antd";
 
-import PolicyCard from "../components/PolicyCard";
 import { policyStatusMap } from "@/policyManage/base/PolicyStatus";
-import PolicyAccountModal from "@/policyManage/components/PolicyAccountModal";
-import _merge from 'lodash/merge'
-import StopReasonModal from "@/policyManage/components/StopReasonModal";
+
 import OwnerInfos from "@/policyManage/components/OwnerInfos";
 import PolicyTable from '../components/PolicyTable'
+import LoadingWrapped from "@/base/LoadingWrapped";
 
 const { TabPane } = Tabs;
 
@@ -21,12 +19,10 @@ const PolicyListByOwner = (props) => {
 
   const { keys, source, total, pageNum, pageSize } = props.policyList
 
-  const [loading, setLoading] = useState(false)
-  const [selectedRowKeys, setSelectedRowKeys] = useState([])
-  const [indeterminate, setIndeterminate] = useState(false)
-  const [checkAll, setCheckAll] = useState(false)
-  const pathName = window.location.pathname
-  const mcnId = pathName.substring(pathName.lastIndexOf('/') + 1)
+  const [ loading, setLoading ] = useState(false)
+  const [ pageLoading, setPageLoading ] = useState(true)
+  const [ ownerInfo, setOwnerInfo ] = useState(false)
+  const mcnId = props.match.params.ownerId
   const search = useRef({
     page: {
       currentPage: 1,
@@ -34,21 +30,33 @@ const PolicyListByOwner = (props) => {
     }
   })
   useEffect(() => {
+    // 获取主账号基本信息
+    props.actions.getOwnerBaseInfo({ userId: mcnId })
+      .then(({ data }) => {
+        setOwnerInfo({
+          mcnId: data.userId,
+          identityName: data.identityName
+        })
+        setPageLoading(false)
+      })
+      .catch((err) => {
+        setPageLoading(err)
+      })
+
     getList()
     getStatistics()
 
   }, [])
 
-  const getList = ({ page, form } = {}) => {
+  const getList = ({ page } = {}) => {
     const { actions } = props
     search.current = {
       page: Object.assign({}, search.current.page, page),
-      form: Object.assign({ mcnId: mcnId }, search.current.form, form)
+      form: { mcnId: mcnId }
     }
     setLoading(true)
     actions.policyListByOwner(search.current).then(() => {
       setLoading(false)
-      setSelectedRowKeys([])
     }).catch(() => setLoading(false))
   }
 
@@ -71,32 +79,35 @@ const PolicyListByOwner = (props) => {
   const tableProps = {
     getList,
     actions,
-    noColumnArr: ['identityName', 'ownerAdminName'],
+    loading,
+    noColumnArr: [ 'identityName', 'ownerAdminName' ],
     dataSource,
     globalRulePlatforms, policyList, platformListByPolicy,
-    pageSizeOptions: ['5', '10', '20', '50', '100']
+    pageSizeOptions: [ '5', '10', '20', '50', '100' ]
   }
 
   return (
-    <div className="policy-manage-owner-list-container">
-      <PageHeader
-        onBack={false}
-        title="主账号政策列表"
-        subTitle=" "
-      >
-        <OwnerInfos actions={props.actions} list={props.contractList} />
-      </PageHeader>
-      <Button type="primary" onClick={() => window.open(`/account/policy/create/${mcnId}`, '_self')}>添加政策</Button>
-      <Tabs onChange={onTabChange} animated={false}>
-        <TabPane tab={<span>全部 <span>{props.statistics.allCount}</span></span>} key="0" />
-        {
-          Object.entries(policyStatusMap).map(([key, { text, field }]) => <TabPane tab={
-            <span>{text} <span>{props.statistics[field]}</span></span>} key={key} />)
-        }
-      </Tabs>
-      <PolicyTable {...tableProps} />
-      {/*<PolicyAccountModal />*/}
-    </div>
+    <LoadingWrapped loading={pageLoading}>
+      <div className="policy-manage-owner-list-container">
+        <PageHeader
+          onBack={false}
+          title="主账号政策列表"
+          subTitle=" "
+        >
+          <OwnerInfos actions={props.actions} list={props.contractList} data={ownerInfo} />
+        </PageHeader>
+        <Button type="primary" onClick={() => window.open(`/account/policy/create/${mcnId}`, '_self')}>添加政策</Button>
+        <Tabs onChange={onTabChange} animated={false}>
+          <TabPane tab={<span>全部 <span>{props.statistics.allCount}</span></span>} key="0" />
+          {
+            Object.entries(policyStatusMap).map(([ key, { text, field } ]) => <TabPane tab={
+              <span>{text} <span>{props.statistics[field]}</span></span>} key={key} />)
+          }
+        </Tabs>
+        <PolicyTable {...tableProps} />
+        {/*<PolicyAccountModal />*/}
+      </div>
+    </LoadingWrapped>
   );
 };
 
@@ -107,7 +118,7 @@ const mapStateToProps = (state) => ({
   contractList: state.pricePolicyReducer.contractListByOwner,
   globalRulePlatforms: state.pricePolicyReducer.globalRulePlatforms,
   queryMediumsList: state.pricePolicyReducer.queryMediumsList,
-  platformListByPolicy: state.pricePolicyReducer.platformListByPolicy,
+  platformListByPolicy: state.pricePolicyReducer.platformListByPolicy
 })
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators({
