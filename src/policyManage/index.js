@@ -5,7 +5,6 @@ import './container.less'
 
 // 懒加载路由级组件
 const PolicyList = lazyLoadComponent(() => import('./containers/PolicyList'))
-const __PolicyList = lazyLoadComponent(() => import('./containers/__PolicyList'))
 const PolicyListByOwner = lazyLoadComponent(() => import('./containers/PolicyListByOwner'))
 const PolicyCreate = lazyLoadComponent(() => import('./containers/PolicyCreate'))
 const PolicyUpdate = lazyLoadComponent(() => import('./containers/PolicyUpdate'))

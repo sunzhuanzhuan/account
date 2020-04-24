@@ -26,7 +26,7 @@ export default class AddPageCommonContainer extends Component {
         账号入库
       {policyId ?
           <small className='policyInfo-id-display'>
-            价格政策ID: <a target='_blank' href={"/account/policy?policyPeriodIdentity=1&userId=" + accountInfo.userId}>{policyId}-{policyRuleType[ruleType]}-{ruleId}</a></small>
+            价格政策ID: <a target='_blank' href={"/account/policy/details/" + policyId}>{policyId}</a></small>
           : null}
       </h2>
       <div>

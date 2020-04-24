@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import {
   Button,
   PageHeader,
-  message, Icon
+  message
 } from "antd";
 
 import PolicyEditForm from "../components/PolicyEditForm";

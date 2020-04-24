@@ -4,7 +4,7 @@
 /**
  * Created by lzb on 2020-04-23.
  */
-import React, { createRef, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as commonActions from '@/actions';
 import { bindActionCreators } from "redux";
 import actions from "../actions";
@@ -12,18 +12,14 @@ import { connect } from "react-redux";
 import {
   Button,
   PageHeader,
-  message, Icon
 } from "antd";
 
 import PolicyViewDetails from "../components/PolicyViewDetails";
 import LoadingWrapped from "@/base/LoadingWrapped";
-import PolicyStatus from "@/policyManage/base/PolicyStatus";
 import {
-  POLICY_STATUS_ACTIVE, POLICY_STATUS_EXPIRED,
+  POLICY_STATUS_ACTIVE,
   POLICY_STATUS_INACTIVE,
-  POLICY_STATUS_STOP
 } from "@/policyManage/constants/dataConfig";
-import StopReasonModal from "@/policyManage/components/StopReasonModal";
 
 
 const PolicyDetails = (props) => {
