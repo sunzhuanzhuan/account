@@ -44,10 +44,14 @@ const PolicyCreate = (props) => {
     formRef.current && formRef.current.handleSubmit((body) => {
       setSubmitLoading(true)
       props.actions.addPolicy(body).then(({ data }) => {
+        function cb() {
+          props.history.push('/account/policy/update/' + data.id)
+        }
+
         if (data.isAllAccountSuccess === 2) {
-          message.success('创建政策成功: 当前政策包含的账号有被转移或删除的账号，则该政策不包含此类账号！');
+          message.success('创建政策成功: 当前政策包含的账号有被转移或删除的账号，则该政策不包含此类账号！', 3, cb);
         } else {
-          message.success('创建政策成功');
+          message.success('创建政策成功', 3, cb);
         }
       }).finally(() => {
         setSubmitLoading(false)

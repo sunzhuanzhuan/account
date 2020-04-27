@@ -32,11 +32,19 @@ export const {
   method: 'post'
 });
 
-// 采购政策列表统计
+// 采购政策列表数量统计
 export const {
   procurementPolicyStatistics,
   procurementPolicyStatistics_success
 } = createHttpAction('procurementPolicyStatistics', Interface.policy.procurementPolicyStatistics, {
+  method: 'post'
+});
+
+// 采购政策列表订单统计
+export const {
+  orderStatistics,
+  orderStatistics_success
+} = createHttpAction('orderStatistics', Interface.policy.orderStatistics, {
   method: 'post'
 });
 

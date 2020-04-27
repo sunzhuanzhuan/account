@@ -122,7 +122,15 @@ const policyAllStatistics = handleActions({
       ...state,
       ...data
     }
-  }
+  },
+  "orderStatistics_success": (state, action) => {
+    let { data } = action.payload
+    return {
+      ...state,
+      ...data
+    }
+  },
+
 }, {})
 
 

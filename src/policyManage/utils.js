@@ -130,7 +130,7 @@ export const rebateRuleDisplay = (rebateRule = {}) => {
 export const settlementDisplay = (data = {}) => {
   let cycle = "", type = "", guarantee = ""
 
-  cycle = `${REBATE_SETTLEMENT_CYCLE[data.rebateSettlementCycle] || '-'}结`
+  cycle = data.rebateSettlementCycle ? `${REBATE_SETTLEMENT_CYCLE[data.rebateSettlementCycle] || '-'}结` : ""
   if (data.stepRebateSettlementType === 1) {
     type = "阶梯收入计算"
   }

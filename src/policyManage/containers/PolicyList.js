@@ -15,14 +15,15 @@ import PolicyAllFilterForm from "../components/PolicyAllFilterForm";
 import {
   policyStatusMap
 } from "../base/PolicyStatus";
+import Yuan from "@/base/Yuan";
 
 
 const { TabPane } = Tabs;
 
 
 const PolicyList = (props) => {
-  const { keys, source, } = props.policyList
-  const [loading, setLoading] = useState(false)
+  const { keys, source } = props.policyList
+  const [ loading, setLoading ] = useState(false)
   const search = useRef({
     page: {
       currentPage: 1,
@@ -33,7 +34,6 @@ const PolicyList = (props) => {
   useEffect(() => {
     getList()
     props.actions.getGlobalRulePlatforms()
-    getStatistics()
   }, [])
 
   const getList = ({ page, form } = {}) => {
@@ -43,6 +43,7 @@ const PolicyList = (props) => {
       form: Object.assign({}, search.current.form, form)
     }
     setLoading(true)
+    getStatistics(search.current.form)
     actions.policyAllList(search.current).then(() => {
       setLoading(false)
 
@@ -50,8 +51,13 @@ const PolicyList = (props) => {
   }
 
   const getStatistics = (form) => {
+    const body = form || search.current.form
     const { actions } = props
-    actions.procurementPolicyStatistics(form).then(() => {
+
+    actions.procurementPolicyStatistics(body).then(() => {
+      setLoading(false)
+    })
+    actions.orderStatistics(body).then(() => {
       setLoading(false)
     })
   }
@@ -64,7 +70,7 @@ const PolicyList = (props) => {
     })
   };
 
-  const { globalRulePlatforms, actions, policyList, platformListByPolicy,history } = props
+  const { globalRulePlatforms, actions, policyList, platformListByPolicy, history, statistics } = props
   const dataSource = keys.map(key => source[key])
   const tableProps = {
     actions,
@@ -74,7 +80,7 @@ const PolicyList = (props) => {
     isPolicy: true,
     policyList,
     platformListByPolicy,
-    pageSizeOptions: ['10', ' 20', ' 50', ' 100'],
+    pageSizeOptions: [ '10', ' 20', ' 50', ' 100' ],
     history
   }
 
@@ -86,36 +92,41 @@ const PolicyList = (props) => {
           title="采购政策列表"
           subTitle=" "
         />
-        <PolicyAllFilterForm actions={props.actions} getList={getList} getStatistics={getStatistics} globalRulePlatforms={props.globalRulePlatforms}
-          queryMediumsList={props.queryMediumsList} />
+        <PolicyAllFilterForm
+          actions={props.actions}
+          getList={getList}
+          globalRulePlatforms={props.globalRulePlatforms}
+          queryMediumsList={props.queryMediumsList}
+        />
         <Tabs onChange={onTabChange} animated={false}>
-          <TabPane tab={<span>全部 <span>{props.statistics.allCount}</span></span>} key="0" />
+          <TabPane tab={<span>全部 <span>{statistics.allCount}</span></span>} key="0" />
           {
-            Object.entries(policyStatusMap).map(([key, { text, field }]) => <TabPane tab={
-              <span>{text} <span>{props.statistics[field]}</span></span>} key={key} />)
+            Object.entries(policyStatusMap).map(([ key, { text, field } ]) => <TabPane tab={
+              <span>{text} <span>{statistics[field]}</span></span>} key={key} />)
           }
         </Tabs>
         <Alert message={<div className='policy-list-statistics-container'>
           <span className='fields-item-'>
-            政策数：400
+            政策数：{policyList.total}
         </span>
           <span className='fields-item-'>
-            预约执行金额（元）：7000.00万
+            预约执行金额（元）：
+            <Yuan className='text-black' value={statistics.executionReservationOrderAmount} format='0,0' />
         </span>
           <span className='fields-item-'>
-            预约执行订单数量：80024
+            预约执行订单数量：{statistics.executionReservationOrderCount || 0}
         </span>
           <span className='fields-item-'>
-            派单执行金额（元）：30.00万
+            派单执行金额（元）：
+            <Yuan className='text-black' value={statistics.executionCampaignOrderAmount} format='0,0' />
         </span>
           <span className='fields-item-'>
-            预约执行订单数量：20025
+            预约执行订单数量：{statistics.executionCampaignOrderCount || 0}
         </span>
         </div>} />
-
         <PolicyTable {...tableProps} />
       </Spin>
-    </div >
+    </div>
   );
 };
 

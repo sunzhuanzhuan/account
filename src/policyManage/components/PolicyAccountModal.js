@@ -69,14 +69,14 @@ const PolicyAccountModal = (props) => {
     const { data = {} } = await props.actions.getWhiteListAccountList(params)
     setData(data)
   }
-  const { rule = {}, accountList = {}, ruleList = [] } = data
+  const { rule = {},settlement={}, accountList = {}, ruleList = [] } = data
   const {
     discountRuleLabel,
     discountRuleValue,
     rebateRuleLabel,
     rebateRuleValue
   } = ruleDisplay(rule)
-  const { cycle } = settlementDisplay(rule.rebateRule)
+  const { cycle, type, guarantee } = settlementDisplay(settlement)
   const commonProps = {
     record,
     platformListByPolicy: props.platformListByPolicy
@@ -91,7 +91,10 @@ const PolicyAccountModal = (props) => {
       bodyStyle={{ padding: "8px 13px" }}
       onCancel={() => props.setModal({})}
     >
-      <Tabs activeKey={active} onChange={handleTabChange}>
+      <Tabs activeKey={active} onChange={handleTabChange} animated={{
+        inkBar: true,
+        tabPane: false
+      }}>
         <TabPane tab={<span>全局账号 <b>{record.globalAccountCount}</b></span>} key="global">
           <ul className="policy-account-modal-rules-container">
             {/* 使用 ruleDisplay 方法获取值 */}
@@ -99,9 +102,9 @@ const PolicyAccountModal = (props) => {
               全局规则： <span>{discountRuleLabel}</span><span>{discountRuleValue}</span>
               ；<span>{rebateRuleLabel}</span><span>{rebateRuleValue}</span>
             </li>
-            <li>
-              返点规则：{cycle}
-            </li>
+            {cycle && <li>
+              返点规则：{cycle} {type} 返点金额{guarantee}
+            </li>}
           </ul>
           <Global list={accountList} actionSearch={getGlobalAccountListAsync}  {...commonProps} />
         </TabPane>

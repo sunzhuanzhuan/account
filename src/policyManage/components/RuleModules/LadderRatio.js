@@ -2,6 +2,7 @@ import React from "react";
 
 import { Button, InputNumber } from "antd";
 import numeral from "numeral";
+import InputPercent from "@/base/InputPercent";
 
 export class LadderRatioEdit extends React.PureComponent {
   static getDerivedStateFromProps(nextProps) {
@@ -93,15 +94,15 @@ export class LadderRatioEdit extends React.PureComponent {
               </span>
               时,返点比例为：
                             <span className="rule-input">
-                <InputNumber
+                <InputPercent
                   onChange={e => this.handlePercentageChange(e, index)}
                   value={percentage[index]}
-                  max={1}
-                  min={0.01}
-                  step={0.01}
-                  formatter={value => `${numeral(value).format("0%")}`}
-                  parser={str => `${numeral(str).format("0.00")}`}
-                />
+                  max={100}
+                  min={1}
+                  step={1}
+                  precision={0}
+                  style={{ width: 100 }}
+                /> %
               </span>
               {rebateNumbers.length <= 10 && <Button type="link" onClick={() => this.addRule(index + 1)}>添加</Button>}
               {index !== 0 && (

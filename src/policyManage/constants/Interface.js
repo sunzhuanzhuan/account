@@ -55,6 +55,7 @@ export default {
     queryMediums: '/operator-gateway/mcn/v1/mediums',
     queryList: '/operator-gateway/policy/v2/queryList',
     procurementPolicyStatistics: '/operator-gateway/policy/v2/procurementPolicyStatistics',
+    orderStatistics: '/operator-gateway/policy/v2/orderStatistics',
     contractList: '/operator-gateway/contract/v1/list',
     contractDelete: '/operator-gateway/contract/v1/delete',
     contractAdd: '/operator-gateway/contract/v1/add',

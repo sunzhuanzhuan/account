@@ -37,24 +37,25 @@ const Global = (props) => {
       filters: platformListByPolicy.map(one => ({ text: one.platformName, value: one.id })),
       align: 'right',
       width: '100px',
-      render: (text, record) => record.platformName
+      render: (text, record) => <div style={{textAlign: 'center'}}>
+        {record.platformName}
+      </div>
     },
     {
       title: '账号名称',
       dataIndex: 'snsName',
       align: 'center',
-      width: '100px',
-
     },
     {
       title: '账号ID',
       dataIndex: 'snsId',
-      width: '100px'
+      align: 'center'
     },
     {
       title: '粉丝数',
       dataIndex: 'followerCount',
-      width: '120px'
+      width: '120px',
+      align: 'center'
     },
     {
       title: '上下架状态',
@@ -69,25 +70,20 @@ const Global = (props) => {
       filterMultiple: false,
       align: 'right',
       width: '160px',
-      render: (text, record) => {
-        const { aOnShelfStatus, bOnShelfStatus } = text
-        return <div>
-          <OnShelfStatus status={aOnShelfStatus} text='A' />
-          <OnShelfStatus status={bOnShelfStatus} text='B' />
-        </div>
+      render: (status) => {
+        return status ? <div>
+          <OnShelfStatus status={status.aOnShelfStatus} text='A' />
+          <OnShelfStatus status={status.bOnShelfStatus} text='B' />
+        </div> : '-'
       }
     },
     {
       title: '主页链接',
       dataIndex: 'url',
       align: 'center',
-      width: '160px',
+      width: '100px',
       render: (url) => {
-        return <div className='nowrap-ellipsis' style={{
-          textAlign: "left",
-          maxWidth: 140,
-          marginLeft: 10
-        }}><a href={url} target="_blank" >{url}</a></div>
+        return url && <a href={url} target="_blank" >主页链接</a>
       }
     },
   ];

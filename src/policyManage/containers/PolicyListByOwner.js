@@ -44,7 +44,6 @@ const PolicyListByOwner = (props) => {
       })
 
     getList()
-    getStatistics()
 
   }, [])
 
@@ -55,6 +54,7 @@ const PolicyListByOwner = (props) => {
       form: { mcnId: mcnId }
     }
     setLoading(true)
+    getStatistics(search.current.form)
     actions.policyListByOwner(search.current).then(() => {
       setLoading(false)
     }).catch(() => setLoading(false))

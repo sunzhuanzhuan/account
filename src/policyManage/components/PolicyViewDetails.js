@@ -1,48 +1,24 @@
 /**
  * Created by lzb on 2020-04-23.
  */
-import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import {
-  Button,
   ConfigProvider,
-  DatePicker,
   Descriptions,
-  Form,
-  Icon,
-  Input,
-  message,
   Modal, Popover,
-  Radio
 } from "antd";
 import {
   POLICY_LEVEL,
-  RULE_REBATE_LADDER,
-  WHITE_LIST_ACCOUNTS_LIMIT
 } from "../constants/dataConfig";
-import debounce from 'lodash/debounce';
-import moment from 'moment'
 import IconFont from "@/base/IconFont";
-import SelectAllCheck from "./SelectAllCheck";
-import { DiscountEdit } from "./RuleModules/Discount";
-import { RebateEdit } from "./RuleModules/Rebate";
-import { SpecialRuleEdit, SpecialRuleView } from "./RuleModules/SpecialRules";
-import AccountListEdit from "./RuleModules/AccountListEdit";
-import { Settlement, SettlementView } from "./RuleModules/Settlement";
+import { SpecialRuleView } from "./RuleModules/SpecialRules";
+import { SettlementView } from "./RuleModules/Settlement";
 import PolicyStatus from "@/policyManage/base/PolicyStatus";
 import { ruleDisplay } from "@/policyManage/utils";
 import AccountListTable from "@/policyManage/components/AccountListTable";
 import Global from "@/policyManage/components/accountModalList/Global";
 
 
-const FormItem = Form.Item;
-const RadioGroup = Radio.Group;
-const { RangePicker } = DatePicker;
-
-
-const formItemLayout = {
-  labelCol: { span: 3 },
-  wrapperCol: { span: 21 }
-};
 
 
 const PolicyViewDetails = forwardRef((props) => {
@@ -55,11 +31,20 @@ const PolicyViewDetails = forwardRef((props) => {
 
   useEffect(() => {
     props.actions.getPlatformListByPolicy({ policyId: data.id })
+    getGlobalAccountListAsync({
+      page: {
+        currentPage: 1,
+        pageSize: 20
+      },
+      form: {
+        policyId: data.id
+      }
+    })
   }, [])
 
   //获取全局数据
   const getGlobalAccountListAsync = (params) => {
-    const { data } = props.actions.getGlobalAccountList(params).then(() => {
+    props.actions.getGlobalAccountList(params).then(({data}) => {
       setGlobalAccountList(data || {})
     })
   }
@@ -72,7 +57,7 @@ const PolicyViewDetails = forwardRef((props) => {
   } = ruleDisplay(globalAccountRule)
 
   return (
-    <div {...formItemLayout} className="policy-manage-details-container-scroll" id="scroll-box">
+    <div className="policy-manage-details-container-scroll" id="scroll-box">
       <ConfigProvider getPopupContainer={() => document.getElementById('scroll-box')}>
         <Descriptions column={2}>
           <Descriptions.Item label="主账号名称">
@@ -138,7 +123,7 @@ const PolicyViewDetails = forwardRef((props) => {
         onCancel={() => setModal(false)}
       >
         <Global
-          list={globalAccountList}
+          list={globalAccountList.accountList}
           actionSearch={getGlobalAccountListAsync}
           record={{ id: data.id }}
           platformListByPolicy={props.platformListByPolicy}

@@ -165,10 +165,8 @@ const PolicyTable = (props) => {
     {
       title: '平台',
       dataIndex: 'platformNames',
-      render: (names) => {
-        return <>
-          {names}
-        </>
+      render: (names, record) => {
+        return record.globalAccountRule.platformList.map(p => p.platformName).join(',')
       }
     },
     {
@@ -182,12 +180,14 @@ const PolicyTable = (props) => {
           rebateRuleValue
         } = ruleDisplay(rule)
         return <>
-          <span>{discountRuleLabel}</span>：
-          <span>{discountRuleValue}</span>
-          <br />
-          <span>{rebateRuleLabel}</span>：
-          <span>{rebateRuleValue}</span>
-          <br />
+          {discountRuleLabel && <div>
+            <span>{discountRuleLabel}</span>：
+            <span>{discountRuleValue}</span>
+          </div>}
+          {rebateRuleLabel && <div>
+            <span>{rebateRuleLabel}</span>：
+            <span>{rebateRuleValue}</span>
+          </div>}
           <span>账号数</span>：
           <a onClick={() => setAccountModal({
             active: "global",

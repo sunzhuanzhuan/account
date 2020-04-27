@@ -4,6 +4,8 @@ import EmSpan from '@/base/EmSpan'
 import SearchSelect from '@/base/SearchSelect'
 import { batchText2Array, moment2dateStr } from '../utils'
 import { POLICY_LEVEL, REBATE_SETTLEMENT_CYCLE } from "@/policyManage/constants/dataConfig";
+import RangePickerForMonth from "@/base/RangePickerForMonth";
+import moment from 'moment'
 
 const { RangePicker } = DatePicker
 const InputGroup = Input.Group
@@ -14,18 +16,25 @@ function handleValue(values) {
 
   const createAt = moment2dateStr(body.createAt) || []
   const modifiedAt = moment2dateStr(body.modifiedAt) || []
-  const validTime = moment2dateStr(body.validTime) || []
+  const validStartTime = moment2dateStr(body.validStartTime) || []
+  const validEndTime = moment2dateStr(body.validEndTime) || []
 
   body.createStartAt = createAt[0]
   body.createEndAt = createAt[1]
   body.modifiedStartAt = modifiedAt[0]
   body.modifiedEndAt = modifiedAt[1]
-  body.validStartTime = validTime[0]
-  body.validEndTime = validTime[1]
+
+  body.validStartTimeStart = validStartTime[0]
+  body.validStartTimeEnd = validStartTime[1]
+
+  body.validEndTimeStart = validEndTime[0]
+  body.validEndTimeEnd = validEndTime[1]
 
   delete body.createAt
   delete body.modifiedAt
   delete body.validTime
+  delete body.validStartTime
+  delete body.validEndTime
 
 
   // values.company_id = values.company_id && values.company_id.key
@@ -35,7 +44,8 @@ function handleValue(values) {
 @Form.create()
 export default class PolicyAllFilterForm extends Component {
   state = {
-    timeType: 'createAt'
+    timeType: 'createAt',
+    validType: 'validStartTime'
   }
   handleSubmit = (e) => {
     e.preventDefault()
@@ -49,7 +59,6 @@ export default class PolicyAllFilterForm extends Component {
             currentPage: 1
           }
         })
-        this.props.getStatistics(values)
       }
     })
   }
@@ -80,10 +89,6 @@ export default class PolicyAllFilterForm extends Component {
         "isDeleted": 2
       }
     }).then(({ data }) => ({ data: data.list }))
-
-  componentDidMount() {
-    this.props.actions.policyAllList()
-  }
 
 
   render() {
@@ -159,7 +164,7 @@ export default class PolicyAllFilterForm extends Component {
                 optionFilterProp='children'
               >
                 {
-                  Object.entries(POLICY_LEVEL).map(([key, item]) =>
+                  Object.entries(POLICY_LEVEL).map(([ key, item ]) =>
                     <Option key={key}>{item.text}</Option>)
                 }
               </Select>
@@ -193,7 +198,7 @@ export default class PolicyAllFilterForm extends Component {
                 optionFilterProp='children'
               >
                 {
-                  Object.entries(REBATE_SETTLEMENT_CYCLE).map(([key, text]) =>
+                  Object.entries(REBATE_SETTLEMENT_CYCLE).map(([ key, text ]) =>
                     <Option key={key}>{text}</Option>)
                 }
               </Select>
@@ -215,7 +220,8 @@ export default class PolicyAllFilterForm extends Component {
                 }}
               >
                 {
-                  queryMediumsList.map(item => <Option key={item.mediumId}>{item.mediumName}</Option>)
+                  queryMediumsList.map(item =>
+                    <Option key={item.mediumId}>{item.mediumName}</Option>)
                 }
               </Select>
             )}
@@ -230,14 +236,38 @@ export default class PolicyAllFilterForm extends Component {
                 mode="multiple"
                 style={{ width: '100%' }}
                 placeholder="请选择"
+                maxTagCount={0}
                 optionFilterProp='children'
+                maxTagPlaceholder={(omittedValues) => {
+                  return `已选${omittedValues.length}项`
+                }}
               >
                 {
-                  globalRulePlatforms.map(item => <Option key={item.id}>{item.platformName}</Option>)
+                  globalRulePlatforms.map(item =>
+                    <Option key={item.id}>{item.platformName}</Option>)
 
                 }
               </Select>
             )}
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item label="">
+            <InputGroup compact>
+              <Select
+                style={{ width: '130px' }}
+                value={this.state.validType}
+                onChange={(key) => this.setState({ validType: key })}
+              >
+                <Option value="validStartTime">政策开始</Option>
+                <Option value="validEndTime">政策结束</Option>
+              </Select>
+              {getFieldDecorator(this.state.validType, {})(
+                <RangePickerForMonth
+                  style={{ width: 'calc(100% - 130px)' }}
+                />
+              )}
+            </InputGroup>
           </Form.Item>
         </Col>
         <Col span={12}>
@@ -252,19 +282,18 @@ export default class PolicyAllFilterForm extends Component {
                 <Option value="modifiedAt">最后修改时间</Option>
               </Select>
               {getFieldDecorator(this.state.timeType, {})(
-                <RangePicker showTime style={{ width: 'calc(100% - 130px)' }} />
+                <RangePicker
+                  defaultPickerValue={[
+                    moment().startOf('d'),
+                    moment().endOf('d')
+                  ]}
+                  format='YYYY-MM-DD'
+                  style={{ width: 'calc(100% - 130px)' }}
+                />
               )}
             </InputGroup>
           </Form.Item>
         </Col>
-        <Col span={12}>
-          <Form.Item label="政策有效期">
-            {getFieldDecorator("validTime", {})(
-              <RangePicker style={{ width: '100%' }} />
-            )}
-          </Form.Item>
-        </Col>
-
         <Col span={4}>
           <div style={{ lineHeight: '40px', textAlign: 'left' }}>
             <Button type='primary' htmlType='submit' loading={loading}>查询</Button>

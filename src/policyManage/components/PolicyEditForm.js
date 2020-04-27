@@ -289,7 +289,7 @@ const PolicyEditForm = forwardRef((props, ref) => {
               platforms={getFieldValue('globalAccountRule.platformIds')}
               params={{
                 mcnId,
-                platformIds: getFieldValue('globalAccountRule.platformIds'),
+                platformIds: getFieldValue('globalAccountRule.platformIds').join(','),
                 type: 1
               }}
             />
@@ -311,7 +311,7 @@ const PolicyEditForm = forwardRef((props, ref) => {
               getExcludeIds={getExcludeIds}
               params={{
                 mcnId,
-                platformIds: getFieldValue('globalAccountRule.platformIds'),
+                platformIds: getFieldValue('globalAccountRule.platformIds').join(','),
                 type: 2
               }}
               style={{ marginRight: 20 }}

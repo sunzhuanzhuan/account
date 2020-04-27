@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Button, Radio, InputNumber, Form } from 'antd'
-import numeral from 'numeral'
 import {
   ruleDiscount,
   RULE_DISCOUNT_RATIO, RULE_DISCOUNT_NUMERIC
 } from '../../constants/dataConfig'
 import { discountRuleDisplay, ruleDisplay } from "@/policyManage/utils";
+import InputPercent from "@/base/InputPercent";
 
 const formItemLayout = {
   labelCol: { span: 2 },
@@ -38,15 +38,14 @@ export const DiscountEdit = (props) => {
                 initialValue: discountFixedRatio,
                 rules: [ { required: true, message: '请输入固定比例值' } ]
               })(
-                <InputNumber
-                  max={1}
-                  min={0.01}
-                  step={0.01}
-                  formatter={value => `${numeral(value).format("0%")}`}
-                  parser={str => `${numeral(str).format("0.00")}`}
+                <InputPercent
+                  max={100}
+                  min={1}
+                  step={1}
+                  precision={0}
                   style={{ width: 100 }}
                 />
-              )} = 账号报价</span>
+              )} % = 账号报价</span>
             </Form.Item>
           }
           {

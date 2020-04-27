@@ -11,14 +11,14 @@ import actions from "../actions";
 import { connect } from "react-redux";
 import {
   Button,
-  PageHeader,
+  PageHeader
 } from "antd";
 
 import PolicyViewDetails from "../components/PolicyViewDetails";
 import LoadingWrapped from "@/base/LoadingWrapped";
 import {
   POLICY_STATUS_ACTIVE,
-  POLICY_STATUS_INACTIVE,
+  POLICY_STATUS_INACTIVE
 } from "@/policyManage/constants/dataConfig";
 
 

@@ -8,6 +8,7 @@ import {
 } from '../../constants/dataConfig'
 import numeral from "numeral";
 import { discountRuleDisplay, rebateRuleDisplay } from "@/policyManage/utils";
+import InputPercent from "@/base/InputPercent";
 
 
 const formItemLayout = {
@@ -66,15 +67,14 @@ export const RebateEdit = (props) => {
                 initialValue: rebateFixedRatio,
                 rules: [ { required: true, message: '返点比例必填' } ]
               })(
-                <InputNumber
-                  max={1}
-                  min={0.01}
-                  step={0.01}
-                  formatter={value => `${numeral(value).format("0%")}`}
-                  parser={str => `${numeral(str).format("0.00")}`}
+                <InputPercent
+                  max={100}
+                  min={1}
+                  step={1}
+                  precision={0}
                   style={{ width: 100 }}
                 />
-              )}
+              )} %
             </Form.Item>
           }
           {

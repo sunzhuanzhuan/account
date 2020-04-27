@@ -29,16 +29,15 @@ const OwnerInfos = (props) => {
   }, [])
   async function getLatestUploadAsync() {
     const { data = {} } = await actions.getLatestUpload({ mcnId: mcnId })
-    const { contractInfo } = data
-    if (contractInfo) {
+    if (data.id) {
       const initFile = [ {
         status: "done",
-        name: contractInfo.contractFileName,
-        uid: contractInfo.id,
-        url: contractInfo.contractFileUrl
+        name: data.contractFileName,
+        uid: data.id,
+        url: data.contractFileUrl
       } ]
       setUploadFile(initFile)
-      setLateUploadId(contractInfo.id)
+      setLateUploadId(data.id)
     }
   }
   function showConfirm() {
@@ -46,9 +45,9 @@ const OwnerInfos = (props) => {
       title: '确认删除合同吗?',
       content: <div>删除后将无法恢复</div>,
       onOk() {
-        contractDeleteAsync(lateUploadId)
-        setUploadFile([])
-        getLatestUploadAsync()
+        contractDeleteAsync(lateUploadId).then(() => {
+          setUploadFile([])
+        })
       }
     });
   }
@@ -61,25 +60,27 @@ const OwnerInfos = (props) => {
     }
     if (file.status === "done") {
       file.status = "uploading"
-      contractAddAsync()
-      file.percent = 100
-      file.status = "done"
-      file.url = file.response.url
-      setUploadFile([ file ])
-      console.log("uploadChange -> file", file)
+      actions.contractAdd({
+        contractFileUrl: file.response.url,
+        contractFileName: file.name,
+        mcnId: mcnId
+      }).then(({ data }) => {
+        file.percent = 100
+        file.status = "done"
+        file.url = file.response.url
+        setUploadFile([ file ])
+        setLateUploadId(data)
+      }).catch(({ errorMsg }) => {
+        file.percent = 100
+        file.status = "error"
+        file.response = "错误: " + (errorMsg || '合同上传失败')
+        setUploadFile([ file ])
+        setLateUploadId(null)
+      })
     }
     setUploadFile([ file ])
   }
-  //添加合同
-  const contractAddAsync = async (file = {}) => {
-    const { url, name } = file
-    const { data } = await actions.contractAdd({
-      contractFileUrl: url,
-      contractFileName: name,
-      mcnId: mcnId
-    })
-    setLateUploadId(data)
-  }
+
   const columns = [
     {
       title: '合同名称',
@@ -99,8 +100,9 @@ const OwnerInfos = (props) => {
       render: (id, record) => {
         return <div>
           <a onClick={() => {
-            contractDeleteAsync(id)
-            getList(searchParams)
+            contractDeleteAsync(id).then(() => {
+              getList()
+            })
           }}>删除</a>
           <Divider type="vertical" />
           <a href={record.contractFileUrl} download={record.contractFileName} target="_blank">下载</a>
@@ -126,14 +128,13 @@ const OwnerInfos = (props) => {
     current: pageNum,
     onChange: (currentPage) => {
       getList(currentPage)
-      setSearchParams(currentPage)
     }
   }
 
   const dataSource = keys.map(key => source[key])
 
-  const contractDeleteAsync = async (id) => {
-    await actions.contractDelete({ id: id })
+  const contractDeleteAsync = (id) => {
+    return  actions.contractDelete({ id: id })
   }
 
   const { mcnId, identityName } = props.data
@@ -160,7 +161,10 @@ const OwnerInfos = (props) => {
           <a className="more-btn" onClick={() => setModal(!modal)}>全部合同</a>
         </Descriptions.Item>
       </Descriptions>
-      <Modal visible={modal} title="查看全部合同"
+      <Modal
+        visible={modal}
+        title="查看全部合同"
+        width={660}
         onOk={() => setModal(false)}
         onCancel={() => setModal(false)}>
         <Table
