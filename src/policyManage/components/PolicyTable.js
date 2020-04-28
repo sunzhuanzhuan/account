@@ -53,6 +53,8 @@ const PolicyTable = (props) => {
   }
   const rowSelectionProps = isPolicy ? {
     rowSelection: {
+      fixed: true,
+      columnWidth: 46,
       selectedRowKeys,
       onChange: (selectedRowKeys) => {
         setSelectedRowKeys(selectedRowKeys)
@@ -140,7 +142,7 @@ const PolicyTable = (props) => {
       }
     },
     {
-      title: <span>政策级别<QuestionTip content={
+      title: <span>政策级别<QuestionTip style={{verticalAlign: "baseline"}} content={
         Object.values(POLICY_LEVEL).map(item => <div key={item.icon}>
           <IconFont type={item.icon} /> ：{item.text}<br />
         </div>)
@@ -298,7 +300,8 @@ const PolicyTable = (props) => {
     },
     {
       title: '资源媒介',
-      dataIndex: 'ownerAdminName'
+      dataIndex: 'ownerAdminName',
+      width: 100
     },
     {
       title: '操作',

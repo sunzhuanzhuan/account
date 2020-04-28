@@ -125,6 +125,8 @@ const PolicyEditForm = forwardRef((props, ref) => {
     delete newValue.policyTime
 
 
+    newValue.isGuaranteed = newValue.isGuaranteed ? 1 : 2
+
     newValue.mcnId = mcnId
     newValue.id = data.id
 

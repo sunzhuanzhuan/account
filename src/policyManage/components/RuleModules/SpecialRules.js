@@ -84,6 +84,11 @@ const EditRuleForm = (props) => {
             rules: [
               {
                 type: "array",
+                required: true,
+                message: "请添加账号"
+              },
+              {
+                type: "array",
                 max: SPECIAL_ACCOUNTS_LIMIT,
                 message: '最多可添加' + SPECIAL_ACCOUNTS_LIMIT + '个账号'
               }

@@ -5,9 +5,9 @@ import React from "react"
 import { Popover, Icon } from "antd"
 import "./index.less"
 const QuestionTip = props => {
-  const { title, content, type = "click" } = props
+  const { title, content, type = "click", style } = props
   return (
-    <span className="question-wrapped">
+    <span className="question-wrapped" style={style}>
       <Popover
         arrowPointAtCenter
         placement="topLeft"

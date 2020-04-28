@@ -117,10 +117,9 @@ const PolicyAccountModal = (props) => {
                 rebateRuleLabel,
                 rebateRuleValue
               } = ruleDisplay(role)
-              const { cycle } = settlementDisplay(role.rebateRule)
               return <li key={index}>
                 规则{role.ruleId}（{role.accountNumber}个号）<span>{discountRuleLabel}</span><span>{discountRuleValue}</span>
-               ； <span>{rebateRuleLabel}</span> <span>{rebateRuleValue}</span>（{cycle}）
+               ； <span>{rebateRuleLabel}</span> <span>{rebateRuleValue}</span>
               </li>
             })}
           </ul>

@@ -54,7 +54,10 @@ const PolicyList = (props) => {
     const body = form || search.current.form
     const { actions } = props
 
-    actions.procurementPolicyStatistics(body).then(() => {
+    actions.procurementPolicyStatistics({
+      ...body,
+      policyStatus: undefined
+    }).then(() => {
       setLoading(false)
     })
     actions.orderStatistics(body).then(() => {

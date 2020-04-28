@@ -17,12 +17,11 @@ const Global = (props) => {
       },
       form: {
         policyId: props.record.id,
-        platformId: filters.platformId,
+        platformId: filters.platformId?.join(','),
         onShelfStatus: filters.onShelfStatus,
         ruleId: filters.ruleId
       }
-    })
-    setLoading(false)
+    }).finally(() => setLoading(false))
   };
   const columns = [
     {
@@ -33,6 +32,7 @@ const Global = (props) => {
     {
       title: '全部平台',
       dataIndex: 'platformId',
+      filterMultiple: false,
       filterIcon: <Icon type="caret-down" />,
       filters: platformListByPolicy.map(one => ({ text: one.platformName, value: one.id })),
       align: 'right',
