@@ -96,7 +96,7 @@ const PolicyList = (props) => {
           actions={props.actions}
           getList={getList}
           globalRulePlatforms={props.globalRulePlatforms}
-          queryMediumsList={props.queryMediumsList}
+          mediumsListForAuth={props.mediumsListForAuth}
         />
         <Tabs onChange={onTabChange} animated={false}>
           <TabPane tab={<span>全部 <span>{statistics.allCount}</span></span>} key="0" />
@@ -131,11 +131,10 @@ const PolicyList = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  common: state.commonReducers,
+  mediumsListForAuth: state.commonReducers.mediumsListForAuth,
   policyList: state.pricePolicyReducer.policyAllList,
   statistics: state.pricePolicyReducer.policyAllStatistics,
   globalRulePlatforms: state.pricePolicyReducer.globalRulePlatforms,
-  queryMediumsList: state.pricePolicyReducer.queryMediumsList,
   platformListByPolicy: state.pricePolicyReducer.platformListByPolicy
 })
 const mapDispatchToProps = (dispatch) => ({

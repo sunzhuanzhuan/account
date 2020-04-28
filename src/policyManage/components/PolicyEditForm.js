@@ -107,22 +107,26 @@ const PolicyEditForm = forwardRef((props, ref) => {
       }
     }
 
-    // 处理 accountList
-    newValue.specialAccountRules = specialAccountRules.map(rule => {
+    // 处理 accountList -> accountIds
+    newValue.specialAccountRules = specialAccountRules.map((rule, index) => {
       let newRule = { ...rule }
-      newRule.accountList = newRule.accountList.map(item => item.platformId)
+      newRule.ruleId = index + 1
+      newRule.accountIds = newRule.accountList.map(item => item.accountId)
       delete newRule.uuid
+      delete newRule.accountList
       return newRule
     })
+    newValue.whiteList.accountIds = newValue.whiteList.accountList.map(item => item.accountId)
+    delete newValue.whiteList.accountList
 
     // 处理时间
     newValue.validStartTime = values.policyTime[0].format('YYYY-MM-DD 00:00:00');
     newValue.validEndTime = values.policyTime[1].format('YYYY-MM-DD 23:59:59');
     delete newValue.policyTime
 
-    newValue.whiteList.accountList = newValue.whiteList.accountList.map(item => item.platformId)
 
     newValue.mcnId = mcnId
+    newValue.id = data.id
 
     return newValue
   }

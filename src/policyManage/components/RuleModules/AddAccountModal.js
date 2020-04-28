@@ -27,7 +27,7 @@ const AddAccountModal = (props) => {
     }else {
       excludeIds = excludeItems.map(item => item.accountId)
     }
-    const _selectedIds = _.uniq(_.trim(selectedIds).split('\n')).filter(item => item && excludeIds.indexOf(item) === -1);
+    const _selectedIds = _.uniq(_.trim(selectedIds).split('\n')).filter(item => item && _.uniq(excludeIds).indexOf(parseInt(item)) === -1);
     if (_selectedIds.length === 0) {
       Modal.warning({
         title: '警告',

@@ -11,6 +11,7 @@ export default {
     platformList: '/operator-gateway/common/v1/platformList',
     checkSensitiveWord: '/operator-gateway/common/v1/checkSensitiveWord',
     getNewBPlatforms: '/operator-gateway/common/v1/getNewBPlatforms',
+    getMediumsForAuth: '/operator-gateway/common/v1/getMediums',
   },
   account: {
     getOwnerBaseInfo: "/operator-gateway/account/v1/getUserNameWithAdmin",

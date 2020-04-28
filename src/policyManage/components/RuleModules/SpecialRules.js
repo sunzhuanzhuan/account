@@ -37,7 +37,7 @@ const EditRuleForm = (props) => {
           message.warn('折扣与返点至少填一项')
           return
         }
-        if(values.rebateRule && values.rebateRule.rebateType === RULE_REBATE_LADDER){
+        if (values.rebateRule && values.rebateRule.rebateType === RULE_REBATE_LADDER) {
           const { rebateNumbers = [], percentage = [] } = values.rebateRule.rebateStepRules;
           const _rebateStepRules = [];
           for (let index = 0; index < rebateNumbers.length - 1; index++) {
@@ -82,7 +82,11 @@ const EditRuleForm = (props) => {
           {getFieldDecorator('accountList', {
             initialValue: current.accountList || [],
             rules: [
-              { type: "array", max: SPECIAL_ACCOUNTS_LIMIT, message: '最多可添加' + SPECIAL_ACCOUNTS_LIMIT + '个账号' }
+              {
+                type: "array",
+                max: SPECIAL_ACCOUNTS_LIMIT,
+                message: '最多可添加' + SPECIAL_ACCOUNTS_LIMIT + '个账号'
+              }
             ]
           })(
             <AccountListEdit
@@ -102,7 +106,7 @@ const EditRuleForm = (props) => {
 };
 
 const RuleCard = props => {
-  const { data, index, onEdit, onDel,  isEdit } = props
+  const { data, index, onEdit, onDel, isEdit } = props
 
   const {
     discountRuleLabel,
@@ -127,7 +131,7 @@ const RuleCard = props => {
       }
       extra={
         isEdit && <>
-          <Button onClick={onEdit} type="primary" style={{marginRight: 8}}>编辑</Button>
+          <Button onClick={onEdit} type="primary" style={{ marginRight: 8 }}>编辑</Button>
           <Popconfirm
             title="是否删除本规则?"
             onConfirm={onDel}
@@ -207,9 +211,16 @@ export class SpecialRuleEdit extends Component {
       }
       {
         value.map((rule, index) =>
-          <RuleCard key={rule.ruleId || rule.uuid}  isEdit data={rule} index={index} onDel={this.onDelete} onEdit={() => {
-            this.setState({ current: { type: 'update', ...rule } })
-          }} />)
+          <RuleCard
+            key={rule.ruleId || rule.uuid}
+            isEdit
+            data={rule}
+            index={index}
+            onDel={() => this.onDelete(index)}
+            onEdit={() => {
+              this.setState({ current: { type: 'update', ...rule } })
+            }}
+          />)
       }
       <EditRuleFormWrapped
         current={this.state.current}
@@ -231,7 +242,7 @@ export const SpecialRuleView = (props) => {
     <>
       {
         rules.length > 0 ? rules.map((rule, index) =>
-          <RuleCard key={rule.ruleId || rule.uuid} data={rule} index={index}/>) :
+            <RuleCard key={rule.ruleId} data={rule} index={index} />) :
           <span>无</span>
       }
     </>

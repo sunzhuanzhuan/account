@@ -48,12 +48,6 @@ export const {
   method: 'post'
 });
 
-
-// 查询资源媒介列表
-export const {
-  queryMediums
-} = createHttpAction('queryMediums', Interface.policy.queryMediums);
-
 export const {
   downMcnPolicyData
 } = createHttpAction('downMcnPolicyData', Interface.policy.downMcnPolicyData);

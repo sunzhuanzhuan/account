@@ -92,7 +92,7 @@ export default class PolicyAllFilterForm extends Component {
 
 
   render() {
-    const { source, loading, actions, globalRulePlatforms, queryMediumsList } = this.props
+    const { source, loading, actions, globalRulePlatforms, mediumsListForAuth } = this.props
     const { getFieldDecorator } = this.props.form
 
 
@@ -220,8 +220,8 @@ export default class PolicyAllFilterForm extends Component {
                 }}
               >
                 {
-                  queryMediumsList.map(item =>
-                    <Option key={item.mediumId}>{item.mediumName}</Option>)
+                  mediumsListForAuth.map(item =>
+                    <Option key={item.userId}>{item.realName}</Option>)
                 }
               </Select>
             )}

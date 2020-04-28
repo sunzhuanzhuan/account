@@ -14,7 +14,7 @@ import IconFont from "@/base/IconFont";
 import { SpecialRuleView } from "./RuleModules/SpecialRules";
 import { SettlementView } from "./RuleModules/Settlement";
 import PolicyStatus from "@/policyManage/base/PolicyStatus";
-import { ruleDisplay } from "@/policyManage/utils";
+import { dateDisplay, ruleDisplay } from "../utils";
 import AccountListTable from "@/policyManage/components/AccountListTable";
 import Global from "@/policyManage/components/accountModalList/Global";
 
@@ -27,7 +27,7 @@ const PolicyViewDetails = forwardRef((props) => {
   const [ modal, setModal ] = useState()
 
   const { data } = props;
-  const { globalAccountRule = {}, specialAccountRules = [], whiteList = {} } = data
+  const { globalAccountRule = {}, specialAccountRules = [], whiteList = { accountList: []} } = data
 
   useEffect(() => {
     props.actions.getPlatformListByPolicy({ policyId: data.id })
@@ -67,7 +67,7 @@ const PolicyViewDetails = forwardRef((props) => {
           <Descriptions.Item label="政策名称">{data.policyName}</Descriptions.Item>
           <Descriptions.Item label="政策ID">{data.id}</Descriptions.Item>
           <Descriptions.Item label="政策有效期">
-            {data.validStartTime}-{data.validEndTime}
+            {dateDisplay(data.validStartTime, 10)} ~ {dateDisplay(data.validEndTime, 10)}
           </Descriptions.Item>
           <Descriptions.Item label="政策状态">
             <PolicyStatus status={data.policyStatus} reason={data.policyStopReason} />
@@ -101,10 +101,10 @@ const PolicyViewDetails = forwardRef((props) => {
             <SpecialRuleView rules={specialAccountRules}/>
           </Descriptions.Item>
           <Descriptions.Item label="白名单账号" span={2} className="descriptions-item-block">
-            <div style={{marginRight: 20}}>
-              <p>共 {whiteList.whiteListCount || 0} 个账号</p>
+            {whiteList.accountList.length > 0 ? <div style={{marginRight: 20}}>
+              <p>共 {whiteList.accountList.length || 0} 个账号</p>
               <AccountListTable dataSource={whiteList.accountList} />
-            </div>
+            </div> : "无"}
           </Descriptions.Item>
           {
             data.rebateSettlementCycle && <Descriptions.Item label="返点规则" span={2} className="descriptions-item-block">

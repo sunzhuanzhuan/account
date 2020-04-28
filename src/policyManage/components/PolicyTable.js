@@ -61,7 +61,7 @@ const PolicyTable = (props) => {
   } : {}
 
   useEffect(() => {
-    props.actions.queryMediums()
+    props.actions.getMediumsForAuth()
   }, [])
 
 
