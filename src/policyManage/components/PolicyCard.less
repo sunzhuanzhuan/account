@@ -1,0 +1,130 @@
+// common
+@border: 1px solid #f0f0f0;
+.line-style {
+  min-height: 44px;
+  padding: 0 18px;
+}
+
+
+// style
+.policy-card-container {
+  display: flex;
+  border: @border;
+  margin-bottom: 10px;
+  transition: background-color .3s;
+
+  &.active, &:hover {
+    background: #fbfbfb;
+  }
+
+  &:hover {
+    .header-right {
+      opacity: 1
+    }
+  }
+
+  ul, li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &-prefix {
+    flex: none;
+    width: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: @border;
+  }
+
+  &-main {
+    flex: 1;
+
+    &-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f7f7f7;
+      color: #999;
+      .line-style();
+
+      .header-left {
+        margin-right: 40px;
+      }
+
+      .header-center {
+        display: flex;
+        flex: 1;
+        flex-wrap: wrap;
+        line-height: 28px;
+
+        & > li {
+          margin-right: 40px;
+        }
+      }
+
+      .header-right {
+        user-select: none;
+        opacity: 0;
+        transition: all .1s;
+        display: flex;
+
+        a {
+          line-height: 44px;
+          margin-left: 14px;
+
+          i {
+            margin: 0 4px
+          }
+        ;
+        }
+      }
+    }
+
+    &-center {
+      display: flex;
+      justify-content: space-between;
+      & > [class^=main-item-] {
+        border-right: @border;
+        margin: 16px 0;
+        padding: 0 10px;
+        flex: auto;
+
+        & > [class^=fields-item-] {
+          position: relative;
+          padding: 3px 0;
+          margin: 0;
+          .more-btn {
+            float: right;
+          }
+        }
+        & > .fields-item-rules {
+          display: flex;
+          justify-content: space-between;
+          .rule {
+            min-width: 160px;
+          }
+        }
+      }
+
+      & > .main-item-center {
+        min-width: 350px;
+      }
+      & > li:last-child {
+        border: none;
+
+      }
+    }
+
+    &-footer {
+      border-top: @border;
+      padding: 10px;
+      color: #999;
+
+      & > [class^=fields-item-] {
+        margin-right: 30px;
+      }
+    }
+  }
+}

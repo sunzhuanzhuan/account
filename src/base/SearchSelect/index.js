@@ -54,7 +54,10 @@ export default class SearchSelect extends Component {
 					return;
 				}
 				!this.isUnmount && this.setState({ data: list, searchIng: false });
-			});
+			})
+      .catch(() => {
+        !this.isUnmount && this.setState({ searchIng: false });
+      })
 	}
 	handleChange = (value) => {
 		this.search('')

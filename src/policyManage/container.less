@@ -1,0 +1,137 @@
+@import "../indexNbTheme";
+
+.policy-manage {
+  height: 100%;
+  .ant-page-header {
+    margin: -20px -20px 0;
+  }
+
+  &-owner-list-container {}
+
+  &-owner-infos-container {
+    padding: 14px;
+    background: #f7f7f7;
+  }
+
+  .align-top {
+    position: relative;
+
+    .more-btn {
+      position: absolute;
+      top: 0;
+      left: 200px;
+
+    }
+
+    .download-btn {
+      position: absolute;
+      top: 53px;
+      left: 30px
+    }
+
+    .ant-descriptions-item-content {
+      vertical-align: top;
+    }
+  }
+
+  &-details-container {
+    height: 100%;
+
+    &-scroll {
+      position: relative;
+      height: calc(100% - 85px);
+      overflow: auto;
+      padding-bottom: 10px;
+    }
+    &-footer {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      padding: 10px;
+      margin: 0;
+      box-shadow: 0 2px 8px #d9d9d9;
+      background: #fff;
+
+      .ant-btn {
+        margin-right: 10px;
+      }
+
+      z-index: 1;
+    }
+    &-status {
+      & > [class^=fields-item-] {
+        margin-right: 30px;
+      }
+    }
+
+    .descriptions-item-block > .ant-descriptions-item-content{
+      width: calc(100% - 85px);
+      vertical-align: top;
+    }
+  }
+}
+
+.rule-number-under-line {
+  display: inline-block;
+  width: 120px;
+  padding: 0 10px;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+}
+.has-error {
+  .account-list-number-actions {
+    background-color: #fff1f0;
+    border: 1px solid #ffa39e;
+    .ant-alert-message {
+      color: #f5222d
+    }
+  }
+}
+
+.text-red {
+  color: red !important;
+}
+
+.text-black {
+  color: #333333 !important;
+}
+
+.policy-account-modal-rules-container {
+  background: #fafafa;
+  list-style: none;
+  padding: 10px;
+  justify-content: space-between;
+  display: flex;
+  flex-wrap: wrap;
+
+  &>li {
+    width: 48%;
+    font-size: 12px;
+    padding: 3px 0;
+  }
+}
+
+.policy-list-statistics-container {
+  &>[class^=fields-item-] {
+    margin-right: 30px;
+  }
+
+}
+
+.nowrap-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.select-all-check-container {
+  display: flex;
+  align-items: center;
+  .check-wrapper {
+    padding: 0 20px;
+    width: 200px;
+  }
+}

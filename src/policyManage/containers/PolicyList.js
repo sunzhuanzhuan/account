@@ -1,170 +1,153 @@
-import React from "react";
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import React, { useEffect, useRef, useState } from 'react';
+import * as commonActions from '@/actions';
+import { bindActionCreators } from "redux";
+import actions from "../actions";
+import { connect } from "react-redux";
 import {
-  Table, Form, Input, Button, Menu
+  Alert,
+  Form,
+  Tabs,
+  Spin,
+  PageHeader
+} from "antd";
+import PolicyTable from '../components/PolicyTable'
+import PolicyAllFilterForm from "../components/PolicyAllFilterForm";
+import {
+  policyStatusMap
+} from "../base/PolicyStatus";
+import Yuan from "@/base/Yuan";
 
-} from 'antd';
 
-import actions from '../actions';
-import './PolicyManage.less';
-import qs from 'qs';
-import { REBATE_SETTLEMENT_CYCLE, POLICYSTATUS } from '../constants/dataConfig'
-let mcnId = ''
-const viewDetail = (props, id) => {
-  props.history.push(`/account/PastPolicyDetail${props.location.search}&id=${id}`)
-}
-const policyStatus = { 1: '待开始', 2: '进行中', 3: '已过期', 4: '已停用', }
+const { TabPane } = Tabs;
 
-const getColumns = (props) => {
-  return [
-    {
-      title: '政策Id',
-      dataIndex: 'id',
-      // width: '20%',
-    },
-    {
-      title: '状态',
-      dataIndex: 'policyStatus',
-      render: (text) => policyStatus[text]
-    },
-    {
-      title: '政策有效期',
-      // dataIndex: 'policyStatus',
-      render: item => `${item.validEndTime}~${item.validEndTime}`,
-      // width: '20%',
-    },
-    {
-      title: '执行订单',
-      dataIndex: 'executionOrderCount',
-      // width: '20%',
-    },
-    {
-      title: '执行金额',
-      dataIndex: 'executionAmount',
-      // width: '20%',
-    },
-    {
-      title: '修订人',
-      dataIndex: 'modifiedByName',
-      // width: '20%',
-    },
-    {
-      title: '修订时间',
-      dataIndex: 'modifiedAt',
-      // width: '20%',
-    },
-    {
-      title: '操作',
-      key: 'action',
-      render: item => <Button type="primary" onClick={() => viewDetail(props, item.id)}>查看详情</Button>
-    },
-  ];
-}
 
-class PolicyManage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: false
+const PolicyList = (props) => {
+  const { keys, source } = props.policyList
+  const [ loading, setLoading ] = useState(false)
+  const search = useRef({
+    page: {
+      currentPage: 1,
+      pageSize: 20
     }
-    const search = this.props.location.search.substring(1);
-    mcnId = this.mcnId = qs.parse(search)['userId'];
-    this.policyPeriodIdentity = qs.parse(search)['policyPeriodIdentity'] || 3
+  })
+
+  useEffect(() => {
+    getList()
+    props.actions.getGlobalRulePlatforms()
+  }, [])
+
+  const getList = ({ page, form } = {}) => {
+    const { actions } = props
+    search.current = {
+      page: Object.assign({}, search.current.page, page),
+      form: Object.assign({}, search.current.form, form)
+    }
+    setLoading(true)
+    getStatistics(search.current.form)
+    actions.policyAllList(search.current).then(() => {
+      setLoading(false)
+
+    }).catch(() => setLoading(false))
   }
 
-  componentDidMount() {
-    this._getPastPolicyListByMcnId();
+  const getStatistics = (form) => {
+    const body = form || search.current.form
+    const { actions } = props
+
+    actions.procurementPolicyStatistics({
+      ...body,
+      policyStatus: undefined
+    }).then(() => {
+      setLoading(false)
+    })
+    actions.orderStatistics(body).then(() => {
+      setLoading(false)
+    })
   }
-  _getPastPolicyListByMcnId = async (values = {}) => {
-    const { mcnId } = this;
-    this.setState({ loading: true })
-    await this.props.getPastPolicyListByMcnId({ mcnId, pageNum: 1, pageSize: 10, ...values })
-    this.setState({ loading: false })
-  }
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        this._getPastPolicyListByMcnId({ ...values, pageNum: 1 })
+
+  const onTabChange = active => {
+    getList({
+      form: {
+        policyStatus: active === "0" ? undefined : active
       }
-    });
+    })
+  };
+
+  const { globalRulePlatforms, actions, policyList, platformListByPolicy, history, statistics } = props
+  const dataSource = keys.map(key => source[key])
+  const tableProps = {
+    actions,
+    getList,
+    dataSource,
+    globalRulePlatforms,
+    isPolicy: true,
+    policyList,
+    platformListByPolicy,
+    pageSizeOptions: [ '10', ' 20', ' 50', ' 100' ],
+    history
   }
-  handleTableChange = (pagination) => {
-    this._getPastPolicyListByMcnId(pagination);
-  }
-  onMenuClick = ({ key }) => {
-    if (key == 3) {
-      this.props.history.push(`/account/policyList?userId=${this.mcnId}`)
-      return false;
-    }
-    this.props.history.replace(`/account/policy?userId=${this.mcnId}&policyPeriodIdentity=${key}`);
-    window.location.reload();
-  }
-  render() {
 
-    function hasErrors(fieldsError) {
-      return Object.keys(fieldsError).some(field => fieldsError[field]);
-    }
-    const { pastPolicyList = {}, form } = this.props;
-    const { pageNum, pageSize, size, pages, total, list } = pastPolicyList;
-    const pagination = {
-      current: pageNum,
-      pageSize,
-      total
-    }
-    const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = form;
-    const columns = getColumns(this.props);
-    const menuSelectedKeys = [String(this.policyPeriodIdentity)];
-
-    return <div>
-      <Menu key='policyMenu' mode="horizontal" onClick={this.onMenuClick} selectedKeys={menuSelectedKeys}>
-        <Menu.Item key="1">本期政策</Menu.Item>
-        <Menu.Item key="2">下期政策</Menu.Item>
-        <Menu.Item key="3">往期政策</Menu.Item>
-      </Menu>
-      <h1>往期政策</h1>
-      <Form layout="inline" onSubmit={this.handleSubmit}>
-        <Form.Item>
-          {getFieldDecorator('id', {
-            rules: [{ required: false, message: '请输入政策ID' }],
-          })(
-            <Input placeholder="请输入政策ID" />,
-          )}
-        </Form.Item>
-
-        <Form.Item>
-          <Button type="primary" htmlType="submit" disabled={hasErrors(getFieldsError())}>
-            搜索
-          </Button>
-        </Form.Item>
-      </Form>
-
-      <Table
-        columns={columns}
-        rowKey={record => record.id}
-        dataSource={list}
-        pagination={pagination}
-        loading={this.state.loading}
-        onChange={this.handleTableChange}
-      />
+  return (
+    <div className="policy-manage-list-container">
+      <Spin spinning={loading}>
+        <PageHeader
+          onBack={false}
+          title="采购政策列表"
+          subTitle=" "
+        />
+        <PolicyAllFilterForm
+          actions={props.actions}
+          getList={getList}
+          globalRulePlatforms={props.globalRulePlatforms}
+          mediumsListForAuth={props.mediumsListForAuth}
+        />
+        <Tabs onChange={onTabChange} animated={false}>
+          <TabPane tab={<span>全部 <span>{statistics.allCount}</span></span>} key="0" />
+          {
+            Object.entries(policyStatusMap).map(([ key, { text, field } ]) => <TabPane tab={
+              <span>{text} <span>{statistics[field]}</span></span>} key={key} />)
+          }
+        </Tabs>
+        <Alert message={<div className='policy-list-statistics-container'>
+          <span className='fields-item-'>
+            政策数：{policyList.total}
+        </span>
+          <span className='fields-item-'>
+            预约执行金额（元）：
+            <Yuan className='text-black' value={statistics.executionReservationOrderAmount} format='0,0' />
+        </span>
+          <span className='fields-item-'>
+            预约执行订单数量：{statistics.executionReservationOrderCount || 0}
+        </span>
+          <span className='fields-item-'>
+            派单执行金额（元）：
+            <Yuan className='text-black' value={statistics.executionCampaignOrderAmount} format='0,0' />
+        </span>
+          <span className='fields-item-'>
+            预约执行订单数量：{statistics.executionCampaignOrderCount || 0}
+        </span>
+        </div>} />
+        <PolicyTable {...tableProps} />
+      </Spin>
     </div>
-  }
-}
+  );
+};
 
-const mapStateToProps = (state) => {
-  const { pricePolicyReducer } = state;
-  const { pastPolicyList } = pricePolicyReducer
-  return { pastPolicyList };
-}
-
-const mapDispatchToProps = (dispatch) => (
-  bindActionCreators({
+const mapStateToProps = (state) => ({
+  mediumsListForAuth: state.commonReducers.mediumsListForAuth,
+  policyList: state.pricePolicyReducer.policyAllList,
+  statistics: state.pricePolicyReducer.policyAllStatistics,
+  globalRulePlatforms: state.pricePolicyReducer.globalRulePlatforms,
+  platformListByPolicy: state.pricePolicyReducer.platformListByPolicy
+})
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators({
+    ...commonActions,
     ...actions
   }, dispatch)
-)
+})
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Form.create()(PolicyManage))
+)(Form.create()(PolicyList))
