@@ -2,8 +2,7 @@
  * Created by lzb on 2020-04-15.
  */
 import React, { useEffect, useState } from 'react';
-import { Table, Icon, Badge, List } from "antd";
-import { oneOf } from 'prop-types';
+import { Table, Icon, Badge } from "antd";
 
 const Global = (props) => {
   const [loading, setLoading] = useState(false)
@@ -18,8 +17,9 @@ const Global = (props) => {
       form: {
         policyId: props.record.id,
         platformId: filters.platformId?.join(','),
-        onShelfStatus: filters.onShelfStatus,
-        ruleId: filters.ruleId
+        aOnShelfStatus: filters.aOnShelfStatus?.join(','),
+        bOnShelfStatus: filters.bOnShelfStatus?.join(','),
+        ruleId: filters.ruleId?.join(',')
       }
     }).finally(() => setLoading(false))
   };
@@ -33,7 +33,6 @@ const Global = (props) => {
       title: '全部平台',
       dataIndex: 'platformId',
       filterMultiple: false,
-      filterIcon: <Icon type="caret-down" />,
       filters: platformListByPolicy.map(one => ({ text: one.platformName, value: one.id })),
       align: 'right',
       width: '100px',
@@ -58,23 +57,33 @@ const Global = (props) => {
       align: 'center'
     },
     {
-      title: '上下架状态',
+      title: 'A端上架状态',
       dataIndex: 'onShelfStatus',
-      filterIcon: <Icon type="caret-down" />,
+      key: 'aOnShelfStatus',
       filters: [
-        { text: 'A端上架', value: 1 },
-        { text: 'A端下架', value: 2 },
-        { text: 'B端上架', value: 3 },
-        { text: 'B端下架', value: 4 },
+        { text: '上架', value: 1 },
+        { text: '下架', value: 2 },
       ],
       filterMultiple: false,
-      align: 'right',
-      width: '160px',
+      align: 'center',
+      width: '120px',
       render: (status) => {
-        return status ? <div>
-          <OnShelfStatus status={status.aOnShelfStatus} text='A' />
-          <OnShelfStatus status={status.bOnShelfStatus} text='B' />
-        </div> : '-'
+        return status ? <OnShelfStatus status={status.aOnShelfStatus} text='A' />: '-'
+      }
+    },
+    {
+      title: 'B端上架状态',
+      dataIndex: 'onShelfStatus',
+      key: 'bOnShelfStatus',
+      filters: [
+        { text: '上架', value: 1 },
+        { text: '下架', value: 2 },
+      ],
+      filterMultiple: false,
+      align: 'center',
+      width: '120px',
+      render: (status) => {
+        return status ? <OnShelfStatus status={status.bOnShelfStatus} text='B' /> : '-'
       }
     },
     {
@@ -93,7 +102,7 @@ const Global = (props) => {
     title: '规则ID',
     dataIndex: 'ruleId',
     align: 'right',
-    filterIcon: <Icon type="caret-down" />,
+    filterMultiple: false,
     filters: ruleList.map(one => ({ text: `规则${one.ruleId}`, value: one.ruleId })),
     width: '100px',
   }

@@ -44,7 +44,7 @@ const PolicyViewDetails = forwardRef((props) => {
 
   //获取全局数据
   const getGlobalAccountListAsync = (params) => {
-    props.actions.getGlobalAccountList(params).then(({data}) => {
+    return props.actions.getGlobalAccountList(params).then(({data}) => {
       setGlobalAccountList(data || {})
     })
   }
