@@ -53,7 +53,7 @@ const PolicyUpdate = (props) => {
   }
 
   const submit = () => {
-    formRef.current && formRef.current.handleSubmit((body) => {
+    formRef.current?.handleSubmit((body) => {
       setSubmitLoading(true)
       props.actions.updatePolicy(body).then(({ data }) => {
         if(data.isAllAccountSuccess === 2){

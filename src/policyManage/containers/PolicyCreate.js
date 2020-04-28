@@ -41,7 +41,7 @@ const PolicyCreate = (props) => {
   }, [])
 
   const submit = () => {
-    formRef.current && formRef.current.handleSubmit((body) => {
+    formRef.current?.handleSubmit((body) => {
       setSubmitLoading(true)
       props.actions.addPolicy(body).then(({ data }) => {
         function cb() {

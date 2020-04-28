@@ -37,7 +37,7 @@ const EditRuleForm = (props) => {
           message.warn('折扣与返点至少填一项')
           return
         }
-        if (values.rebateRule && values.rebateRule.rebateType === RULE_REBATE_LADDER) {
+        if (values.rebateRule?.rebateType === RULE_REBATE_LADDER) {
           const { rebateNumbers = [], percentage = [] } = values.rebateRule.rebateStepRules;
           const _rebateStepRules = [];
           for (let index = 0; index < rebateNumbers.length - 1; index++) {

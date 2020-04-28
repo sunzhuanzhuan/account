@@ -79,7 +79,7 @@ const PolicyEditForm = forwardRef((props, ref) => {
     } = values
 
     let index = [ ...specialAccountRules, globalAccountRule ].findIndex((rule) => {
-      return rule.rebateRule && rule.rebateRule.rebateType
+      return rule.rebateRule?.rebateType
     })
 
 
@@ -92,7 +92,7 @@ const PolicyEditForm = forwardRef((props, ref) => {
     const { globalAccountRule, specialAccountRules } = values
 
     // 处理全局折扣 阶梯设置
-    if (globalAccountRule.rebateRule && globalAccountRule.rebateRule.rebateType === RULE_REBATE_LADDER) {
+    if (globalAccountRule.rebateRule?.rebateType === RULE_REBATE_LADDER) {
       const { rebateNumbers = [], percentage = [] } = globalAccountRule.rebateRule.rebateStepRules;
       const _rebateStepRules = [];
       for (let index = 0; index < rebateNumbers.length - 1; index++) {
