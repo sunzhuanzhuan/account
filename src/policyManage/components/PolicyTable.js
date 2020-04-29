@@ -4,7 +4,7 @@ import {
   message,
   Table,
   Divider,
-  Popover
+  Popover, Modal
 } from "antd";
 import PolicyStatus from "../base/PolicyStatus";
 import {
@@ -21,6 +21,11 @@ import QuestionTip from "@/base/QuestionTip";
 import Yuan from "@/base/Yuan";
 import './PolicyTable.less'
 import { Link } from "react-router-dom";
+import apiDownload from "@/api/apiDownload";
+import Interface from "@/policyManage/constants/Interface";
+import LazyLoad from 'react-lazyload';
+import GlobalCountAsync from "@/policyManage/components/GlobalCountAsync";
+
 
 const PolicyTable = (props) => {
   const [ accountModal, setAccountModal ] = useState({
@@ -103,14 +108,29 @@ const PolicyTable = (props) => {
   }
   //下载
   const downMcnPolicyData = (list) => {
-    props.actions.downMcnPolicyData(
-      { policyIdList: list }
-    )
+    const hide = message.loading('下载中...')
+    apiDownload({
+      url: Interface.policy.downMcnPolicyData,
+      method: 'POST',
+      data: { policyIdList: list }
+    }, '政策.xlsx', () => {
+      hide()
+    }, (e) => {
+      hide()
+      message.error(e.message || e.msg);
+    })
   }
-  const delPolicyAsync = async (id) => {
-    props.actions.delPolicy({ id: id })
-    message.success('删除成功')
-    getList()
+  const delPolicyAsync = (id) => {
+    Modal.confirm({
+      title: '确认删除该政策吗?',
+      content: <div>删除后将无法恢复</div>,
+      onOk() {
+        props.actions.delPolicy({ id: id }).then(() => {
+          message.success('删除成功')
+          getList()
+        })
+      }
+    });
   }
 
   const columns = [
@@ -142,7 +162,7 @@ const PolicyTable = (props) => {
       }
     },
     {
-      title: <span>政策级别<QuestionTip style={{verticalAlign: "baseline"}} content={
+      title: <span>政策级别<QuestionTip style={{ verticalAlign: "baseline" }} content={
         Object.values(POLICY_LEVEL).map(item => <div key={item.icon}>
           <IconFont type={item.icon} /> ：{item.text}<br />
         </div>)
@@ -191,10 +211,16 @@ const PolicyTable = (props) => {
             <span>{rebateRuleValue}</span>
           </div>}
           <span>账号数</span>：
-          <a onClick={() => setAccountModal({
-            active: "global",
-            record
-          })}>{record.globalAccountCount}</a>
+          <LazyLoad once scrollContainer="#app-content-children-id">
+            <GlobalCountAsync
+              record={record}
+              action={props.actions.queryGlobalAccountCount}
+              onClick={() => setAccountModal({
+                active: "global",
+                record
+              })}
+            />
+          </LazyLoad>
         </>
       }
     },
@@ -252,13 +278,13 @@ const PolicyTable = (props) => {
       title: '执行订单数',
       dataIndex: 'globalAccountRule',
       key: 'orderNumber',
-      render: ({ executionStatisticsInfo }, record) => {
+      render: ({ executionStatisticsInfo = {} }, record) => {
         return <>
           <span>预约</span>：
-          <span>{executionStatisticsInfo.executionReservationOrderCount}</span>
+          <span>{executionStatisticsInfo.executionReservationOrderCount || '0'}</span>
           <br />
           <span>派单</span>：
-          <span>{executionStatisticsInfo.executionCampaignOrderCount}</span>
+          <span>{executionStatisticsInfo.executionCampaignOrderCount || '0'}</span>
         </>
       }
     },
@@ -266,7 +292,7 @@ const PolicyTable = (props) => {
       title: '执行金额',
       dataIndex: 'globalAccountRule',
       key: 'orderAmount',
-      render: ({ executionStatisticsInfo }) => {
+      render: ({ executionStatisticsInfo = {} }) => {
         return <>
           <span>预约</span>：
           <Yuan className='text-black' value={executionStatisticsInfo.executionReservationOrderAmount} format='0,0' />
@@ -306,10 +332,11 @@ const PolicyTable = (props) => {
     {
       title: '操作',
       dataIndex: 'id',
-      width: 110,
+      width: isPolicy ? 175 : 140,
       fixed: 'right',
       align: 'center',
       render: (id, record) => {
+
         return <div>
           {
             (record.policyStatus === POLICY_STATUS_INACTIVE ||
@@ -317,18 +344,21 @@ const PolicyTable = (props) => {
             <>
               <a onClick={() => stopPolicy(id)}>停用</a>
               <Divider type="vertical" />
+              <Link to={'/account/policy/update/' + id}>修改</Link>
+              <Divider type="vertical" />
+              <a onClick={() => delPolicyAsync(id)}>删除</a>
             </>
           }
           {
             (record.policyStatus === POLICY_STATUS_STOP) &&
             <>
               <a onClick={() => startPolicy(id)}>启用</a>
-              <Divider type="vertical" />
             </>
           }
-          {isPolicy ?
+          {isPolicy && <>
+            <Divider type="vertical" />
             <a onClick={() => downMcnPolicyData([ id ])}>下载</a>
-            : <a onClick={() => delPolicyAsync(id)}>删除</a>}
+          </>}
         </div>
       }
     }
@@ -340,6 +370,7 @@ const PolicyTable = (props) => {
         disabled={selectedRowKeys.length == 0} ghost
         onClick={() => downMcnPolicyData(selectedRowKeys)}>批量下载政策</Button> : null}
       <Table
+        loading={props.loading}
         dataSource={dataSource}
         pagination={paginationProps}
         columns={columns}

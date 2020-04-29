@@ -24,6 +24,20 @@ export const {
   method: 'post'
 });
 
+// 根据政策名称查询下拉框
+export const {
+  querySelectList
+} = createHttpAction('querySelectList', Interface.policy.querySelectList, {
+  method: 'post'
+});
+
+// 获取全局账号数量
+export const {
+  queryGlobalAccountCount
+} = createHttpAction('queryGlobalAccountCount', Interface.policy.queryGlobalAccountCount, {
+  method: 'post'
+});
+
 // 采购政策列表
 export const {
   policyAllList,

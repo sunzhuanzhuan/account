@@ -47,11 +47,11 @@ const PolicyListByOwner = (props) => {
 
   }, [])
 
-  const getList = ({ page } = {}) => {
+  const getList = ({ page, form } = {}) => {
     const { actions } = props
     search.current = {
       page: Object.assign({}, search.current.page, page),
-      form: { mcnId: mcnId }
+      form: Object.assign({ mcnId: mcnId }, search.current.form, form)
     }
     setLoading(true)
     getStatistics(search.current.form)
@@ -61,8 +61,12 @@ const PolicyListByOwner = (props) => {
   }
 
   const getStatistics = (form) => {
+    const body = form || search.current.form
     const { actions } = props
-    actions.procurementPolicyStatisticsByOwner(form).then(() => {
+    actions.procurementPolicyStatisticsByOwner({
+      ...body,
+      policyStatus: undefined
+    }).then(() => {
       setLoading(false)
     })
   }
@@ -104,8 +108,7 @@ const PolicyListByOwner = (props) => {
               <span>{text} <span>{props.statistics[field]}</span></span>} key={key} />)
           }
         </Tabs>
-        <PolicyTable {...tableProps} />
-        {/*<PolicyAccountModal />*/}
+        <PolicyTable {...tableProps}/>
       </div>
     </LoadingWrapped>
   );

@@ -27,7 +27,9 @@ const Global = (props) => {
     {
       title: 'account_id',
       dataIndex: 'accountId',
-      width: '100px',
+      render: (id, record) => {
+        return <span>{id}{record.isDeleted === 1 ? "(已删除)" : ""}</span>
+      }
     },
     {
       title: '全部平台',
@@ -127,6 +129,7 @@ const Global = (props) => {
         }}
         onChange={handleTableChange}
         scroll={{ y: 360 }}
+        rowKey="accountId"
       />
     </div>
   );
