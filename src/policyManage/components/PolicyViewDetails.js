@@ -57,7 +57,7 @@ const PolicyViewDetails = forwardRef((props) => {
   } = ruleDisplay(globalAccountRule)
 
   return (
-    <div className="policy-manage-details-container-scroll" id="scroll-box">
+    <div className="policy-manage-details-container-normal">
       <ConfigProvider getPopupContainer={() => document.getElementById('scroll-box')}>
         <Descriptions column={2}>
           <Descriptions.Item label="主账号名称">

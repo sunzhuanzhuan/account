@@ -19,16 +19,19 @@ function handleValue(values) {
   const validStartTime = moment2dateStr(body.validStartTime) || []
   const validEndTime = moment2dateStr(body.validEndTime) || []
 
-  body.createStartAt = createAt[0]
-  body.createEndAt = createAt[1]
-  body.modifiedStartAt = modifiedAt[0]
-  body.modifiedEndAt = modifiedAt[1]
+  body.createAtStart = createAt[0] && createAt[0].slice(0, 11) + "00:00:00"
+  body.createAtEnd = createAt[1] && createAt[1].slice(0, 11) + "23:59:59"
+  body.modifiedAtStart = modifiedAt[0] && modifiedAt[0].slice(0, 11) + "00:00:00"
+  body.modifiedAtEnd = modifiedAt[1] && modifiedAt[1].slice(0, 11) + "23:59:59"
 
   body.validStartTimeStart = validStartTime[0]
   body.validStartTimeEnd = validStartTime[1]
 
   body.validEndTimeStart = validEndTime[0]
   body.validEndTimeEnd = validEndTime[1]
+
+
+  body.idList = body.idList && [body.idList]
 
   delete body.createAt
   delete body.modifiedAt
@@ -87,6 +90,17 @@ export default class PolicyAllFilterForm extends Component {
       "form": {
         "snsName": params.name,
         "isDeleted": 2
+      }
+    }).then(({ data }) => ({ data: data.list }))
+
+  queryPolicySelectList = (params) =>
+    this.props.actions.querySelectList({
+      "page": {
+        "currentPage": 1,
+        "pageSize": 20
+      },
+      "form": {
+        "policyName": params.name,
       }
     }).then(({ data }) => ({ data: data.list }))
 
@@ -227,7 +241,7 @@ export default class PolicyAllFilterForm extends Component {
             )}
           </Form.Item>
         </Col>
-        <Col span={12}>
+        <Col span={6}>
           <Form.Item label={<EmSpan length={5}>平台</EmSpan>}>
             {getFieldDecorator('platformIdList', {})(
               <Select
@@ -248,6 +262,22 @@ export default class PolicyAllFilterForm extends Component {
 
                 }
               </Select>
+            )}
+          </Form.Item>
+        </Col>
+        <Col span={6}>
+          <Form.Item label="政策名称">
+            {getFieldDecorator('idList', {})(
+              <SearchSelect
+                placeholder="请输入并从下拉框选择"
+                action={this.queryPolicySelectList}
+                wordKey='name'
+                filterOption={false}
+                mapResultItemToOption={({ id, policyName } = {}) => ({
+                  value: id,
+                  label: policyName
+                })}
+              />
             )}
           </Form.Item>
         </Col>
@@ -283,10 +313,6 @@ export default class PolicyAllFilterForm extends Component {
               </Select>
               {getFieldDecorator(this.state.timeType, {})(
                 <RangePicker
-                  defaultPickerValue={[
-                    moment().startOf('d'),
-                    moment().endOf('d')
-                  ]}
                   format='YYYY-MM-DD'
                   style={{ width: 'calc(100% - 130px)' }}
                 />

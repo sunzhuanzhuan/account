@@ -37,12 +37,17 @@
   &-details-container {
     height: 100%;
 
-    &-scroll {
+    &-normal , &-scroll {
       position: relative;
-      height: calc(100% - 85px);
+      height: 100%;
       overflow: auto;
       padding-bottom: 10px;
     }
+
+    &-scroll {
+      height: calc(100% - 85px);
+    }
+
     &-footer {
       width: 100%;
       display: flex;

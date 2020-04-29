@@ -52,6 +52,7 @@ export default {
   policy: {
     queryMcnByIdentityName: '/operator-gateway/mcn/v1/queryMcnByIdentityName',
     queryBySnsName: '/operator-gateway/account/v1/queryBySnsName',
+    querySelectList: '/operator-gateway/policy/v2/querySelectList',
     queryMediums: '/operator-gateway/mcn/v1/mediums',
     queryList: '/operator-gateway/policy/v2/queryList',
     procurementPolicyStatistics: '/operator-gateway/policy/v2/procurementPolicyStatistics',
@@ -73,5 +74,6 @@ export default {
     addPolicy: '/operator-gateway/policy/v2/addPolicy',
     updatePolicy: '/operator-gateway/policy/v2/updatePolicy',
     getPolicyInfoById: '/operator-gateway/policy/v2/getPolicyInfoById',
+    queryGlobalAccountCount: '/operator-gateway/policy/v2/queryGlobalAccountCount',
   }
 }
