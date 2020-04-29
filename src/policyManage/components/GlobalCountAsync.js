@@ -14,7 +14,7 @@ function handleCount(c1 = 0, c2 = 0, c3 = 0) {
 
 const GlobalCountAsync = (props) => {
   const [ count, setCount ] = useState("0")
-  const { record, action } = props
+  const { record, actions, open } = props
 
   useEffect(() => {
     const params = {
@@ -22,14 +22,19 @@ const GlobalCountAsync = (props) => {
       platformIdList: record.globalAccountRule?.platformList?.map(p => p.platformId)
     }
 
-    action(params).then(({ data }) => {
-      setCount(handleCount(data, record.specialAccountCount, record.whiteListCount))
+    actions.queryGlobalAccountCount(params).then(({ data }) => {
+      const count = handleCount(data, record.specialAccountCount, record.whiteListCount)
+      setCount(count)
+      actions.syncUpdatePolicyStatus({
+        key: record.id,
+        globalAccountCount: count
+      })
     })
   }, [])
 
-  return <span>
+  return <a onClick={count ? open : () => {}}>
     {count || '-'}
-  </span>;
+  </a>;
 };
 
 export default GlobalCountAsync;

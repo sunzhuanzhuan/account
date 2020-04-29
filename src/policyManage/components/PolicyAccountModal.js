@@ -91,10 +91,7 @@ const PolicyAccountModal = (props) => {
       bodyStyle={{ padding: "8px 13px" }}
       onCancel={() => props.setModal({})}
     >
-      <Tabs activeKey={active} onChange={handleTabChange} animated={{
-        inkBar: true,
-        tabPane: false
-      }}>
+      <Tabs activeKey={active} onChange={handleTabChange} animated={false}>
         <TabPane tab={<span>全局账号 <b>{record.globalAccountCount}</b></span>} key="global">
           <ul className="policy-account-modal-rules-container">
             {/* 使用 ruleDisplay 方法获取值 */}

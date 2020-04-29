@@ -214,8 +214,8 @@ const PolicyTable = (props) => {
           <LazyLoad once scrollContainer="#app-content-children-id">
             <GlobalCountAsync
               record={record}
-              action={props.actions.queryGlobalAccountCount}
-              onClick={() => setAccountModal({
+              actions={props.actions}
+              open={() => setAccountModal({
                 active: "global",
                 record
               })}
@@ -375,7 +375,7 @@ const PolicyTable = (props) => {
         pagination={paginationProps}
         columns={columns}
         {...rowSelectionProps}
-        scroll={{ x: 2400 }}
+        scroll={{ x: 2600 }}
         rowKey="id"
       />
       {accountModal.active ?
