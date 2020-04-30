@@ -21,7 +21,7 @@ export default {
   getUserInvoiceInfo: prefix + '/account/v1/getUserInvoiceInfo',
   sensitiveWordsFilter: oldPreFix + '/sensitiveWordsFilter',
   getAccountTrinitySkuInfo: prefix + '/trinitySku/v1/getAccountTrinitySkuInfo',
-  addOrUpdateAccountTrinitySkuInfo: prefix + '/trinitySku/v1/AddOrUpdateAccountTrinitySkuInfo',
+  addOrUpdateAccountTrinitySkuInfo: prefix + '/trinitySku/v1/addOrUpdateAccountTrinitySkuInfo',
   getPolicyIdAndDiscount: prefix + '/policy/v1/getPolicyIdAndDiscount',
   getInfoIdsByUserIdAndPlatformId: prefix + '/policy/v1/getInfoIdsByUserIdAndPlatformId',
   getPolicyRuleInfoByPlatform: prefix + '/policy/v1.1/getPolicyRuleInfoByPlatform',
