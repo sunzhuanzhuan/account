@@ -18,13 +18,13 @@ const Option = Select.Option
 function handleValue(values) {
   let body = Object.assign({}, values)
 
-  const createAt = moment2dateStr(body.createAt) || []
+  const createdAt = moment2dateStr(body.createdAt) || []
   const modifiedAt = moment2dateStr(body.modifiedAt) || []
   const validStartTime = moment2dateStr(body.validStartTime) || []
   const validEndTime = moment2dateStr(body.validEndTime) || []
 
-  body.createAtStart = createAt[0] && createAt[0].slice(0, 11) + "00:00:00"
-  body.createAtEnd = createAt[1] && createAt[1].slice(0, 11) + "23:59:59"
+  body.createdAtStart = createdAt[0] && createdAt[0].slice(0, 11) + "00:00:00"
+  body.createdAtEnd = createdAt[1] && createdAt[1].slice(0, 11) + "23:59:59"
   body.modifiedAtStart = modifiedAt[0] && modifiedAt[0].slice(0, 11) + "00:00:00"
   body.modifiedAtEnd = modifiedAt[1] && modifiedAt[1].slice(0, 11) + "23:59:59"
 
@@ -37,7 +37,7 @@ function handleValue(values) {
 
   body.idList = body.idList && [body.idList]
 
-  delete body.createAt
+  delete body.createdAt
   delete body.modifiedAt
   delete body.validTime
   delete body.validStartTime
@@ -51,7 +51,7 @@ function handleValue(values) {
 @Form.create()
 export default class PolicyAllFilterForm extends Component {
   state = {
-    timeType: 'createAt',
+    timeType: 'createdAt',
     validType: 'validStartTime'
   }
   handleSubmit = (e) => {
@@ -318,7 +318,7 @@ export default class PolicyAllFilterForm extends Component {
                 value={this.state.timeType}
                 onChange={(key) => this.setState({ timeType: key })}
               >
-                <Option value="createAt">创建时间</Option>
+                <Option value="createdAt">创建时间</Option>
                 <Option value="modifiedAt">最后修改时间</Option>
               </Select>
               {getFieldDecorator(this.state.timeType, {})(

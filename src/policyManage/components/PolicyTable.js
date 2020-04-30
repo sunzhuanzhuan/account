@@ -211,7 +211,7 @@ const PolicyTable = (props) => {
             <span>{rebateRuleValue}</span>
           </div>}
           <span>账号数</span>：
-          <LazyLoad once scrollContainer="#app-content-children-id">
+          <LazyLoad  scrollContainer="#app-content-children-id">
             <GlobalCountAsync
               record={record}
               actions={props.actions}
