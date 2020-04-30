@@ -3,7 +3,11 @@ import { Form, Input, Row, Col, Select, Button, DatePicker } from 'antd'
 import EmSpan from '@/base/EmSpan'
 import SearchSelect from '@/base/SearchSelect'
 import { batchText2Array, moment2dateStr } from '../utils'
-import { POLICY_LEVEL, REBATE_SETTLEMENT_CYCLE } from "@/policyManage/constants/dataConfig";
+import {
+  FILTER_INCLUDE_RULE_TYPES,
+  POLICY_LEVEL,
+  REBATE_SETTLEMENT_CYCLE
+} from "@/policyManage/constants/dataConfig";
 import RangePickerForMonth from "@/base/RangePickerForMonth";
 import moment from 'moment'
 
@@ -114,7 +118,7 @@ export default class PolicyAllFilterForm extends Component {
       <Row>
         <Col span={6}>
           <Form.Item label="主账号名称">
-            {getFieldDecorator('identityName', {
+            {getFieldDecorator('mcnIdList', {
               initialValue: undefined
             })(
               <SearchSelect
@@ -122,8 +126,15 @@ export default class PolicyAllFilterForm extends Component {
                 action={this.queryMcnByIdentityName}
                 wordKey='name'
                 filterOption={false}
-                mapResultItemToOption={({ identityName } = {}) => ({
-                  value: identityName,
+                mode="multiple"
+                maxTagCount={0}
+                showSelected
+                optionFilterProp='children'
+                maxTagPlaceholder={(omittedValues) => {
+                  return `已选${omittedValues.length}项`
+                }}
+                mapResultItemToOption={({ userId, identityName } = {}) => ({
+                  value: userId + "",
                   label: identityName
                 })}
               />
@@ -151,11 +162,10 @@ export default class PolicyAllFilterForm extends Component {
                   return `已选${omittedValues.length}项`
                 }}
               >
-                <Option key={1}>折扣固定扣减</Option>
-                <Option key={2}>折扣固定比例</Option>
-                <Option key={3}>返点固定扣减</Option>
-                <Option key={4}>返点固定比例</Option>
-                <Option key={5}>返点阶梯比例</Option>
+                {
+                  Object.entries(FILTER_INCLUDE_RULE_TYPES).map(([ key, text ]) =>
+                    <Option key={key}>{text}</Option>)
+                }
               </Select>
             )}
           </Form.Item>

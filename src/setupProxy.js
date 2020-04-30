@@ -5,6 +5,6 @@ module.exports = function (app) {
     { target: 'http://yapi.ops.tst-weiboyi.com/mock/129/', changeOrigin: true }
   ));*/
   app.use(proxy('/api',
-    { target: 'http://nb.tst-weiboyi.com', changeOrigin: true }
+    { target: process.env.REACT_APP_TRUNK_BENTLEY_ADDRESS, changeOrigin: true }
   ));
 }
