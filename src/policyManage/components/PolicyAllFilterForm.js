@@ -118,7 +118,7 @@ export default class PolicyAllFilterForm extends Component {
       <Row>
         <Col span={6}>
           <Form.Item label="主账号名称">
-            {getFieldDecorator('identityName', {
+            {getFieldDecorator('mcnIdList', {
               initialValue: undefined
             })(
               <SearchSelect
@@ -126,8 +126,15 @@ export default class PolicyAllFilterForm extends Component {
                 action={this.queryMcnByIdentityName}
                 wordKey='name'
                 filterOption={false}
-                mapResultItemToOption={({ identityName } = {}) => ({
-                  value: identityName,
+                mode="multiple"
+                maxTagCount={0}
+                showSelected
+                optionFilterProp='children'
+                maxTagPlaceholder={(omittedValues) => {
+                  return `已选${omittedValues.length}项`
+                }}
+                mapResultItemToOption={({ userId, identityName } = {}) => ({
+                  value: userId + "",
                   label: identityName
                 })}
               />
