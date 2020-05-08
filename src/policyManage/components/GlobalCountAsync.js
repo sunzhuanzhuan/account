@@ -16,6 +16,13 @@ const GlobalCountAsync = (props) => {
   const [ count, setCount ] = useState("0")
   const { record, actions, open } = props
 
+  const updateSource = (count) => {
+    actions.syncUpdatePolicyStatus({
+      key: record.id,
+      globalAccountCount: count
+    })
+  }
+
   useEffect(() => {
     const params = {
       mcnId: record.mcnId,
@@ -25,12 +32,14 @@ const GlobalCountAsync = (props) => {
     actions.queryGlobalAccountCount(params).then(({ data }) => {
       const count = handleCount(data, record.specialAccountCount, record.whiteListCount)
       setCount(count)
-      actions.syncUpdatePolicyStatus({
-        key: record.id,
-        globalAccountCount: count
-      })
+      updateSource(count)
     })
   }, [])
+
+  useEffect(() => {
+    count && !record.globalAccountCount && updateSource(count)
+  }, [record.globalAccountCount])
+
 
   return <a onClick={count ? open : () => {}}>
     {count || '-'}

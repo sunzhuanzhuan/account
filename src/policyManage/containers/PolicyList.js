@@ -124,7 +124,7 @@ const PolicyList = (props) => {
             <Yuan className='text-black' value={statistics.executionCampaignOrderAmount} format='0,0' />
         </span>
           <span className='fields-item-'>
-            预约执行订单数量：{statistics.executionCampaignOrderCount || 0}
+            派单执行订单数量：{statistics.executionCampaignOrderCount || 0}
         </span>
         </div>} />
         <PolicyTable {...tableProps} />
