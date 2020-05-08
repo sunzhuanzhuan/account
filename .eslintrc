@@ -66,5 +66,6 @@
     "__dirname": true,
     "Reflect": true,
     "Event": true,
+    "Map": true
   }
 }

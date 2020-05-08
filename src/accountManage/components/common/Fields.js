@@ -116,8 +116,8 @@ export const trinityIsPreventShieldingTipBySku = (isFamous, action, value, succe
 
   let { accountFlag, canEditPrice, canEditNextPrice, trinityName } = value,
     skuFlag = 0,
-    skuNextFlag = 0,
-    tip = ``;
+    skuNextFlag = 0;
+
 
   // 非预约
   if (isFamous !== 1) {
@@ -167,9 +167,28 @@ export const trinityIsPreventShieldingTipBySku = (isFamous, action, value, succe
     default:
       skuNextFlag = 3
   }
+  // [1-2]_[1-2]_[1-2]_[1-3]_[1-3]
+  let mapKey = `${canEditPrice ? '1' : '2'}_${canEditNextPrice ? '1' : '2'}_${accountFlag}_${skuFlag}_${skuNextFlag}`
+
+  let tipA = `当前账号可以在${trinityName}下单，服务项防屏蔽未勾选，请修改服务项，以免影响应约造成损失。`
+  let tipB = `当前账号不可以在${trinityName}下单，服务项防屏蔽已勾选，请修改服务项，以免影响应约造成损失。`
+
+  let actionMaps = [
+    [/^((1_1)|(1_2)|(2_1))_1/, tipA],
+    [/^((1_1)|(1_2)|(2_1))_2/, tipB],
+    [/^1_2_1_1_[1-3]$/, ''],
+    [/^1_2_2_2_[1-3]$/, ''],
+    [/^2_1_1_[1-3]_1$/, ''],
+    [/^2_1_2_[1-3]_2$/, ''],
+    [/^1_1_1_1_1$/, ''],
+    [/^1_1_2_2_2$/, ''],
+  ]
 
 
-  if (canEditPrice && canEditNextPrice) {
+
+  let tip = [...actionMaps].filter(([key]) => key.test(mapKey)).pop()[1]
+
+  /*if (canEditPrice && canEditNextPrice) {
     // 两期都能编辑
     if (accountFlag === 1) {
       // 账号可防屏蔽
@@ -178,7 +197,7 @@ export const trinityIsPreventShieldingTipBySku = (isFamous, action, value, succe
         tip = ``
       } else {
         // 任意一期不防屏蔽或者防屏蔽勾选不一致
-        tip = `当前账号可以在${trinityName}下单，服务项防屏蔽未勾选，请修改服务项，以免影响应约造成损失。`
+        tip = tipA
       }
 
     } else {
@@ -188,7 +207,7 @@ export const trinityIsPreventShieldingTipBySku = (isFamous, action, value, succe
         tip = ``
       } else {
         // 任意一期防屏蔽或者防屏蔽勾选不一致
-        tip = `当前账号不可以在${trinityName}下单，服务项防屏蔽已勾选，请修改服务项，以免影响应约造成损失。`
+        tip = tipB
       }
     }
 
@@ -198,13 +217,13 @@ export const trinityIsPreventShieldingTipBySku = (isFamous, action, value, succe
       if (skuFlag === 1) {
         tip = ``
       } else {
-        tip = `当前账号可以在${trinityName}下单，服务项防屏蔽未勾选，请修改服务项，以免影响应约造成损失。`
+        tip = tipA
       }
     } else {
       if (skuFlag === 2) {
         tip = ``
       } else {
-        tip = `当前账号不可以在${trinityName}下单，服务项防屏蔽已勾选，请修改服务项，以免影响应约造成损失。`
+        tip = tipB
       }
     }
 
@@ -214,16 +233,16 @@ export const trinityIsPreventShieldingTipBySku = (isFamous, action, value, succe
       if (skuNextFlag === 1) {
         tip = ``
       } else {
-        tip = `当前账号可以在${trinityName}下单，服务项防屏蔽未勾选，请修改服务项，以免影响应约造成损失。`
+        tip = tipA
       }
     } else {
       if (skuNextFlag === 2) {
         tip = ``
       } else {
-        tip = `当前账号不可以在${trinityName}下单，服务项防屏蔽已勾选，请修改服务项，以免影响应约造成损失。`
+        tip = tipB
       }
     }
-  }
+  }*/
 
   if (tip) {
     Modal.confirm({
