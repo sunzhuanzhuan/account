@@ -77,7 +77,7 @@ function handleDatePeriod({ now_star, now_end, next_star, next_end, pass = false
     canEditTime = true, // 是否可编辑时间
     canEditPrice = true, // 是否可编辑价格
     hasPass = false,
-    disabledDate = moment().add(30, 'd'); // 禁用时间选择范围
+    disabledDate = moment().add(1, 'd'); // 禁用时间选择范围
 
   // 没有本期时间
   if (!now_star.isValid() || !now_end.isValid()) {
@@ -101,7 +101,7 @@ function handleDatePeriod({ now_star, now_end, next_star, next_end, pass = false
       require = true;
       nextEnd = null;
     }
-    disabledDate = moment(nextStar).add(29, 'd');
+    disabledDate = moment(nextStar).add(1, 'd');
     canEditTime = true;
     canEditPrice = true;
   } else {
@@ -117,14 +117,14 @@ function handleDatePeriod({ now_star, now_end, next_star, next_end, pass = false
         canEditTime = true;
         canEditPrice = true;
       }
-      disabledDate = moment(nextStar).add(30, 'd');
+      disabledDate = moment(nextStar).add(1, 'd');
       require = false;
     } else {
       // 本期时间已过期 & 审核没有通过
       nextStar = moment(nowDate).startOf('d');
-      nextEnd = moment(nextEnd).isBefore(nowDate) ? moment(nextStar).add(30, 'd').endOf('d') : nextEnd;
+      nextEnd = moment(nextEnd).isBefore(nowDate) ? moment(nextStar).add(1, 'd').endOf('M') : nextEnd;
       // nextEnd = moment(nextStar).add(30, 'd').endOf('d')
-      disabledDate = moment(nextStar).add(29, 'd');
+      disabledDate = moment(nextStar).add(1, 'd');
       require = true;
       canEditTime = true;
       canEditPrice = true;
@@ -434,14 +434,14 @@ export class FamousPrice extends Component {
       <FormItem {...layout.full} label='下期有效期'>
         <span>{nextStar.format('YYYY-MM-DD')}</span><span className='m10-e'>至</span>
         {canEditTime ? getFieldDecorator('nextPriceValidTo', {
-            validateFirst: true,
-            initialValue: nextEnd,
-            rules: [{
-              type: 'object',
-              required: require,
-              message: '请选择结束时间'
-            }, { validator: this.checkDateAndPrice }]
-          })(
+          validateFirst: true,
+          initialValue: nextEnd,
+          rules: [{
+            type: 'object',
+            required: require,
+            message: '请选择结束时间'
+          }, { validator: this.checkDateAndPrice }]
+        })(
           <DatePicker
             onOpenChange={this.setDefaultValue(moment(disabledDate).endOf('M'))}
             getPopupContainer={() => document.querySelector('#account-manage-container')}
