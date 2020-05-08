@@ -2,11 +2,10 @@
  * Created by lzb on 2020-04-20.
  */
 import React, { useState } from 'react';
-import { Button, Radio, InputNumber, Form, Switch, Input, Descriptions } from 'antd'
+import { Button, Radio, Form, Descriptions } from 'antd'
 
 import {
-  ruleDiscount,
-  RULE_DISCOUNT_RATIO, RULE_DISCOUNT_NUMERIC, REBATE_SETTLEMENT_CYCLE, STEP_REBATE_SETTLEMENT_TYPES
+  REBATE_SETTLEMENT_CYCLE, STEP_REBATE_SETTLEMENT_TYPES
 } from '../../constants/dataConfig'
 
 const formItemLayout = {
@@ -17,7 +16,7 @@ const formItemLayout = {
 export const Settlement = (props) => {
   const { data = {} } = props;
 
-  const { getFieldDecorator, getFieldValue } = props.form;
+  const { getFieldDecorator } = props.form;
   const [ hasSettlement, setHasSettlement ] = useState(!!data.rebateSettlementCycle);
 
   return <Form.Item label='返点规则'>
@@ -59,30 +58,6 @@ export const Settlement = (props) => {
               全量收入计算=150*5%
             </cite>
           </Form.Item>
-          <Form.Item label='保底政策' {...formItemLayout}>
-            {
-              getFieldDecorator('isGuaranteed', {
-                initialValue: data.isGuaranteed === 1,
-                valuePropName: 'checked'
-              })(
-                <Switch checkedChildren="开" unCheckedChildren="关" />
-              )
-            }
-          </Form.Item>
-          {getFieldValue('isGuaranteed') && <Form.Item label='保底金额' {...formItemLayout}>
-            {
-              getFieldDecorator('guaranteedMinAmount', { initialValue: data.guaranteedMinAmount })(
-                <InputNumber style={{ width: 400 }} max={9999999999} suffix="元" />
-              )
-            }
-          </Form.Item>}
-          {getFieldValue('isGuaranteed') && <Form.Item label='保底备注' {...formItemLayout}>
-            {
-              getFieldDecorator('remark', { initialValue: data.remark })(
-                <Input.TextArea rows={4} style={{ width: 400 }} suffix="元" />
-              )
-            }
-          </Form.Item>}
           <Button onClick={() => setHasSettlement(false)} style={{
             position: 'absolute',
             right: 0,
@@ -95,25 +70,15 @@ export const Settlement = (props) => {
 
 export const SettlementView = (props) => {
   const { data = {} } = props;
-  const { remark, guaranteedMinAmount, isGuaranteed, stepRebateSettlementType, rebateSettlementCycle } = data;
+  const { stepRebateSettlementType, rebateSettlementCycle } = data;
   return (
-    <Descriptions column={2}>
+    <Descriptions column={1}>
       <Descriptions.Item label="返点结算周期">
         {REBATE_SETTLEMENT_CYCLE[rebateSettlementCycle]}
       </Descriptions.Item>
       <Descriptions.Item label="阶梯返点结算">
         {STEP_REBATE_SETTLEMENT_TYPES[stepRebateSettlementType]}
       </Descriptions.Item>
-      {
-        isGuaranteed === 1 && <>
-          <Descriptions.Item label="保底金额">
-            {guaranteedMinAmount}
-          </Descriptions.Item>
-          <Descriptions.Item label="保底备注">
-            {remark}
-          </Descriptions.Item>
-        </>
-      }
     </Descriptions>
   )
 }

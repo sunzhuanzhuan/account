@@ -2,7 +2,18 @@
  * Created by lzb on 2020-04-23.
  */
 import React, { forwardRef, useImperativeHandle } from 'react';
-import { Button, ConfigProvider, DatePicker, Form, Icon, Input, message, Modal, Radio } from "antd";
+import {
+  Button,
+  ConfigProvider,
+  DatePicker,
+  Form,
+  Icon,
+  Input, InputNumber,
+  message,
+  Modal,
+  Radio,
+  Switch
+} from "antd";
 import {
   POLICY_LEVEL,
   RULE_REBATE_LADDER,
@@ -21,6 +32,7 @@ import { Settlement } from "./RuleModules/Settlement";
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
+const TextArea = Input.TextArea;
 const { RangePicker } = DatePicker;
 
 
@@ -328,6 +340,41 @@ const PolicyEditForm = forwardRef((props, ref) => {
           )}
         </FormItem>
         <Settlement form={props.form} data={data} />
+        <FormItem label='保底政策' {...formItemLayout}>
+          {
+            getFieldDecorator('isGuaranteed', {
+              initialValue: data.isGuaranteed === 1,
+              valuePropName: 'checked'
+            })(
+              <Switch checkedChildren="开" unCheckedChildren="关" />
+            )
+          }
+        </FormItem>
+        {getFieldValue('isGuaranteed') && <FormItem label='保底金额' {...formItemLayout}>
+          {
+            getFieldDecorator('guaranteedMinAmount', { initialValue: data.guaranteedMinAmount })(
+              <InputNumber style={{ width: 400 }} max={9999999999} suffix="元" />
+            )
+          }
+        </FormItem>}
+        {getFieldValue('isGuaranteed') && <FormItem label='保底备注' {...formItemLayout}>
+          {
+            getFieldDecorator('guaranteedRemark', {
+              initialValue: data.guaranteedRemark
+            })(
+              <TextArea autoSize={{ minRows: 4, maxRows: 4 }} style={{ width: 400 }} allowClear />
+            )
+          }
+        </FormItem>}
+        <FormItem label='政策备注' {...formItemLayout}>
+          {
+            getFieldDecorator('remark', {
+              initialValue: data.remark
+            })(
+              <TextArea autoSize={{ minRows: 4, maxRows: 4 }} style={{ width: 400 }} allowClear />
+            )
+          }
+        </FormItem>
       </ConfigProvider>
     </Form>
   );

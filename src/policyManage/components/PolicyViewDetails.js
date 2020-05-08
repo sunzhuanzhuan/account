@@ -109,6 +109,19 @@ const PolicyViewDetails = forwardRef((props) => {
             <SettlementView data={data} />
           </Descriptions.Item>
         }
+        {
+          data.isGuaranteed === 1 && <>
+            <Descriptions.Item label="保底金额" span={2}>
+              {data.guaranteedMinAmount}
+            </Descriptions.Item>
+            <Descriptions.Item label="保底备注" span={2}>
+              {data.guaranteedRemark}
+            </Descriptions.Item>
+          </>
+        }
+        <Descriptions.Item label="政策备注" span={2}>
+          {data.remark}
+        </Descriptions.Item>
       </Descriptions>
       <Modal
         visible={!!modal}
