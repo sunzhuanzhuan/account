@@ -31,6 +31,21 @@ export class BaseInfo extends Component {
     }
   }
 
+  validateSnsId = (rule, value, callback) => {
+		const lenReg = /^.{0,100}$/;
+		const emojiReg = /[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF][\u200D|\uFE0F]|[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF]|[0-9|*|#]\uFE0F\u20E3|[0-9|#]\u20E3|[\u203C-\u3299]\uFE0F\u200D|[\u203C-\u3299]\uFE0F|[\u2122-\u2B55]|\u303D|[A9|AE]\u3030|\uA9|\uAE|\u3030/ig;
+		const contentReg = /[\u4E00-\u9FA5]|[\uFE30-\uFFA0]/g;
+		if (!(value && value.trim())) {
+			callback('账号ID不能为空');
+		} else if (!lenReg.test(value)) {
+			callback('账号ID最多可输入100个字符');
+		} else if (contentReg.test(value) || emojiReg.test(value)) {
+			callback('账号ID不能包含中文或特殊字符');
+		} else {
+			callback();
+		}
+	}
+
   render() {
     const {
       getFieldDecorator, formItemLayout, children, halfWrapCol, form, data: { accountInfo }, hideUniqueId, hideLink, actions
@@ -69,10 +84,7 @@ export class BaseInfo extends Component {
         {getFieldDecorator('base.snsId', {
           initialValue: snsId,
           first: true,
-          rules: [{ required: true, message: '账号ID不能为空' }, {
-            pattern: /^.{0,100}$/,
-            message: '账号ID最多可输入100个字符'
-          }]
+          rules: [{ required: true, message: ' ' }, { validator: this.validateSnsId }]
         })(
           <Input disabled={snsIdFrom == 2} suffix={IDShow ?
             <span className='input-suffix-text'>{IDLen}/100</span> : null} onFocus={this.displayInputLen('ID', true)} placeholder="账号ID" onChange={this.setInputLen('IDLen')} onBlur={this.displayInputLen('ID', false)} />
