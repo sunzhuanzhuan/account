@@ -9,24 +9,28 @@ const { confirm } = Modal;
 
 const OwnerInfos = (props) => {
 
-  // 图片上传Token
+  // 文件上传Token
   const [ uploadToken, setUploadToken ] = useState("")
   const [ uploadFile, setUploadFile ] = useState([])
   const [ modal, setModal ] = useState(false)
   const { actions } = props
-  const [ searchParams, setSearchParams ] = useState({})
   const [ lateUploadId, setLateUploadId ] = useState(0)
   useEffect(() => {
 
-    // 获取上传图片token
+    // 获取上传文件token
     props.actions.getNewToken().then(({ data: authToken }) => {
       setUploadToken(authToken)
     })
-    // 获取全部合同列表
-    getList(1)
+
     // 获取最新合同
     getLatestUploadAsync()
   }, [])
+
+  useEffect(() => {
+    // 获取全部合同列表
+    modal && getList(1)
+  }, [modal])
+
   async function getLatestUploadAsync() {
     const { data = {} } = await actions.getLatestUpload({ mcnId: mcnId })
     if (data.id) {
@@ -38,6 +42,9 @@ const OwnerInfos = (props) => {
       } ]
       setUploadFile(initFile)
       setLateUploadId(data.id)
+    }else {
+      setUploadFile([])
+      setLateUploadId(0)
     }
   }
   function showConfirm() {
@@ -46,7 +53,7 @@ const OwnerInfos = (props) => {
       content: <div>删除后将无法恢复</div>,
       onOk() {
         contractDeleteAsync(lateUploadId).then(() => {
-          setUploadFile([])
+          getLatestUploadAsync()
         })
       }
     });
@@ -97,11 +104,14 @@ const OwnerInfos = (props) => {
     {
       title: '操作',
       dataIndex: 'id',
-      render: (id, record) => {
+      render: (id, record, index) => {
         return <div>
           <a onClick={() => {
             contractDeleteAsync(id).then(() => {
               getList()
+              if(index === 0){
+                getLatestUploadAsync()
+              }
             })
           }}>删除</a>
           <Divider type="vertical" />
@@ -134,7 +144,7 @@ const OwnerInfos = (props) => {
   const dataSource = keys.map(key => source[key])
 
   const contractDeleteAsync = (id) => {
-    return  actions.contractDelete({ id: id })
+    return actions.contractDelete({ id: id })
   }
 
   const { mcnId, identityName } = props.data
