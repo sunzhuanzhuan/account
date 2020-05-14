@@ -85,6 +85,10 @@ const OwnerInfos = (props) => {
         setLateUploadId(null)
       })
     }
+    if (file.status === "error") {
+      setUploadFile([])
+      return
+    }
     setUploadFile([ file ])
   }
 
@@ -152,8 +156,8 @@ const OwnerInfos = (props) => {
   return (
     <div className="policy-manage-owner-infos-container">
       <Descriptions column={1}>
-        <Descriptions.Item label="主账号名称">{mcnId}</Descriptions.Item>
-        <Descriptions.Item label="主账号ID">{identityName}</Descriptions.Item>
+        <Descriptions.Item label="主账号名称">{identityName}</Descriptions.Item>
+        <Descriptions.Item label="主账号ID">{mcnId}</Descriptions.Item>
         <Descriptions.Item label="合同附件" className="align-top">
           <OssUpload
             authToken={uploadToken}

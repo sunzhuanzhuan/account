@@ -369,9 +369,15 @@ const PolicyEditForm = forwardRef((props, ref) => {
         <FormItem label='政策备注' {...formItemLayout}>
           {
             getFieldDecorator('remark', {
-              initialValue: data.remark
+              initialValue: data.remark,
+              rules: [
+                {
+                  pattern: /^.{0,1000}$/,
+                  message: '政策备注最多可输入1000个字'
+                }
+              ]
             })(
-              <TextArea autoSize={{ minRows: 4, maxRows: 4 }} style={{ width: 400 }} allowClear />
+              <TextArea autoSize={{ minRows: 4, maxRows: 6 }} style={{ width: 400 }} allowClear />
             )
           }
         </FormItem>
