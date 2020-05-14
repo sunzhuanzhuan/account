@@ -98,7 +98,7 @@ export class LadderRatioEdit extends React.PureComponent {
                   onChange={e => this.handlePercentageChange(e, index)}
                   value={percentage[index]}
                   max={100}
-                  min={1}
+                  min={0}
                   step={1}
                   precision={0}
                   style={{ width: 100 }}

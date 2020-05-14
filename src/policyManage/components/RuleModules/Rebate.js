@@ -69,7 +69,7 @@ export const RebateEdit = (props) => {
               })(
                 <InputPercent
                   max={100}
-                  min={1}
+                  min={0}
                   step={1}
                   precision={0}
                   style={{ width: 100 }}

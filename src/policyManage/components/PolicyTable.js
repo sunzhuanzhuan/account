@@ -129,7 +129,9 @@ const PolicyTable = (props) => {
           message.success('删除成功')
           getList()
         })
-      }
+      },
+      okText: '确认',
+      cancelText: '取消'
     });
   }
 

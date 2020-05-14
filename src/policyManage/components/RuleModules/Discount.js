@@ -40,7 +40,7 @@ export const DiscountEdit = (props) => {
               })(
                 <InputPercent
                   max={100}
-                  min={1}
+                  min={0}
                   step={1}
                   precision={0}
                   style={{ width: 100 }}
@@ -57,6 +57,8 @@ export const DiscountEdit = (props) => {
                   })(
                     <InputNumber
                       style={{ width: 100 }}
+                      min={0}
+                      max={9999999}
                     />
                   )}元 = 账号报价</span>
             </Form.Item>
