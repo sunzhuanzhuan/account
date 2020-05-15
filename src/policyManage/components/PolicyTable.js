@@ -25,6 +25,7 @@ import apiDownload from "@/api/apiDownload";
 import Interface from "@/policyManage/constants/Interface";
 import LazyLoad from 'react-lazyload';
 import GlobalCountAsync from "@/policyManage/components/GlobalCountAsync";
+import ScrollTable from "@/components/Scolltable";
 
 
 const PolicyTable = (props) => {
@@ -213,7 +214,7 @@ const PolicyTable = (props) => {
             <span>{rebateRuleValue}</span>
           </div>}
           <span>账号数</span>：
-          <LazyLoad  scrollContainer="#app-content-children-id">
+          <LazyLoad scrollContainer="#app-content-children-id">
             <GlobalCountAsync
               record={record}
               actions={props.actions}
@@ -371,15 +372,17 @@ const PolicyTable = (props) => {
         type="primary"
         disabled={selectedRowKeys.length == 0} ghost
         onClick={() => downMcnPolicyData(selectedRowKeys)}>批量下载政策</Button> : null}
-      <Table
-        loading={props.loading}
-        dataSource={dataSource}
-        pagination={paginationProps}
-        columns={columns}
-        {...rowSelectionProps}
-        scroll={{ x: 2600 }}
-        rowKey="id"
-      />
+      <ScrollTable scrollClassName='.ant-table-body' widthScroll={2600}>
+        <Table
+          loading={props.loading}
+          dataSource={dataSource}
+          pagination={paginationProps}
+          columns={columns}
+          {...rowSelectionProps}
+          scroll={{ x: 2600 }}
+          rowKey="id"
+        />
+      </ScrollTable>
       {accountModal.active ?
         <PolicyAccountModal modal={accountModal} setModal={setAccountModal} actions={props.actions} platformListByPolicy={platformListByPolicy} /> : null}
       {stopModal ? <StopReasonModal onCancel={stopPolicy} onOk={stopReasonSubmit} /> : null}
