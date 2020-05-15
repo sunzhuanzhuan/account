@@ -352,15 +352,21 @@ const PolicyEditForm = forwardRef((props, ref) => {
         </FormItem>
         {getFieldValue('isGuaranteed') && <FormItem label='保底金额' {...formItemLayout}>
           {
-            getFieldDecorator('guaranteedMinAmount', { initialValue: data.guaranteedMinAmount })(
-              <InputNumber style={{ width: 400 }} max={9999999999} suffix="元" />
+            getFieldDecorator('guaranteedMinAmount', { initialValue: data.guaranteedMinAmount > 0 ? data.guaranteedMinAmount : undefined })(
+              <InputNumber style={{ width: 400 }} min={1} max={9999999999} suffix="元" />
             )
           }
         </FormItem>}
         {getFieldValue('isGuaranteed') && <FormItem label='保底备注' {...formItemLayout}>
           {
             getFieldDecorator('guaranteedRemark', {
-              initialValue: data.guaranteedRemark
+              initialValue: data.guaranteedRemark,
+              rules: [
+                {
+                  pattern: /^.{0,1000}$/,
+                  message: '保底备注最多可输入1000个字'
+                }
+              ]
             })(
               <TextArea autoSize={{ minRows: 4, maxRows: 4 }} style={{ width: 400 }} allowClear />
             )

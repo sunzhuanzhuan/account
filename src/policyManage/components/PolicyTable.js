@@ -366,20 +366,21 @@ const PolicyTable = (props) => {
       }
     }
   ].filter((one) => !noColumnArr.includes(one.dataIndex))
+  const isScroll = dataSource.length > 0
   return (
     <div className='policy-table-box'>
       {isPolicy ? <Button style={{ margin: 10 }}
         type="primary"
         disabled={selectedRowKeys.length == 0} ghost
         onClick={() => downMcnPolicyData(selectedRowKeys)}>批量下载政策</Button> : null}
-      <ScrollTable scrollClassName='.ant-table-body' widthScroll={2600}>
+      <ScrollTable scrollClassName='.ant-table-body' widthScroll={isScroll ? 2600 : 100}>
         <Table
           loading={props.loading}
           dataSource={dataSource}
           pagination={paginationProps}
           columns={columns}
           {...rowSelectionProps}
-          scroll={{ x: 2600 }}
+          scroll={{ x: isScroll ? 2600 : 100 }}
           rowKey="id"
         />
       </ScrollTable>
