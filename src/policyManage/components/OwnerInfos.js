@@ -85,7 +85,7 @@ const OwnerInfos = (props) => {
         setLateUploadId(null)
       })
     }
-    if (file.status === "error") {
+    if (!file.status || file.status === "error") {
       setUploadFile([])
       return
     }
