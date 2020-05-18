@@ -67,7 +67,7 @@ export const STEP_REBATE_SETTLEMENT_TYPES = {
 }
 
 
-// 规则/账号 数量限制
-export const SPECIAL_ACCOUNTS_LIMIT = 200
-export const SPECIAL_RULES_LIMIT = 20
-export const WHITE_LIST_ACCOUNTS_LIMIT = 20
+// 规则/账号 数量限制 TODO: 200 / 20 / 20
+export const SPECIAL_ACCOUNTS_LIMIT = 10
+export const SPECIAL_RULES_LIMIT = 5
+export const WHITE_LIST_ACCOUNTS_LIMIT = 10

@@ -3,6 +3,7 @@
  */
 import React from 'react';
 import moment from 'moment';
+import numeral from 'numeral'
 import { Popover } from "antd";
 import { REBATE_SETTLEMENT_CYCLE } from "@/policyManage/constants/dataConfig";
 
@@ -90,7 +91,7 @@ export const discountRuleDisplay = (discountRule = {}) => {
 
   if (discountRule.discountType === 1) {
     discountRuleLabel = "折扣-固定比例"
-    discountRuleValue = discountRule.discountFixedRatio * 100 + "%"
+    discountRuleValue = numeral(discountRule.discountFixedRatio).format('0%')
   }
   if (discountRule.discountType === 2) {
     discountRuleLabel = "折扣-固定扣减"
@@ -108,7 +109,7 @@ export const rebateRuleDisplay = (rebateRule = {}) => {
 
   if (rebateRule.rebateType === 1) {
     rebateRuleLabel = "返点-固定比例"
-    rebateRuleValue = rebateRule.rebateFixedRatio * 100 + "%"
+    rebateRuleValue = numeral(rebateRule.rebateFixedRatio).format('0%')
   }
   if (rebateRule.rebateType === 2) {
     rebateRuleLabel = "返点-固定扣减"
@@ -140,7 +141,7 @@ export const rebateRuleDisplay = (rebateRule = {}) => {
 export const settlementDisplay = (data = {}) => {
   let cycle = "", type = "", guarantee = ""
 
-  cycle = data.rebateSettlementCycle ? `${REBATE_SETTLEMENT_CYCLE[data.rebateSettlementCycle] || '-'}结` : ""
+  cycle = data.rebateSettlementCycle > 0 ? `${REBATE_SETTLEMENT_CYCLE[data.rebateSettlementCycle] || '-'}结` : ""
   if (data.stepRebateSettlementType === 1) {
     type = "阶梯收入计算"
   }

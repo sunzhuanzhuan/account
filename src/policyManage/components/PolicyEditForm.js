@@ -352,8 +352,13 @@ const PolicyEditForm = forwardRef((props, ref) => {
         </FormItem>
         {getFieldValue('isGuaranteed') && <FormItem label='保底金额' {...formItemLayout}>
           {
-            getFieldDecorator('guaranteedMinAmount', { initialValue: data.guaranteedMinAmount > 0 ? data.guaranteedMinAmount : undefined })(
-              <InputNumber style={{ width: 400 }} min={1} max={9999999999} suffix="元" />
+            getFieldDecorator('guaranteedMinAmount', {
+              initialValue: data.guaranteedMinAmount > 0 ? data.guaranteedMinAmount : undefined,
+              rules: [
+                { required: true, message: "保底金额不可为空"},
+              ]
+            })(
+              <InputNumber precision={0} style={{ width: 400 }} min={1} max={9999999999} suffix="元" />
             )
           }
         </FormItem>}
