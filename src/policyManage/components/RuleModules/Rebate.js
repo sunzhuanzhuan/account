@@ -87,6 +87,8 @@ export const RebateEdit = (props) => {
               })(
                 <InputNumber
                   style={{ width: 120 }}
+                  min={0}
+                  max={9999999}
                 />
               )
             }元

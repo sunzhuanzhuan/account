@@ -140,7 +140,6 @@ const PolicyTable = (props) => {
     {
       title: '政策名称/ID',
       dataIndex: 'policyName',
-      width: '240px',
       render: (name, record) => {
         return <div className='cursor-pointer'>
           <Popover trigger='hover' placement='topLeft' content={name}>

@@ -79,7 +79,10 @@ export default class SelectAllCheck extends Component {
           }
         </Select>
         <div className="check-wrapper">
-          <Checkbox onChange={e => this.onCheckAll(e.target.checked)}>全选</Checkbox>
+          <Checkbox
+            defaultChecked={options.length === value.length}
+            onChange={e => this.onCheckAll(e.target.checked)}
+          >全选</Checkbox>
         </div>
       </div>
     );
