@@ -2,7 +2,7 @@
  * Created by lzb on 2020-03-09.
  */
 import React, { useState } from 'react';
-import { Checkbox, Icon, message, Popconfirm, Popover, Spin } from "antd";
+import { Checkbox, Icon, message, Modal, Popconfirm, Popover, Spin } from "antd";
 
 import './PolicyCard.less'
 import PolicyStatus from "../base/PolicyStatus";
@@ -86,11 +86,18 @@ const PolicyCard = (props) => {
   // 启用
   const startPolicy = () => {
     const { startPolicy, syncUpdatePolicyStatus } = props.actions
-    const hide = message.loading('处理中...')
-    startPolicy({ id: props.data.id }).then(() => {
-      message.success('操作成功')
-      hide()
-      syncUpdatePolicyStatus({ key: props.data.id, policyStatus: POLICY_STATUS_ACTIVE })
+    Modal.confirm({
+      title: '确定启用本政策吗?',
+      onOk: () => {
+        return startPolicy({ id }).then(({ data }) => {
+          message.success('操作成功')
+          syncUpdatePolicyStatus({
+            key: data.id,
+            policyStatus: POLICY_STATUS_ACTIVE,
+            ...data
+          })
+        })
+      }
     })
   }
 
