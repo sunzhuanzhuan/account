@@ -65,22 +65,28 @@ const columns = [
   },
   {
     title: '执行价格名称',
-    dataIndex: 'price_base_name',
+    dataIndex: 'accept_reservation_chosen_price',
     width: 220,
-    render: (name, record) => {
+    render: (price, record) => {
+      if(!price) return '-'
+      const { equities = [], other_content, sku_type_name } = price
       return <div>
-        {name}
-        {(record.equities.length > 0 || record.otherName) ? <span style={{margin: '0 2px'}}>+</span> : null}
+        {sku_type_name}
+        {sku_type_name && (equities.length > 0 || other_content) ? <span style={{margin: '0 2px'}}>+</span> : null}
         {
-          (record.equities || []).map(item => {
-            return <span className="equity-tag-item" key={item.equityName}>
+          equities.map(item => {
+            return <span className="equity-tag-item" key={item.equity_id}>
               {item.isFree === 1 ?
-                <img style={{ width: 20 }} src={require('../../images/free.png')} /> : ""}{item.equityName}
+                <img style={{ width: 20 }} src={require('../../images/free.png')} /> : ""}{item.equity_name}
             </span>
           })
         }
-        {record.otherName && <span className="equity-tag-item">
-              {record.otherName}
+        {other_content && <span className="equity-tag-item" style={{
+          lineHeight: "20px",
+          display: "inline-block",
+          whiteSpace: "normal"
+        }}>
+              {other_content}
         </span>}
       </div>
     }
