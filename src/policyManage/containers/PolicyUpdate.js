@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import {
   Button,
   PageHeader,
-  message
+  message, Modal
 } from "antd";
 
 import PolicyEditForm from "../components/PolicyEditForm";
@@ -89,15 +89,19 @@ const PolicyUpdate = (props) => {
 
   // 启用
   const startPolicy = (id) => {
-    const { actions } = props
-    const hide = message.loading('处理中...')
-    actions.startPolicy({ id }).then(({ data }) => {
-      message.success('操作成功')
-      hide()
-      setInitData(Object.assign({}, initData, {
-        policyStatus: POLICY_STATUS_ACTIVE,
-        ...data
-      }))
+    const { startPolicy, syncUpdatePolicyStatus } = props.actions
+    Modal.confirm({
+      title: '确定启用本政策吗?',
+      onOk: () => {
+        return startPolicy({ id }).then(({ data }) => {
+          message.success('操作成功')
+          syncUpdatePolicyStatus({
+            key: data.id,
+            policyStatus: POLICY_STATUS_ACTIVE,
+            ...data
+          })
+        })
+      }
     })
   }
 

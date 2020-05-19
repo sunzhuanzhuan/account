@@ -88,6 +88,7 @@ export class LadderRatioEdit extends React.PureComponent {
                 <InputNumber
                   disabled={rebateNumbers.length - 2 == index}
                   style={{margin: "0 4px"}}
+                  min={1}
                   onChange={e => this.handleRatioChange(e, index + 1)}
                   value={item}
                 />

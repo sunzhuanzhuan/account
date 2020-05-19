@@ -1,6 +1,7 @@
 import React from "react";
 import { Table, Button } from 'antd';
 import numeral from 'numeral'
+import { OnShelfStatus } from "@/policyManage/components/accountModalList/Global";
 
 class AccountListTable extends React.Component {
   constructor(props) {
@@ -27,14 +28,12 @@ class AccountListTable extends React.Component {
         title: 'accountId',
         dataIndex: 'accountId',
         key: 'accountId',
-        width: 180,
         align: 'center'
       },
       {
         title: '平台',
         dataIndex: 'platformName',
         key: 'platformName',
-        width: 100,
         align: 'center'
       },
       {
@@ -42,30 +41,46 @@ class AccountListTable extends React.Component {
         ellipsis: true,
         dataIndex: 'snsName',
         key: 'snsName',
-        width: 160,
         align: 'center'
       },
       {
         title: '账号ID',
         dataIndex: 'snsId',
         key: 'snsId',
-        width: 160,
         align: 'center'
       },
       {
         title: '粉丝数',
         dataIndex: 'followerCount',
         key: 'followerCount',
-        width: 100,
         align: 'center',
         render: text => this.getFollowerCount(text)
-      }
+      },
+      {
+        title: '上下架状态',
+        dataIndex: 'onShelfStatus',
+        align: 'center',
+        render: (status) => {
+          return status ? <>
+            <OnShelfStatus status={status.aOnShelfStatus} text='A' />
+            <OnShelfStatus status={status.bOnShelfStatus} text='B' />
+            </>: '-'
+        }
+      },
+      {
+        title: '主页链接',
+        dataIndex: 'url',
+        align: 'center',
+        render: (url) => {
+          return url && <a href={url} target="_blank" >主页链接</a>
+        }
+      },
     ];
     if (isEdit) {
       columns.push({
         title: '操作',
         key: 'operate',
-        width: 100,
+        width: 80,
         align: 'center',
         render: (_, record) => {
           return isEdit ?

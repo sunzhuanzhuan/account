@@ -4,7 +4,7 @@ import {
   message,
   Table,
   Divider,
-  Popover, Modal
+  Popover, Modal, Typography, Tooltip
 } from "antd";
 import PolicyStatus from "../base/PolicyStatus";
 import {
@@ -96,16 +96,20 @@ const PolicyTable = (props) => {
   // 启用
   const startPolicy = (id) => {
     const { actions } = props
-    const hide = message.loading('处理中...')
-    actions.startPolicy({ id }).then(({ data }) => {
-      message.success('操作成功')
-      hide()
-      actions.syncUpdatePolicyStatus({
-        key: data.id,
-        policyStatus: POLICY_STATUS_ACTIVE,
-        ...data
-      })
+    Modal.confirm({
+      title: '确定启用本政策吗?',
+      onOk: () => {
+        return actions.startPolicy({ id }).then(({ data }) => {
+          message.success('操作成功')
+          actions.syncUpdatePolicyStatus({
+            key: data.id,
+            policyStatus: POLICY_STATUS_ACTIVE,
+            ...data
+          })
+        })
+      }
     })
+
   }
   //下载
   const downMcnPolicyData = (list) => {
@@ -190,7 +194,12 @@ const PolicyTable = (props) => {
       title: '平台',
       dataIndex: 'platformNames',
       render: (names, record) => {
-        return record.globalAccountRule.platformList.map(p => p.platformName).join(',')
+        const text = record.globalAccountRule.platformList.map(p => p.platformName).join('、')
+        return <Tooltip title={text.length > 35 ? text : ''} placement="topLeft">
+          <Typography.Paragraph  ellipsis={{ rows: 3, expandable: false }} style={{marginBottom: 0}}>
+            {text}
+          </Typography.Paragraph>
+        </Tooltip>
       }
     },
     {
@@ -265,7 +274,7 @@ const PolicyTable = (props) => {
           guarantee
         } = settlementDisplay(record)
         return <>
-          <span>{cycle}</span>
+          <span>{cycle || '--'}</span>
           <br />
           <span>{type}</span>
           <br />
@@ -355,6 +364,8 @@ const PolicyTable = (props) => {
             (record.policyStatus === POLICY_STATUS_STOP) &&
             <>
               <a onClick={() => startPolicy(id)}>启用</a>
+              <Divider type="vertical" />
+              <Link to={'/account/policy/update/' + id}>修改</Link>
             </>
           }
           {isPolicy && <>

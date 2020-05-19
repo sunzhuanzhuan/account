@@ -136,7 +136,7 @@ const Global = (props) => {
 };
 
 export default Global;
-const OnShelfStatus = ({ status, text = 'A' }) => {
+export const OnShelfStatus = ({ status, text = 'A' }) => {
   return <span style={{ marginRight: 5 }}> <Badge status={status == 1 ? 'success' : 'error'} text={`${text}端${status == 1 ? '上' : '下'
     }架`} /> </span>
 }

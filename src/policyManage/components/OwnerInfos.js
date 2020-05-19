@@ -111,12 +111,18 @@ const OwnerInfos = (props) => {
       render: (id, record, index) => {
         return <div>
           <a onClick={() => {
-            contractDeleteAsync(id).then(() => {
-              getList()
-              if(index === 0){
-                getLatestUploadAsync()
+            confirm({
+              title: '确认删除合同吗?',
+              content: <div>删除后将无法恢复</div>,
+              onOk() {
+                contractDeleteAsync(id).then(() => {
+                  getList()
+                  if(index === 0){
+                    getLatestUploadAsync()
+                  }
+                })
               }
-            })
+            });
           }}>删除</a>
           <Divider type="vertical" />
           <a href={record.contractFileUrl} download={record.contractFileName} target="_blank">下载</a>
