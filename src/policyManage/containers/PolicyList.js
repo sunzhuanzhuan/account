@@ -67,6 +67,9 @@ const PolicyList = (props) => {
 
   const onTabChange = active => {
     getList({
+      page: {
+        currentPage: 1,
+      },
       form: {
         policyStatus: active === "0" ? undefined : active
       }

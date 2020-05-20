@@ -148,7 +148,11 @@ const OwnerInfos = (props) => {
     current: pageNum,
     onChange: (currentPage) => {
       getList(currentPage)
-    }
+    },
+    onShowSizeChange: getList,
+    pageSizeOptions: [ '10', ' 20', ' 50', ' 100' ],
+    showSizeChanger: true,
+    showQuickJumper: true,
   }
 
   const dataSource = keys.map(key => source[key])
