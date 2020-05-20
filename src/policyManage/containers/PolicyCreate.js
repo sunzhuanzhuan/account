@@ -45,7 +45,7 @@ const PolicyCreate = (props) => {
       setSubmitLoading(true)
       props.actions.addPolicy(body).then(({ data }) => {
         function cb() {
-          props.history.push('/account/policy/update/' + data.id)
+          props.history.push('/account/policy/list/' + data.mcnId)
         }
 
         if (data.isAllAccountSuccess === 2) {
