@@ -84,7 +84,7 @@ export const {
   addOrUpdateAccountTrinitySkuInfo
 } = createHttpAction('addOrUpdateAccountTrinitySkuInfo', Interface.addOrUpdateAccountTrinitySkuInfo, {
   method: 'post',
-  ignoreToast: false
+  ignoreToast: true
 });
 
 // 获取报价项信息

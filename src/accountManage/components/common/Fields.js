@@ -88,11 +88,12 @@ const checkWordListTagRepeat = (rule, value, callback) => {
 export const trinityIsPreventShieldingTip = (isValidate, action, value, success, error = (e) => {
   message.error(e.errorMsg)
   return Promise.reject(e)
-}) => {
+}, confirm) => {
   return action({ ...value, equitiesValidate: isValidate })
     .then(success)
     .catch((e) => {
       if (e.code === "110503") {
+        confirm && confirm()
         Modal.confirm({
           title: e.errorMsg,
           okText: '不修改,保存',

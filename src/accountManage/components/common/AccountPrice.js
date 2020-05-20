@@ -533,7 +533,6 @@ export class FamousPrice extends Component {
         <input type="hidden" />)}
       {getFieldDecorator('priceValidTo', { initialValue: nowEnd })(
         <input type="hidden" />)}
-      {children}
       {getFieldDecorator('canEditPrice', { initialValue: _data.right })(
         <input type="hidden" />)}
       {getFieldDecorator('canEditNextPrice', { initialValue: canEditPrice })(

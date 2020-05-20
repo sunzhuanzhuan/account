@@ -63,6 +63,8 @@ export default class Trinity extends Component {
         }, (e) => {
           message.error(e.errorMsg)
           this.setState({ submitLoading: false });
+        }, () => {
+          this.setState({ submitLoading: false });
         });
       }
     });
