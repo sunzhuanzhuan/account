@@ -40,6 +40,16 @@ export const checkPriceList = (rule, value, callback) => {
   }
   callback('报价项最少填写一项');
 };
+// 检查有权益报价必填
+export const checkPriceAndEquities = (rule, value, callback) => {
+  if (value.find(item => {
+   return (item.equitiesResVOList.length > 0 && item.costPriceRaw <= 0) ||
+    (item.nextEquitiesResVOList.length > 0 && item.nextCostPriceRaw <= 0)
+  })) {
+    return callback('有权益报价必填');
+  }
+  callback();
+};
 // 处理审核状态
 function approvalStatus(code = 1, desc = '') {
   code = parseInt(code);
@@ -399,7 +409,10 @@ export class FamousPrice extends Component {
           <FormItem>
             {getFieldDecorator('price_now', {
               initialValue: skuList,
-              rules: [{ validator: checkPriceList, on: _data.right }]
+              rules: [
+                { validator: checkPriceList, on: _data.right },
+                // { validator: checkPriceAndEquities },
+                ]
             })(<PriceTable
               isEdit={_data.right}
               priceKeys={['costPriceRaw', 'channelPrice', 'publicationPrice']}
