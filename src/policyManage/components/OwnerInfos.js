@@ -146,9 +146,7 @@ const OwnerInfos = (props) => {
     total,
     pageSize,
     current: pageNum,
-    onChange: (currentPage) => {
-      getList(currentPage)
-    },
+    onChange: getList,
     onShowSizeChange: getList,
     pageSizeOptions: [ '10', ' 20', ' 50', ' 100' ],
     showSizeChanger: true,
