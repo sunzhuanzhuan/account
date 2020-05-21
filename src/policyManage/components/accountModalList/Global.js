@@ -27,6 +27,7 @@ const Global = (props) => {
     {
       title: 'account_id',
       dataIndex: 'accountId',
+      align: "center",
       render: (id, record) => {
         return <span>{id}{record.isDeleted === 1 ? "(已删除)" : ""}</span>
       }

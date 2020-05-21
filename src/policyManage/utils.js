@@ -119,7 +119,7 @@ export const rebateRuleDisplay = (rebateRule = {}) => {
     rebateRuleLabel = "返点-阶梯比例"
     rebateRuleValue = <Popover title={rebateRuleLabel} content={
       rebateRule.rebateStepRules.map(item => <div key={item.amountLowLimit}>
-        大于{item.amountLowLimit} 且小于等于{item.amountHighLimit}， 比例{item.rebateRatio * 100}%<br />
+        大于{item.amountLowLimit} 且小于等于{item.amountHighLimit}， 比例{numeral(item.rebateRatio).format('0%')}<br />
       </div>)
     }>
       <a style={{marginLeft: 6}}>查看</a>
