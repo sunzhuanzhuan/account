@@ -97,7 +97,8 @@ const PolicyAccountModal = (props) => {
             {/* 使用 ruleDisplay 方法获取值 */}
             <li>
               全局规则： <span>{discountRuleLabel}</span><span>{discountRuleValue}</span>
-              ；<span>{rebateRuleLabel}</span><span>{rebateRuleValue}</span>
+              {discountRuleLabel && rebateRuleLabel ? <span>；</span> : null}
+              <span>{rebateRuleLabel}</span><span>{rebateRuleValue}</span>
             </li>
             {cycle && <li>
               返点规则：{cycle} {type} 返点金额{guarantee}

@@ -2,23 +2,11 @@ import React from "react";
 import { Table, Button } from 'antd';
 import numeral from 'numeral'
 import { OnShelfStatus } from "@/policyManage/components/accountModalList/Global";
+import { getFollowerCount } from "@/policyManage/utils";
 
 class AccountListTable extends React.Component {
   constructor(props) {
     super(props);
-  }
-
-  getFollowerCount = (value) => {
-    if ((value < 10000 && value > 0) || value == 0) {
-      return 9999
-    } else if (value == 10000) {
-      return '1w'
-    } else if (value > 10000) {
-      const isDecimal = value % 10000
-      return `${isDecimal ? numeral(value / 10000).format('0.0') : numeral(value / 10000).format('0')}w`
-    } else {
-      return '--'
-    }
   }
 
   render() {
@@ -54,7 +42,7 @@ class AccountListTable extends React.Component {
         dataIndex: 'followerCount',
         key: 'followerCount',
         align: 'center',
-        render: text => this.getFollowerCount(text)
+        render: text => getFollowerCount(text)
       },
       {
         title: '上下架状态',
