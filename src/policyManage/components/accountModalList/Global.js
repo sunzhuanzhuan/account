@@ -27,7 +27,6 @@ const Global = (props) => {
     {
       title: 'account_id',
       dataIndex: 'accountId',
-      align: "center",
       render: (id, record) => {
         return <span>{id}{record.isDeleted === 1 ? "(已删除)" : ""}</span>
       }
@@ -104,7 +103,7 @@ const Global = (props) => {
   const ruleIdCol = {
     title: '规则ID',
     dataIndex: 'ruleId',
-    align: 'right',
+    align: "center",
     filterMultiple: false,
     filters: ruleList.map(one => ({ text: `规则${one.ruleId}`, value: one.ruleId })),
     width: '100px',
