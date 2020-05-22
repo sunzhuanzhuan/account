@@ -3,6 +3,7 @@
  */
 import React, { useEffect, useState } from 'react';
 import { Table, Icon, Badge } from "antd";
+import { getFollowerCount } from "@/policyManage/utils";
 
 const Global = (props) => {
   const [loading, setLoading] = useState(false)
@@ -56,7 +57,8 @@ const Global = (props) => {
       title: '粉丝数',
       dataIndex: 'followerCount',
       width: '120px',
-      align: 'center'
+      align: 'center',
+      render: text => getFollowerCount(text)
     },
     {
       title: 'A端上架状态',

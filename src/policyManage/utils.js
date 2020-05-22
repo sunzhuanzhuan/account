@@ -158,3 +158,16 @@ export const settlementDisplay = (data = {}) => {
     guarantee
   }
 }
+
+export const getFollowerCount = (value) => {
+  if ((value < 10000 && value > 0) || value == 0) {
+    return value
+  } else if (value == 10000) {
+    return '1w'
+  } else if (value > 10000) {
+    const isDecimal = value % 10000
+    return `${isDecimal ? numeral(value / 10000).format('0.0') : numeral(value / 10000).format('0')}w`
+  } else {
+    return '--'
+  }
+}
