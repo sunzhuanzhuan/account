@@ -642,20 +642,20 @@ export class PriceTable extends Component {
     return <div className='price-table'>
       <div className='price-table-head'>
         <Row gutter={8}>
-          <Col span={colWidth}><p className='price-table-title'>价格名称</p></Col>
-          {equitiesKey && <Col span={8}><p className='price-table-title'>权益项</p></Col>}
-          <Col span={colWidth}><p className='price-table-title'>报价(元)</p></Col>
-          <Col span={colWidth}><p className='price-table-title'>渠道价(元)</p></Col>
-          <Col span={colWidth}><p className='price-table-title'>刊例价(元)</p></Col>
+          <Col span={colWidth}><p className='price-table-title left'>价格名称</p></Col>
+          {equitiesKey && <Col span={8}><p className='price-table-title left'>权益项</p></Col>}
+          <Col span={colWidth}><p className='price-table-title right'>报价(元)</p></Col>
+          <Col span={colWidth}><p className='price-table-title right'>渠道价(元)</p></Col>
+          <Col span={colWidth}><p className='price-table-title right'>刊例价(元)</p></Col>
         </Row>
       </div>
       <div className='price-table-body'>
         {
           value.map((item, index) => {
             const { skuTypeId, skuTypeName } = item
-            return <Row key={skuTypeId} gutter={8}>
+            return <Row key={skuTypeId} gutter={8} className="price-table-body-row">
               <Col span={colWidth}>
-                <p className='price-table-title'>{skuTypeName}</p>
+                <p className='price-table-title left'>{skuTypeName}</p>
               </Col>
               {equitiesKey && <Col span={8}>
                 <CheckboxTag
@@ -671,7 +671,7 @@ export class PriceTable extends Component {
                 />
               </Col>}
               <Col span={colWidth}>
-                <div className='price-table-input'>
+                <div className='price-table-input right'>
                   <PriceInput
                     isEdit={isEdit}
                     value={item[priceKeys[0]]}
@@ -680,7 +680,7 @@ export class PriceTable extends Component {
                 </div>
               </Col>
               <Col span={colWidth}>
-                <div className='price-table-input no-error'>
+                <div className='price-table-input no-error right'>
                   <PriceInput
                     isEdit={isEdit}
                     value={item[priceKeys[1]]}
@@ -689,7 +689,7 @@ export class PriceTable extends Component {
                 </div>
               </Col>
               <Col span={colWidth}>
-                <div className='price-table-input no-error'>
+                <div className='price-table-input no-error right'>
                   <PriceInput
                     isEdit={isEdit}
                     value={item[priceKeys[2]]}
