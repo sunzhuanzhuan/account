@@ -3,8 +3,8 @@ import { Modal, Form, Button, Icon } from 'antd'
 const { confirm } = Modal
 import AccountListTable from '../AccountListTable'
 const formItemLayout = {
-  labelCol: { span: 2 },
-  wrapperCol: { span: 21 },
+  labelCol: { span: 1 },
+  wrapperCol: { span: 23 },
 };
 
 export const AccountEdit = (props) => {

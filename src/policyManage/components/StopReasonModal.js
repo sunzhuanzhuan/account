@@ -6,7 +6,7 @@ const { TextArea } = Input;
 class StopReasonModal extends React.Component {
 
   judgeInputLenth = (_, value, callback) => {
-    if (value && value.trim() !== "" && value.length <= 200) {
+    if (value?.trim() !== "" && value.length <= 200) {
       callback();
     } else if (!value || !(value.trim())) {
       callback('请输入停用原因')
@@ -36,6 +36,7 @@ class StopReasonModal extends React.Component {
         width={700}
         onCancel={() => { onCancel() }}
         onOk={this.handleOk}
+        maskClosable={false}
       >
         <Form>
           <FormItem>

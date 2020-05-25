@@ -1,7 +1,9 @@
-
 import { combineReducers } from 'redux'
 import { handleAction, handleActions } from 'redux-actions';
+import { reducersResponseList } from '@/util/handleData'
 import { GET_PROGRESS, GET_DISCOUNT_DETAIL, GET_POLICY_DETAIL } from "../constants/ActionTypes";
+import update from "immutability-helper";
+
 const selectedPlatformIds = (state = []) => {
 
   return state.reduce((acc, item) => {
@@ -79,6 +81,86 @@ const pastPolicyDetail = handleAction('getPolicyInfoById_success', (state, actio
   }
 }, {})
 
+const globalRulePlatforms = handleAction('getGlobalRulePlatforms_success', (state, action) => {
+  return [
+    ...action.payload.data
+  ]
+}, [])
+const platformListByPolicy = handleAction('getPlatformListByPolicy_success', (state, action) => {
+  return [
+    ...action.payload.data
+  ]
+}, [])
+
+const policyAllList = handleActions({
+  "policyAllList_success": reducersResponseList(),
+  "syncUpdatePolicyStatus": (state, action) => {
+    let { key } = action.payload.data
+    return update(state, {
+      source: {
+        [key]: {
+          $set: {
+            ...state.source[key],
+            ...action.payload.data
+          }
+        }
+      }
+    })
+  }
+}, reducersResponseList.initList())
+
+
+const policyAllStatistics = handleActions({
+  "procurementPolicyStatistics_success": (state, action) => {
+    let { data } = action.payload
+    return {
+      ...state,
+      ...data
+    }
+  },
+  "orderStatistics_success": (state, action) => {
+    let { data } = action.payload
+    return {
+      ...state,
+      ...data
+    }
+  },
+
+}, {})
+
+
+const policyListByOwner = handleActions({
+  "policyListByOwner_success": reducersResponseList(),
+  "syncUpdatePolicyStatus": (state, action) => {
+    let { key } = action.payload.data
+    return update(state, {
+      source: {
+        [key]: {
+          $set: {
+            ...state.source[key],
+            ...action.payload.data
+          }
+        }
+      }
+    })
+  }
+}, reducersResponseList.initList())
+
+const policyOwnerStatistics = handleActions({
+  "procurementPolicyStatisticsByOwner_success": (state, action) => {
+    let { data } = action.payload
+    return {
+      ...state,
+      ...data
+    }
+  }
+}, {})
+
+const contractListByOwner = handleActions({
+  "contractListByOwner_success": reducersResponseList(),
+}, reducersResponseList.initList())
+
+
 //渠道折扣， 品牌管理reducer
 function discountReducer(state = {}, action) {
   const { progress, errorMsg, msg, discountDetail, policyDetail, newPolicyId } = action;
@@ -99,5 +181,12 @@ export default combineReducers({
   newBPlatforms,
   pastPolicyList,
   pastPolicyDetail,
-  discountReducer
+  policyAllList,
+  policyAllStatistics,
+  policyListByOwner,
+  policyOwnerStatistics,
+  contractListByOwner,
+  discountReducer,
+  globalRulePlatforms,
+  platformListByPolicy
 })

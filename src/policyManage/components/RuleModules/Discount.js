@@ -1,92 +1,89 @@
 import React, { useState } from 'react';
 import { Button, Radio, InputNumber, Form } from 'antd'
-
 import {
   ruleDiscount,
-  Rule_Discount_Ratio,
+  RULE_DISCOUNT_RATIO, RULE_DISCOUNT_NUMERIC
 } from '../../constants/dataConfig'
-const { _ } = window;
+import { discountRuleDisplay, ruleDisplay } from "@/policyManage/utils";
+import InputPercent from "@/base/InputPercent";
+
 const formItemLayout = {
   labelCol: { span: 2 },
-  wrapperCol: { span: 22 },
+  wrapperCol: { span: 22 }
 };
 
 export const DiscountEdit = (props) => {
-  const { currentRule = {} } = props;
-  const [discountRule, setDiscountRule] = useState(currentRule.discountRule || {})
-  const { discountType = Rule_Discount_Ratio, discountFixedRatio, discountFixedAmount } = discountRule;
+  const { rule, fieldKeyPrefix = "" } = props;
+  const { discountType, discountFixedRatio, discountFixedAmount } = rule || {};
 
-  const isEdit = !_.isEmpty(discountRule);
-  const { getFieldDecorator } = props.form;
-  const [type, useType] = useState(discountType)
-  const [visible, setVisible] = useState(isEdit);
+  const { getFieldDecorator, getFieldValue } = props.form;
+  const [ hasDiscount, setHasDiscount ] = useState(!!discountType);
 
-  const onDiscountRatioChange = e => {
-    useType(e.target.value)
-  }
-  return <Form.Item label={'折扣：'} className='platform-wrap' {...formItemLayout}>
-    {(!visible) ? <Button type='link' onClick={() => setVisible(true)}>+添加折扣</Button> :
-      <div className='item-wrap' style={{ background: '#f7fbff' }}>
-        <Form.Item label="类型：" {...formItemLayout}>
-          {getFieldDecorator('discountRule.discountType', {
-            initialValue: discountType,
-            rules: [{ required: true, message: '请选择折扣类型!' }],
-          })(
-            <Radio.Group options={ruleDiscount} onChange={onDiscountRatioChange} />
-          )}
-        </Form.Item>
-        {
-          type == Rule_Discount_Ratio ?
-            <Form.Item label='公式：' {...formItemLayout}>
-              <span>刊例价 X {getFieldDecorator(`discountRule.discountFixedRatio`, {
+  return <Form.Item label="折扣" labelCol={{ span: 1 }} wrapperCol={{ span: 23 }}>
+    {
+      hasDiscount ?
+        <div style={{ background: '#f7fbff', position: "relative" }}>
+          <Form.Item label="类型"  {...formItemLayout}>
+            {getFieldDecorator(fieldKeyPrefix + 'discountRule.discountType', {
+              initialValue: discountType || RULE_DISCOUNT_RATIO,
+              rules: [ { required: true, message: '请选择折扣类型!' } ]
+            })(
+              <Radio.Group options={ruleDiscount} />
+            )}
+          </Form.Item>
+          {
+            getFieldValue(fieldKeyPrefix + "discountRule.discountType") === RULE_DISCOUNT_RATIO &&
+            <Form.Item label='公式' {...formItemLayout}>
+              <span>刊例价 X {getFieldDecorator(fieldKeyPrefix + `discountRule.discountFixedRatio`, {
                 initialValue: discountFixedRatio,
-                rules: [{ required: true, message: '请输入固定比例值' }],
+                rules: [ { required: true, message: '请输入固定比例值' } ]
               })(
-                <InputNumber
+                <InputPercent
                   max={100}
+                  min={0}
+                  step={1}
                   precision={0}
                   style={{ width: 100 }}
-                />)}% = 账号报价</span>
-            </Form.Item> :
-            <Form.Item label='公式：' {...formItemLayout}>
-              <span>
-                刊例价 -
-                                {getFieldDecorator('discountRule.discountFixedAmount', {
-                  initialValue: discountFixedAmount,
-                  rules: [{ required: true, message: '请输入固定扣减值!' }],
-                })(
-                  <InputNumber
-                    style={{ width: 100 }} />
-                )}
-                元 = 账号报价
-                        </span>
+                />
+              )} % = 账号报价</span>
             </Form.Item>
-        }
-        <Button onClick={() => { setVisible(false); setDiscountRule({}) }} style={{ position: 'absolute', right: 0, top: 0 }} type="link" >删除</Button>
-      </div>
+          }
+          {
+            getFieldValue(fieldKeyPrefix + "discountRule.discountType") === RULE_DISCOUNT_NUMERIC &&
+            <Form.Item label='公式' {...formItemLayout}>
+                  <span>刊例价 - {getFieldDecorator(fieldKeyPrefix + 'discountRule.discountFixedAmount', {
+                    initialValue: discountFixedAmount,
+                    rules: [ { required: true, message: '请输入固定扣减值!' } ]
+                  })(
+                    <InputNumber
+                      style={{ width: 100 }}
+                      min={1}
+                      max={9999999}
+                    />
+                  )}元 = 账号报价</span>
+            </Form.Item>
+          }
+          <Button onClick={() => setHasDiscount(false)} style={{
+            position: 'absolute',
+            right: 0,
+            top: 0
+          }} type="link">删除</Button>
+        </div> :
+        <Button type='link' icon="plus" onClick={() => setHasDiscount(true)}>添加折扣</Button>
     }
-
-  </Form.Item >
+  </Form.Item>
 }
 
 export const DiscountView = (props) => {
-  const { data = {} } = props;
-  const { discountType, discountFixedRatio, discountFixedAmount } = data;
-  return <Form.Item label={'折扣：'} className='platform-wrap' {...formItemLayout}>
-    {
-      <div className='item-wrap' style={{ background: '#f7fbff' }}>
-        <Form.Item label="类型：" {...formItemLayout}>
-          {discountType == Rule_Discount_Ratio ? '固定比例' : '固定扣减'}
-        </Form.Item>
+  const { rule = {} } = props;
+  const {
+    discountRuleLabel,
+    discountRuleValue
+  } = discountRuleDisplay(rule)
 
-        <Form.Item label='公式：' {...formItemLayout}>
-          {discountType == Rule_Discount_Ratio ?
-            <span>刊例价 X {discountFixedRatio}% = 账号报价</span> :
-            <span>刊例价 - {discountFixedAmount}元 = 账号报价</span>
-          }
-        </Form.Item>
-      </div>
-    }
-
-  </Form.Item >
+  return (
+    discountRuleLabel ? <>
+      <span>{discountRuleLabel}</span><span>{discountRuleValue}</span>；
+    </> : <span />
+  )
 }

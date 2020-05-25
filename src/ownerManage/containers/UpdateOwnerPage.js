@@ -185,7 +185,7 @@ const UpdateOwnerPage = (props) => {
       </Menu.Item>
       {showButton.policy  &&
       <Menu.Item key="2">
-        <Link target="_blank" to={`/account/policy?userId=${linkUserId}`}>采购政策</Link>
+        <Link target="_blank" to={`/account/policy/list/${linkUserId}`}>采购政策</Link>
       </Menu.Item>}
       {showButton.channelDiscount > 0 &&
       <Menu.Item key="4">

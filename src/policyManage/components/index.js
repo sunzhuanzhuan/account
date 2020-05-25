@@ -3,7 +3,7 @@ export const NotExistModalContent = ({
     accountList = [],
     notExistAccountIds = [],
     notExistAccountIdsByMcnId = [],
-    alreadyHaveRuleAccountIds = []
+    alreadyHaveRuleAccountIds = [], notExistAccountIdsByPlatformId = []
 }) => {
     return <div>
         {
@@ -17,5 +17,6 @@ export const NotExistModalContent = ({
         {notExistAccountIds.length > 0 || notExistAccountIdsByMcnId.length > 0 && <p>以下账号ID不存在</p>}
         {notExistAccountIds.length > 0 && <p>不存在的accountId: {notExistAccountIds.join(", ")}</p>}
         {notExistAccountIdsByMcnId.length > 0 && <p>不在该主账号旗下的accountId: {notExistAccountIdsByMcnId.join(', ')}</p>}
+        {notExistAccountIdsByPlatformId.length > 0 && <p>不在所选平台下的accountId: {notExistAccountIdsByPlatformId.join(', ')}</p>}
     </div>
 }

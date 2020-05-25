@@ -21,7 +21,7 @@ const RuleModule = (props) => {
           <AccountView accountList={item.accountList} ></AccountView>
         }
         {item.discountRule && <DiscountView data={item.discountRule}></DiscountView>}
-        {item.rebateRule && <RebateView data={item.rebateRule}></RebateView>}
+        {item.rebateRule && <RebateView data={item.rebateRule} type={type}></RebateView>}
       </RuleCard>)
     }
   </div>
