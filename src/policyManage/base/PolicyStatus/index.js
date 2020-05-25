@@ -19,7 +19,7 @@ export const policyStatusMap = {
   },
   [POLICY_STATUS_ACTIVE]: {
     status: 'processing',
-    text: '已启用',
+    text: '进行中',
     field: 'persistingCount'
   },
   [POLICY_STATUS_EXPIRED]: {
