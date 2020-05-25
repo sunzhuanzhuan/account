@@ -32,7 +32,6 @@ const GlobalCountAsync = (props) => {
       mcnId: record.mcnId,
       platformIdList: record.globalAccountRule?.platformList?.map(p => p.platformId)
     }
-    console.log(params, '________');
     actions.queryGlobalAccountCount(params).then(({ data }) => {
       const count = handleCount(data, record.specialAccountCount, record.whiteListCount)
       setCount(count)
