@@ -34,9 +34,7 @@ export const {
 // 获取全局账号数量
 export const {
   queryGlobalAccountCount
-} = createHttpAction('queryGlobalAccountCount', Interface.policy.queryGlobalAccountCount, {
-  method: 'post'
-});
+} = createHttpAction('queryGlobalAccountCount', Interface.policy.queryGlobalAccountCount);
 
 // 采购政策列表
 export const {

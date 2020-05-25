@@ -155,10 +155,12 @@ const PolicyEditForm = forwardRef((props, ref) => {
         return
       }
 
+      /*
       if (hasRebate(values) && !values.rebateSettlementCycle) {
         message.warn('当前全局或特殊规则中设置了返点, 请添加返点规则')
         return
       }
+      */
 
       const body = handleValues(values)
 

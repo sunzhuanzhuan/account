@@ -27,7 +27,6 @@ export const Settlement = (props) => {
             {
               getFieldDecorator('rebateSettlementCycle', {
                 initialValue: data.rebateSettlementCycle,
-                rules: [ { required: true, message: '结算周期必填' } ]
               })(
                 <Radio.Group options={
                   Object.entries(REBATE_SETTLEMENT_CYCLE).map(([ value, label ]) => ({
@@ -42,7 +41,6 @@ export const Settlement = (props) => {
             {
               getFieldDecorator('stepRebateSettlementType', {
                 initialValue: data.stepRebateSettlementType,
-                rules: [ { required: true, message: '阶梯返点结算必填' } ]
               })(
                 <Radio.Group options={
                   Object.entries(STEP_REBATE_SETTLEMENT_TYPES).map(([ value, label ]) => ({
