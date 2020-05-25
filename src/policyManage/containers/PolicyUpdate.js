@@ -89,17 +89,17 @@ const PolicyUpdate = (props) => {
 
   // 启用
   const startPolicy = (id) => {
-    const { startPolicy, syncUpdatePolicyStatus } = props.actions
+    const { startPolicy } = props.actions
     Modal.confirm({
       title: '确定启用本政策吗?',
       onOk: () => {
         return startPolicy({ id }).then(({ data }) => {
           message.success('操作成功')
-          syncUpdatePolicyStatus({
+          setInitData(Object.assign({}, initData, {
             key: data.id,
             policyStatus: POLICY_STATUS_ACTIVE,
             ...data
-          })
+          }))
         })
       }
     })
@@ -143,7 +143,10 @@ const PolicyUpdate = (props) => {
           }
           {
             (initData.policyStatus === POLICY_STATUS_STOP) &&
-            <Button type="primary" onClick={() => startPolicy(id)}>启用政策</Button>
+              <>
+                <Button loading={submitLoading} type="primary" onClick={submit}>更新政策</Button>
+                <Button type="primary" ghost onClick={() => startPolicy(id)}>启用政策</Button>
+              </>
           }
         </div>
         {stopModal ? <StopReasonModal onCancel={stopPolicy} onOk={stopReasonSubmit} /> : null}
