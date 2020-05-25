@@ -58,6 +58,7 @@ export const DiscountEdit = (props) => {
                     <InputNumber
                       style={{ width: 100 }}
                       min={1}
+                      precision={0}
                       max={9999999}
                     />
                   )}元 = 账号报价</span>
