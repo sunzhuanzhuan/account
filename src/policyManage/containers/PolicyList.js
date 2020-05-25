@@ -16,6 +16,8 @@ import {
   policyStatusMap
 } from "../base/PolicyStatus";
 import Yuan from "@/base/Yuan";
+import { forceCheck } from 'react-lazyload';
+
 
 
 const { TabPane } = Tabs;
@@ -46,6 +48,7 @@ const PolicyList = (props) => {
     getStatistics(search.current.form)
     actions.policyAllList(search.current).then(() => {
       setLoading(false)
+      forceCheck()
 
     }).catch(() => setLoading(false))
   }

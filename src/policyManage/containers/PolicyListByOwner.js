@@ -4,6 +4,7 @@ import { bindActionCreators } from "redux";
 import actions from "../actions";
 import { connect } from "react-redux";
 import { Alert, Button, Checkbox, Form, Pagination, Tabs, Spin, message, PageHeader } from "antd";
+import { forceCheck } from 'react-lazyload';
 
 import { policyStatusMap } from "@/policyManage/base/PolicyStatus";
 
@@ -57,6 +58,7 @@ const PolicyListByOwner = (props) => {
     getStatistics(search.current.form)
     actions.policyListByOwner(search.current).then(() => {
       setLoading(false)
+      forceCheck()
     }).catch(() => setLoading(false))
   }
 
