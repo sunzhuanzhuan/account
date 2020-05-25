@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 
 function handleCount(c1 = 0, c2 = 0, c3 = 0) {
 
-  let result = c1 - c2 - c3
+  let result = c1/* - c2 - c3*/
 
   if(result === 0){
     return "0"
@@ -29,8 +29,9 @@ const GlobalCountAsync = (props) => {
 
   useEffect(() => {
     const params = {
-      mcnId: record.mcnId,
-      platformIdList: record.globalAccountRule?.platformList?.map(p => p.platformId)
+      /*mcnId: record.mcnId,
+      platformIdList: record.globalAccountRule?.platformList?.map(p => p.platformId)*/
+      id: record.id
     }
     actions.queryGlobalAccountCount(params).then(({ data }) => {
       const count = handleCount(data, record.specialAccountCount, record.whiteListCount)
@@ -40,7 +41,6 @@ const GlobalCountAsync = (props) => {
   }, [])
 
   useEffect(() => {
-    console.log(count, '___');
     count && !record.globalAccountCount && updateSource(count)
   }, [record.globalAccountCount])
 
