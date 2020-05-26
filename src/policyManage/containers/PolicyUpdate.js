@@ -56,10 +56,14 @@ const PolicyUpdate = (props) => {
     formRef.current?.handleSubmit((body) => {
       setSubmitLoading(true)
       props.actions.updatePolicy(body).then(({ data }) => {
+        function cb() {
+          props.history.go(-1)
+        }
+
         if(data.isAllAccountSuccess === 2){
-          message.success('更新政策成功: 当前政策包含的账号有被转移或删除的账号，则该政策不包含此类账号！');
+          message.success('更新政策成功: 当前政策包含的账号有被转移或删除的账号，则该政策不包含此类账号！' , 3 , cb);
         }else {
-          message.success('更新政策成功');
+          message.success('更新政策成功' ,3, cb);
         }
         reload()
       }).finally(() => {

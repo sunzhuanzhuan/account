@@ -117,7 +117,8 @@ const PolicyAccountModal = (props) => {
               } = ruleDisplay(role)
               return <li key={index}>
                 规则{role.ruleId}（{role.accountNumber}个号）<span>{discountRuleLabel}</span><span>{discountRuleValue}</span>
-               ； <span>{rebateRuleLabel}</span> <span>{rebateRuleValue}</span>
+                {discountRuleLabel && rebateRuleLabel ? <span>；</span>: null}
+               <span>{rebateRuleLabel}</span> <span>{rebateRuleValue}</span>
               </li>
             })}
           </ul>
