@@ -126,10 +126,9 @@ const RuleCard = props => {
       title={
         <span>
           规则{index + 1}（{data.accountList.length}个号）：
+          <span>{discountRuleLabel}</span><span>{discountRuleValue}</span>
           {
-            discountRuleLabel && <>
-              <span>{discountRuleLabel}</span><span>{discountRuleValue}</span>；
-            </>
+            discountRuleLabel && rebateRuleLabel ? <>；</> : null
           }
           <span>{rebateRuleLabel}</span><span>{rebateRuleValue}</span>
         </span>
