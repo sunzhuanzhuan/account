@@ -301,6 +301,7 @@ module.exports = {
               customize: require.resolve('babel-preset-react-app/webpack-overrides'),
 
               plugins: [
+                ["@babel/plugin-proposal-optional-chaining"],
                 ['@babel/plugin-proposal-decorators', { legacy: true }],
                 ['import', { libraryName: 'antd', libraryDirectory: 'es' }],
                 [

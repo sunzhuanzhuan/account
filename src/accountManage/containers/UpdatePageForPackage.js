@@ -163,7 +163,7 @@ class UpdatePageForPackage extends Component {
         账号维护
         {policyId ?
           <small className='policyInfo-id-display'>
-            价格政策ID: <a target='_blank' href={"/account/policy?policyPeriodIdentity=1&userId=" + base.userId}>{policyId}-{policyRuleType[ruleType]}-{ruleId}</a></small>
+            价格政策ID: <a target='_blank' href={"/account/policy/details/" + policyId}>{policyId}</a></small>
           : null}
       </h2>
       {process.env.REACT_APP_CLIENT === 'NB' && <Tabs

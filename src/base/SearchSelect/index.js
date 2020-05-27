@@ -8,7 +8,7 @@ import {
 } from "antd";
 import debounce from 'lodash/debounce';
 import PropTypes from 'prop-types'
-
+import uniqBy from 'lodash/uniqBy'
 
 const Option = Select.Option
 
@@ -35,7 +35,8 @@ export default class SearchSelect extends Component {
 	state = {
 		data: [],
 		searchIng: false,
-		value: undefined
+		value: undefined,
+		valueOption: undefined
 	}
 	search = (value) => {
 		// 已经在请求时不再发请求
@@ -54,12 +55,16 @@ export default class SearchSelect extends Component {
 					return;
 				}
 				!this.isUnmount && this.setState({ data: list, searchIng: false });
-			});
+			})
+      .catch(() => {
+        !this.isUnmount && this.setState({ searchIng: false });
+      })
 	}
-	handleChange = (value) => {
+	handleChange = (value, valueOption) => {
 		this.search('')
 		this.setState({
-			value
+			value,
+      valueOption,
 		}, () => {
 			this.props.onChange && this.props.onChange(value)
 		});
@@ -101,15 +106,27 @@ export default class SearchSelect extends Component {
 		const {
 			placeholder = '请输入并从下拉框中选择', empty = '输入查询信息',
 			mapResultItemToOption,
-      labelInValue
+      labelInValue,
+      showSelected
 		} = this.props;
-		const { searchIng, data, value } = this.state;
+		const { searchIng, data, value, valueOption, word } = this.state;
+		let options = data.map(mapResultItemToOption)
+    if(showSelected && options.length === 0){
+      let otherList = valueOption ? valueOption.map(item => {
+        return {
+          label: item.props.children,
+          value: item.key
+        }
+      }) : []
+      options = uniqBy([].concat(options, otherList), 'value')
+    }
+
+
 		return (
 			<Select
 				showSearch
 				allowClear
 				labelInValue={labelInValue}
-				filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
 				value={value}
 				placeholder={placeholder}
 				notFoundContent={searchIng ? <Spin size="small" /> : empty}
@@ -119,8 +136,7 @@ export default class SearchSelect extends Component {
 				{...this.props}
 				onChange={this.handleChange}
 			>
-				{data.map(item => {
-					const { value, label } = mapResultItemToOption(item)
+				{options.map(({ value, label }) => {
 					return (value && label) ? <Option key={value}>{label}</Option> : null
 				})}
 			</Select>)

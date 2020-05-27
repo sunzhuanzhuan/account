@@ -6,11 +6,11 @@ const { TextArea } = Input;
 class StopReasonModal extends React.Component {
 
   judgeInputLenth = (_, value, callback) => {
-    if (value && value.trim() !== "" && value.length <= 200) {
+    if (value?.trim() !== "" && value?.length <= 200) {
       callback();
-    } else if (!value || !(value.trim())) {
+    } else if (!value || !(value?.trim())) {
       callback('请输入停用原因')
-    } else if (value.length > 200) {
+    } else if (value?.length > 200) {
       callback('停用原因最多可输入200字')
     }
   }
@@ -36,12 +36,12 @@ class StopReasonModal extends React.Component {
         width={700}
         onCancel={() => { onCancel() }}
         onOk={this.handleOk}
+        maskClosable={false}
       >
         <Form>
           <FormItem>
             {getFieldDecorator('policyStopReason', {
               rules: [
-                { required: true, message: ' ' },
                 { validator: this.judgeInputLenth }
               ],
             })(

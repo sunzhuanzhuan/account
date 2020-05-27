@@ -1,6 +1,8 @@
 import React from "react";
 
 import { Button, InputNumber } from "antd";
+import numeral from "numeral";
+import InputPercent from "@/base/InputPercent";
 
 export class LadderRatioEdit extends React.PureComponent {
   static getDerivedStateFromProps(nextProps) {
@@ -53,9 +55,8 @@ export class LadderRatioEdit extends React.PureComponent {
     }
     this.triggerChange({ rebateNumbers });
   };
-  handlePercentageChange = (e, index) => {
+  handlePercentageChange = (number, index) => {
     const { percentage } = this.state;
-    const number = parseInt(e || 0, 10);
     percentage[index] = number;
     if (!("value" in this.props)) {
       this.setState({ percentage });
@@ -81,20 +82,27 @@ export class LadderRatioEdit extends React.PureComponent {
         <ul>
           {rebateNumbers.slice(1).map((item, index) => (
             <li key={index}>
-              大于<span className="rule-number">{rebateNumbers[index]}</span>
+              大于<span className="rule-number rule-number-under-line">{rebateNumbers[index]}</span>
               且小于等于
                             <span className="rule-input">
                 <InputNumber
                   disabled={rebateNumbers.length - 2 == index}
+                  style={{margin: "0 4px"}}
+                  min={1}
                   onChange={e => this.handleRatioChange(e, index + 1)}
                   value={item}
                 />
               </span>
               时,返点比例为：
                             <span className="rule-input">
-                <InputNumber
+                <InputPercent
                   onChange={e => this.handlePercentageChange(e, index)}
                   value={percentage[index]}
+                  max={100}
+                  min={0}
+                  step={1}
+                  precision={0}
+                  style={{ width: 100 }}
                 /> %
               </span>
               {rebateNumbers.length <= 10 && <Button type="link" onClick={() => this.addRule(index + 1)}>添加</Button>}

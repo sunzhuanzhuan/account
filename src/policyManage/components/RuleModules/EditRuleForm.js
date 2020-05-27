@@ -33,7 +33,6 @@ const EditRuleForm = (props) => {
         }
         delete rebateRule.rebateNumbers
         delete rebateRule.percentage
-        console.log("=====", allSelectedIds, accountList)
         values.accountIds = allSelectedIds;
 
         if (!values.discountRule && !values.rebateRule) {
@@ -81,6 +80,7 @@ const EditRuleForm = (props) => {
         key={ruleId}
         title={`${ruleId ? '修改' : '新增'}规则`}
         width={1000}
+        bodyStyle={{maxHeight: 380, overflowY: "auto"}}
         onOk={handleSubmit}
         maskClosable={true}
         mask={false}
