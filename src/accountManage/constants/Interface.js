@@ -24,8 +24,8 @@ export default {
   addOrUpdateAccountTrinitySkuInfo: prefix + '/trinitySku/v1/addOrUpdateAccountTrinitySkuInfo',
   getPolicyIdAndDiscount: prefix + '/policy/v1/getPolicyIdAndDiscount',
   getInfoIdsByUserIdAndPlatformId: prefix + '/policy/v1/getInfoIdsByUserIdAndPlatformId',
-  getPolicyRuleInfoByPlatform: prefix + '/policy/v1.1/getPolicyRuleInfoByPlatform',
-  getPolicyRuleInfoByAccount: prefix + '/policy/v1.1/getPolicyRuleInfoByAccount',
+  getPolicyRuleInfoByPlatform: prefix + '/account/v1/getPublicationRateByPlatform',
+  getPolicyRuleInfoByAccount: prefix + '/account/v1/getPublicationRateByAccount',
   calculatePrice: prefix + '/channel/discount/v1/calculate',
   update: {
     saveSku: prefix + '/sku/v1/updateSku',
