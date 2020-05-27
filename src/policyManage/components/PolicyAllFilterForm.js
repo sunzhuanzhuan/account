@@ -10,6 +10,7 @@ import {
 } from "@/policyManage/constants/dataConfig";
 import RangePickerForMonth from "@/base/RangePickerForMonth";
 import moment from 'moment'
+import InputId from "@/base/InputId";
 
 const { RangePicker } = DatePicker
 const InputGroup = Input.Group
@@ -144,7 +145,7 @@ export default class PolicyAllFilterForm extends Component {
         <Col span={6}>
           <Form.Item label="主账号ID">
             {getFieldDecorator('mcnId', {})(
-              <Input placeholder="请输入主账号ID" style={{ width: '100%' }} />
+              <InputId placeholder="请输入主账号ID" style={{ width: '100%' }} />
             )}
           </Form.Item>
         </Col>
@@ -173,7 +174,7 @@ export default class PolicyAllFilterForm extends Component {
         <Col span={6}>
           <Form.Item label={<EmSpan length={4}>政策ID</EmSpan>}>
             {getFieldDecorator('id', {})(
-              <Input placeholder="请输入政策ID" style={{ width: '100%' }} />
+              <InputId placeholder="请输入政策ID" style={{ width: '100%' }} />
             )}
           </Form.Item>
         </Col>
