@@ -24,11 +24,9 @@ const FormItem = Form.Item;
 
 
 // 检查最少一项报价(下期)
-const checkPrice = (onOff, otherCheck) => (rule, value = {}, callback) => {
+const checkPrice = (rule, value = {}, callback) => {
+  const onOff = rule.required
   if (!onOff || value.some(item => item.nextCostPriceRaw || item.costPriceRaw)) {
-    if (otherCheck) {
-      return otherCheck(rule, value, callback);
-    }
     return callback();
   }
   callback('报价项最少填写一项');
@@ -410,7 +408,7 @@ export class FamousPrice extends Component {
             {getFieldDecorator('price_now', {
               initialValue: skuList,
               rules: [
-                { validator: checkPriceList, on: _data.right },
+                { validator: checkPriceList, on: _data.right, type: 'array' },
                 // { validator: checkPriceAndEquities },
                 ]
             })(<PriceTable
@@ -477,10 +475,16 @@ export class FamousPrice extends Component {
             {getFieldDecorator('price_next', {
               initialValue: skuList,
               validateFirst: true,
-              rules: [{
-                required: require,
-                validator: checkPrice(require, this.checkPriceAndDate)
-              }]
+              rules: [
+                {
+                  required: require, type: 'array',
+                  validator: checkPrice,
+                },
+                {
+                  type: 'array',
+                  validator: this.checkPriceAndDate,
+                }
+              ]
 
             })(<PriceTable
               // desc={handlePriceTitle(taxInPrice == 1, partnerType)}
