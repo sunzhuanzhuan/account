@@ -69,6 +69,7 @@ export default class PriceEdit extends Component {
   };
   submit = (e) => {
     e && e.preventDefault();
+    this.props.form.validateFields(['price_next'])
     this.props.form.validateFieldsAndScroll((err, fieldsValue) => {
       if (!err) {
         let values = this.handleSubmitValues(fieldsValue)

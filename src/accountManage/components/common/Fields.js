@@ -130,10 +130,13 @@ export const trinityIsPreventShieldingTipBySku = (isFamous, action, value, succe
     return action(value).then(success).catch(error)
   }
 
-  let specialList = value.skuList.filter(item => item.specialEquitiesId > 0);
+  // 参与判断的sku (条件: 有配置防屏蔽选项 & 有价格)
+  let specialList = value.skuList.filter(item => item.specialEquitiesId > 0 && item.costPriceRaw > 0);
+  let nextSpecialList = value.skuList.filter(item => item.specialEquitiesId > 0 && item.nextCostPriceRaw > 0);
 
-  // 没有配置防屏蔽的sku
-  if (specialList.length === 0) {
+  // 没有需要判断的sku
+
+  if (specialList.length === 0 && nextSpecialList.length === 0) {
     return action(value).then(success).catch(error)
   }
 
@@ -141,6 +144,8 @@ export const trinityIsPreventShieldingTipBySku = (isFamous, action, value, succe
     if (item.equitiesList.includes(item.specialEquitiesId)) {
       skuFlag++
     }
+  })
+  nextSpecialList.forEach(item => {
     if (item.nextEquitiesList.includes(item.specialEquitiesId)) {
       skuNextFlag++
     }
@@ -162,13 +167,13 @@ export const trinityIsPreventShieldingTipBySku = (isFamous, action, value, succe
     case 0:
       skuNextFlag = 2
       break;
-    case specialList.length:
+    case nextSpecialList.length:
       skuNextFlag = 1
       break;
     default:
       skuNextFlag = 3
   }
-  // [1-2]_[1-2]_[1-2]_[1-3]_[1-3]
+  // (1-2)_(1-2)_(1-2)_(1-3)_(1-3)
   let mapKey = `${canEditPrice ? '1' : '2'}_${canEditNextPrice ? '1' : '2'}_${accountFlag}_${skuFlag}_${skuNextFlag}`
 
   let tipA = `当前账号可以在${trinityName}下单，服务项防屏蔽未勾选，请修改服务项，以免影响应约造成损失。`
