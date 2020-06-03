@@ -93,6 +93,7 @@ class RecentPrice extends Component {
                           {item.created_time}
                         </Col>
                         <Col span={7}>
+                          {item.isShield == 1 ? <img src={require('./img/isSpecial.png')} width='16px' style={{ marginRight: 4, marginBottom: 4 }} /> : null}
                           {item.skuTypeName}
                           <EquitiesTags list={item.equities} />
                         </Col>
@@ -154,13 +155,13 @@ export default connect(
 )(withRouter(RecentPrice))
 
 function EquitiesTags({ list = [] }) {
-  return list.length > 0 ? <span> +
-    <span style={{ paddingLeft: 3 }}>
-      {list.map(one => <Tag key={one.equitiesId} color="blue" style={{ marginTop: 6, marginBottom: 4 }}>
-        {one.is_free == 1 ? <img src={require('./img/free.png')} width='14px'
-          style={{ marginRight: 4, marginBottom: 2 }} /> : null}
-        {one.equitiesName}
-      </Tag>)}
-    </span>
-  </span> : null
+  return list.length > 0 ? <span><PopoverFormat text={
+    <img src={require('./img/equity.png')} height='18px' style={{ marginBottom: 1, marginLeft: 4 }} />
+  } content={
+    list.map(one => <Tag key={one.equitiesId} color="blue" style={{ marginTop: 6, marginBottom: 4 }}>
+      {one.is_free == 1 ? <img src={require('./img/free.png')} width='14px'
+        style={{ marginRight: 4, marginBottom: 2 }} /> : null}
+      {one.equitiesName}
+    </Tag>)
+  } /></span> : null
 }
