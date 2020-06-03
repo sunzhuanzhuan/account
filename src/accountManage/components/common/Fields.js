@@ -120,8 +120,8 @@ export const trinityIsPreventShieldingTipBySku = (isFamous, action, value, succe
     skuNextFlag = 0;
 
 
-  // 非预约
-  if (isFamous !== 1) {
+  // 非预约 || 未知
+  if (isFamous !== 1 || !accountFlag) {
     return action(value).then(success).catch(error)
   }
 
@@ -135,9 +135,12 @@ export const trinityIsPreventShieldingTipBySku = (isFamous, action, value, succe
   let nextSpecialList = value.skuList.filter(item => item.specialEquitiesId > 0 && item.nextCostPriceRaw > 0);
 
   // 没有需要判断的sku
-
-  if (specialList.length === 0 && nextSpecialList.length === 0) {
-    return action(value).then(success).catch(error)
+  if (specialList.length === 0) {
+    canEditPrice = false
+  }
+  // 没有需要判断的sku
+  if (nextSpecialList.length === 0) {
+    canEditNextPrice = false
   }
 
   specialList.forEach(item => {
@@ -192,7 +195,8 @@ export const trinityIsPreventShieldingTipBySku = (isFamous, action, value, succe
 
 
 
-  let tip = [...actionMaps].filter(([key]) => key.test(mapKey)).pop()[1]
+  let tip = [...actionMaps].filter(([key]) => key.test(mapKey)).pop()
+  tip = tip? tip[1] : ''
 
   /*if (canEditPrice && canEditNextPrice) {
     // 两期都能编辑
