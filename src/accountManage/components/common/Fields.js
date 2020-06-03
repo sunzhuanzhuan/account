@@ -195,7 +195,8 @@ export const trinityIsPreventShieldingTipBySku = (isFamous, action, value, succe
 
 
 
-  let tip = [...actionMaps].filter(([key]) => key.test(mapKey)).pop()[1]
+  let tip = [...actionMaps].filter(([key]) => key.test(mapKey)).pop()
+  tip = tip? tip[1] : ''
 
   /*if (canEditPrice && canEditNextPrice) {
     // 两期都能编辑
