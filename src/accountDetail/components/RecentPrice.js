@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { List, Icon, Spin, Row, Col, Alert, Skeleton } from 'antd';
+import { List, Icon, Spin, Row, Col, Alert, Skeleton, Tag } from 'antd';
 import InfiniteScroll from 'react-infinite-scroller';
 import "./RecentPrice.less"
 import qs from "qs";
@@ -65,10 +65,10 @@ class RecentPrice extends Component {
         <div style={{ marginTop: 20 }}>
           <div>
             <Row className="price-table-row title">
-              <Col span={5}>应约时间</Col>
-              <Col span={5}>价格名称</Col>
+              <Col span={4}>应约时间</Col>
+              <Col span={7}>价格名称</Col>
               <Col span={4}>应约价(元)</Col>
-              <Col span={5}>执行数据
+              <Col span={4}>执行数据
               <PopoverFormat content={<div style={{ width: 200 }}>展示的是订单执行后的表现稳定性数据，一般为发布时间后72小时的数据；若为-则是因为该订单未最终执行或未抓取到数据。</div>}
                   text={<Icon style={{ marginLeft: 2 }} type="question-circle" theme="outlined" />} /></Col>
               <Col span={5}>发布时间</Col>
@@ -89,16 +89,17 @@ class RecentPrice extends Component {
                   renderItem={(item, index) => (
                     <List.Item key={index} style={{ marginTop: 16 }}>
                       <Row className="price-table-row">
-                        <Col span={5}>
+                        <Col span={4}>
                           {item.created_time}
                         </Col>
-                        <Col span={5}>
-                          {item.price_label}
+                        <Col span={7}>
+                          {item.skuTypeName}
+                          <EquitiesTags list={item.equities} />
                         </Col>
                         <Col span={4}>
                           {item.deal_price}
                         </Col>
-                        <Col span={5} >
+                        <Col span={4} >
                           <div className='execution-data'>
                             {executionList.includes(`${platformId}`) ?
                               executionMap[platformId].list.map((one, index) => <div key={index} className='execution-data-item'>
@@ -112,8 +113,8 @@ class RecentPrice extends Component {
                           </div>
                         </Col>
                         <Col span={5}>
-                          {platformId == 106 ? 
-                            item.live_created_time ||'-': item.media_created_time||'-'}
+                          {platformId == 106 ?
+                            item.live_created_time || '-' : item.media_created_time || '-'}
                         </Col>
                       </Row>
                     </List.Item>
@@ -152,3 +153,14 @@ export default connect(
   mapDispatchToProps
 )(withRouter(RecentPrice))
 
+function EquitiesTags({ list = [] }) {
+  return list.length > 0 ? <span> +
+    <span style={{ paddingLeft: 3 }}>
+      {list.map(one => <Tag key={one.equitiesId} color="blue" style={{ marginTop: 6, marginBottom: 4 }}>
+        {one.is_free == 1 ? <img src={require('./img/free.png')} width='14px'
+          style={{ marginRight: 4, marginBottom: 2 }} /> : null}
+        {one.equitiesName}
+      </Tag>)}
+    </span>
+  </span> : null
+}
