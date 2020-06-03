@@ -120,8 +120,8 @@ export const trinityIsPreventShieldingTipBySku = (isFamous, action, value, succe
     skuNextFlag = 0;
 
 
-  // 非预约
-  if (isFamous !== 1) {
+  // 非预约 || 未知
+  if (isFamous !== 1 || !accountFlag) {
     return action(value).then(success).catch(error)
   }
 
