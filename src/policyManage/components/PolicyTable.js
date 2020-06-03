@@ -146,7 +146,7 @@ const PolicyTable = (props) => {
       dataIndex: 'policyName',
       render: (name, record) => {
         return <div className='cursor-pointer'>
-          <Popover trigger='hover' placement='topLeft' content={name}>
+          <Popover trigger='hover' placement='topLeft' content={<div style={{maxWidth: 280}}>{name}</div>}>
             <Link to={`/account/policy/details/${record.id}`} className='nowrap-ellipsis mw-15'>
               {name}
             </Link>
@@ -185,7 +185,9 @@ const PolicyTable = (props) => {
       dataIndex: 'identityName',
       render: (name, record) => {
         return <div>
-          <Link className='nowrap-ellipsis' to={`/account/owner/update/${record.mcnId}`}>{name}</Link>
+          <Popover trigger='hover' placement='topLeft' content={<div style={{maxWidth: 280}}>{name}</div>}>
+            <Link className='nowrap-ellipsis mw-15' to={`/account/owner/update/${record.mcnId}`}>{name}</Link>
+          </Popover>
           <div className='cursor-pointer'>ID: {record.mcnId}</div>
         </div>
       }
