@@ -150,7 +150,7 @@ export const trinityIsPreventShieldingTipBySku = (isFamous, action, value, succe
       skuNextFlag++
     }
   })
-  debugger
+
   // 1 防屏蔽;  2 不防屏蔽; 3 防屏蔽勾选不一致
   switch (skuFlag) {
     case 0:
