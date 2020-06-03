@@ -135,9 +135,12 @@ export const trinityIsPreventShieldingTipBySku = (isFamous, action, value, succe
   let nextSpecialList = value.skuList.filter(item => item.specialEquitiesId > 0 && item.nextCostPriceRaw > 0);
 
   // 没有需要判断的sku
-
-  if (specialList.length === 0 && nextSpecialList.length === 0) {
-    return action(value).then(success).catch(error)
+  if (specialList.length === 0) {
+    canEditPrice = false
+  }
+  // 没有需要判断的sku
+  if (nextSpecialList.length === 0) {
+    canEditNextPrice = false
   }
 
   specialList.forEach(item => {
