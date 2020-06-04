@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Input, Row, Col, Select, Button, DatePicker } from 'antd'
+import { Form, Input, Row, Col, Select, Button, DatePicker, Radio } from 'antd'
 import EmSpan from '@/base/EmSpan'
 import SearchSelect from '@/base/SearchSelect'
 import { batchText2Array, moment2dateStr } from '../utils'
@@ -252,8 +252,27 @@ export default class PolicyAllFilterForm extends Component {
             )}
           </Form.Item>
         </Col>
+        <Col span={12}>
+          <Form.Item label="">
+            <InputGroup compact>
+              <Select
+                style={{ width: '130px' }}
+                value={this.state.validType}
+                onChange={(key) => this.setState({ validType: key })}
+              >
+                <Option value="validStartTime">政策开始</Option>
+                <Option value="validEndTime">政策结束</Option>
+              </Select>
+              {getFieldDecorator(this.state.validType, {})(
+                <RangePickerForMonth
+                  style={{ width: 'calc(100% - 130px)' }}
+                />
+              )}
+            </InputGroup>
+          </Form.Item>
+        </Col>
         <Col span={6}>
-          <Form.Item label={<EmSpan length={5}>平台</EmSpan>}>
+          <Form.Item label={<EmSpan length={6}>平台</EmSpan>}>
             {getFieldDecorator('platformIdList', {})(
               <Select
                 allowClear
@@ -293,25 +312,6 @@ export default class PolicyAllFilterForm extends Component {
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item label="">
-            <InputGroup compact>
-              <Select
-                style={{ width: '130px' }}
-                value={this.state.validType}
-                onChange={(key) => this.setState({ validType: key })}
-              >
-                <Option value="validStartTime">政策开始</Option>
-                <Option value="validEndTime">政策结束</Option>
-              </Select>
-              {getFieldDecorator(this.state.validType, {})(
-                <RangePickerForMonth
-                  style={{ width: 'calc(100% - 130px)' }}
-                />
-              )}
-            </InputGroup>
-          </Form.Item>
-        </Col>
-        <Col span={12}>
           <Form.Item>
             <InputGroup compact>
               <Select
@@ -331,8 +331,18 @@ export default class PolicyAllFilterForm extends Component {
             </InputGroup>
           </Form.Item>
         </Col>
-        <Col span={4}>
-          <div style={{ lineHeight: '40px', textAlign: 'left' }}>
+        <Col span={6}>
+          <Form.Item label={<EmSpan length={6}>是否有合同</EmSpan>}>
+            {getFieldDecorator('hasContract', {})(
+              <Select placeholder="请选择" allowClear>
+                <Option value={1}>是</Option>
+                <Option value={2}>否</Option>
+              </Select>
+            )}
+          </Form.Item>
+        </Col>
+        <Col span={6}>
+          <div style={{ lineHeight: '40px', textAlign: 'right' }}>
             <Button type='primary' htmlType='submit' loading={loading}>查询</Button>
             <Button style={{ margin: '0 16px 0 10px' }} onClick={this.handleReset}>重置</Button>
           </div>

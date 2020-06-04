@@ -146,7 +146,8 @@ const PolicyTable = (props) => {
       dataIndex: 'policyName',
       render: (name, record) => {
         return <div className='cursor-pointer'>
-          <Popover trigger='hover' placement='topLeft' content={<div style={{maxWidth: 280}}>{name}</div>}>
+          <Popover trigger='hover' placement='topLeft' content={
+            <div style={{ maxWidth: 280 }}>{name}</div>}>
             <Link to={`/account/policy/details/${record.id}`} className='nowrap-ellipsis mw-15'>
               {name}
             </Link>
@@ -185,7 +186,8 @@ const PolicyTable = (props) => {
       dataIndex: 'identityName',
       render: (name, record) => {
         return <div>
-          <Popover trigger='hover' placement='topLeft' content={<div style={{maxWidth: 280}}>{name}</div>}>
+          <Popover trigger='hover' placement='topLeft' content={
+            <div style={{ maxWidth: 280 }}>{name}</div>}>
             <Link className='nowrap-ellipsis mw-15' to={`/account/owner/update/${record.mcnId}`}>{name}</Link>
           </Popover>
           <div className='cursor-pointer'>ID: {record.mcnId}</div>
@@ -198,7 +200,10 @@ const PolicyTable = (props) => {
       render: (names, record) => {
         const text = record.globalAccountRule.platformList.map(p => p.platformName).join('、')
         return <Tooltip title={text.length > 35 ? text : ''} placement="topLeft">
-          <Typography.Paragraph  ellipsis={{ rows: 3, expandable: false }} style={{marginBottom: 0}}>
+          <Typography.Paragraph ellipsis={{
+            rows: 3,
+            expandable: false
+          }} style={{ marginBottom: 0 }}>
             {text}
           </Typography.Paragraph>
         </Tooltip>
@@ -335,6 +340,16 @@ const PolicyTable = (props) => {
           <br />
           <span>{record.modifiedAt}</span>
         </>
+      }
+    },
+    {
+      title: '是否有合同',
+      dataIndex: 'hasContract',
+      render: (hasContract) => {
+        return hasContract ? <>
+          {hasContract === 1 && "是"}
+          {hasContract === 2 && "否"}
+        </> : '-'
       }
     },
     {
