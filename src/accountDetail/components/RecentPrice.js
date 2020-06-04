@@ -66,8 +66,9 @@ class RecentPrice extends Component {
           <div>
             <Row className="price-table-row title">
               <Col span={4}>应约时间</Col>
-              <Col span={7}>价格名称</Col>
+              <Col span={5}>价格名称</Col>
               <Col span={4}>应约价(元)</Col>
+              <Col span={2}></Col>
               <Col span={4}>执行数据
               <PopoverFormat content={<div style={{ width: 200 }}>展示的是订单执行后的表现稳定性数据，一般为发布时间后72小时的数据；若为-则是因为该订单未最终执行或未抓取到数据。</div>}
                   text={<Icon style={{ marginLeft: 2 }} type="question-circle" theme="outlined" />} /></Col>
@@ -92,13 +93,15 @@ class RecentPrice extends Component {
                         <Col span={4}>
                           {item.created_time}
                         </Col>
-                        <Col span={7}>
-                          {item.isShield == 1 ? <img src={require('./img/isSpecial.png')} width='16px' style={{ marginRight: 4, marginBottom: 4 }} /> : null}
+                        <Col span={5}>
                           {item.skuTypeName}
-                          <EquitiesTags list={item.equities} />
+                          {item.isShield == 1 ? <img src={require('./img/isSpecial.png')} width='16px' style={{ marginLeft: 4, marginBottom: 4 }} /> : null}
                         </Col>
                         <Col span={4}>
                           {item.deal_price}
+                        </Col>
+                        <Col span={2}>
+                          <EquitiesTags list={item.equities} />
                         </Col>
                         <Col span={4} >
                           <div className='execution-data'>

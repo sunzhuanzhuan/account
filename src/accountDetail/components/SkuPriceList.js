@@ -34,7 +34,7 @@ export function EquitiesList({ list }) {
     setEqList(data)
   }
   return list.length > 0 ? <div className='equities-list'>
-    <HocPopover content={<div>{eqList.map(one => <Tag key={one.equitiesId} color="blue">{one.equitiesName}</Tag>)}</div>}>
+    <HocPopover content={<div >{eqList.map(one => <Tag key={one.equitiesId} color="blue">{one.equitiesName}</Tag>)}</div>}>
       <img src={require('./img/equity.png')} height='18px' width='40px' onMouseOver={hoverEquity} />
     </HocPopover>
   </div> : null
