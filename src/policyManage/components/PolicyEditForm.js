@@ -244,6 +244,19 @@ const PolicyEditForm = forwardRef((props, ref) => {
             <Input placeholder='请输入' style={{ width: 330 }} />
           )}
         </FormItem>
+        <FormItem label='是否有合同'>
+          {getFieldDecorator('hasContract', {
+            initialValue: data.hasContract,
+            rules: [
+              { required: true, message: '请选择是否有合同' },
+            ]
+          })(
+            <Radio.Group>
+              <Radio value={1}>是</Radio>
+              <Radio value={2}>否</Radio>
+            </Radio.Group>
+          )}
+        </FormItem>
         <FormItem label="政策有效期">
           {getFieldDecorator('policyTime', {
             initialValue: data.validStartTime ? [ moment(data.validStartTime), moment(data.validEndTime) ] : [],
