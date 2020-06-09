@@ -27,7 +27,7 @@ function SkuPriceList({ list = [], equitiesIdListAsync, getPrice }) {
     </div>
   )
 }
-export function EquitiesList({ list }) {
+export function EquitiesList({ list = [] }) {
   const [eqList, setEqList] = useState([])
   async function hoverEquity() {
     const { data } = await api.get('/operator-gateway/equities/v1/getEquitiesListByEquitiesIds', { params: { equitiesIdList: list.join(',') } })

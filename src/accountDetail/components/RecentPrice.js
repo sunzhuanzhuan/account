@@ -23,11 +23,11 @@ class RecentPrice extends Component {
       visable: true,
       bigLoading: true,
       warnMessage: false,
-      account_id: qs.parse(window.location.search.substring(1)).accountId
+      accountId: qs.parse(window.location.search.substring(1)).accountId
     };
   }
   componentDidMount = () => {
-    this.props.actions.getRecentReservationOrderPriceList({ account_id: this.state.account_id, page: 1, page_size: 10 }).then((res) => {
+    this.props.actions.getRecentReservationOrderPriceList({ accountId: this.state.accountId, page: 1, pageSize: 10 }).then((res) => {
       this.setState({
         bigLoading: false,
       });
@@ -40,7 +40,7 @@ class RecentPrice extends Component {
     this.setState({
       loading: true,
     });
-    this.props.actions.AddGetPriceList({ account_id: this.state.account_id, page: value, page_size: 10 }).then((res) => {
+    this.props.actions.AddGetPriceList({ accountId: this.state.accountId, page: value, pageSize: 10 }).then((res) => {
       if (res.data.length < 10) {
         this.setState({
           hasMore: false,
@@ -91,14 +91,14 @@ class RecentPrice extends Component {
                     <List.Item key={index} style={{ marginTop: 16 }}>
                       <Row className="price-table-row">
                         <Col span={4}>
-                          {item.created_time}
+                          {item.createdTime}
                         </Col>
                         <Col span={5}>
-                          {item.skuTypeName}
+                          {item.priceLabel}
                           {item.isShield == 1 ? <img src={require('./img/isSpecial.png')} width='16px' style={{ marginLeft: 4, marginBottom: 4 }} /> : null}
                         </Col>
                         <Col span={4}>
-                          {item.deal_price}
+                          {item.dealPrice}
                         </Col>
                         <Col span={2}>
                           <EquitiesTags list={item.equities} />
@@ -118,7 +118,7 @@ class RecentPrice extends Component {
                         </Col>
                         <Col span={5}>
                           {platformId == 106 ?
-                            item.live_created_time || '-' : item.media_created_time || '-'}
+                            item.liveCreatedTime || '-' : item.mediaCreatedTime || '-'}
                         </Col>
                       </Row>
                     </List.Item>
