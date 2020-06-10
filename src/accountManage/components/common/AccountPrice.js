@@ -29,14 +29,14 @@ const checkPrice = (rule, value = {}, callback) => {
   if (!onOff || value.some(item => item.nextCostPriceRaw || item.costPriceRaw)) {
     return callback();
   }
-  callback('报价项最少填写一项');
+  callback('基础类报价项最少填写一项');
 };
 // 检查最少一项报价
 export const checkPriceList = (rule, value, callback) => {
   if (!rule.on || value.some(item => item.costPriceRaw)) {
     return callback();
   }
-  callback('报价项最少填写一项');
+  callback('基础类报价项最少填写一项');
 };
 // 检查有权益报价必填
 export const checkPriceAndEquities = (rule, value, callback) => {
@@ -274,7 +274,7 @@ export class FamousPrice extends Component {
         'price_next': value ? {
           value: price,
           'errors': [{
-            'message': '报价项最少填写一项',
+            'message': '基础类报价项最少填写一项',
             'field': 'price_next'
           }]
         } : {}
@@ -290,7 +290,7 @@ export class FamousPrice extends Component {
     let flag = value.some(item => item.nextCostPriceRaw);
     if (date) {
       if (!flag) {
-        return callback('报价项最少填写一项');
+        return callback('基础类报价项最少填写一项');
       }
     } else {
       setFields({
