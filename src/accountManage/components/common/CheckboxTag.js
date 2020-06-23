@@ -132,7 +132,7 @@ export default class CheckboxTag extends Component {
             {isEdit && isRequired === 2 && <Icon
               style={{
                 fontSize: "13px",
-                color: "#d08022",
+                color: "#256ea3",
                 marginLeft: '6px',
                 marginRight: -5,
                 lineHeight: '28px',
