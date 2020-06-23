@@ -6,6 +6,7 @@ import { Button, Form, Input, Select, Radio, Modal, Icon, message } from 'antd';
 import QuestionTip from "@/base/QuestionTip";
 import ContactTypesLeastOne from "@/ownerManage/components/ContactTypesLeastOne";
 import ContactExtend from "@/ownerManage/components/ContactExtend";
+import { EMOJI_REGEX } from "@/constants/config";
 
 const Option = Select.Option
 const RadioGroup = Radio.Group;
@@ -70,7 +71,6 @@ const AddOwnerForm = (props) => {
             cancelText: '继续添加',
             okText: '返回主账号列表',
             onOk: () => {
-              // TODO: 跳转地址
               window.location.href = props.config.babysitterHost + "/default/user/index"
             },
             onCancel: () => {
@@ -139,10 +139,22 @@ const AddOwnerForm = (props) => {
         {getFieldDecorator('identityName', {
           validateFirst: true,
           rules: [
-            { required: true, message: '主账号名称不能为空' },
             {
-              pattern: /^[_0-9A-Za-z\u4e00-\u9fa5]{2,60}$/,
-              message: '请输入字母、数字、汉字、下划线,长度为2-60字符'
+              required: true,
+              whitespace: true,
+              max: 60,
+              min: 2,
+              message: '本项为必填项，可输入2-60个字符，不可输入表情符！'
+            },
+            {
+              validator: (rule, value, callback) => {
+                EMOJI_REGEX.lastIndex = 0
+                if (EMOJI_REGEX.test(value)) {
+                  callback('本项为必填项，可输入2-60个字符，不可输入表情符！')
+                  return
+                }
+                callback()
+              }
             }
           ]
         })(<Input placeholder='请输入主账号名称' />)}
@@ -175,6 +187,7 @@ const AddOwnerForm = (props) => {
             { required: true, message: '请选择发票税率！' }
           ]
         })(<RadioGroup>
+          <Radio value={0.01}>1%</Radio>
           <Radio value={0.03}>3%</Radio>
           <Radio value={0.06}>6%</Radio>
         </RadioGroup>)}

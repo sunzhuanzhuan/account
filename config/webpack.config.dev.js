@@ -223,6 +223,7 @@ module.exports = {
               ),
 
               plugins: [
+                ["@babel/plugin-proposal-optional-chaining"],
                 ["@babel/plugin-proposal-decorators", { "legacy": true }],
                 [
                   require.resolve('babel-plugin-named-asset-import'),

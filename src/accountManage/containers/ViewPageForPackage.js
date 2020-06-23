@@ -109,7 +109,7 @@ class ViewPageForPackage extends Component {
         账号维护
         {policyId ?
           <small className='policyInfo-id-display'>
-            价格政策ID: {policyId}-{policyRuleType[ruleType]}-{ruleId}</small>
+            价格政策ID: {policyId}</small>
           : null}
       </h2>
       <Tabs

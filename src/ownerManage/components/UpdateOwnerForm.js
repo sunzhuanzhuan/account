@@ -6,6 +6,7 @@ import { Button, Form, Input, Select, Radio, Modal, Icon, message } from 'antd';
 import QuestionTip from "@/base/QuestionTip";
 import ContactTypesLeastOne from "@/ownerManage/components/ContactTypesLeastOne";
 import ContactExtend from "@/ownerManage/components/ContactExtend";
+import { EMOJI_REGEX } from "@/constants/config";
 
 const Option = Select.Option
 const RadioGroup = Radio.Group;
@@ -124,13 +125,13 @@ const UpdateOwnerForm = (props) => {
       <Form.Item label="资源媒介">
         {getFieldDecorator('ownerAdminId', {
           validateFirst: true,
-          initialValue: props.ownerAdminId,
+          initialValue: props.ownerAdminId > 0 ? props.ownerAdminId : undefined,
           rules: [
-            { required: true }
+            { required: true,  message: "请选择资源媒介"}
           ]
         })(
           <Select placeholder="请选择" onChange={handleDiffMcn} disabled={props.disabled}>
-            <Option key={props.ownerAdminId} value={props.ownerAdminId}>{props.ownerAdminName}</Option>
+            {props.ownerAdminId > 0 && <Option key={props.ownerAdminId} value={props.ownerAdminId}>{props.ownerAdminName}</Option>}
             {
               props.mediumsOptions
                 .filter(({ mediumId }) => mediumId !== props.ownerAdminId)
@@ -171,10 +172,22 @@ const UpdateOwnerForm = (props) => {
           validateFirst: true,
           initialValue: props.identityName,
           rules: [
-            { required: true, message: '主账号名称不能为空' },
             {
-              pattern: /^[_0-9A-Za-z\u4e00-\u9fa5]{2,60}$/,
-              message: '请输入字母、数字、汉字、下划线,长度为2-60字符'
+              required: true,
+              max: 60,
+              min: 2,
+              whitespace: true,
+              message: '本项为必填项，可输入2-60个字符，不可输入表情符！'
+            },
+            {
+              validator: (rule, value, callback) => {
+                EMOJI_REGEX.lastIndex = 0
+                if (EMOJI_REGEX.test(value)) {
+                  callback('本项为必填项，可输入2-60个字符，不可输入表情符！')
+                  return
+                }
+                callback()
+              }
             }
           ]
         })(<Input placeholder='请输入主账号名称' disabled={props.disabled} />)}
@@ -211,6 +224,7 @@ const UpdateOwnerForm = (props) => {
             { required: true, message: '请选择发票税率！' }
           ]
         })(<RadioGroup disabled={props.disabled || props.paymentInfoIsComplete === 1}>
+          <Radio value={0.01}>1%</Radio>
           <Radio value={0.03}>3%</Radio>
           <Radio value={0.06}>6%</Radio>
         </RadioGroup>)}

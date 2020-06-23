@@ -72,10 +72,22 @@ export const resetSiderAuth = createAction('RESET_SIDERMENU_AUTH', () => {
   return [];
 })
 
+// 查询资源媒介列表（有媒介权限限制）
+export const {
+  getMediumsForAuth,
+  getMediumsForAuth_success
+} = createHttpAction('getMediumsForAuth', Interface.common.getMediumsForAuth);
+
+
 // 获取新b端可添加平台列表
 export const {
   getNewBPlatforms
 } = createHttpAction('getNewBPlatforms', Interface.common.getNewBPlatforms)
+
+// 根据主账号Id获取主账号基本信息
+export const {
+  getOwnerBaseInfo
+} = createHttpAction('getOwnerBaseInfo', Interface.account.getOwnerBaseInfo)
 
 
 export const getCompanyList = getCompanyList2
