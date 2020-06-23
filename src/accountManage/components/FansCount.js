@@ -133,26 +133,26 @@ const _columns = [
     key: "liveOnlineMax"
   },
   {
-    "title": "多图文第一条平均阅读数",
+    "title": "头条平均阅读数",
     dataIndex: "mediaIndex1AvgReadNum",
     key: "mediaIndex1AvgReadNum"
   },
   {
-    "title": "多图文第一条平均点赞数",
+    "title": "头条平均点赞数",
     dataIndex: "mediaIndex1AvgLikeNum",
     key: "mediaIndex1AvgLikeNum"
   },
   {
-    "title": "多图文第二条平均阅读数",
+    "title": "次条平均阅读数",
     dataIndex: "mediaIndex2AvgReadNum",
     key: "mediaIndex2AvgReadNum"
   },
   {
-    "title": "多图文第二条平均点赞数",
+    "title": "次条平均点赞数",
     dataIndex: "mediaIndex2AvgLikeNum",
     key: "mediaIndex2AvgLikeNum"
   },
-  {
+  /*{
     "title": "多图文第3-N条平均阅读数",
     dataIndex: "mediaOtherDeSingularAvgReadNum",
     key: "mediaOtherDeSingularAvgReadNum"
@@ -161,7 +161,7 @@ const _columns = [
     "title": "多图文第3-N条平均点赞数",
     dataIndex: "mediaOtherDeSingularAvgLikeNum",
     key: "mediaOtherDeSingularAvgLikeNum"
-  },
+  },*/
   {
     "title": "视频平均分享数",
     dataIndex: "mediaRepostAvg",
