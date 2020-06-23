@@ -80,7 +80,7 @@ export const platformToCooperBrand = CooperateBrandPlaceHolder.reduce((obj, { te
 
 export const CooperateContentPlaceHolder = [
   {
-    'text': '如：原创多图文第一条发布，按照帐号一贯的专业风格，围绕xx产品的促销活动进行创作和发布。因为帐号调性匹配，精准针对目标用户，推广效果良好。阅读量100W+，点赞量3W+，评论量1000W+等；',
+    'text': '如：原创头条发布，按照帐号一贯的专业风格，围绕xx产品的促销活动进行创作和发布。因为帐号调性匹配，精准针对目标用户，推广效果良好。阅读量100W+，点赞量3W+，评论量1000W+等；',
     'pid': [9]
   },
   {
