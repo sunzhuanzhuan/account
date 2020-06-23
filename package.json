@@ -5,9 +5,9 @@
   "dependencies": {
     "@antv/data-set": "^0.10.2",
     "@babel/core": "7.1.0",
-    "@babel/plugin-proposal-optional-chaining": "^7.9.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.10.1",
     "@svgr/webpack": "2.4.1",
-    "antd": "3.26.13",
+    "antd": "^3.26.13",
     "axios": "^0.18.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "9.0.0",

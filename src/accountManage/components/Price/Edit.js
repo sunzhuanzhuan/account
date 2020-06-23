@@ -9,7 +9,7 @@ import {
   IsAcceptHardAd,
   PriceInclude,
   ReferencePrice,
-  trinityIsPreventShieldingTip
+  trinityIsPreventShieldingTip, trinityIsPreventShieldingTipBySku
 } from "../common/Fields";
 import { checkVal, dateDisplay } from "@/accountManage/util";
 import numeral from '@/util/numeralExpand'
@@ -31,18 +31,27 @@ export default class PriceEdit extends Component {
       obj.nextCostPriceRaw = nextPrice.nextCostPriceRaw || 0;
       obj.nextChannelPrice = nextPrice.nextChannelPrice || 0;
       obj.nextPublicationPrice = nextPrice.nextPublicationPrice || 0;
+      obj.equitiesList = (obj.equitiesResVOList || []).map(item => item.id);
+      obj.nextEquitiesList = (nextPrice.nextEquitiesResVOList || []).map(item => item.id);
+      delete obj.equitiesResVOList
+      delete obj.nextEquitiesResVOList
       return obj;
     });
   };
 
   handleSubmitValues = (values) => {
     const { data: { account, priceInfo } } = this.props;
-    const { skuList } = priceInfo;
+    const { skuList, otherSkuVOList } = priceInfo;
+
     const {
       id, base: { isFamous, platformId }
     } = account;
-    let { price_now, price_next } = values;
-    values['skuList'] = this.handlePrice(skuList, price_now, price_next);
+    let { price_now, price_next, price_now_other, price_next_other } = values;
+
+    let baseSkuList = this.handlePrice(skuList, price_now, price_next);
+    let otherSkuList = this.handlePrice(otherSkuVOList, price_now_other, price_next_other);
+
+    values['skuList'] = [].concat(baseSkuList, otherSkuList)
     values['isPreventShielding'] = checkVal(values['isPreventShielding']);
     values['isSupportTopicAndLink'] = checkVal(values['isSupportTopicAndLink']);
     values['is_flowunit_off_shelf'] = checkVal(values['is_flowunit_off_shelf']);
@@ -53,11 +62,14 @@ export default class PriceEdit extends Component {
     values['platformId'] = platformId;
     delete values['price_now'];
     delete values['price_next'];
-    // values.base['platformId'] = platformId;
+    delete values['price_now_other'];
+    delete values['price_next_other'];
+    values['trinityName'] =values['skuList'][0].remark;
     return values
   };
   submit = (e) => {
     e && e.preventDefault();
+    this.props.form.validateFields(['price_next'])
     this.props.form.validateFieldsAndScroll((err, fieldsValue) => {
       if (!err) {
         let values = this.handleSubmitValues(fieldsValue)
@@ -66,23 +78,19 @@ export default class PriceEdit extends Component {
     });
   };
   showConfirm = (values) => {
-    const { actions: { saveSku }, data: { account, trinityPriceInfo = {} }, reload, onModuleStatusChange } = this.props;
+    const { actions: { saveSku }, data: { account, trinityPriceInfo }, reload, onModuleStatusChange } = this.props;
     const { isFamous } = account.base;
     Modal.confirm({
       title: '提交价格信息?',
       content: (isFamous === 1) ? '提交成功后，下个价格有效期和报价将无法修改' : '',
-      onOk(hide) {
-        hide()
-        trinityIsPreventShieldingTip({
-          accountValue: trinityPriceInfo.trinityIsPreventShielding,
-          skuValue: values.isPreventShielding,
-          platformId: account.base.platformId
-        }, () => {
-          return saveSku(values).then(() => {
-            message.success('更新报价信息成功', 1.3, () => {
-              reload(/*() => onModuleStatusChange('view')*/)
-            });
+      onOk() {
+        return trinityIsPreventShieldingTipBySku(isFamous, saveSku,
+          {...values, accountFlag: trinityPriceInfo.trinityIsPreventShielding },
+          () => {
+          message.success('更新报价信息成功', 1.3, () => {
+            reload(/*() => onModuleStatusChange('view')*/)
           });
+          return Promise.resolve()
         });
       },
       onCancel() { }
@@ -107,9 +115,7 @@ export default class PriceEdit extends Component {
       publicationRate,
       modifiedAt // 信息修改时间
     } = data.priceInfo || {};
-    const priceKeys = skuList ? skuList.map(({ skuTypeId, skuTypeName }) => ({
-      key: skuTypeId, name: skuTypeName
-    })) : [];
+
     const right = <div className='wrap-panel-right-content'>
       <span className='gray-text'>最近更新于: {dateDisplay(modifiedAt, 20) || '--'}</span>
       <Button htmlType='submit' type='primary' loading={this.state.submitLoading}>保存</Button>
@@ -120,7 +126,7 @@ export default class PriceEdit extends Component {
       <section className='content-wrap'>
         {publicationRate && <Alert message={`渠道价默认为刊例价的${numeral(publicationRate).format('0%')}`}/>}
         {isFamous === 1 ?
-          <FamousPrice {...fieldProps} priceKeys={priceKeys}>
+          <FamousPrice {...fieldProps}>
             {configurePlatform.visibility.fields.referencePrice &&
             <ReferencePrice  {...fieldProps} />}
             {configurePlatform.visibility.fields.priceInclude &&

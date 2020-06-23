@@ -28,11 +28,22 @@
     z-index: 999;
     position: relative;
 
-    .add-select-car-button {
+    .look-price {
         width: 50%;
+        display: inline-block;
+        text-align: left;
+        margin-left: -40px;
+    }
+
+    .operate-box {
+        margin: 8px auto;
+        padding: 0px 10px;
+        text-align: center;
+    }
+
+    .add-select-car-button {
+        width: 40%;
         min-width: 150px;
-        margin-top: 10px;
-        margin-right: 10px;
     }
 
     .remove-select-car-button {
@@ -233,9 +244,13 @@
     }
 }
 
-.priceRed {
+.price-red {
     color: #F4655B;
-    font-size: 22px;
+    font-size: 16px;
+}
+
+.price-unit {
+    font-size: 12px;
 }
 
 .fs18 {
@@ -253,8 +268,19 @@
     }
 }
 
+.is-special {
+    margin-left: 6px;
+    margin-bottom: 2px;
+}
+
 .green-tag {
     background: #edf8f4;
     color: #51a385;
     padding: 2px 10px;
+}
+
+.two-line-flex {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
 }

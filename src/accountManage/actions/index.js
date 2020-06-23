@@ -65,6 +65,13 @@ export const {
   method: 'get'
 });
 
+// 获取媒体平台下某一个sku的权益list
+export const {
+  getSkuEquitiesList,
+} = createHttpAction('getSkuEquitiesList', Interface.getSkuEquitiesList, {
+  method: 'get'
+});
+
 // 三方相关报价
 // 编辑账号时，获取三方报价项信息
 export const {
@@ -77,6 +84,7 @@ export const {
   addOrUpdateAccountTrinitySkuInfo
 } = createHttpAction('addOrUpdateAccountTrinitySkuInfo', Interface.addOrUpdateAccountTrinitySkuInfo, {
   method: 'post',
+  ignoreToast: true
 });
 
 // 获取报价项信息
@@ -200,7 +208,8 @@ export const {
 export const {
   saveSku
 } = createHttpAction('saveSku', Interface.update.saveSku, {
-  method: 'post'
+  method: 'post',
+  ignoreToast: true
 });
 // 修改受众画像
 export const {
