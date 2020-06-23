@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import LookIndex from "./LookIndex";
 import VerificationIcon from "../base/VerificationIcon";
 import { PopoverFormat } from "../base/TitleAndDecide";
+import HocPopover from '../base/HocPopover'
+
 import ImgCircle from "../base/ImgCircle";
 
 import "./HeadInfo.less"
@@ -166,7 +168,9 @@ const SkuListBox = ({ skuList }) => {
       return <div className='release-info-three' key={one.skuId}>
         <div className='title'>
           {one.skuTypeName}
-          {one.isSpecial == 1 ? <img src={require('./img/isSpecial.png')} width='16px' className='is-special' /> : null}
+          {one.isSpecial == 1 ? <HocPopover content={'该参考报价为防屏蔽的报价'}>
+            <img src={require('./img/isSpecial.png')} width='16px' className='is-special' />
+          </HocPopover> : null}
         </div>
         <div className='two-line-flex price-red'>
           <span style={{ paddingRight: 4 }}>

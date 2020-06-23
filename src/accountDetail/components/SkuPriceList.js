@@ -15,7 +15,10 @@ function SkuPriceList({ list = [], equitiesIdListAsync, getPrice }) {
         return <div key={item.skuTypeId} className='sku-price-item'>
           <div className='sku-type-name'>
             {item.skuTypeName}
-            {item.isSpecial == 1 ? <img src={require('./img/isSpecial.png')} width='16px' className='is-special' /> : null}
+            {item.isSpecial == 1 ?
+              <HocPopover content={'该参考报价为防屏蔽的报价'}>
+                <img src={require('./img/isSpecial.png')} width='16px' className='is-special' />
+              </HocPopover> : null}
           </div>
           <div className='equities-id-list'>
             {getPrice(item.openQuotePrice)}
