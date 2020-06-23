@@ -11,6 +11,7 @@ import * as commonAction from "@/actions";
 import { executionMap, executionList } from "../constants/executionData";
 import { PopoverFormat } from "../base/TitleAndDecide";
 import { getWeixinAvg, getOtherAllAvg } from "../util";
+import HocPopover from '../base/HocPopover'
 
 class RecentPrice extends Component {
   constructor(props) {
@@ -95,7 +96,10 @@ class RecentPrice extends Component {
                         </Col>
                         <Col span={5}>
                           {item.skuTypeName}
-                          {item.isShield == 1 ? <img src={require('./img/isSpecial.png')} width='16px' style={{ marginLeft: 4, marginBottom: 4 }} /> : null}
+                          {item.isShield == 1 ?
+                            <HocPopover content={'该参考报价为防屏蔽的报价'}>
+                              <img src={require('./img/isSpecial.png')} width='16px' style={{ marginLeft: 4, marginBottom: 4 }} />
+                            </HocPopover> : null}
                         </Col>
                         <Col span={4}>
                           {item.deal_price}
