@@ -176,10 +176,10 @@ const SkuListBox = ({ skuList }) => {
           <span style={{ paddingRight: 4 }}>
             {getPrice(one.openQuotePrice)}
             <span className='price-unit'>元</span>
-            /{one.unitPrice}
           </span>
           <EquitiesList list={one.equitiesIdList} />
         </div>
+        <PopoverFormat text={<div className='last'>{getPrice(one.unitPrice)}元/千粉丝</div>} content='平均每千粉丝单价' />
       </div>
     })}
   </div>
