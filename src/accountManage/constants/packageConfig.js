@@ -561,7 +561,7 @@ export const diffByTypes = {
         {
           title: '抓取信息',
           field: 'snsId',
-          placeholder: '请输入主页链接'
+          placeholder: '请输入账号ID'
         }
       ],
       introductionPlaceholder: '请输入账号简介',
