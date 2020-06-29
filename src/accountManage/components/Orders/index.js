@@ -84,7 +84,8 @@ const columns = [
         {other_content && <span className="equity-tag-item" style={{
           lineHeight: "20px",
           display: "inline-block",
-          whiteSpace: "normal"
+          whiteSpace: "normal",
+          background: "#f0f0f0"
         }}>
               {other_content}
         </span>}
