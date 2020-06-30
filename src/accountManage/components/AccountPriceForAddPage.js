@@ -47,6 +47,7 @@ export class NamelessPrice extends Component {
     return <div className=''>
       <FormItem {...formItemLayout} label='账号报价'>
         {invoiceInfo}
+        <div>基础类报价</div>
         {priceList.length > 0 ? getFieldDecorator('price_now', {
           initialValue: priceList,
           rules: [

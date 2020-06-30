@@ -76,7 +76,7 @@ const columns = [
         {
           equities.map(item => {
             return <span className="equity-tag-item" key={item.equity_id}>
-              {item.isFree === 1 ?
+              {parseInt(item.is_free) === 1 ?
                 <img style={{ width: 20 }} src={require('../../images/free.png')} /> : ""}{item.equity_name}
             </span>
           })
@@ -84,7 +84,8 @@ const columns = [
         {other_content && <span className="equity-tag-item" style={{
           lineHeight: "20px",
           display: "inline-block",
-          whiteSpace: "normal"
+          whiteSpace: "normal",
+          background: "#f0f0f0"
         }}>
               {other_content}
         </span>}

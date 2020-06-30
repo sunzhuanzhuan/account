@@ -47,7 +47,9 @@ class MiniForm extends Component {
         list.length > 0 ? <div style={{
           marginLeft: '-21px',
           minWidth: "120px",
-          minHeight: '100px'
+          minHeight: '100px',
+          maxHeight: '300px',
+          overflowY: "auto"
         }}>
           <Checkbox.Group value={selected} onChange={this.onChecked}>
             {
@@ -129,10 +131,12 @@ export default class CheckboxTag extends Component {
             </Tooltip>
             {isEdit && isRequired === 2 && <Icon
               style={{
-                fontSize: "14px",
+                fontSize: "13px",
                 color: "#256ea3",
                 marginLeft: '6px',
                 marginRight: -5,
+                lineHeight: '28px',
+                height: "26px",
                 display: "inline-block"
               }}
               type="close-circle"
