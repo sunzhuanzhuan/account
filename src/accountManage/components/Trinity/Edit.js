@@ -50,26 +50,21 @@ export default class Trinity extends Component {
       form,
       reload,
       // onModuleStatusChange,
-      data: { priceInfo: { isPreventShielding } }
     } = this.props
     form.validateFieldsAndScroll((err, fieldsValue) => {
       if (!err) {
         let values = this.handleSubmitValues(fieldsValue)
-        let trinityIsPreventShieldingManual = values.trinityIsPreventShieldingManual;
-        trinityIsPreventShieldingTip({
-          accountValue: trinityIsPreventShieldingManual > 0 ? trinityIsPreventShieldingManual :
-            values.trinityIsPreventShieldingAutomated,
-          skuValue: isPreventShielding,
-          platformId: values.platformId
-        }, () => {
-          this.setState({ submitLoading: true });
-          return actions.addOrUpdateAccountTrinitySkuInfo(values).then(() => {
-            message.success('保存成功!', 1.3, () => {
-              reload();
-            });
-          }).finally(() => {
+        this.setState({ submitLoading: true });
+        trinityIsPreventShieldingTip(1, actions.addOrUpdateAccountTrinitySkuInfo, values, () => {
+          return message.success('保存成功!', 1.3, () => {
+            reload();
             this.setState({ submitLoading: false });
-          })
+          });
+        }, (e) => {
+          message.error(e.errorMsg)
+          this.setState({ submitLoading: false });
+        }, () => {
+          this.setState({ submitLoading: false });
         });
       }
     });

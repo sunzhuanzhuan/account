@@ -17,27 +17,36 @@ import moment from 'moment';
 import { handleReason, date2moment, dateDisplay } from '../../util';
 import FieldView from "@/accountManage/base/FeildView";
 import debounce from "lodash/debounce";
+import CheckboxTag from "@/accountManage/components/common/CheckboxTag";
 
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 
 
-// 检查最少一项报价
-const checkPrice = (onOff, otherCheck) => (rule, value = {}, callback) => {
+// 检查最少一项报价(下期)
+const checkPrice = (rule, value = {}, callback) => {
+  const onOff = rule.required
   if (!onOff || value.some(item => item.nextCostPriceRaw || item.costPriceRaw)) {
-    if (otherCheck) {
-      return otherCheck(rule, value, callback);
-    }
     return callback();
   }
-  callback('报价项最少填写一项');
+  callback('请至少添加一条基础类报价项的价格');
 };
-// 检查最少一项报价 new
-const checkPriceList = (rule, value, callback) => {
+// 检查最少一项报价
+export const checkPriceList = (rule, value, callback) => {
   if (!rule.on || value.some(item => item.costPriceRaw)) {
     return callback();
   }
-  callback('报价项最少填写一项');
+  callback('请至少添加一条基础类报价项的价格');
+};
+// 检查有权益报价必填
+export const checkPriceAndEquities = (rule, value, callback) => {
+  if (value.find(item => {
+   return (item.equitiesResVOList.length > 0 && item.costPriceRaw <= 0) ||
+    (item.nextEquitiesResVOList.length > 0 && item.nextCostPriceRaw <= 0)
+  })) {
+    return callback('有权益报价必填');
+  }
+  callback();
 };
 // 处理审核状态
 function approvalStatus(code = 1, desc = '') {
@@ -190,18 +199,21 @@ export class NamelessPrice extends Component {
       data: { accountInfo, priceInfo }
     } = this.props;
     const {
-      skuList,
       partnerType,
-      taxInPrice,
       invoiceType,
       taxRate
     } = priceInfo;
-    let val = {};
-    skuList && skuList.forEach(({ skuTypeId, costPriceRaw }) => {
-      val[skuTypeId] = costPriceRaw;
-    });
+
+    const invoiceInfo = <div>
+      {partnerType ? <span>{partnerType == 1 ? '报价含税（' : '报价不含税'}
+        {partnerType == 1 ? invoiceType == 1 ? '回票类型：增值税专用发票' : '回票类型：增值税普通发票）' : null}
+        {partnerType == 1 && invoiceType == 1 ? '，发票税率：' + taxRate * 100 + '%)' : null}
+      </span> : null}
+    </div>
+
     return <div className='price_scroll_container'>
       <FormItem {...layout.full} label='账号报价'>
+        {invoiceInfo}
         {priceList.length > 0 ? getFieldDecorator('price_now', {
           initialValue: priceList,
           rules: [
@@ -217,11 +229,10 @@ export class NamelessPrice extends Component {
             data={this.props.data}
             isEdit
             priceKeys={['costPriceRaw', 'channelPrice', 'publicationPrice']}
-            action={this.props.actions.calculatePrice}
+            actions={this.props.actions}
             pid={this.props.pid}
           />
         ) : null}
-        <AccountPriceHelp />
       </FormItem>
       {isUpdate ? <NamelessStatus {...{
         getFieldDecorator,
@@ -261,8 +272,9 @@ export class FamousPrice extends Component {
     } else {
       setFields({
         'price_next': value ? {
+          value: price,
           'errors': [{
-            'message': '报价项最少填写一项',
+            'message': '请至少添加一条基础类报价项的价格',
             'field': 'price_next'
           }]
         } : {}
@@ -278,7 +290,7 @@ export class FamousPrice extends Component {
     let flag = value.some(item => item.nextCostPriceRaw);
     if (date) {
       if (!flag) {
-        return callback('报价项最少填写一项');
+        return callback('请至少添加一条基础类报价项的价格');
       }
     } else {
       setFields({
@@ -333,7 +345,8 @@ export class FamousPrice extends Component {
       partnerType,
       invoiceType,
       taxRate,
-      skuList
+      skuList,
+      otherSkuVOList
     } = priceInfo;
     /*const orderStatus = {
       isCheck: is_flowunit_off_shelf == 1, // 是否流单过多下架
@@ -367,6 +380,19 @@ export class FamousPrice extends Component {
       nowVal[skuTypeId] = costPriceRaw;
       nextVal[skuTypeId] = nextCostPriceRaw;
     });
+    otherSkuVOList && otherSkuVOList.forEach(({ skuTypeId, costPriceRaw, nextCostPriceRaw }) => {
+      nowVal[skuTypeId] = costPriceRaw;
+      nextVal[skuTypeId] = nextCostPriceRaw;
+    });
+
+    const invoiceInfo = <div>
+      {partnerType ? <span>{partnerType == 1 ? '报价含税（' : '报价不含税'}
+        {partnerType == 1 ? invoiceType == 1 ? '回票类型：增值税专用发票' : '回票类型：增值税普通发票）' : null}
+        {partnerType == 1 && invoiceType == 1 ? '，发票税率：' + taxRate * 100 + '%)' : null}
+      </span> : null}
+    </div>
+
+
     const { isAllow, orderStatus, forcedOrder, orderStatusReason } = this.state;
     const viewStatus = (isAllow == 1 && (orderStatus || forcedOrder)) ? '销售AB端可下单' : '销售AB端不可下单';
     return <div className='price_scroll_container'>
@@ -375,15 +401,39 @@ export class FamousPrice extends Component {
         <span>{nowEnd.format('YYYY-MM-DD')}</span>
       </FormItem>
       <FormItem {...layout.full} label='账号报价'>
-        {getFieldDecorator('price_now', {
-          initialValue: skuList,
-          rules: [{ validator: checkPriceList, on: _data.right }]
-        })(<PriceTable
-          isEdit={_data.right}
-          priceKeys={['costPriceRaw', 'channelPrice', 'publicationPrice']}
-          data={this.props.data}
-          action={this.props.actions.calculatePrice}
-        />)}
+        {invoiceInfo}
+        {skuList && skuList.length > 0 ? <>
+          <div>基础类报价</div>
+          <FormItem>
+            {getFieldDecorator('price_now', {
+              initialValue: skuList,
+              rules: [
+                { validator: checkPriceList, on: _data.right, type: 'array' },
+                // { validator: checkPriceAndEquities },
+                ]
+            })(<PriceTable
+              isEdit={_data.right}
+              priceKeys={['costPriceRaw', 'channelPrice', 'publicationPrice']}
+              data={this.props.data}
+              actions={this.props.actions}
+              equitiesKey="equitiesResVOList"
+            />)}
+          </FormItem>
+        </> : null}
+        {otherSkuVOList && otherSkuVOList.length > 0 ? <>
+          <div>其他类报价</div>
+          <FormItem>
+            {getFieldDecorator('price_now_other', {
+              initialValue: otherSkuVOList
+            })(<PriceTable
+              isEdit={_data.right}
+              priceKeys={['costPriceRaw', 'channelPrice', 'publicationPrice']}
+              data={this.props.data}
+              actions={this.props.actions}
+              equitiesKey="equitiesResVOList"
+            />)}
+          </FormItem>
+        </> : null}
       </FormItem>
       <Divider dashed />
       <FormItem {...layout.full} label='下期有效期' style={{ display: 'none' }}>
@@ -418,25 +468,51 @@ export class FamousPrice extends Component {
           </span>}
       </FormItem>
       <FormItem {...layout.full} label='账号报价'>
-        {getFieldDecorator('price_next', {
-          initialValue: skuList,
-          validateFirst: true,
-          rules: [{
-            required: require,
-            validator: checkPrice(require, this.checkPriceAndDate)
-          }]
+        {invoiceInfo}
+        {skuList && skuList.length > 0 ? <>
+          <div>基础类报价</div>
+          <FormItem>
+            {getFieldDecorator('price_next', {
+              initialValue: skuList,
+              validateFirst: true,
+              rules: [
+                {
+                  required: require, type: 'array',
+                  validator: checkPrice,
+                },
+                {
+                  type: 'array',
+                  validator: this.checkPriceAndDate,
+                }
+              ]
 
-        })(<PriceTable
-          // desc={handlePriceTitle(taxInPrice == 1, partnerType)}
-          partnerType={partnerType}
-          invoiceType={invoiceType}
-          taxRate={taxRate}
-          data={this.props.data}
-          isEdit={canEditPrice}
-          priceKeys={['nextCostPriceRaw', 'nextChannelPrice', 'nextPublicationPrice']}
-          action={this.props.actions.calculatePrice}
-        />)}
-        <AccountPriceHelp />
+            })(<PriceTable
+              // desc={handlePriceTitle(taxInPrice == 1, partnerType)}
+              partnerType={partnerType}
+              invoiceType={invoiceType}
+              taxRate={taxRate}
+              data={this.props.data}
+              isEdit={canEditPrice}
+              priceKeys={['nextCostPriceRaw', 'nextChannelPrice', 'nextPublicationPrice']}
+              actions={this.props.actions}
+              equitiesKey="nextEquitiesResVOList"
+            />)}
+          </FormItem>
+        </> : null}
+        {otherSkuVOList && otherSkuVOList.length > 0 ? <>
+          <div>其他类报价</div>
+          <FormItem>
+            {getFieldDecorator('price_next_other', {
+              initialValue: otherSkuVOList
+            })(<PriceTable
+              isEdit={canEditPrice}
+              priceKeys={['nextCostPriceRaw', 'nextChannelPrice', 'nextPublicationPrice']}
+              data={this.props.data}
+              actions={this.props.actions}
+              equitiesKey="nextEquitiesResVOList"
+            />)}
+          </FormItem>
+        </> : null}
       </FormItem>
       {hasPass ? <FormItem {...layout.full} label='审核状态'>
         {approvalStatus(reviewStatus, reviewFailReason)}
@@ -474,6 +550,10 @@ export class FamousPrice extends Component {
         <input type="hidden" />)}
       {getFieldDecorator('priceValidTo', { initialValue: nowEnd })(
         <input type="hidden" />)}
+      {getFieldDecorator('canEditPrice', { initialValue: _data.right })(
+        <input type="hidden" />)}
+      {getFieldDecorator('canEditNextPrice', { initialValue: canEditPrice })(
+        <input type="hidden" />)}
       {children}
     </div>;
   }
@@ -481,7 +561,7 @@ export class FamousPrice extends Component {
 
 
 // 报价table组
-class PriceTable extends Component {
+export class PriceTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -508,14 +588,14 @@ class PriceTable extends Component {
   }
 
   calculatePrice = (value, index) => {
-    const { priceKeys: [, channelPriceKey], action, data } = this.props;
+    const { priceKeys: [, channelPriceKey], actions, data } = this.props;
     const { base: { platformId, userId } } = data.account
     if (!value) {
       return this.onChange(0, index, channelPriceKey)
     }
     const hide = message.loading('价格计算中...')
     let pid = this.props.pid
-    action({
+    actions.calculatePrice({
       platformId: platformId || pid,
       userId,
       publicationPrice: value
@@ -543,68 +623,87 @@ class PriceTable extends Component {
     this.triggerChange(newValue)
   };
 
+  onEquitiesChange = (equities, index, equitiesKey) => {
+    let newValue = this.state.value.map(item => ({ ...item }))
+    newValue[index][equitiesKey] = equities
+    if (!('value' in this.props)) {
+      this.setState({ value: newValue });
+    }
+    this.triggerChange(newValue)
+  };
+
+
   render() {
-    const { isEdit,
-      partnerType,
-      invoiceType,
-      taxRate, priceKeys } = this.props;
-    console.log('partnerType', partnerType && partnerType == 1 ? '报价含税（' : '报价不含税')
-    console.log('invoiceType', invoiceType)
-    console.log('taxRate', taxRate)
+    const {
+      isEdit,
+      data,
+      priceKeys, equitiesKey
+    } = this.props;
     const { value } = this.state;
-    return <div>
-      {partnerType ? <span>{partnerType == 1 ? '报价含税（' : '报价不含税'}
-        {partnerType == 1 ? invoiceType == 1 ? '回票类型：增值税专用发票' : '回票类型：增值税普通发票）' : null}
-        {partnerType == 1 && invoiceType == 1 ? '，发票税率：' + taxRate * 100 + '%)' : null}
-      </span> : null}
-      <div className='price-table'>
-        <div className='price-table-head'>
-          <Row gutter={8}>
-            <Col span={6}><p className='price-table-title'>服务项</p></Col>
-            <Col span={6}><p className='price-table-title'>报价(元)</p></Col>
-            <Col span={6}><p className='price-table-title'>渠道价(元)</p></Col>
-            <Col span={6}><p className='price-table-title'>刊例价(元)</p></Col>
-          </Row>
-        </div>
-        <div className='price-table-body'>
-          {
-            value.map((item, index) => {
-              const { skuTypeId, skuTypeName } = item
-              return <Row key={skuTypeId} gutter={8}>
-                <Col span={6}>
-                  <p className='price-table-title'>{skuTypeName}</p>
-                </Col>
-                <Col span={6}>
-                  <div className='price-table-input'>
-                    <PriceInput
-                      isEdit={isEdit}
-                      value={item[priceKeys[0]]}
-                      onChange={(value) => this.onChange(value, index, priceKeys[0])}
-                    />
-                  </div>
-                </Col>
-                <Col span={6}>
-                  <div className='price-table-input no-error'>
-                    <PriceInput
-                      isEdit={isEdit}
-                      value={item[priceKeys[1]]}
-                      onChange={(value) => this.onChange(value, index, priceKeys[1])}
-                    />
-                  </div>
-                </Col>
-                <Col span={6}>
-                  <div className='price-table-input no-error'>
-                    <PriceInput
-                      isEdit={isEdit}
-                      value={item[priceKeys[2]]}
-                      onChange={(value) => this.onChange(value, index, priceKeys[2])}
-                    />
-                  </div>
-                </Col>
-              </Row>
-            })
-          }
-        </div>
+
+    const colWidth = equitiesKey ? 4 : 6
+
+    return <div className='price-table'>
+      <div className='price-table-head'>
+        <Row gutter={8}>
+          <Col span={colWidth}><p className='price-table-title left'>价格名称</p></Col>
+          {equitiesKey && <Col span={8}><p className='price-table-title left'>权益项</p></Col>}
+          <Col span={colWidth}><p className='price-table-title right'>报价(元)</p></Col>
+          <Col span={colWidth}><p className='price-table-title right'>渠道价(元)</p></Col>
+          <Col span={colWidth}><p className='price-table-title right'>刊例价(元)</p></Col>
+        </Row>
+      </div>
+      <div className='price-table-body'>
+        {
+          value.map((item, index) => {
+            const { skuTypeId, skuTypeName } = item
+            return <Row key={skuTypeId} gutter={8} className="price-table-body-row">
+              <Col span={colWidth}>
+                <p className='price-table-title left'>{skuTypeName}</p>
+              </Col>
+              {equitiesKey && <Col span={8}>
+                <CheckboxTag
+                  value={item[equitiesKey]}
+                  isEdit={isEdit}
+                  label="添加"
+                  platformId={data.account.base.platformId}
+                  skuTypeId={skuTypeId}
+                  onChange={equities => {
+                    this.onEquitiesChange(equities, index, equitiesKey)
+                  }}
+                  action={this.props.actions.getSkuEquitiesList}
+                />
+              </Col>}
+              <Col span={colWidth}>
+                <div className='price-table-input right'>
+                  <PriceInput
+                    isEdit={isEdit}
+                    value={item[priceKeys[0]]}
+                    onChange={(value) => this.onChange(value, index, priceKeys[0])}
+                  />
+                </div>
+              </Col>
+              <Col span={colWidth}>
+                <div className='price-table-input no-error right'>
+                  <PriceInput
+                    isEdit={isEdit}
+                    value={item[priceKeys[1]]}
+                    onChange={(value) => this.onChange(value, index, priceKeys[1])}
+                  />
+                </div>
+              </Col>
+              <Col span={colWidth}>
+                <div className='price-table-input no-error right'>
+                  <PriceInput
+                    isEdit={isEdit}
+                    value={item[priceKeys[2]]}
+                    onChange={(value) => this.onChange(value, index, priceKeys[2])}
+                  />
+                </div>
+              </Col>
+            </Row>
+          })
+        }
       </div>
     </div>;
   }
@@ -688,13 +787,29 @@ export class FamousPriceView extends Component {
       nextPriceValidTo,
       reviewStatus,
       reviewFailReason,
-      skuList
+      skuList,
+      otherSkuVOList,
+      partnerType,
+      invoiceType,
+      taxRate
     } = priceInfo;
     let nowVal = {}, nextVal = {};
     skuList && skuList.forEach(({ skuTypeId, costPriceRaw, nextCostPriceRaw }) => {
       nowVal[skuTypeId] = costPriceRaw;
       nextVal[skuTypeId] = nextCostPriceRaw;
     });
+    otherSkuVOList && otherSkuVOList.forEach(({ skuTypeId, costPriceRaw, nextCostPriceRaw }) => {
+      nowVal[skuTypeId] = costPriceRaw;
+      nextVal[skuTypeId] = nextCostPriceRaw;
+    });
+
+    const invoiceInfo = <div>
+      {partnerType ? <span>{partnerType == 1 ? '报价含税（' : '报价不含税'}
+        {partnerType == 1 ? invoiceType == 1 ? '回票类型：增值税专用发票' : '回票类型：增值税普通发票）' : null}
+        {partnerType == 1 && invoiceType == 1 ? '，发票税率：' + taxRate * 100 + '%)' : null}
+      </span> : null}
+    </div>
+
     return <div>
       <FieldView width={80} title="本期有效期" value={
         <div>
@@ -704,8 +819,27 @@ export class FamousPriceView extends Component {
         </div>
       } />
       <FieldView width={80} title="账号报价" value={
-        <PriceTable style={{ lineHeight: '40px' }} isEdit={false} priceKeys={['costPriceRaw', 'channelPrice', 'publicationPrice']}
-          value={skuList} />
+        <>
+          {invoiceInfo}
+          <div style={{ lineHeight: '40px' }}>基础类报价</div>
+          <PriceTable
+            priceKeys={['costPriceRaw', 'channelPrice', 'publicationPrice']}
+            value={skuList}
+            data={this.props.data}
+            actions={this.props.actions}
+            equitiesKey="equitiesResVOList"
+          />
+          {otherSkuVOList && otherSkuVOList.length > 0 ? <>
+            <div style={{ lineHeight: '40px' }}>其他类报价</div>
+            <PriceTable
+              priceKeys={['costPriceRaw', 'channelPrice', 'publicationPrice']}
+              value={otherSkuVOList}
+              data={this.props.data}
+              actions={this.props.actions}
+              equitiesKey="equitiesResVOList"
+            />
+          </> : null}
+        </>
       } />
       {nextPriceValidFrom ? <div>
         <FieldView width={80} title="下期有效期" value={
@@ -716,7 +850,27 @@ export class FamousPriceView extends Component {
           </div>
         } />
         <FieldView width={80} title="下期报价" value={
-          <PriceTable style={{ lineHeight: '40px' }} isEdit={false} priceKeys={['nextCostPriceRaw', 'nextChannelPrice', 'nextPublicationPrice']} value={skuList} />
+          <>
+            {invoiceInfo}
+            <div style={{ lineHeight: '40px' }}>基础类报价</div>
+            <PriceTable
+              priceKeys={['nextCostPriceRaw', 'nextChannelPrice', 'nextPublicationPrice']}
+              value={skuList}
+              data={this.props.data}
+              actions={this.props.actions}
+              equitiesKey="nextEquitiesResVOList"
+            />
+            {otherSkuVOList && otherSkuVOList.length > 0 ? <>
+              <div style={{ lineHeight: '40px' }}>其他类报价</div>
+              <PriceTable
+                priceKeys={['nextCostPriceRaw', 'nextChannelPrice', 'nextPublicationPrice']}
+                value={otherSkuVOList}
+                data={this.props.data}
+                actions={this.props.actions}
+                equitiesKey="nextEquitiesResVOList"
+              />
+            </> : null}
+          </>
         } />
         <FieldView width={80} title="审核状态" value={
           approvalStatus(reviewStatus, reviewFailReason)
@@ -739,7 +893,7 @@ export class NamelessPriceView extends Component {
       skuList,
       partnerType,
       invoiceType,
-      taxRate,
+      taxRate
     } = priceInfo;
     let val = {};
     skuList && skuList.forEach(({ skuTypeId, costPriceRaw }) => {

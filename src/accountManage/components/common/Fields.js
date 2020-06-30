@@ -85,30 +85,188 @@ const checkWordListTagRepeat = (rule, value, callback) => {
 };
 
 // 处理三方提交提示
-export const trinityIsPreventShieldingTip = (value, callback) => {
-  let { accountValue, skuValue, trinityName = "微任务/WEIQ", platformId } = value, diff;
-  accountValue = parseInt(accountValue)
-  skuValue = parseInt(skuValue)
-  if (platformId !== 1 || !accountValue || !skuValue || accountValue === skuValue) {
-    let hide = message.loading('保存中...');
-    Promise.resolve(callback(hide)).finally(hide)
-    return
+export const trinityIsPreventShieldingTip = (isValidate, action, value, success, error = (e) => {
+  message.error(e.errorMsg)
+  return Promise.reject(e)
+}, confirm) => {
+  return action({ ...value, equitiesValidate: isValidate })
+    .then(success)
+    .catch((e) => {
+      if (e.code === "110503") {
+        confirm && confirm()
+        Modal.confirm({
+          title: e.errorMsg,
+          okText: '不修改,保存',
+          cancelText: '去修改',
+          onOk: () => {
+            return action({ ...value, equitiesValidate: 2 }).then(success).catch(error)
+          }
+        });
+        return Promise.resolve()
+      } else {
+        return error(e)
+      }
+    })
+}
+
+// 报价 - 处理三方提交提示(账号防屏蔽，服务项防屏蔽)
+export const trinityIsPreventShieldingTipBySku = (isFamous, action, value, success, error = (e) => {
+  message.error(e.errorMsg)
+  return Promise.reject(e)
+}) => {
+
+  let { accountFlag, canEditPrice, canEditNextPrice, trinityName } = value,
+    skuFlag = 0,
+    skuNextFlag = 0;
+
+
+  // 非预约 || 未知
+  if (isFamous !== 1 || !accountFlag) {
+    return action(value).then(success).catch(error)
   }
-  if (accountValue === 1 && skuValue === 2) {
-    diff = true;
-  } else if (accountValue === 2 && skuValue === 1) {
-    diff = false;
+
+  // 价格不能编辑
+  if (!canEditPrice && !canEditNextPrice) {
+    return action(value).then(success).catch(error)
+  }
+
+  // 参与判断的sku (条件: 有配置防屏蔽选项 & 有价格)
+  let specialList = value.skuList.filter(item => item.specialEquitiesId > 0 && item.costPriceRaw > 0);
+  let nextSpecialList = value.skuList.filter(item => item.specialEquitiesId > 0 && item.nextCostPriceRaw > 0);
+
+  // 没有需要判断的sku
+  if (specialList.length === 0) {
+    canEditPrice = false
+  }
+  // 没有需要判断的sku
+  if (nextSpecialList.length === 0) {
+    canEditNextPrice = false
+  }
+
+  specialList.forEach(item => {
+    if (item.equitiesList.includes(item.specialEquitiesId)) {
+      skuFlag++
+    }
+  })
+  nextSpecialList.forEach(item => {
+    if (item.nextEquitiesList.includes(item.specialEquitiesId)) {
+      skuNextFlag++
+    }
+  })
+
+  // 1 防屏蔽;  2 不防屏蔽; 3 防屏蔽勾选不一致
+  switch (skuFlag) {
+    case 0:
+      skuFlag = 2
+      break;
+    case specialList.length:
+      skuFlag = 1
+      break;
+    default:
+      skuFlag = 3
+  }
+
+  switch (skuNextFlag) {
+    case 0:
+      skuNextFlag = 2
+      break;
+    case nextSpecialList.length:
+      skuNextFlag = 1
+      break;
+    default:
+      skuNextFlag = 3
+  }
+  // (1-2)_(1-2)_(1-2)_(1-3)_(1-3)
+  let mapKey = `${canEditPrice ? '1' : '2'}_${canEditNextPrice ? '1' : '2'}_${accountFlag}_${skuFlag}_${skuNextFlag}`
+
+  let tipA = `当前账号可以在${trinityName}下单，服务项防屏蔽未勾选，请修改服务项，以免影响应约造成损失。`
+  let tipB = `当前账号不可以在${trinityName}下单，服务项防屏蔽已勾选，请修改服务项，以免影响应约造成损失。`
+
+  let actionMaps = [
+    [/^((1_1)|(1_2)|(2_1))_1/, tipA],
+    [/^((1_1)|(1_2)|(2_1))_2/, tipB],
+    [/^1_2_1_1_[1-3]$/, ''],
+    [/^1_2_2_2_[1-3]$/, ''],
+    [/^2_1_1_[1-3]_1$/, ''],
+    [/^2_1_2_[1-3]_2$/, ''],
+    [/^1_1_1_1_1$/, ''],
+    [/^1_1_2_2_2$/, ''],
+  ]
+
+
+
+  let tip = [...actionMaps].filter(([key]) => key.test(mapKey)).pop()
+  tip = tip? tip[1] : ''
+
+  /*if (canEditPrice && canEditNextPrice) {
+    // 两期都能编辑
+    if (accountFlag === 1) {
+      // 账号可防屏蔽
+      if (skuFlag === 1 && skuNextFlag === 1) {
+        // 两期都防屏蔽
+        tip = ``
+      } else {
+        // 任意一期不防屏蔽或者防屏蔽勾选不一致
+        tip = tipA
+      }
+
+    } else {
+      // 账号不防屏蔽
+      if (skuFlag === 2 && skuNextFlag === 2) {
+        // 两期都不防屏蔽
+        tip = ``
+      } else {
+        // 任意一期防屏蔽或者防屏蔽勾选不一致
+        tip = tipB
+      }
+    }
+
+  } else if (canEditPrice) {
+    // 只本期能编辑
+    if (accountFlag === 1) {
+      if (skuFlag === 1) {
+        tip = ``
+      } else {
+        tip = tipA
+      }
+    } else {
+      if (skuFlag === 2) {
+        tip = ``
+      } else {
+        tip = tipB
+      }
+    }
+
   } else {
-    return console.warn('其他错误:', accountValue, skuValue);
+    // 只下期能编辑
+    if (accountFlag === 1) {
+      if (skuNextFlag === 1) {
+        tip = ``
+      } else {
+        tip = tipA
+      }
+    } else {
+      if (skuNextFlag === 2) {
+        tip = ``
+      } else {
+        tip = tipB
+      }
+    }
+  }*/
+
+  if (tip) {
+    Modal.confirm({
+      title: tip,
+      okText: '不修改,保存',
+      cancelText: '去修改',
+      onOk: () => {
+        return action({ ...value }).then(success).catch(error)
+      }
+    });
+    return Promise.resolve()
+  } else {
+    return action(value).then(success).catch(error)
   }
-  let text = diff ? `当前账号可以在${trinityName}下单，报价包含防屏蔽未勾选，请修改报价项价格，以免影响应约造成损失。` :
-    `当前账号不可以在${trinityName}下单，报价包含防屏蔽已勾选，请修改报价项价格，以免影响应约造成损失。`
-  Modal.confirm({
-    title: text,
-    okText: '不修改,保存',
-    cancelText: '去修改',
-    onOk: callback
-  });
 }
 
 /* region  base - 账号基本信息  */
@@ -392,7 +550,7 @@ export const Introduction = (props) => {
           message: '账号简介不能超过1000字'
         }, { validator: checkForSensitiveWord, name: '账号简介' }]
       })(
-        <TextArea placeholder={placeholder || '请输入账号简介'} autosize={{ minRows: 4, maxRows: 6 }} />
+        <TextArea placeholder={placeholder || '请输入账号简介'} autoSize={{ minRows: 4, maxRows: 6 }} />
       )}
     </FormItem>
     {getFieldDecorator('base.introductionFrom', { initialValue: introductionFrom })(
@@ -2302,7 +2460,7 @@ export const CustomSkills = (props) => {
     <FormItem {...layout.full} label='其他技能'>
       {getFieldDecorator('_client.skills.custom', {
         initialValue: customSkills,
-        validateFirst: true,
+        validateFirst: true
       })(
         <WordList
           placeholder='请输入1~10字'
@@ -2387,8 +2545,8 @@ export const TrinityConfigAndPrice = (props) => {
           </RadioGroup>
         )}
       </FormItem> : null}
-    {(getFieldValue('isManual') ?  getFieldValue('trinityIsPreventShieldingManual') === 1 : getFieldValue('trinityIsPreventShieldingAutomated') === 1)
-     ?
+    {(getFieldValue('isManual') ? getFieldValue('trinityIsPreventShieldingManual') === 1 : getFieldValue('trinityIsPreventShieldingAutomated') === 1)
+      ?
       <FormItem {...formItemLayout} label='下单方'>
         {getFieldDecorator('trinityPlaceOrderType', {
           initialValue: trinityPlaceOrderType,
@@ -2420,22 +2578,24 @@ export const TrinityConfigAndPrice = (props) => {
                       return <tr key={sku.trinitySkuKey}>
                         <th>{sku.wbyTypeName}</th>
                         <td style={{ padding: '0 4px', textAlign: 'left' }}>
-                          {readOnly ? <div style={{textAlign: 'center'}}>{sku.publicCostPrice}</div> : <FormItem>
-                            {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].publicCostPrice`, {
-                              initialValue: sku.publicCostPrice,
-                              rules: [{
-                                required: (sku.publicCostPrice === 0 || sku.publicCostPrice),
-                                message: '请输入大于等于0的数'
-                              }]
-                            })(
-                              <InputNumber
-                                placeholder="报价保留两位小数"
-                                min={0}
-                                precision={2}
-                                max={999999999}
-                                style={{ width: '100%' }}
-                              />)}
-                          </FormItem>}
+                          {readOnly ?
+                            <div style={{ textAlign: 'center' }}>{sku.publicCostPrice}</div> :
+                            <FormItem>
+                              {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].publicCostPrice`, {
+                                initialValue: sku.publicCostPrice,
+                                rules: [{
+                                  required: (sku.publicCostPrice === 0 || sku.publicCostPrice),
+                                  message: '请输入大于等于0的数'
+                                }]
+                              })(
+                                <InputNumber
+                                  placeholder="报价保留两位小数"
+                                  min={0}
+                                  precision={2}
+                                  max={999999999}
+                                  style={{ width: '100%' }}
+                                />)}
+                            </FormItem>}
                         </td>
                         <td>
                           {sku.publicCostPriceMaintainedTime || '--'}
@@ -2443,12 +2603,14 @@ export const TrinityConfigAndPrice = (props) => {
                         <td>
                           {sku.publicCostPriceFrom === 2 ? '系统' : (sku.modifiedName || '--')}
                         </td>
-                        {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].trinitySkuTypeId`, {
-                          initialValue: sku.trinitySkuTypeId
-                        })(<input type='hidden' />)}
-                        {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].trinitySkuKey`, {
-                          initialValue: sku.trinitySkuKey
-                        })(<input type='hidden' />)}
+                        <td style={{ display: "none" }}>
+                          {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].trinitySkuTypeId`, {
+                            initialValue: sku.trinitySkuTypeId
+                          })(<input type='hidden' />)}
+                          {getFieldDecorator(`trinitySkuInfoVOS[${n}].list[${i}].trinitySkuKey`, {
+                            initialValue: sku.trinitySkuKey
+                          })(<input type='hidden' />)}
+                        </td>
                       </tr>;
                     })
                   }

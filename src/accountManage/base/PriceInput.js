@@ -49,16 +49,20 @@ export default class PriceInput extends Component {
       <span className="price-bold-unit">
         {value !== '-' ? _title : '零'}
       </span>) : '暂无';
-    const content = value ? (
-      <span className="price-bold-number">
-        {value !== '-' ? _content : '-'}
-      </span>) : '请输入价格';
+    const content = <div style={{textAlign: 'right'}}>
+      {
+        value ? (
+          <div className="price-bold-number">
+            {value !== '-' ? _content : '-'}
+          </div>) : '请输入价格'
+      }
+    </div>
     return (isEdit ?
       <Popover
         trigger={['focus']}
         title={title}
         content={content}
-        placement="topLeft"
+        placement="topRight"
         overlayClassName="price-bold-input"
         getPopupContainer={() => document.querySelector('.price_scroll_container') || document.querySelector('#account-manage-container')}
       >
@@ -71,7 +75,7 @@ export default class PriceInput extends Component {
           maxLength={8}
         />
       </Popover> : <p style={{
-        textAlign: 'center',
+        textAlign: 'right',
         margin: "0",
         fontWeight: '500',
         color: '#333'
