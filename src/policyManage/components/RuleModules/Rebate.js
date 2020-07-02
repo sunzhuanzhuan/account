@@ -9,6 +9,7 @@ import {
 import numeral from "numeral";
 import { discountRuleDisplay, rebateRuleDisplay } from "@/policyManage/utils";
 import InputPercent from "@/base/InputPercent";
+import InputAmount from "@/base/InputAmount";
 
 
 const formItemLayout = {
@@ -24,7 +25,7 @@ export const RebateEdit = (props) => {
   const [hasRebate, setHasRebate] = useState(!!rebateType);
 
 
-  const rebateNumbers = rebateStepRules.length === 0 ? [0, 9999999999] : rebateStepRules.reduce((acc, cur) => {
+  const rebateNumbers = rebateStepRules.length === 0 ? [0, 99999999] : rebateStepRules.reduce((acc, cur) => {
     acc.push(cur.amountHighLimit);
     return acc;
   }, [0]);
@@ -85,7 +86,7 @@ export const RebateEdit = (props) => {
                 initialValue: rebateFixedAmount,
                 rules: [ { required: true, message: '返点金额必填' } ]
               })(
-                <InputNumber
+                <InputAmount
                   style={{ width: 120 }}
                   min={0}
                   precision={0}
