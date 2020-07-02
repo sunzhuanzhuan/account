@@ -30,7 +30,7 @@ class AccountDetail extends Component {
     this.setState({
       isLoading: false
     })
-    actions.getHistoryPriceCount({ account_id: accountId })
+    actions.getHistoryPriceCount({ accountId: accountId })
     const { base = {} } = data
     document.title = `${base.snsName || ''}-${platformView[base.platformId] || ''}平台-微播易`
   }

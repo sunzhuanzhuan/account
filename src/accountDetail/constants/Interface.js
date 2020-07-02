@@ -14,7 +14,7 @@ export default {
   //查询是否在选号车以选中
   getAccountIsInCart: "/export/account/getAccountIsInCart",
   //应约价格数量
-  getHistoryPriceCount: '/export/account/getHistoryPriceCount',
+  getHistoryPriceCount: '/operator-gateway/search/export/getHistoryPriceCount',
   //应约价格
-  getRecentReservationOrderPriceList: "/export/account/getRecentReservationOrderPriceList",
+  getRecentReservationOrderPriceList: "/operator-gateway/search/export/getRecentReservationOrderPriceList",
 }
