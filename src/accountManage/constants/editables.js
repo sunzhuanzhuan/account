@@ -7,5 +7,8 @@ export const allEditables = {
   "followerCountFrom": "followerCount", //粉丝数是否可修改
   "genderFrom": "gender", //性别是否可修改
   "areaIdFrom": "areaId", //地域是否可修改
-  "levelFrom": "level" //账号平台等级是否可修改
+  "levelFrom": "level", //账号平台等级是否可修改
+}
+export const notCoverEditables = {
+  "introductionFrom": "introduction" //账号平台等级是否可修改
 }

@@ -529,7 +529,7 @@ export const QrCodeUrl = (props) => {
  */
 export const Introduction = (props) => {
   const {
-    form: { getFieldDecorator },
+    form: { getFieldDecorator, setFieldsValue, getFieldValue },
     layout,
     data: { account },
     placeholder
@@ -539,6 +539,14 @@ export const Introduction = (props) => {
     introductionFrom,
     introductionMaintainedTime
   } = account.base;
+
+
+  const onChange = (e) => {
+    if (getFieldValue('base.introductionFrom') !== 1) {
+      setFieldsValue({ "base.introductionFrom": 1 })
+    }
+  }
+
   return <div className='field-wrap-item'>
     <FormItem {...layout.full} label='账号简介'>
       {getFieldDecorator('base.introduction', {
@@ -550,7 +558,10 @@ export const Introduction = (props) => {
           message: '账号简介不能超过1000字'
         }, { validator: checkForSensitiveWord, name: '账号简介' }]
       })(
-        <TextArea placeholder={placeholder || '请输入账号简介'} autoSize={{ minRows: 4, maxRows: 6 }} />
+        <TextArea placeholder={placeholder || '请输入账号简介'} autosize={{
+          minRows: 4,
+          maxRows: 6
+        }} onChange={onChange} />
       )}
     </FormItem>
     {getFieldDecorator('base.introductionFrom', { initialValue: introductionFrom })(
