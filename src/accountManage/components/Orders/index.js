@@ -30,7 +30,11 @@ const columns = [
         <br />
         订单：<a target="_blank" href={requirementPath(record.order_id)}>{record.order_id}</a>
         <br />
-        {record.is_price_modified == '1' ? <span style={{ background: 'red', color: '#fff', padding: '2px 4px' }}>  已改价</span> : null}
+        {record.is_price_modified == '1' ? <span style={{
+          background: 'red',
+          color: '#fff',
+          padding: '2px 4px'
+        }}>  已改价</span> : null}
       </div>
     }
   },
@@ -48,6 +52,7 @@ const columns = [
   {
     title: '订单状态',
     dataIndex: 'reservation_status_name',
+    width: 180,
     render: (text, record) => {
       return <div>
         预约状态：{text}
@@ -61,9 +66,29 @@ const columns = [
   {
     title: '执行价格名称',
     dataIndex: 'accept_reservation_chosen_price',
-    render: (name, record) => {
+    width: 220,
+    render: (price, record) => {
+      if(!price) return '-'
+      const { equities = [], other_content, sku_type_name } = price
       return <div>
-        {name || '-'}
+        {sku_type_name}
+        {sku_type_name && (equities.length > 0 || other_content) ? <span style={{margin: '0 2px'}}>+</span> : null}
+        {
+          equities.map(item => {
+            return <span className="equity-tag-item" key={item.equity_id}>
+              {parseInt(item.is_free) === 1 ?
+                <img style={{ width: 20 }} src={require('../../images/free.png')} /> : ""}{item.equity_name}
+            </span>
+          })
+        }
+        {other_content && <span className="equity-tag-item" style={{
+          lineHeight: "20px",
+          display: "inline-block",
+          whiteSpace: "normal",
+          background: "#f0f0f0"
+        }}>
+              {other_content}
+        </span>}
       </div>
     }
   }, {
