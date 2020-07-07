@@ -9,17 +9,26 @@ import {
   clearAccountInfo,
   getAccountOnShelfStatus_success
 } from '../actions'
-import { allEditables } from "@/accountManage/constants/editables";
+import { allEditables, notCoverEditables } from "@/accountManage/constants/editables";
 
 const filterFetchData = (_data) => {
   let data = { ..._data }
+  const baseValue = window.__UpdateAccountReactComp__.main.props.form.getFieldValue("base")
+
   for (let key in data) {
     if (!data.hasOwnProperty(key)) continue
-    if (parseInt(data[key]) === 1 && Object.keys(allEditables).indexOf(key) > -1) {
+    /*if (parseInt(data[key]) === 1 && Object.keys(allEditables).indexOf(key) > -1) {
       delete data[key]
       delete data[allEditables[key]]
+    }*/
+
+    if (Object.keys(notCoverEditables).indexOf(key + "From") > -1 && parseInt(baseValue[key + "From"]) === 1) {
+      delete data[key]
+      delete data[key + "From"]
+      delete data[key + "MaintainedTime"]
     }
   }
+
   return data
 }
 let initEditable = () => {
