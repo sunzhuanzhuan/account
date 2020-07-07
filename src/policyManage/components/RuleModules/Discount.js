@@ -6,6 +6,7 @@ import {
 } from '../../constants/dataConfig'
 import { discountRuleDisplay, ruleDisplay } from "@/policyManage/utils";
 import InputPercent from "@/base/InputPercent";
+import InputAmount from "@/base/InputAmount";
 
 const formItemLayout = {
   labelCol: { span: 2 },
@@ -55,10 +56,9 @@ export const DiscountEdit = (props) => {
                     initialValue: discountFixedAmount,
                     rules: [ { required: true, message: '请输入固定扣减值!' } ]
                   })(
-                    <InputNumber
+                    <InputAmount
                       style={{ width: 100 }}
                       min={1}
-                      precision={0}
                       max={9999999}
                     />
                   )}元 = 账号报价</span>
