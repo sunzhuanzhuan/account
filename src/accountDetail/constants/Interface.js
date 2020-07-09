@@ -8,9 +8,9 @@ export default {
   getNewVideo: oldPreFix + 'getNewVideo',
 
   //删除购物车数据
-  removeFromCartAD: "/export/account/removeFromCart",
+  removeFromCartAD: "/operator-gateway/search/export/branch/removeFromCart",
   //添加购物车数据
-  addToCartAD: "/export/account/addToCart",
+  addToCartAD: "/operator-gateway/search/export/branch/addToCart",
   //查询是否在选号车以选中
   getAccountIsInCart: "/export/account/getAccountIsInCart",
   //应约价格数量

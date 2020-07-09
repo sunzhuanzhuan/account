@@ -52,11 +52,11 @@ class AccountDetail extends Component {
     const { actions: { removeFromCartAD, addToCartAD, getAccountIsInCart }, accountDetail: { baseInfo: { base: { platformId } } } } = this.props
     if (isAdd) {
       await addToCartAD({
-        accounts: [{ account_id: accountId, platform_id: platformId }],
-        item_type_id: 1
+        accounts: [{ accountId: accountId, platformId: platformId }],
+        itemTypeId: 1
       })
     } else {
-      await removeFromCartAD({ staging_ids: [accountId] })
+      await removeFromCartAD({ stagingIds: [accountId] })
     }
     message.success('操作成功')
   }
