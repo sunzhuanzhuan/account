@@ -4,7 +4,7 @@ import './style.less'
 
 function formatNumber(value) {
   value += '';
-  const unit = [ '零', '个', '十', '百', '千', '万', '十万', '百万', '千万', '亿' ]
+  const unit = [ '零', '个', '十', '百', '千', '万', '十万', '百万', '千万', '亿', '十亿' ]
   const list = value.split('.');
   const prefix = list[0].charAt(0) === '-' ? '-' : '';
   let num = prefix ? list[0].slice(1) : list[0];
@@ -94,7 +94,7 @@ export default class InputAmount extends Component {
           {...others}
           onChange={this.onChange}
           placeholder="请输入"
-          maxLength={8}
+          maxLength={10}
           onBlur={this.onBlur}
         />
       </Popover>

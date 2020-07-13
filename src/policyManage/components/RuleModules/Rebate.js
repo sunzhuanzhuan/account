@@ -25,7 +25,7 @@ export const RebateEdit = (props) => {
   const [hasRebate, setHasRebate] = useState(!!rebateType);
 
 
-  const rebateNumbers = rebateStepRules.length === 0 ? [0, 99999999] : rebateStepRules.reduce((acc, cur) => {
+  const rebateNumbers = rebateStepRules.length === 0 ? [0, 9999999999] : rebateStepRules.reduce((acc, cur) => {
     acc.push(cur.amountHighLimit);
     return acc;
   }, [0]);
