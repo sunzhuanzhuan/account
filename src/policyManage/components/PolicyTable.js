@@ -171,14 +171,14 @@ const PolicyTable = (props) => {
     {
       title: <span>政策级别<QuestionTip style={{ verticalAlign: "baseline" }} content={
         Object.values(POLICY_LEVEL).map(item => <div key={item.icon}>
-          <IconFont type={item.icon} /> ：{item.text}<br />
+          <span style={{fontSize: 24}}>{item.level}</span> ：{item.text}<br />
         </div>)
       } /></span>,
       width: 90,
       align: 'center',
       dataIndex: 'policyLevel',
       render: (level) => {
-        return <IconFont type={POLICY_LEVEL[level].icon} />
+        return <span style={{fontSize: 24}}>{POLICY_LEVEL[level].level}</span>
       }
     },
     {
