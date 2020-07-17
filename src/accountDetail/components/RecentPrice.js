@@ -94,7 +94,7 @@ class RecentPrice extends Component {
                         </Col>
 
                         <Col span={11} className='execution-data'>
-                          {item.skuTypeName ? `${item.skuTypeName}+` : null}
+                          {item.skuTypeName ? `${item.skuTypeName}` : null}
                           <EquitiesTags list={item.equities} />
                           {item.otherContent ? <Tag style={{ marginBottom: 8 }}>{item.otherContent}</Tag> : null}
                           <div>{item.deal_price}</div>
