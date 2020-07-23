@@ -37,6 +37,12 @@ class AccountDetail extends Component {
 
   //弹窗方法
   setShowModal = (visible, showModal) => {
+    let $appContentChildrenId = document.getElementById('app-content-children-id');
+    if (visible) {
+      $appContentChildrenId.style.overflow = 'hidden';
+    } else {
+      $appContentChildrenId.style.overflow = 'auto';
+    }
     if (visible) {
       this.setState({
         visible: visible,
