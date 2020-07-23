@@ -24,8 +24,8 @@ class AccountDetail extends Component {
   }
   componentDidMount = async () => {
     const { actions } = this.props
-    const { searchParam: { accountId, platformId } } = this.state
-    const { data = {} } = await actions.getBaseInfo({ accountId: accountId, platformId: platformId })
+    const { searchParam: { accountId } } = this.state
+    const { data = {} } = await actions.getBaseInfo({ accountId: accountId })
     actions.getAccountIsInCart({ accountId: accountId })
     this.setState({
       isLoading: false

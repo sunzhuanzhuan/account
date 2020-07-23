@@ -12,7 +12,7 @@ export default {
   //添加购物车数据
   addToCartAD: "/operator-gateway/search/export/branch/addToCart",
   //查询是否在选号车以选中
-  getAccountIsInCart: "/export/account/getAccountIsInCart",
+  getAccountIsInCart: "/operator-gateway/search/export/branch/getAccountIsInCart",
   //应约价格数量
   getHistoryPriceCount: '/operator-gateway/search/export/getHistoryPriceCount',
   //应约价格
