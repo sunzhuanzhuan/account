@@ -47,6 +47,10 @@ const PolicyTable = (props) => {
     showQuickJumper: true,
     pageSizeOptions: pageSizeOptions,
     onChange: (currentPage, pageSize) => {
+      //页码变化后清空已选的
+      if (selectedRowKeys.length > 0) {
+        setSelectedRowKeys([])
+      }
       getList({
         page: { currentPage: currentPage, pageSize }
       })
