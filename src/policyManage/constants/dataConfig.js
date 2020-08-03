@@ -42,19 +42,23 @@ export const FILTER_INCLUDE_RULE_TYPES = {
 export const POLICY_LEVEL = {
   "1": {
     icon: "icon-level_S",
-    text: "独家（1家）"
+    text: "独家（1家）",
+    level: 'S'
   },
   "2": {
     icon: "icon-level_A",
-    text: "小圈（≤3家）"
+    text: "小圈（≤3家）",
+    level: 'A'
   },
   "3": {
     icon: "icon-level_B",
-    text: "大圈（≤6家）"
+    text: "大圈（≤6家）",
+    level: 'B'
   },
   "4": {
     icon: "icon-level_C",
-    text: "平价（≥6家）"
+    text: "平价（≥6家）",
+    level: 'C'
   }
 }
 // 返点结算周期

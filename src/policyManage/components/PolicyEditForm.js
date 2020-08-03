@@ -28,6 +28,7 @@ import { RebateEdit } from "./RuleModules/Rebate";
 import { SpecialRuleEdit } from "./RuleModules/SpecialRules";
 import AccountListEdit from "./RuleModules/AccountListEdit";
 import { Settlement } from "./RuleModules/Settlement";
+import InputAmount from "@/base/InputAmount";
 
 
 const FormItem = Form.Item;
@@ -373,7 +374,7 @@ const PolicyEditForm = forwardRef((props, ref) => {
                 { required: true, message: "保底金额不可为空"},
               ]
             })(
-              <InputNumber precision={0} style={{ width: 400 }} min={1} max={9999999999} suffix="元" />
+              <InputAmount precision={0} style={{ width: 400 }} min={1} max={99999999} suffix="元" />
             )
           }
         </FormItem>}

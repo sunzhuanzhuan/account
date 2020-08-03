@@ -3,6 +3,7 @@ import React from "react";
 import { Button, InputNumber } from "antd";
 import numeral from "numeral";
 import InputPercent from "@/base/InputPercent";
+import InputAmount from "@/base/InputAmount";
 
 export class LadderRatioEdit extends React.PureComponent {
   static getDerivedStateFromProps(nextProps) {
@@ -85,9 +86,9 @@ export class LadderRatioEdit extends React.PureComponent {
               大于<span className="rule-number rule-number-under-line">{rebateNumbers[index]}</span>
               且小于等于
                             <span className="rule-input">
-                <InputNumber
+                <InputAmount
                   disabled={rebateNumbers.length - 2 == index}
-                  style={{margin: "0 4px"}}
+                  style={{margin: "0 4px", width: 160}}
                   min={1}
                   onChange={e => this.handleRatioChange(e, index + 1)}
                   value={item}
