@@ -24,11 +24,11 @@ class RecentPrice extends Component {
       visable: true,
       bigLoading: true,
       warnMessage: false,
-      account_id: qs.parse(window.location.search.substring(1)).accountId
+      accountId: qs.parse(window.location.search.substring(1)).accountId
     };
   }
   componentDidMount = () => {
-    this.props.actions.getRecentReservationOrderPriceList({ account_id: this.state.account_id, page: 1, page_size: 10 }).then((res) => {
+    this.props.actions.getRecentReservationOrderPriceList({ accountId: this.state.accountId, page: 1, pageSize: 10 }).then((res) => {
       this.setState({
         bigLoading: false,
       });
@@ -41,7 +41,7 @@ class RecentPrice extends Component {
     this.setState({
       loading: true,
     });
-    this.props.actions.AddGetPriceList({ account_id: this.state.account_id, page: value, page_size: 10 }).then((res) => {
+    this.props.actions.AddGetPriceList({ accountId: this.state.accountId, page: value, pageSize: 10 }).then((res) => {
       if (res.data.length < 10) {
         this.setState({
           hasMore: false,
@@ -57,12 +57,15 @@ class RecentPrice extends Component {
   }
   render() {
     const { visable, bigLoading, warnMessage } = this.state
-    const { accountDetail: { recentReservationOrderPriceList, baseInfo = {} } } = this.props
+    const { accountDetail: { baseInfo = {} } } = this.props
+    let { accountDetail: {recentReservationOrderPriceList = []} } = this.props;
+    recentReservationOrderPriceList = recentReservationOrderPriceList.filter(item => item.skuTypeName && item.dealPrice);
+
     const { base = {} } = baseInfo
     const { platformId } = base
     return (
       <div className="recent-price-wxy">
-        {visable ? <Alert message="说明:本页展示该账号最近一年在微播易平台的应约时间,应约价，及执行后的数据表现" type="warning" showIcon closable afterClose={this.handleClose} style={{ marginTop: 20 }} /> : null}
+        {visable ? <Alert message="说明:本页展示该账号最近一年在微播易平台的应约时间，应约价，及执行后的数据表现" type="warning" showIcon closable afterClose={this.handleClose} style={{ marginTop: 20 }} /> : null}
         <div style={{ marginTop: 20 }}>
           <div>
             <Row className="price-table-row title">
@@ -90,14 +93,14 @@ class RecentPrice extends Component {
                     <List.Item key={index} style={{ marginTop: 16 }}>
                       <Row className="price-table-row">
                         <Col span={4}>
-                          {item.created_time}
+                          {item.createdTime}
                         </Col>
 
                         <Col span={11} className='execution-data'>
-                          {item.skuTypeName ? `${item.skuTypeName}+` : null}
+                          {item.skuTypeName ? `${item.skuTypeName}` : null}&nbsp;&nbsp;
                           <EquitiesTags list={item.equities} />
                           {item.otherContent ? <Tag style={{ marginBottom: 8 }}>{item.otherContent}</Tag> : null}
-                          <div>{item.deal_price}</div>
+                          <div>{item.dealPrice}</div>
                         </Col>
                         <Col span={4} >
                           <div className='execution-data'>
@@ -114,7 +117,7 @@ class RecentPrice extends Component {
                         </Col>
                         <Col span={5}>
                           {platformId == 106 ?
-                            item.live_created_time || '-' : item.media_created_time || '-'}
+                            item.liveCreatedTime || '-' : item.mediaCreatedTime || '-'}
                         </Col>
                       </Row>
                     </List.Item>
@@ -154,7 +157,7 @@ export default connect(
 )(withRouter(RecentPrice))
 
 function EquitiesTags({ list = [] }) {
-  return list.length > 0 ? list.map(one => <Tag key={one.equitiesId} color="blue" style={{ marginBottom: 8 }}>
+  return list.length > 0 ? list.map(one => <Tag key={one.id} color="blue" style={{ marginBottom: 8 }}>
     {one.is_free == 1 ? <img src={require('./img/free.png')} width='14px'
       style={{ marginRight: 4, marginBottom: 2 }} /> : null}
     {one.equitiesName}

@@ -30,13 +30,19 @@ class AccountDetail extends Component {
     this.setState({
       isLoading: false
     })
-    actions.getHistoryPriceCount({ account_id: accountId })
+    actions.getHistoryPriceCount({ accountId: accountId })
     const { base = {} } = data
     document.title = `${base.snsName || ''}-${platformView[base.platformId] || ''}平台-微播易`
   }
 
   //弹窗方法
   setShowModal = (visible, showModal) => {
+    let $appContentChildrenId = document.getElementById('app-content-children-id');
+    if (visible) {
+      $appContentChildrenId.style.overflow = 'hidden';
+    } else {
+      $appContentChildrenId.style.overflow = 'auto';
+    }
     if (visible) {
       this.setState({
         visible: visible,
@@ -52,11 +58,11 @@ class AccountDetail extends Component {
     const { actions: { removeFromCartAD, addToCartAD, getAccountIsInCart }, accountDetail: { baseInfo: { base: { platformId } } } } = this.props
     if (isAdd) {
       await addToCartAD({
-        accounts: [{ account_id: accountId, platform_id: platformId }],
-        item_type_id: 1
+        accounts: [{ accountId: accountId, platformId: platformId }],
+        itemTypeId: 1
       })
     } else {
-      await removeFromCartAD({ staging_ids: [accountId] })
+      await removeFromCartAD({ stagingIds: [accountId] })
     }
     message.success('操作成功')
   }

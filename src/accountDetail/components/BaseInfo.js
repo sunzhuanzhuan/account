@@ -37,7 +37,7 @@ class BaseInfo extends Component {
             <div className='floating-base-info-flex'>
               {skuList.length > 0 ? skuList.slice(0, 2).map(one => <div key={one.skuId} className='sku-item'>
                 <div className='sku-name'>{one.skuTypeName} </div>
-                <div className='sku-price'>{one.openQuotePrice ? `¥${numeral(one.openQuotePrice).format('0,0')}` : '-'} </div>
+                <div className='sku-price'>{one.openQuotePrice ? `¥${numeral(one.openQuotePrice).format('0,0.00')}` : '-'} </div>
               </div>) : null}
             </div>
             <div className='car-button'>

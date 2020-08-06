@@ -193,7 +193,7 @@ const FatLable = ({ classificationList = [], labelListRecordList = [] }) => {
   </div>
 }
 function getPrice(number) {
-  return (number > 0 || number == 0) ? number : '-'
+  return (number > 0 || number == 0) ? number.toFixed(2) : '-'
 }
 const WeChatTable = ({ data = [], isFamous }) => {
   const data2 = data.slice(4, 8) || []
