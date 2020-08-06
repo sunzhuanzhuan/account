@@ -57,7 +57,10 @@ class RecentPrice extends Component {
   }
   render() {
     const { visable, bigLoading, warnMessage } = this.state
-    const { accountDetail: { recentReservationOrderPriceList, baseInfo = {} } } = this.props
+    const { accountDetail: { baseInfo = {} } } = this.props
+    let { accountDetail: {recentReservationOrderPriceList = []} } = this.props;
+    recentReservationOrderPriceList = recentReservationOrderPriceList.filter(item => item.skuTypeName && item.dealPrice);
+
     const { base = {} } = baseInfo
     const { platformId } = base
     return (
@@ -97,7 +100,7 @@ class RecentPrice extends Component {
                           {item.skuTypeName ? `${item.skuTypeName}` : null}&nbsp;&nbsp;
                           <EquitiesTags list={item.equities} />
                           {item.otherContent ? <Tag style={{ marginBottom: 8 }}>{item.otherContent}</Tag> : null}
-                          <div>{item.skuTypeName && (item.dealPrice || '')}</div>
+                          <div>{item.dealPrice}</div>
                         </Col>
                         <Col span={4} >
                           <div className='execution-data'>
