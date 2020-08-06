@@ -57,7 +57,10 @@ class RecentPrice extends Component {
   }
   render() {
     const { visable, bigLoading, warnMessage } = this.state
-    const { accountDetail: { recentReservationOrderPriceList, baseInfo = {} } } = this.props
+    const { accountDetail: { baseInfo = {} } } = this.props
+    let { accountDetail: {recentReservationOrderPriceList = []} } = this.props;
+    recentReservationOrderPriceList = recentReservationOrderPriceList.filter(item => item.skuTypeName && item.dealPrice);
+
     const { base = {} } = baseInfo
     const { platformId } = base
     return (
@@ -94,7 +97,7 @@ class RecentPrice extends Component {
                         </Col>
 
                         <Col span={11} className='execution-data'>
-                          {item.skuTypeName ? `${item.skuTypeName}` : null}
+                          {item.skuTypeName ? `${item.skuTypeName}` : null}&nbsp;&nbsp;
                           <EquitiesTags list={item.equities} />
                           {item.otherContent ? <Tag style={{ marginBottom: 8 }}>{item.otherContent}</Tag> : null}
                           <div>{item.dealPrice}</div>
@@ -154,7 +157,7 @@ export default connect(
 )(withRouter(RecentPrice))
 
 function EquitiesTags({ list = [] }) {
-  return list.length > 0 ? list.map(one => <Tag key={one.equitiesId} color="blue" style={{ marginBottom: 8 }}>
+  return list.length > 0 ? list.map(one => <Tag key={one.id} color="blue" style={{ marginBottom: 8 }}>
     {one.is_free == 1 ? <img src={require('./img/free.png')} width='14px'
       style={{ marginRight: 4, marginBottom: 2 }} /> : null}
     {one.equitiesName}
