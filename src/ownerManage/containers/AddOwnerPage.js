@@ -3,24 +3,21 @@
  * Created by lzb on 2019-11-04.
  */
 import React, { useEffect } from 'react';
-import OwnerForm from "../components/AddOwnerForm";
-import { bindActionCreators } from "redux";
-import * as commonAction from "@/actions";
-import * as action from "../actions";
-import { connect } from "react-redux";
+import OwnerForm from '../components/AddOwnerForm';
+import { bindActionCreators } from 'redux';
+import * as commonAction from '@/actions';
+import * as action from '../actions';
+import { connect } from 'react-redux';
 
-const AddOwnerPage = (props) => {
-
+const AddOwnerPage = props => {
   // 获取媒介列表
   useEffect(() => {
-    props.actions.getMediums()
-
-  }, [])
+    props.actions.getMediums();
+    props.actions.getOwnerTypes()
+  }, []);
   return (
     <div className="update-owner-page-container">
-      <h2>
-        添加主账号
-      </h2>
+      <h2>添加主账号</h2>
       <OwnerForm
         config={props.config}
         defaultMedium={{
@@ -28,27 +25,25 @@ const AddOwnerPage = (props) => {
           name: props.userInfo.real_name
         }}
         mediumsOptions={props.mediums}
+        ownerTypesOptions={props.ownerTypes}
         action={props.actions.ownerAdd}
       />
     </div>
   );
 };
-const mapStateToProps = (state) => {
-
+const mapStateToProps = state => {
   return {
     ownerInfo: state.ownerManageReducer.ownerInfo,
     mediums: state.ownerManageReducer.mediums,
+    ownerTypes: state.ownerManageReducer.ownerTypes,
     auth: state.authorizationsReducers.authVisibleList,
     userInfo: state.loginReducer.userLoginInfo.user_info,
     config: state.commonReducers.config
-  }
-}
+  };
+};
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({ ...commonAction, ...action }, dispatch)
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddOwnerPage);
+export default connect(mapStateToProps, mapDispatchToProps)(AddOwnerPage);
