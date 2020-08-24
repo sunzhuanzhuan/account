@@ -1,4 +1,4 @@
-const prefix = '/operator-gateway/mcn/v1';
+const prefix = "/operator-gateway/mcn/v1"
 export default {
   getMediums: prefix + '/mediums',
   getOwnerDetail: prefix + '/detail',
@@ -9,5 +9,5 @@ export default {
   ownerAdd: prefix + '/add',
   isCanUpdateUserInfo: '/operator-gateway/rbac/isCanUpdateUserInfo',
   preCheckChangeOwnerAdmin: prefix + '/preCheckChangeOwnerAdmin',
-  listMcnPaymentInfo: prefix + '/listMcnPaymentInfo'
-};
+  listMcnPaymentInfo: prefix + '/listMcnPaymentInfo',
+}
