@@ -101,10 +101,13 @@ const UpdateOwnerPage = (props) => {
     }).catch((err) => {
       setPageLoading(err)
     });
-    //主账号类型
+  }, [id])
+
+  //主账号类型
+  useEffect(() => {
     props.actions.getOwnerTypes();
 
-  }, [id])
+  },[])
 
   // 弹窗
   useEffect(() => {
@@ -229,6 +232,7 @@ const UpdateOwnerPage = (props) => {
           config={props.config}
           auth={props.auth}
           ownerTypesOptions={props.ownerTypes}
+          usersTypeId={props.ownerInfo.userType}
         />
         <Modal {...modalProps} title="媒介修改历史" visible={modal === "media"}>
           <Table
