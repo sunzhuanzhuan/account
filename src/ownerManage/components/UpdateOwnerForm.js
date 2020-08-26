@@ -28,7 +28,7 @@ const UpdateOwnerForm = (props) => {
   const [diffPhone, setDiffPhone] = useState(false)
   const [diffMcn, setDiffMcn] = useState(false)
   let keys = props.ownerTypesOptions.map(el => el.userTypeId);
-  let initUserTypeId = keys.includes(props.usersTypeId) ? props.userType : 0;
+  let initUserTypeId = keys.includes(props.usersTypeId) ? props.usersTypeId : 0;
 
   const InfoPay = <QuestionTip title="支付信息" content={
     <div>
