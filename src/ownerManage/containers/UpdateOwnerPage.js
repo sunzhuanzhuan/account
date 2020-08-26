@@ -232,7 +232,7 @@ const UpdateOwnerPage = (props) => {
           config={props.config}
           auth={props.auth}
           ownerTypesOptions={props.ownerTypes}
-          usersTypeId={props.ownerInfo.userType}
+          userTypeId={props.ownerInfo.userType}
         />
         <Modal {...modalProps} title="媒介修改历史" visible={modal === "media"}>
           <Table
