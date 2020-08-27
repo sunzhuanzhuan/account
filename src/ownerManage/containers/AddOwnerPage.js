@@ -14,6 +14,7 @@ const AddOwnerPage = (props) => {
   // 获取媒介列表
   useEffect(() => {
     props.actions.getMediums()
+    props.actions.getOwnerTypes()
 
   }, [])
   return (
@@ -29,6 +30,7 @@ const AddOwnerPage = (props) => {
         }}
         mediumsOptions={props.mediums}
         action={props.actions.ownerAdd}
+        ownerTypesOptions={props.ownerTypes}
       />
     </div>
   );
@@ -40,7 +42,8 @@ const mapStateToProps = (state) => {
     mediums: state.ownerManageReducer.mediums,
     auth: state.authorizationsReducers.authVisibleList,
     userInfo: state.loginReducer.userLoginInfo.user_info,
-    config: state.commonReducers.config
+    config: state.commonReducers.config,
+    ownerTypes: state.ownerManageReducer.ownerTypes
   }
 }
 

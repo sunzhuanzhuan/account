@@ -127,11 +127,13 @@ const AddOwnerForm = (props) => {
           ]
         })(
           <Select placeholder="请选择">
-            <Option value="1">个人号</Option>
-            <Option value="2">账号集团</Option>
-            <Option value="3">中介</Option>
-            <Option value="4">未知</Option>
-            <Option value="5">工作室</Option>
+            {props.ownerTypesOptions.map(item => {
+              return (
+                <Option key={item.userTypeId} value={item.userTypeId}>
+                  {item.userType}
+                </Option>
+              );
+            })}
           </Select>
         )}
       </Form.Item>

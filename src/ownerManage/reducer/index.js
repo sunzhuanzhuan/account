@@ -4,7 +4,8 @@ import { handleActions, combineActions } from 'redux-actions';
 
 import {
   getOwnerDetail_success,
-  getMediums_success
+  getMediums_success,
+  getOwnerTypes_success
 } from '../actions'
 
 const ownerInfo = handleActions({
@@ -25,8 +26,17 @@ const mediums = handleActions({
 
   }
 }, [])
+const ownerTypes = handleActions(
+  {
+    [getOwnerTypes_success]: (state, action) => {
+      return [...action.payload.data];
+    }
+  },
+  []
+);
 
 export default combineReducers({
   ownerInfo,
-  mediums
+  mediums,
+  ownerTypes
 })

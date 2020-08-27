@@ -27,6 +27,8 @@ const UpdateOwnerForm = (props) => {
   const [loading, setLoading] = useState(false);
   const [diffPhone, setDiffPhone] = useState(false)
   const [diffMcn, setDiffMcn] = useState(false)
+  let keys = props.ownerTypesOptions.map(el => el.userTypeId);
+  let initUserTypeId = keys.includes(props.userTypeId) ? props.userTypeId : 0;
 
   const InfoPay = <QuestionTip title="支付信息" content={
     <div>
@@ -153,17 +155,19 @@ const UpdateOwnerForm = (props) => {
       <Form.Item label="主账号类型">
         {getFieldDecorator('userType', {
           validateFirst: true,
-          initialValue: props.userType,
+          initialValue: initUserTypeId,
           rules: [
             { required: true, message: "主账号类型不能为空" }
           ]
         })(
           <Select placeholder="请选择" disabled={props.disabled}>
-            <Option value={1}>个人号</Option>
-            <Option value={2}>账号集团</Option>
-            <Option value={3}>中介</Option>
-            <Option value={4}>未知</Option>
-            <Option value={5}>工作室</Option>
+            {props.ownerTypesOptions.map(item => {
+              return (
+                <Option key={item.userTypeId} value={item.userTypeId}>
+                  {item.userType}
+                </Option>
+              );
+            })}
           </Select>
         )}
       </Form.Item>

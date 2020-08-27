@@ -15,6 +15,12 @@ export const {
   getOwnerDetail_success
 } = createHttpAction('getOwnerDetail', Interface.getOwnerDetail);
 
+// 获取主账号类型
+export const { getOwnerTypes, getOwnerTypes_success } = createHttpAction(
+  'getOwnerTypes',
+  Interface.getOwnerTypes
+);
+
 // 获取手机号修改记录
 export const {
   phoneUpdateHistory

@@ -100,9 +100,14 @@ const UpdateOwnerPage = (props) => {
       setPageLoading(false)
     }).catch((err) => {
       setPageLoading(err)
-    })
-
+    });
   }, [id])
+
+  //主账号类型
+  useEffect(() => {
+    props.actions.getOwnerTypes();
+
+  },[])
 
   // 弹窗
   useEffect(() => {
@@ -226,6 +231,8 @@ const UpdateOwnerPage = (props) => {
           actions={props.actions}
           config={props.config}
           auth={props.auth}
+          ownerTypesOptions={props.ownerTypes}
+          userTypeId={props.ownerInfo.userType}
         />
         <Modal {...modalProps} title="媒介修改历史" visible={modal === "media"}>
           <Table
@@ -268,7 +275,8 @@ const mapStateToProps = (state) => {
     mediums: state.ownerManageReducer.mediums,
     auth: state.authorizationsReducers.authVisibleList,
     userInfo: state.loginReducer.userLoginInfo.user_info,
-    config: state.commonReducers.config
+    config: state.commonReducers.config,
+    ownerTypes: state.ownerManageReducer.ownerTypes
   }
 }
 
