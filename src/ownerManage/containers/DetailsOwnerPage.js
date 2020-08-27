@@ -107,7 +107,7 @@ const DetailsOwnerPage = (props) => {
       getMediaList()
     } else if (modal === "cellPhone") {
       getPhoneList()
-    }else if (modal === "payment") {
+    } else if (modal === "payment") {
       getPaymentList()
     }
   }, [modal])
@@ -167,13 +167,21 @@ const DetailsOwnerPage = (props) => {
   }
 
   let linkUserId = props.ownerInfo.userId
-
+  let linkHost = props.config.babysitterHost
 
   return (
     <LoadingWrapped loading={pageLoading}>
       <div className="update-owner-page-container">
         <h2 className="update-owner-page-title">
           主账号信息
+          <div style={{ marginLeft: '24px' }}>
+            {
+              props.auth['account.owner.show.detail.updateServiceProvider'] &&
+              <Button type="primary" target="_blank" href={`${linkHost}/payment/manager/paymentlist/serviceProvider/1/userId/${linkUserId}`}>
+                修改自营支付方式
+              </Button>
+            }
+          </div>
         </h2>
         <OwnerForm
           disabled
