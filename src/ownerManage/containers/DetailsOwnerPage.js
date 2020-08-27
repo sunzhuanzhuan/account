@@ -111,6 +111,10 @@ const DetailsOwnerPage = (props) => {
       getPaymentList()
     }
   }, [modal])
+  //主账号类型
+  useEffect(() => {
+    props.actions.getOwnerTypes();
+  },[])
 
   const getMediaList = (currentPage = 1, pageSize = 10) => {
     setListLoading(true)
